@@ -19,6 +19,8 @@ public class Post {
     private LocalDate creationDate;
     @Column(name = "image",nullable = true)
     private String imagePath;
+    @Column(name = "deleted",nullable = false)
+    private Boolean isDeleted;
     @OneToMany(mappedBy = "post",fetch = FetchType.LAZY,cascade = CascadeType.ALL)
     Set<Comment> comments = new HashSet<>();
     @OneToMany(mappedBy = "post",fetch = FetchType.LAZY,cascade = CascadeType.ALL)
@@ -114,6 +116,14 @@ public class Post {
         this.flairs = flairs;
     }
 
+    public Boolean getDeleted() {
+        return isDeleted;
+    }
+
+    public void setDeleted(Boolean deleted) {
+        isDeleted = deleted;
+    }
+
     public Community getCommunity() {
         return community;
     }
@@ -128,6 +138,7 @@ public class Post {
         this.imagePath = imagePath;
         this.reactions = reactions;
         this.user = user;
+        this.isDeleted = false;
         this.flairs = flairs;
         this.community = community;
     }
@@ -136,6 +147,7 @@ public class Post {
         this.title = title;
         this.text = text;
         this.reactions = (Set<Reaction>) new Reaction(user,this);
+        this.isDeleted = false;
         this.user = user;
         this.flairs = flairs;
         this.community = community;
@@ -148,6 +160,7 @@ public class Post {
         this.imagePath = imagePath;
         this.comments = comments;
         this.reactions = reactions;
+        this.isDeleted = false;
         this.user = user;
         this.reports = reports;
         this.flairs = flairs;

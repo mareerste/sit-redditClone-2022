@@ -1,2 +1,13 @@
-package rs.ac.uns.ftn.informatika.redditClone.repository;public class CommentRepository {
+package rs.ac.uns.ftn.informatika.redditClone.repository;
+
+import org.springframework.data.jpa.repository.JpaRepository;
+import rs.ac.uns.ftn.informatika.redditClone.model.Comment;
+import rs.ac.uns.ftn.informatika.redditClone.model.Post;
+
+import java.util.List;
+
+public interface CommentRepository extends JpaRepository<Comment,Integer> {
+    public List<Comment> findByPost(Post post);
+
+    public List<Comment> findByParentComment(Comment comment);
 }
