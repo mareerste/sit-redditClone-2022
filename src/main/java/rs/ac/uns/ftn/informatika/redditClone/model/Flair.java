@@ -9,9 +9,9 @@ public class Flair {
     private Integer id;
     @Column(name = "name",nullable = false)
     private String name;
-    @ManyToOne(fetch = FetchType.EAGER)
-    @JoinColumn(name = "post_id",nullable = true)
-    private Post post;
+//    @ManyToOne(fetch = FetchType.EAGER)
+//    @JoinColumn(name = "post_id",nullable = true)
+//    private Post post;
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "community_id",nullable = true)
     private Community community;
@@ -32,13 +32,13 @@ public class Flair {
         this.name = name;
     }
 
-    public Post getPost() {
-        return post;
-    }
-
-    public void setPost(Post post) {
-        this.post = post;
-    }
+//    public Post getPost() {
+//        return post;
+//    }
+//
+//    public void setPost(Post post) {
+//        this.post = post;
+//    }
 
     public Community getCommunity() {
         return community;
@@ -48,15 +48,18 @@ public class Flair {
         this.community = community;
     }
 
-    public Flair(String name, Post post, Community community) {
-        this.name = name;
-        this.post = post;
-        this.community = community;
+//    public Flair(String name, Post post, Community community) {
+//        this.name = name;
+//        this.post = post;
+//        this.community = community;
+//    }
+//    public Flair(String name, Post post) {
+//        this.name = name;
+//        this.post = post;
+//    }
+    public Flair(){
     }
-    public Flair(String name, Post post) {
-        this.name = name;
-        this.post = post;
-    }
+
     public Flair(String name, Community community) {
         this.name = name;
         this.community = community;
@@ -67,8 +70,6 @@ public class Flair {
         return "Flair{" +
                 "id=" + id +
                 ", name='" + name + '\'' +
-                ", post=" + post +
-                ", community=" + community +
                 '}';
     }
 }

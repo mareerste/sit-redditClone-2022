@@ -1,6 +1,7 @@
 package rs.ac.uns.ftn.informatika.redditClone.model;
 
 import javax.persistence.*;
+import java.time.LocalDate;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -17,17 +18,17 @@ public class User {
     @Column(name = "avatar", nullable = true)
     protected String avatar;
     @Column(name = "registrationDate", nullable = false)
-    protected String registrationDate;
+    protected LocalDate registrationDate;
     @Column(name = "description", nullable = false)
     protected String description;
-    @OneToMany(mappedBy = "user", fetch = FetchType.LAZY,cascade = CascadeType.ALL)
-    protected Set<Comment> comments = new HashSet<>();
-    @OneToMany(mappedBy = "user", fetch = FetchType.LAZY,cascade = CascadeType.ALL)
-    protected Set<Reaction> reactions = new HashSet<>();
-    @OneToMany(mappedBy = "user", fetch = FetchType.LAZY,cascade = CascadeType.ALL)
-    protected Set<Post> posts = new HashSet<>();
-    @OneToMany(mappedBy = "user", fetch = FetchType.LAZY,cascade = CascadeType.ALL)
-    protected Set<Banned> bannedSet = new HashSet<>();
+//    @OneToMany(mappedBy = "user", fetch = FetchType.LAZY,cascade = CascadeType.ALL)
+//    protected Set<Comment> comments = new HashSet<>();
+//    @OneToMany(mappedBy = "user", fetch = FetchType.LAZY,cascade = CascadeType.ALL)
+//    protected Set<Reaction> reactions = new HashSet<>();
+//    @OneToMany(mappedBy = "user", fetch = FetchType.LAZY,cascade = CascadeType.ALL)
+//    protected Set<Post> posts = new HashSet<>();
+//    @OneToMany(mappedBy = "user", fetch = FetchType.LAZY,cascade = CascadeType.ALL)
+//    protected Set<Banned> bannedSet = new HashSet<>();
 
     public String getUsername() {
         return username;
@@ -61,11 +62,11 @@ public class User {
         this.avatar = avatar;
     }
 
-    public String getRegistrationDate() {
+    public LocalDate getRegistrationDate() {
         return registrationDate;
     }
 
-    public void setRegistrationDate(String registrationDate) {
+    public void setRegistrationDate(LocalDate registrationDate) {
         this.registrationDate = registrationDate;
     }
 
@@ -80,39 +81,39 @@ public class User {
     public User() {
     }
 
-    public Set<Comment> getComments() {
-        return comments;
-    }
+//    public Set<Comment> getComments() {
+//        return comments;
+//    }
+//
+//    public void setComments(Set<Comment> comments) {
+//        this.comments = comments;
+//    }
+//
+//    public Set<Reaction> getReactions() {
+//        return reactions;
+//    }
+//
+//    public void setReactions(Set<Reaction> reactions) {
+//        this.reactions = reactions;
+//    }
+//
+//    public Set<Post> getPosts() {
+//        return posts;
+//    }
+//
+//    public void setPosts(Set<Post> posts) {
+//        this.posts = posts;
+//    }
+//
+//    public Set<Banned> getBannedSet() {
+//        return bannedSet;
+//    }
+//
+//    public void setBannedSet(Set<Banned> bannedSet) {
+//        this.bannedSet = bannedSet;
+//    }
 
-    public void setComments(Set<Comment> comments) {
-        this.comments = comments;
-    }
-
-    public Set<Reaction> getReactions() {
-        return reactions;
-    }
-
-    public void setReactions(Set<Reaction> reactions) {
-        this.reactions = reactions;
-    }
-
-    public Set<Post> getPosts() {
-        return posts;
-    }
-
-    public void setPosts(Set<Post> posts) {
-        this.posts = posts;
-    }
-
-    public Set<Banned> getBannedSet() {
-        return bannedSet;
-    }
-
-    public void setBannedSet(Set<Banned> bannedSet) {
-        this.bannedSet = bannedSet;
-    }
-
-    public User(String username, String password, String email, String avatar, String registrationDate, String description) {
+    public User(String username, String password, String email, String avatar, LocalDate registrationDate, String description) {
         this.username = username;
         this.password = password;
         this.email = email;
@@ -121,6 +122,21 @@ public class User {
         this.description = description;
     }
 
+    public User(String username, String password, String email, String avatar, String description) {
+        this.username = username;
+        this.password = password;
+        this.email = email;
+        this.avatar = avatar;
+        this.registrationDate = LocalDate.now();
+        this.description = description;
+    }
+    public User(String username, String password, String email, String description) {
+        this.username = username;
+        this.password = password;
+        this.email = email;
+        this.registrationDate = LocalDate.now();
+        this.description = description;
+    }
     @Override
     public String toString() {
         return "User{" +

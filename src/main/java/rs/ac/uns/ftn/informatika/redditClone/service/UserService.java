@@ -1,5 +1,6 @@
 package rs.ac.uns.ftn.informatika.redditClone.service;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import rs.ac.uns.ftn.informatika.redditClone.model.User;
 import rs.ac.uns.ftn.informatika.redditClone.repository.UserRepository;
@@ -8,6 +9,7 @@ import java.util.List;
 
 @Service
 public class UserService {
+    @Autowired
     private UserRepository userRepository;
 
     public User findOne(String username){return userRepository.findById(username).orElseGet(null);}

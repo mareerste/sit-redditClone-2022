@@ -22,14 +22,13 @@ public class Community {
     private Boolean isSuspended;
     @Column(name = "suspendedReason",nullable = true)
     private String suspendedReason;
-    @OneToMany(mappedBy = "community",fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "community",fetch = FetchType.EAGER,cascade = CascadeType.ALL)
     private Set<Flair> flairs = new HashSet<>();
-    @OneToMany(mappedBy = "community",fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "community",fetch = FetchType.EAGER,cascade = CascadeType.ALL)
     private Set<Post> posts = new HashSet<>();
-    @OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+    @ManyToMany
+    @JoinTable(name = "moderators", joinColumns = @JoinColumn(name = "community_id",referencedColumnName = "id"),inverseJoinColumns = @JoinColumn(name = "moderator_id", referencedColumnName = "username"))
     private Set<Moderator> moderators = new HashSet<>();
-    @OneToMany(mappedBy = "community",fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-    private Set<Banned> bannedList = new HashSet<>();
 
     public Integer getId() {
         return id;
@@ -111,14 +110,6 @@ public class Community {
         this.moderators = moderators;
     }
 
-    public Set<Banned> getBannedList() {
-        return bannedList;
-    }
-
-    public void setBannedList(Set<Banned> bannedList) {
-        this.bannedList = bannedList;
-    }
-
     public Community() {
     }
 
@@ -130,6 +121,14 @@ public class Community {
         this.isSuspended = false;
         this.flairs = flairs;
         this.moderators = moderators;
+    }
+
+    public Community(String name, String description, Set<String> rules) {
+        this.name = name;
+        this.description = description;
+        this.creationDate = LocalDate.now().toString();
+        this.rules = rules;
+        this.isSuspended = false;
     }
 
     @Override
@@ -145,7 +144,6 @@ public class Community {
                 ", flairs=" + flairs +
                 ", posts=" + posts +
                 ", moderators=" + moderators +
-                ", bannedList=" + bannedList +
                 '}';
     }
 }

@@ -20,15 +20,16 @@ public class Comment {
     @JoinColumn(name = "user_id")
     private User user;
     @OneToOne(fetch = FetchType.EAGER)
-    @JoinColumn(name = "parentColumnId", nullable = true)
+    @JoinColumn(name = "parentCommentId", nullable = true)
     private Comment parentComment;
+
     @ManyToOne(fetch = FetchType.EAGER)
-    @JoinColumn(name = "post_id")
+    @JoinColumn(name = "post_id",nullable = true)
     private Post post;
-    @OneToMany(mappedBy = "comment",fetch = FetchType.LAZY,cascade = CascadeType.ALL)
-    Set<Reaction> reactions = new HashSet<>();
-    @OneToMany(mappedBy = "comment",fetch = FetchType.LAZY,cascade = CascadeType.ALL)
-    Set<Report> reports = new HashSet<>();
+//    @OneToMany(mappedBy = "comment",fetch = FetchType.LAZY,cascade = CascadeType.ALL)
+//    Set<Reaction> reactions = new HashSet<>();
+//    @OneToMany(mappedBy = "comment",fetch = FetchType.LAZY,cascade = CascadeType.ALL)
+//    Set<Report> reports = new HashSet<>();
 
     public Integer getId() {
         return id;
@@ -100,22 +101,6 @@ public class Comment {
 
     public void setPost(Post post) {
         this.post = post;
-    }
-
-    public Set<Reaction> getReactions() {
-        return reactions;
-    }
-
-    public void setReactions(Set<Reaction> reactions) {
-        this.reactions = reactions;
-    }
-
-    public Set<Report> getReports() {
-        return reports;
-    }
-
-    public void setReports(Set<Report> reports) {
-        this.reports = reports;
     }
 
     public User getUser() {

@@ -14,6 +14,7 @@ public class PostService {
     private PostRepository postRepository;
 
     public Post findOne(Integer id){return postRepository.findById(id).orElseGet(null);}
+    public List<Post> findAll(){return postRepository.findAll();}
     public List<Post> findAllforCommunity(Community community){return postRepository.findByCommunity(community);}
     public List<Post> findUndeletedForCommunity(Community community, Boolean isDeleted){return  postRepository.findByCommunityAndIsDeleted(community,isDeleted);}
     public Post save(Post post){return postRepository.save(post);}
