@@ -1,4 +1,4 @@
-package rs.ac.uns.ftn.informatika.redditClone.model;
+package rs.ac.uns.ftn.informatika.redditClone.model.entity;
 
 import javax.persistence.*;
 import java.time.LocalDate;

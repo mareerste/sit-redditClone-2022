@@ -1,9 +1,8 @@
 package rs.ac.uns.ftn.informatika.redditClone.repository;
 
 import org.springframework.data.jpa.repository.JpaRepository;
-import org.springframework.data.jpa.repository.Query;
-import rs.ac.uns.ftn.informatika.redditClone.model.Community;
-import rs.ac.uns.ftn.informatika.redditClone.model.Post;
+import rs.ac.uns.ftn.informatika.redditClone.model.entity.Community;
+import rs.ac.uns.ftn.informatika.redditClone.model.entity.Post;
 
 import java.util.List;
 

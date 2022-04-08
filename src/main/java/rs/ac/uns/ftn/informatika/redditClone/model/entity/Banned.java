@@ -1,6 +1,4 @@
-package rs.ac.uns.ftn.informatika.redditClone.model;
-
-import org.springframework.http.HttpInputMessage;
+package rs.ac.uns.ftn.informatika.redditClone.model.entity;
 
 import javax.persistence.*;
 import java.time.LocalDate;
@@ -10,59 +8,49 @@ public class Banned {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
-    @Column(name = "date",nullable = false)
+    @Column(name = "date")
     private LocalDate timestamp;
-    @ManyToOne(fetch = FetchType.EAGER)
-    @JoinColumn(name = "moderator_id",nullable = false)
+    @ManyToOne
+    @JoinColumn(name = "moderator_id",referencedColumnName = "username")
     private Moderator moderator;
-    @ManyToOne(fetch = FetchType.EAGER,cascade = CascadeType.ALL)
-    @JoinColumn(name = "community_id")
+    @ManyToOne
+    @JoinColumn(name = "community_id",referencedColumnName = "id")
     private Community community;
-    @ManyToOne(fetch = FetchType.EAGER,cascade = CascadeType.ALL)
-    @JoinColumn(name = "user_id")
+    @ManyToOne
+    @JoinColumn(name = "user_id",referencedColumnName = "username")
     private User user;
 
     public Integer getId() {
         return id;
     }
-
     public void setId(Integer id) {
         this.id = id;
     }
-
     public LocalDate getTimestamp() {
         return timestamp;
     }
-
     public void setTimestamp(LocalDate timestamp) {
         this.timestamp = timestamp;
     }
-
     public Moderator getModerator() {
         return moderator;
     }
-
     public void setModerator(Moderator moderator) {
         this.moderator = moderator;
     }
-
     public Community getCommunity() {
         return community;
     }
-
     public void setCommunity(Community community) {
         this.community = community;
     }
-
     public User getUser() {
         return user;
     }
-
     public void setUser(User user) {
         this.user = user;
     }
-
-    public Banned() {
+    public Banned(){
     }
     //create
     public Banned(Moderator moderator, Community community, User user) {
@@ -77,9 +65,9 @@ public class Banned {
         return "Banned{" +
                 "id=" + id +
                 ", timestamp=" + timestamp +
-                ", moderator=" + moderator +
-                ", community=" + community +
-                ", user=" + user +
+                ", moderator=" + moderator.getUsername() +
+                ", community=" + community.getName() +
+                ", user=" + user.getUsername() +
                 '}';
     }
 }

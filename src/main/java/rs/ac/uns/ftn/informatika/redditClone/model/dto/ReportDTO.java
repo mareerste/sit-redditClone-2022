@@ -1,101 +1,79 @@
-package rs.ac.uns.ftn.informatika.redditClone.model;
+package rs.ac.uns.ftn.informatika.redditClone.model.dto;
 
+import rs.ac.uns.ftn.informatika.redditClone.model.entity.Reaction;
+import rs.ac.uns.ftn.informatika.redditClone.model.entity.Report;
 import rs.ac.uns.ftn.informatika.redditClone.model.enumerations.ReactionType;
 
 import javax.persistence.*;
+import java.io.Serializable;
 import java.time.LocalDate;
 
-@Entity
-public class Report {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+public class ReportDTO implements Serializable {
+
     private Integer id;
-    @Column(name = "reason",nullable = false)
     private ReactionType reason;
-    @Column(name = "date",nullable = false)
     private LocalDate timestamp;
-    @ManyToOne(fetch = FetchType.EAGER)
-    @JoinColumn(name = "user_id",nullable = true)
-    private User user;
-    @Column(name = "accepted", nullable = false)
+    private UserDTO user;
     private Boolean accepted;
-    @ManyToOne(fetch = FetchType.EAGER)
-    @JoinColumn(name = "post_id",nullable = true)
-    private Post post;
-    @ManyToOne(fetch = FetchType.EAGER)
-    @JoinColumn(name = "comment_id",nullable = true)
-    private Comment comment;
+    private PostDTO post;
+    private CommentDTO comment;
 
     public Integer getId() {
         return id;
     }
-
     public void setId(Integer id) {
         this.id = id;
     }
-
     public ReactionType getReason() {
         return reason;
     }
-
     public void setReason(ReactionType reason) {
         this.reason = reason;
     }
-
     public LocalDate getTimestamp() {
         return timestamp;
     }
-
     public void setTimestamp(LocalDate timestamp) {
         this.timestamp = timestamp;
     }
-
-    public User getUser() {
+    public UserDTO getUser() {
         return user;
     }
-
-    public void setUser(User user) {
+    public void setUser(UserDTO user) {
         this.user = user;
     }
-
     public Boolean getAccepted() {
         return accepted;
     }
-
     public void setAccepted(Boolean accepted) {
         this.accepted = accepted;
     }
-
-    public Post getPost() {
+    public PostDTO getPost() {
         return post;
     }
-
-    public void setPost(Post post) {
+    public void setPost(PostDTO post) {
         this.post = post;
     }
-
-    public Comment getComment() {
+    public CommentDTO getComment() {
         return comment;
     }
-
-    public void setComment(Comment comment) {
+    public void setComment(CommentDTO comment) {
         this.comment = comment;
     }
 
-    public Report(ReactionType reason, User user, Post post) {
+    public ReportDTO() {
+    }
+
+    public ReportDTO(Integer id, ReactionType reason, LocalDate timestamp, UserDTO user, Boolean accepted, PostDTO post, CommentDTO comment) {
+        this.id = id;
         this.reason = reason;
-        this.timestamp = LocalDate.now();
+        this.timestamp = timestamp;
         this.user = user;
-        this.accepted = null;
+        this.accepted = accepted;
         this.post = post;
-    }
-    public Report(ReactionType reason, User user, Comment comment) {
-        this.reason = reason;
-        this.timestamp = LocalDate.now();
-        this.user = user;
-        this.accepted = null;
         this.comment = comment;
     }
+    public ReportDTO (Report report){this(report.getId(), report.getReason(),report.getTimestamp(),new UserDTO(report.getUser()),report.getAccepted(),new PostDTO(report.getPost()), new CommentDTO(report.getComment()));}
 
     @Override
     public String toString() {

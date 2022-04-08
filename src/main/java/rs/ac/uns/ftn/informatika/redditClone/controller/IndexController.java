@@ -4,13 +4,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
-import rs.ac.uns.ftn.informatika.redditClone.model.*;
-import rs.ac.uns.ftn.informatika.redditClone.model.enumerations.ReactionType;
+import rs.ac.uns.ftn.informatika.redditClone.model.entity.Banned;
+import rs.ac.uns.ftn.informatika.redditClone.model.entity.Community;
+import rs.ac.uns.ftn.informatika.redditClone.model.entity.Moderator;
+import rs.ac.uns.ftn.informatika.redditClone.model.entity.User;
 import rs.ac.uns.ftn.informatika.redditClone.service.*;
-
-import java.util.Arrays;
-import java.util.HashSet;
-import java.util.Set;
 
 @Controller
 public class IndexController {
@@ -43,7 +41,7 @@ public class IndexController {
 //        System.out.println(moderator1);
 //        System.out.println(moderator2);
 
-//        User user = userService.findOne("marko123");
+//        User user = userServiceImpl.findOne("marko123");
 //        Post post = postService.findOne(1);
 //        System.out.println(post.getUser());
 
@@ -59,6 +57,18 @@ public class IndexController {
         System.out.println(commentService.findByPost(postService.findOne(1)));
         System.out.println(reactionService.findAll());
 
+        System.out.println("PROBA ZA BANOVANJE");
+        Moderator moderator1 = moderatorService.findOne("mirko123");
+        User user = userService.findOne("marko123");
+        Community community = communityService.findOne(1);
+        System.out.println("Banovanje usera");
+        Banned banned = new Banned(moderator1,community,user);
+        bannedService.save(banned);
+        System.out.println("User banovan");
+        System.out.println(bannedService.findAll());
+        System.out.println("Unban");
+        bannedService.unbanUser(moderator1,community,user);
+        System.out.println(bannedService.findAll());
         return "<h2>Hello World</h2>";
     }
 }

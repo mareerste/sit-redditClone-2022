@@ -1,10 +1,12 @@
-package rs.ac.uns.ftn.informatika.redditClone.model;
+package rs.ac.uns.ftn.informatika.redditClone.model.entity;
 
 import javax.persistence.Entity;
 import java.time.LocalDate;
 
 @Entity
 public class Administrator extends User{
+
+
 
     public Administrator() {
     }

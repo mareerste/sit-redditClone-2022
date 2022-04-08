@@ -1,4 +1,4 @@
-package rs.ac.uns.ftn.informatika.redditClone.model;
+package rs.ac.uns.ftn.informatika.redditClone.model.entity;
 
 import rs.ac.uns.ftn.informatika.redditClone.model.enumerations.ReactionType;
 
@@ -6,17 +6,19 @@ import javax.persistence.*;
 import java.time.LocalDate;
 
 @Entity
-public class Reaction {
+public class Report {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
-    @Column(name = "type",nullable = false)
-    private ReactionType type;
+    @Column(name = "reason",nullable = false)
+    private ReactionType reason;
     @Column(name = "date",nullable = false)
     private LocalDate timestamp;
     @ManyToOne(fetch = FetchType.EAGER)
-    @JoinColumn(name = "user_id")
+    @JoinColumn(name = "user_id",nullable = true)
     private User user;
+    @Column(name = "accepted", nullable = false)
+    private Boolean accepted;
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "post_id",nullable = true)
     private Post post;
@@ -32,12 +34,12 @@ public class Reaction {
         this.id = id;
     }
 
-    public ReactionType getType() {
-        return type;
+    public ReactionType getReason() {
+        return reason;
     }
 
-    public void setType(ReactionType type) {
-        this.type = type;
+    public void setReason(ReactionType reason) {
+        this.reason = reason;
     }
 
     public LocalDate getTimestamp() {
@@ -56,6 +58,14 @@ public class Reaction {
         this.user = user;
     }
 
+    public Boolean getAccepted() {
+        return accepted;
+    }
+
+    public void setAccepted(Boolean accepted) {
+        this.accepted = accepted;
+    }
+
     public Post getPost() {
         return post;
     }
@@ -71,50 +81,33 @@ public class Reaction {
     public void setComment(Comment comment) {
         this.comment = comment;
     }
-    public Reaction() {
-    }
-    public Reaction(User user, Post post) {
-        this.type = ReactionType.UPVOTE;
-        this.timestamp = LocalDate.now();
-        this.user = user;
-        this.post = post;
-    }
-    public Reaction(User user, Comment comment) {
-        this.type = ReactionType.UPVOTE;
-        this.timestamp = LocalDate.now();
-        this.user = user;
-        this.comment = comment;
+
+    public Report() {
     }
 
-    public Reaction(ReactionType type, LocalDate timestamp, User user, Post post, Comment comment) {
-        this.type = type;
-        this.timestamp = timestamp;
-        this.user = user;
-        this.post = post;
-        this.comment = comment;
-    }
-
-    public Reaction(ReactionType type, User user, Comment comment) {
-        this.type = type;
+    public Report(ReactionType reason, User user, Post post) {
+        this.reason = reason;
         this.timestamp = LocalDate.now();
         this.user = user;
-        this.comment = comment;
+        this.accepted = null;
+        this.post = post;
     }
-
-    public Reaction(ReactionType type, User user, Post post) {
-        this.type = type;
+    public Report(ReactionType reason, User user, Comment comment) {
+        this.reason = reason;
         this.timestamp = LocalDate.now();
         this.user = user;
-        this.post = post;
+        this.accepted = null;
+        this.comment = comment;
     }
 
     @Override
     public String toString() {
-        return "Reaction{" +
+        return "Report{" +
                 "id=" + id +
-                ", type=" + type +
+                ", reason=" + reason +
                 ", timestamp=" + timestamp +
                 ", user=" + user +
+                ", accepted=" + accepted +
                 ", post=" + post +
                 ", comment=" + comment +
                 '}';
