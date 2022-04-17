@@ -14,14 +14,13 @@ public class Comment {
     private LocalDate timestamp;
     @Column(name = "deleted", nullable = false)
     private Boolean isDeleted;
-    @ManyToOne(fetch = FetchType.EAGER)
+    @ManyToOne(cascade = CascadeType.ALL,fetch = FetchType.EAGER)
     @JoinColumn(name = "user_id")
     private User user;
-    @OneToOne(fetch = FetchType.EAGER)
-    @JoinColumn(name = "parentCommentId", nullable = true)
+    @ManyToOne(cascade = CascadeType.ALL,fetch = FetchType.EAGER)
+    @JoinColumn(name = "parentCommentId", referencedColumnName = "id",nullable = true)
     private Comment parentComment;
-
-    @ManyToOne(fetch = FetchType.EAGER)
+    @ManyToOne(cascade = CascadeType.ALL,fetch = FetchType.EAGER)
     @JoinColumn(name = "post_id",nullable = true)
     private Post post;
 //    @OneToMany(mappedBy = "comment",fetch = FetchType.LAZY,cascade = CascadeType.ALL)

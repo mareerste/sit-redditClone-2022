@@ -1,6 +1,6 @@
 package rs.ac.uns.ftn.informatika.redditClone.model.entity;
 
-import javax.persistence.Entity;
+import javax.persistence.*;
 import java.time.LocalDate;
 
 @Entity

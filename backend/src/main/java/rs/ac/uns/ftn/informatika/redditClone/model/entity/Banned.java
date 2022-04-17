@@ -1,5 +1,7 @@
 package rs.ac.uns.ftn.informatika.redditClone.model.entity;
 
+import org.springframework.format.annotation.DateTimeFormat;
+
 import javax.persistence.*;
 import java.time.LocalDate;
 

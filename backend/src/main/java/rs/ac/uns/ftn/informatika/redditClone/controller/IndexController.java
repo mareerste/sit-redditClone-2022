@@ -3,6 +3,7 @@ package rs.ac.uns.ftn.informatika.redditClone.controller;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import rs.ac.uns.ftn.informatika.redditClone.model.entity.Banned;
 import rs.ac.uns.ftn.informatika.redditClone.model.entity.Community;
@@ -11,6 +12,7 @@ import rs.ac.uns.ftn.informatika.redditClone.model.entity.User;
 import rs.ac.uns.ftn.informatika.redditClone.service.*;
 
 @Controller
+@RequestMapping(value = "/")
 public class IndexController {
     @Autowired
     private AdministratorService administratorService;
@@ -47,28 +49,32 @@ public class IndexController {
 
 //        Community community = communityService.findOne(1);
 //        System.out.println(community);
-        System.out.println(userService.findAll());
-        System.out.println(moderatorService.findAll());
-        System.out.println(administratorService.findAll());
-        System.out.println(communityService.findAll());
-        System.out.println(postService.findAll());
-        System.out.println(flairService.findAll());
-        System.out.println(commentService.findAll());
-        System.out.println(commentService.findByPost(postService.findOne(1)));
-        System.out.println(reactionService.findAll());
+//        System.out.println(userService.findAll());
+//        System.out.println(moderatorService.findAll());
+//        System.out.println(administratorService.findAll());
+//        System.out.println(communityService.findAll());
+//        System.out.println(postService.findAll());
+//        System.out.println(flairService.findAll());
+//        System.out.println(commentService.findAll());
+//        System.out.println(commentService.findByPost(postService.findOne(1)));
+//        System.out.println(reactionService.findAll());
+//
+//        System.out.println("PROBA ZA BANOVANJE");
+//        Moderator moderator1 = moderatorService.findOne("mirko123");
+//        User user = userService.findOne("marko123");
+//        Community community = communityService.findOne(1);
+//        System.out.println("Banovanje usera");
+//        Banned banned = new Banned(moderator1,community,user);
+//        bannedService.save(banned);
+//        System.out.println("User banovan");
+//        System.out.println(bannedService.findAll());
+//        System.out.println("Unban");
+//        bannedService.unbanUser(moderator1,community,user);
+//        System.out.println(bannedService.findAll());
 
-        System.out.println("PROBA ZA BANOVANJE");
-        Moderator moderator1 = moderatorService.findOne("mirko123");
-        User user = userService.findOne("marko123");
-        Community community = communityService.findOne(1);
-        System.out.println("Banovanje usera");
-        Banned banned = new Banned(moderator1,community,user);
-        bannedService.save(banned);
-        System.out.println("User banovan");
-        System.out.println(bannedService.findAll());
-        System.out.println("Unban");
-        bannedService.unbanUser(moderator1,community,user);
-        System.out.println(bannedService.findAll());
+        User user1 = userService.findOne("marko123");
+        System.out.println(user1);
+
         return "<h2>Hello World</h2>";
     }
 }

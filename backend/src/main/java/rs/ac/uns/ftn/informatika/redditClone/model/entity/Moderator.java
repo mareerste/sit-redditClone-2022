@@ -1,10 +1,12 @@
 package rs.ac.uns.ftn.informatika.redditClone.model.entity;
 
 import javax.persistence.*;
+import java.lang.annotation.Inherited;
 import java.time.LocalDate;
 import java.util.Set;
 
 @Entity
+//@DiscriminatorValue("moderator")
 public class Moderator extends User{
 //    @ManyToMany(mappedBy = "moderators",fetch = FetchType.EAGER)
 //    private Set<Community> communities = new HashSet<>();
