@@ -2,7 +2,6 @@ package rs.ac.uns.ftn.informatika.redditClone.model.dto;
 
 import rs.ac.uns.ftn.informatika.redditClone.model.entity.Comment;
 
-import javax.persistence.*;
 import java.io.Serializable;
 import java.time.LocalDate;
 
@@ -12,7 +11,7 @@ public class CommentDTO implements Serializable {
     private String text;
     private LocalDate timestamp;
     private Boolean isDeleted;
-    private UserDTO user;
+    private UserCreateDTO user;
     private CommentDTO parentComment;
     private PostDTO post;
 
@@ -46,10 +45,10 @@ public class CommentDTO implements Serializable {
     public void setPost(PostDTO post) {
         this.post = post;
     }
-    public UserDTO getUser() {
+    public UserCreateDTO getUser() {
         return user;
     }
-    public void setUser(UserDTO user) {
+    public void setUser(UserCreateDTO user) {
         this.user = user;
     }
     public CommentDTO getParentComment() {
@@ -62,7 +61,7 @@ public class CommentDTO implements Serializable {
     public CommentDTO() {
     }
 
-    public CommentDTO(Integer id, String text, LocalDate timestamp, Boolean isDeleted, UserDTO user, CommentDTO parentComment, PostDTO post) {
+    public CommentDTO(Integer id, String text, LocalDate timestamp, Boolean isDeleted, UserCreateDTO user, CommentDTO parentComment, PostDTO post) {
         this.id = id;
         this.text = text;
         this.timestamp = timestamp;
@@ -71,7 +70,7 @@ public class CommentDTO implements Serializable {
         this.parentComment = parentComment;
         this.post = post;
     }
-    public CommentDTO(Comment comment){this(comment.getId(), comment.getText(), comment.getTimestamp(),comment.getDeleted(), new UserDTO(comment.getUser()),(comment.getParentComment() != null && comment.getParentComment().getId() != null) ? new CommentDTO(comment.getParentComment()) : new CommentDTO(),new PostDTO(comment.getPost()));}
+    public CommentDTO(Comment comment){this(comment.getId(), comment.getText(), comment.getTimestamp(),comment.getDeleted(), new UserCreateDTO(comment.getUser()),(comment.getParentComment() != null && comment.getParentComment().getId() != null) ? new CommentDTO(comment.getParentComment()) : new CommentDTO(),new PostDTO(comment.getPost()));}
 
     @Override
     public String toString() {

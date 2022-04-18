@@ -1,16 +1,14 @@
 package rs.ac.uns.ftn.informatika.redditClone.model.dto;
 
-import rs.ac.uns.ftn.informatika.redditClone.model.entity.Comment;
 import rs.ac.uns.ftn.informatika.redditClone.model.entity.Community;
+import rs.ac.uns.ftn.informatika.redditClone.model.entity.Flair;
 import rs.ac.uns.ftn.informatika.redditClone.model.entity.Moderator;
 
-import javax.persistence.*;
 import java.io.Serializable;
-import java.time.LocalDate;
 import java.util.HashSet;
 import java.util.Set;
 
-public class CommunityDTO implements Serializable {
+public class CommunityWithFlairsDTO implements Serializable {
     private Integer id;
     private String name;
     private String description;
@@ -18,6 +16,7 @@ public class CommunityDTO implements Serializable {
     private Set<String> rules = new HashSet<>();
     private Boolean isSuspended;
     private String suspendedReason;
+    private Set<Flair> flairs = new HashSet<>();
     private Set<Moderator> moderators = new HashSet<>();
 
     public Integer getId() {
@@ -68,11 +67,16 @@ public class CommunityDTO implements Serializable {
     public void setModerators(Set<Moderator> moderators) {
         this.moderators = moderators;
     }
-
-    public CommunityDTO() {
+    public Set<Flair> getFlairs() {
+        return flairs;
+    }
+    public void setFlairs(Set<Flair> flairs) {
+        this.flairs = flairs;
+    }
+    public CommunityWithFlairsDTO() {
     }
 
-    public CommunityDTO(Integer id, String name, String description, String creationDate, Set<String> rules, Boolean isSuspended, String suspendedReason, Set<Moderator> moderators) {
+    public CommunityWithFlairsDTO(Integer id, String name, String description, String creationDate, Set<String> rules, Boolean isSuspended, String suspendedReason, Set<Moderator> moderators, Set<Flair> flairs) {
         this.id = id;
         this.name = name;
         this.description = description;
@@ -81,8 +85,9 @@ public class CommunityDTO implements Serializable {
         this.isSuspended = isSuspended;
         this.suspendedReason = suspendedReason;
         this.moderators = moderators;
+        this.flairs = flairs;
     }
-    public CommunityDTO (Community community){this(community.getId(), community.getName(), community.getDescription(), community.getCreationDate(), community.getRules(),community.getSuspended(), community.getSuspendedReason(), community.getModerators());}
+    public CommunityWithFlairsDTO(Community community){this(community.getId(), community.getName(), community.getDescription(), community.getCreationDate(), community.getRules(),community.getSuspended(), community.getSuspendedReason(), community.getModerators(), community.getFlairs());}
     @Override
     public String toString() {
         return "Community{" +

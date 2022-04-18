@@ -2,12 +2,11 @@ package rs.ac.uns.ftn.informatika.redditClone.model.dto;
 
 import rs.ac.uns.ftn.informatika.redditClone.model.entity.Administrator;
 
-import javax.persistence.Entity;
 import java.io.Serializable;
 import java.time.LocalDate;
 
 
-public class AdministratorDTO extends UserDTO implements Serializable {
+public class AdministratorDTO extends UserCreateDTO implements Serializable {
 
     public AdministratorDTO() {
     }

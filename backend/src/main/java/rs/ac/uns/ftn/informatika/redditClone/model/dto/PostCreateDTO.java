@@ -5,7 +5,7 @@ import rs.ac.uns.ftn.informatika.redditClone.model.entity.Post;
 import java.io.Serializable;
 import java.time.LocalDate;
 
-public class PostDTO implements Serializable {
+public class PostCreateDTO implements Serializable {
     private Integer id;
     private String title;
     private String text;
@@ -14,6 +14,7 @@ public class PostDTO implements Serializable {
     private Boolean isDeleted;
     private UserCreateDTO user;
     private FlairDTO flair;
+    private CommunityDTO community;
 
     public Integer getId() {
         return id;
@@ -63,10 +64,16 @@ public class PostDTO implements Serializable {
     public void setDeleted(Boolean deleted) {
         isDeleted = deleted;
     }
-    public void setFlair(FlairDTO flair) {this.flair = flair;}
-    public PostDTO() {
+    public CommunityDTO getCommunity() {
+        return community;
     }
-    public PostDTO(Integer id, String title, String text, LocalDate creationDate, String imagePath, Boolean isDeleted, UserCreateDTO user, FlairDTO flair) {
+    public void setCommunity(CommunityDTO community) {
+        this.community = community;
+    }
+    public void setFlair(FlairDTO flair) {this.flair = flair;}
+    public PostCreateDTO() {
+    }
+    public PostCreateDTO(Integer id, String title, String text, LocalDate creationDate, String imagePath, Boolean isDeleted, UserCreateDTO user, FlairDTO flair, CommunityDTO community) {
         this.id = id;
         this.title = title;
         this.text = text;
@@ -75,8 +82,9 @@ public class PostDTO implements Serializable {
         this.isDeleted = isDeleted;
         this.user = user;
         this.flair = flair;
+        this.community = community;
     }
-    public PostDTO(Post post){this(post.getId(), post.getTitle(), post.getText(), post.getCreationDate(), post.getImagePath(), post.getDeleted(), new UserCreateDTO(post.getUser()),new FlairDTO(post.getFlair()));}
+    public PostCreateDTO(Post post){this(post.getId(), post.getTitle(), post.getText(), post.getCreationDate(), post.getImagePath(), post.getDeleted(), new UserCreateDTO(post.getUser()),new FlairDTO(post.getFlair()), new CommunityDTO(post.getCommunity()));}
 
     @Override
     public String toString() {

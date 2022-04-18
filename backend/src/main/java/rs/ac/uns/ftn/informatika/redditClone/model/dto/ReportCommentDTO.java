@@ -1,21 +1,18 @@
 package rs.ac.uns.ftn.informatika.redditClone.model.dto;
 
-import rs.ac.uns.ftn.informatika.redditClone.model.entity.Reaction;
 import rs.ac.uns.ftn.informatika.redditClone.model.entity.Report;
 import rs.ac.uns.ftn.informatika.redditClone.model.enumerations.ReactionType;
 
-import javax.persistence.*;
 import java.io.Serializable;
 import java.time.LocalDate;
 
-public class ReportDTO implements Serializable {
+public class ReportCommentDTO implements Serializable {
 
     private Integer id;
     private ReactionType reason;
     private LocalDate timestamp;
-    private UserDTO user;
+    private UserCreateDTO user;
     private Boolean accepted;
-    private PostDTO post;
     private CommentDTO comment;
 
     public Integer getId() {
@@ -36,10 +33,10 @@ public class ReportDTO implements Serializable {
     public void setTimestamp(LocalDate timestamp) {
         this.timestamp = timestamp;
     }
-    public UserDTO getUser() {
+    public UserCreateDTO getUser() {
         return user;
     }
-    public void setUser(UserDTO user) {
+    public void setUser(UserCreateDTO user) {
         this.user = user;
     }
     public Boolean getAccepted() {
@@ -48,12 +45,6 @@ public class ReportDTO implements Serializable {
     public void setAccepted(Boolean accepted) {
         this.accepted = accepted;
     }
-    public PostDTO getPost() {
-        return post;
-    }
-    public void setPost(PostDTO post) {
-        this.post = post;
-    }
     public CommentDTO getComment() {
         return comment;
     }
@@ -61,19 +52,18 @@ public class ReportDTO implements Serializable {
         this.comment = comment;
     }
 
-    public ReportDTO() {
+    public ReportCommentDTO() {
     }
 
-    public ReportDTO(Integer id, ReactionType reason, LocalDate timestamp, UserDTO user, Boolean accepted, PostDTO post, CommentDTO comment) {
+    public ReportCommentDTO(Integer id, ReactionType reason, LocalDate timestamp, UserCreateDTO user, Boolean accepted, CommentDTO comment) {
         this.id = id;
         this.reason = reason;
         this.timestamp = timestamp;
         this.user = user;
         this.accepted = accepted;
-        this.post = post;
         this.comment = comment;
     }
-    public ReportDTO (Report report){this(report.getId(), report.getReason(),report.getTimestamp(),new UserDTO(report.getUser()),report.getAccepted(),new PostDTO(report.getPost()), new CommentDTO(report.getComment()));}
+    public ReportCommentDTO(Report report){this(report.getId(), report.getReason(),report.getTimestamp(),new UserCreateDTO(report.getUser()),report.getAccepted(), new CommentDTO(report.getComment()));}
 
     @Override
     public String toString() {
@@ -83,7 +73,6 @@ public class ReportDTO implements Serializable {
                 ", timestamp=" + timestamp +
                 ", user=" + user +
                 ", accepted=" + accepted +
-                ", post=" + post +
                 ", comment=" + comment +
                 '}';
     }

@@ -87,8 +87,8 @@ public class Post {
         return flair;
     }
 
-    public void setFlairs(Flair flairs) {
-        this.flair = flairs;
+    public void setFlair(Flair flair) {
+        this.flair = flair;
     }
 
     public Boolean getDeleted() {

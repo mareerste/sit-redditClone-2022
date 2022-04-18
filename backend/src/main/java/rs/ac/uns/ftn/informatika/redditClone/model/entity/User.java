@@ -126,6 +126,12 @@ public class User {
         this.description = description;
     }
 
+    public User(String username, String email, String description) {
+        this.username = username;
+        this.email = email;
+        this.description = description;
+    }
+
     public User(String username, String password, String email, String avatar, String description) {
         this.username = username;
         this.password = password;

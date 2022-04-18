@@ -1,6 +1,8 @@
 package rs.ac.uns.ftn.informatika.redditClone.service.implementation;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import rs.ac.uns.ftn.informatika.redditClone.model.entity.Community;
 import rs.ac.uns.ftn.informatika.redditClone.model.entity.Post;
@@ -17,6 +19,10 @@ public class PostServiceImpl implements PostService {
     public Post findOne(Integer id){return postRepository.findById(id).orElseGet(null);}
     @Override
     public List<Post> findAll(){return postRepository.findAll();}
+    @Override
+    public Page<Post> findAll(Pageable pageable) {
+        return postRepository.findAll(pageable);
+    }
     @Override
     public List<Post> findAllforCommunity(Community community){return postRepository.findByCommunity(community);}
     @Override
