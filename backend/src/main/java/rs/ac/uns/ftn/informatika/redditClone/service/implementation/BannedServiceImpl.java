@@ -24,9 +24,15 @@ public class BannedServiceImpl implements BannedService {
         return bannedRepository.findAll();
     }
     @Override
-    public Banned findByUser(User user) {
+    public List<Banned> findByUser(User user) {
         return bannedRepository.findByUser(user);
     }
+
+    @Override
+    public List<Banned> findByCommunity(Community community) {
+        return bannedRepository.findByCommunity(community);
+    }
+
     @Override
     public Banned findByUserAndCommunity(User user, Community community) {
         return bannedRepository.findByUserAndCommunity(user, community);

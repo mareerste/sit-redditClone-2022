@@ -10,4 +10,5 @@ public interface ModeratorService {
     Moderator save(Moderator moderator);
     void delete(String username);
     Moderator update(Moderator moderator);
+    void setModerator(String username);
 }

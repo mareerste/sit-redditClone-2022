@@ -13,13 +13,13 @@ public class Banned {
     @Column(name = "date")
     private LocalDate timestamp;
     @ManyToOne
-    @JoinColumn(name = "moderator_id",referencedColumnName = "username")
+    @JoinColumn(name = "moderator_id",referencedColumnName = "username", nullable = true)
     private Moderator moderator;
     @ManyToOne
-    @JoinColumn(name = "community_id",referencedColumnName = "id")
+    @JoinColumn(name = "community_id",referencedColumnName = "id", nullable = true)
     private Community community;
     @ManyToOne
-    @JoinColumn(name = "user_id",referencedColumnName = "username")
+    @JoinColumn(name = "user_id",referencedColumnName = "username", nullable = true)
     private User user;
 
     public Integer getId() {

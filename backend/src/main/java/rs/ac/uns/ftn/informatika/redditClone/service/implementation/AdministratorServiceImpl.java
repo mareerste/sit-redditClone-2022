@@ -16,4 +16,9 @@ public class AdministratorServiceImpl implements AdministratorService {
     public Administrator findOne(String username){return administratorRepository.findById(username).orElseGet(null);}
     @Override
     public List<Administrator>findAll(){return  administratorRepository.findAll();}
+
+    @Override
+    public Administrator save(Administrator administrator) {
+        return administratorRepository.save(administrator);
+    }
 }

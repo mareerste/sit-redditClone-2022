@@ -100,6 +100,16 @@ public class Report {
         this.comment = comment;
     }
 
+    public Report(Integer id, ReactionType reason, LocalDate timestamp, User user, Boolean accepted, Post post, Comment commen) {
+        this.id = id;
+        this.reason = reason;
+        this.timestamp = timestamp;
+        this.user = user;
+        this.accepted = accepted;
+        this.post = post;
+        this.comment = comment;
+    }
+
     @Override
     public String toString() {
         return "Report{" +

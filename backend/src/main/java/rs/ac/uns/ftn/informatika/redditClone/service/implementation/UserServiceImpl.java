@@ -18,9 +18,17 @@ public class UserServiceImpl implements UserService {
     public List<User> findAll(){return userRepository.findAll();}
     @Override
     public User save(User user){return userRepository.save(user);}
+
     @Override
-    public void delete(User user){userRepository.delete(user);}
+    public void delete(String username) {
+        userRepository.deleteById(username);
+    }
+
     @Override
     public User login(String username, String password){return userRepository.findByUsernameAndPassword(username, password);}
+    @Override
+    public User findByEmail(String email) {
+        return userRepository.findByEmail(email);
+    }
 
 }

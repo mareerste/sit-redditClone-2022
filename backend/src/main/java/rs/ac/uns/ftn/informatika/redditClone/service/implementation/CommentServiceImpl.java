@@ -21,7 +21,7 @@ public class CommentServiceImpl implements CommentService {
     @Override
     public List<Comment>findByPost(Post post){return commentRepository.findByPost(post);}
     @Override
-    public List<Comment>findByParComments(Comment comment){return commentRepository.findByParentComment(comment);}
+    public List<Comment>findByParentComment(Comment comment){return commentRepository.findByParentComment(comment);}
     @Override
     public Comment save(Comment comment){return commentRepository.save(comment);}
     @Override

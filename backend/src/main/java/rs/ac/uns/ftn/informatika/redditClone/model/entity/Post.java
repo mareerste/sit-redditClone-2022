@@ -23,8 +23,8 @@ public class Post {
 //    private Set<Comment> comments = new HashSet<>();
 //    @OneToMany(mappedBy = "post",fetch = FetchType.LAZY,cascade = CascadeType.ALL)
 //    private Set<Reaction> reactions = new HashSet<>();
-    @ManyToOne(fetch = FetchType.EAGER)
-    @JoinColumn(name = "user_id")
+    @ManyToOne(fetch = FetchType.EAGER,cascade = CascadeType.ALL)
+    @JoinColumn(name = "user_id", nullable = true)
     private User user;
 //    @OneToMany(mappedBy = "post",fetch = FetchType.LAZY,cascade = CascadeType.ALL)
 //    private Set<Report> reports = new HashSet<>();
@@ -32,7 +32,7 @@ public class Post {
     @JoinColumn(name = "flair_id",nullable = true)
     private Flair flair;
     @ManyToOne(cascade = CascadeType.ALL,fetch = FetchType.EAGER)
-    @JoinColumn(name = "community_id")
+    @JoinColumn(name = "community_id", nullable = true)
     private Community community;
 
     public Integer getId() {

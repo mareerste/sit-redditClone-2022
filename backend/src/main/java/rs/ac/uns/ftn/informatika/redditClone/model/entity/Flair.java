@@ -12,7 +12,7 @@ public class Flair {
 //    @ManyToOne(fetch = FetchType.EAGER)
 //    @JoinColumn(name = "post_id",nullable = true)
 //    private Post post;
-    @ManyToOne(fetch = FetchType.EAGER)
+    @ManyToOne(fetch = FetchType.EAGER,cascade = CascadeType.ALL)
     @JoinColumn(name = "community_id",nullable = true)
     private Community community;
 

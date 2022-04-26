@@ -70,7 +70,8 @@ public class CommentDTO implements Serializable {
         this.parentComment = parentComment;
         this.post = post;
     }
-    public CommentDTO(Comment comment){this(comment.getId(), comment.getText(), comment.getTimestamp(),comment.getDeleted(), new UserCreateDTO(comment.getUser()),(comment.getParentComment() != null && comment.getParentComment().getId() != null) ? new CommentDTO(comment.getParentComment()) : new CommentDTO(),new PostDTO(comment.getPost()));}
+    //public CommentDTO(Comment comment){this(comment.getId(), comment.getText(), comment.getTimestamp(),comment.getDeleted(), new UserCreateDTO(comment.getUser()),(comment.getParentComment() != null && comment.getParentComment().getId() != null) ? new CommentDTO(comment.getParentComment()) : new CommentDTO(),new PostDTO(comment.getPost()));}
+    public CommentDTO(Comment comment){this(comment.getId(), comment.getText(), comment.getTimestamp(),comment.getDeleted(), new UserCreateDTO(comment.getUser()),(comment.getParentComment() != null && comment.getParentComment().getId() != null) ? new CommentDTO(comment.getParentComment()) : null,(comment.getPost() != null && comment.getPost().getId() != null) ? new PostDTO(comment.getPost()) : null);}
 
     @Override
     public String toString() {

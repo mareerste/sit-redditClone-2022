@@ -10,7 +10,8 @@ import java.util.List;
 public interface BannedService {
     Banned findOne(Integer id);
     List<Banned> findAll();
-    Banned findByUser(User user) ;
+    List<Banned> findByUser(User user);
+    List<Banned> findByCommunity(Community community);
     Banned findByUserAndCommunity(User user, Community community);
     Banned save(Banned banned);
     void delete(Banned banned);

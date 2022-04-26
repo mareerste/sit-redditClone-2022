@@ -9,7 +9,7 @@ import java.util.Set;
 //@Inheritance(strategy = InheritanceType.SINGLE_TABLE)
 //@DiscriminatorColumn(name = "DTYPE", discriminatorType = DiscriminatorType.STRING,length = 31)
 //@DiscriminatorValue("user")
-@Table(name = "user")
+@Inheritance(strategy = InheritanceType.TABLE_PER_CLASS)
 public class User {
 
     @Id
@@ -25,6 +25,8 @@ public class User {
     protected LocalDate registrationDate;
     @Column(name = "description", nullable = false)
     protected String description;
+    @Column(name = "deleted", nullable = false)
+    protected Boolean deleted = false;
 //    @OneToMany(mappedBy = "user", fetch = FetchType.LAZY,cascade = CascadeType.ALL)
 //    protected Set<Comment> comments = new HashSet<>();
 //    @OneToMany(mappedBy = "user", fetch = FetchType.LAZY,cascade = CascadeType.ALL)
@@ -82,6 +84,14 @@ public class User {
         this.description = description;
     }
 
+    public Boolean getDeleted() {
+        return deleted;
+    }
+
+    public void setDeleted(Boolean deleted) {
+        this.deleted = deleted;
+    }
+
     public User() {
     }
 
@@ -117,13 +127,14 @@ public class User {
 //        this.bannedSet = bannedSet;
 //    }
 
-    public User(String username, String password, String email, String avatar, LocalDate registrationDate, String description) {
+    public User(String username, String password, String email, String avatar, LocalDate registrationDate, String description, Boolean deleted) {
         this.username = username;
         this.password = password;
         this.email = email;
         this.avatar = avatar;
         this.registrationDate = registrationDate;
         this.description = description;
+        this.deleted = deleted;
     }
 
     public User(String username, String email, String description) {
@@ -139,6 +150,7 @@ public class User {
         this.avatar = avatar;
         this.registrationDate = LocalDate.now();
         this.description = description;
+        this.deleted = false;
     }
     public User(String username, String password, String email, String description) {
         this.username = username;

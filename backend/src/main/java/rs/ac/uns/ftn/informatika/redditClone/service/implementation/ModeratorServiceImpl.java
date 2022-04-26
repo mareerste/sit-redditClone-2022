@@ -22,4 +22,9 @@ public class ModeratorServiceImpl implements ModeratorService {
     public void delete(String username){moderatorRepository.deleteById(username);}
     @Override
     public Moderator update(Moderator moderator){return moderatorRepository.save(moderator);}
+
+    @Override
+    public void setModerator(String username) {
+        moderatorRepository.updateToModerator(username);
+    }
 }

@@ -6,6 +6,8 @@ import java.time.LocalDate;
 import java.util.Set;
 
 @Entity
+//@Table(name = "ModeratorsEntity")
+//@Inheritance(strategy = InheritanceType.SINGLE_TABLE)
 //@DiscriminatorValue("moderator")
 public class Moderator extends User{
 //    @ManyToMany(mappedBy = "moderators",fetch = FetchType.EAGER)
@@ -24,8 +26,8 @@ public class Moderator extends User{
     public Moderator() {
     }
 
-    public Moderator(String username, String password, String email, String avatar, LocalDate registrationDate, String description, Set<Community> communities) {
-        super(username, password, email, avatar, registrationDate, description);
+    public Moderator(String username, String password, String email, String avatar, LocalDate registrationDate, String description, Boolean deleted) {
+        super(username, password, email, avatar, registrationDate, description, deleted);
 //        this.communities = communities;
     }
 
