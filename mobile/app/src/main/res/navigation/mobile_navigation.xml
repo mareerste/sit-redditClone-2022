@@ -12,14 +12,19 @@
         tools:layout="@layout/fragment_home" />
 
     <fragment
-        android:id="@+id/nav_gallery"
-        android:name="com.example.redditcloneapp.ui.gallery.GalleryFragment"
+        android:id="@+id/nav_profile"
+        android:name="com.example.redditcloneapp.ui.profile.ProfileFragment"
         android:label="@string/menu_profile"
-        tools:layout="@layout/fragment_gallery" />
+        tools:layout="@layout/fragment_profile" />
 
     <fragment
-        android:id="@+id/nav_slideshow"
-        android:name="com.example.redditcloneapp.ui.slideshow.SlideshowFragment"
+        android:id="@+id/nav_community"
+        android:name="com.example.redditcloneapp.ui.community.CommunityFragment"
         android:label="@string/menu_community"
-        tools:layout="@layout/fragment_slideshow" />
+        tools:layout="@layout/fragment_community" />
+    <fragment
+        android:id="@+id/nav_report"
+        android:name="com.example.redditcloneapp.ui.report.ReportFragment"
+        android:label="@string/reddit_title"
+        tools:layout="@layout/fragment_report" />
 </navigation>

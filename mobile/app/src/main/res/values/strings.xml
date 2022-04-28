@@ -17,5 +17,12 @@
     <string name="sign_up">Sign Up</string>
     <string name="nav_profile_name">Profile</string>
     <string name="nav_description">User description</string>
+    <string name="username">Username</string>
+    <string name="password">Password</string>
+    <string name="email">Email addr</string>
+    <string name="description">Description</string>
+    <string name="avatar">Avatar</string>
+    <string name="upload_avatar">Upload image</string>
+    <string name="create_new_acc">Create a new account?</string>
 
 </resources>

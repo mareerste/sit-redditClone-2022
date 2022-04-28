@@ -13,29 +13,14 @@
             android:icon="@drawable/ic_profile"
             android:title="@string/menu_profile" />
         <item
-            android:id="@+id/nav_slideshow"
+            android:id="@+id/nav_community"
             android:icon="@drawable/ic_menu_slideshow"
             android:title="@string/menu_community"
             />
         <item
-            android:id="@+id/nav_reports"
+            android:id="@+id/nav_report"
             android:icon="@drawable/ic_baseline_report_24"
             android:title="@string/reports"
-            />
-        <item
-            android:id="@+id/sign_in"
-            android:icon="@drawable/ic_baseline_sign_in"
-            android:title="@string/sign_in"
-            />
-        <item
-            android:id="@+id/sign_up"
-            android:icon="@drawable/ic_baseline_sign_up"
-            android:title="@string/sign_up"
-            />
-        <item
-            android:id="@+id/sign_out"
-            android:icon="@drawable/ic_baseline_sign_out"
-            android:title="@string/sign_out"
             />
 
 
