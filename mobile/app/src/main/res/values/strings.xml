@@ -24,5 +24,6 @@
     <string name="avatar">Avatar</string>
     <string name="upload_avatar">Upload image</string>
     <string name="create_new_acc">Create a new account?</string>
+    <string name="signInError">Username or password is wrong, try again..</string>
 
 </resources>
