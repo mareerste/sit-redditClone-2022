@@ -6,6 +6,7 @@ import androidx.annotation.RequiresApi;
 
 import java.io.Serializable;
 import java.time.LocalDate;
+import java.util.List;
 import java.util.Set;
 
 public class Comment implements Serializable {
@@ -14,8 +15,8 @@ public class Comment implements Serializable {
     private LocalDate timestamp;
     private Boolean isDeleted;
     private User user;
-    private Set<Comment> childComments;
-    private Set<Reaction> reactions;
+    private List<Comment> childComments;
+    private List<Reaction> reactions;
 
     public Integer getId() {
         return id;
@@ -57,23 +58,23 @@ public class Comment implements Serializable {
         this.user = user;
     }
 
-    public Set<Comment> getChildComments() {
+    public List<Comment> getChildComments() {
         return childComments;
     }
 
-    public Set<Reaction> getReactions() {
+    public List<Reaction> getReactions() {
         return reactions;
     }
 
-    public void setReactions(Set<Reaction> reactions) {
+    public void setReactions(List<Reaction> reactions) {
         this.reactions = reactions;
     }
 
-    public void setChildComments(Set<Comment> childComments) {
+    public void setChildComments(List<Comment> childComments) {
         this.childComments = childComments;
     }
 
-    public Comment(Integer id, String text, LocalDate timestamp, Boolean isDeleted, User user, Set<Comment> childComments, Set<Reaction> reactions) {
+    public Comment(Integer id, String text, LocalDate timestamp, Boolean isDeleted, User user, List<Comment> childComments, List<Reaction> reactions) {
         this.id = id;
         this.text = text;
         this.timestamp = timestamp;
@@ -83,7 +84,7 @@ public class Comment implements Serializable {
         this.reactions = reactions;
     }
     @RequiresApi(api = Build.VERSION_CODES.O)
-    public Comment(Integer id, String text, User user, Set<Comment> childComments, Set<Reaction> reactions) {
+    public Comment(Integer id, String text, User user, List<Comment> childComments, List<Reaction> reactions) {
         this.id = id;
         this.text = text;
         this.timestamp = LocalDate.now();

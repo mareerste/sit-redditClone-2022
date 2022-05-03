@@ -46,8 +46,7 @@ public class MainActivity extends AppCompatActivity {
 
         setSupportActionBar(binding.appBarMain.toolbar);
 
-        drawer = binding.drawerLayout;
-        drawer.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED);
+        DrawerLayout drawer = findViewById(R.id.drawer_layout);
 
         navigationView = binding.navView;
         View hw = navigationView.getHeaderView(0);

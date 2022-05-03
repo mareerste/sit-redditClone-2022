@@ -4,9 +4,11 @@ import android.os.Build;
 
 import androidx.annotation.RequiresApi;
 
+import com.example.redditcloneapp.model.enums.ReactionType;
+
 import java.io.Serializable;
 import java.time.LocalDate;
-import java.util.Set;
+import java.util.ArrayList;
 
 public class Post implements Serializable {
     private Integer id;
@@ -17,8 +19,9 @@ public class Post implements Serializable {
     private Boolean isDeleted;
     private User user;
     private Flair flair;
-    private Set<Comment> comments;
-    private Set<Reaction> reactions;
+    private ArrayList<Comment> comments;
+    private ArrayList<Reaction> reactions;
+    private Community community;
 
     public Integer getId() {
         return id;
@@ -84,20 +87,28 @@ public class Post implements Serializable {
         this.flair = flair;
     }
 
-    public Set<Comment> getComments() {
+    public ArrayList<Comment> getComments() {
         return comments;
     }
 
-    public void setComments(Set<Comment> comments) {
+    public void setComments(ArrayList<Comment> comments) {
         this.comments = comments;
     }
 
-    public Set<Reaction> getReactions() {
+    public ArrayList<Reaction> getReactions() {
         return reactions;
     }
 
-    public void setReactions(Set<Reaction> reactions) {
+    public void setReactions(ArrayList<Reaction> reactions) {
         this.reactions = reactions;
+    }
+
+    public Community getCommunity() {
+        return community;
+    }
+
+    public void setCommunity(Community community) {
+        this.community = community;
     }
 
     public Post(Integer id, String title, String text, LocalDate creationDate, String imagePath, Boolean isDeleted, User user, Flair flair) {
@@ -111,7 +122,7 @@ public class Post implements Serializable {
         this.flair = flair;
     }
     @RequiresApi(api = Build.VERSION_CODES.O)
-    public Post(Integer id, String title, String text, User user, Flair flair, Set<Comment> comments, Set<Reaction> reactions) {
+    public Post(Integer id, String title, String text, User user, Flair flair, ArrayList<Comment> comments, ArrayList<Reaction> reactions, Community community) {
         this.id = id;
         this.title = title;
         this.text = text;
@@ -121,6 +132,18 @@ public class Post implements Serializable {
         this.flair = flair;
         this.comments = comments;
         this.reactions = reactions;
+        this.community = community;
+    }
+
+    public String getPostReaction(){
+        int vote = 0;
+        for (Reaction r:this.reactions) {
+            if(r.getType() == ReactionType.UPVOTE)
+                vote++;
+            else
+                vote--;
+        }
+        return String.valueOf(vote);
     }
 
     @Override

@@ -38,8 +38,6 @@ public class SignInActivity extends AppCompatActivity {
                 String passwordText = passwordTW.getText().toString();
                 User user = Mokap.login(usernameText,passwordText);
 
-                Toast toast = Toast.makeText(getApplicationContext(), usernameText + "pw: " + passwordText + " " + user, Toast.LENGTH_SHORT);
-                toast.show();
                 if (user != null) {
                     Intent intent = new Intent(SignInActivity.this, MainActivity.class);
                     intent.putExtra("user", (Serializable) user);

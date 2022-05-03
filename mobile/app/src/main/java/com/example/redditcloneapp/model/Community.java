@@ -6,6 +6,7 @@ import androidx.annotation.RequiresApi;
 
 import java.io.Serializable;
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -15,12 +16,11 @@ public class Community implements Serializable {
     private String name;
     private String description;
     private LocalDate creationDate;
-    private Set<String> rules = new HashSet<>();
+    private ArrayList<String> rules = new ArrayList<>();
     private Boolean isSuspended;
     private String suspendedReason;
-    private Set<Flair> flairs = new HashSet<>();
-    private Set<Post> posts = new HashSet<>();
-    private Set<Moderator> moderators = new HashSet<>();
+    private ArrayList<Flair> flairs = new ArrayList<>();
+    private ArrayList<Moderator> moderators = new ArrayList<>();
 
     public Integer getId() {
         return id;
@@ -54,11 +54,11 @@ public class Community implements Serializable {
         this.creationDate = creationDate;
     }
 
-    public Set<String> getRules() {
+    public ArrayList<String> getRules() {
         return rules;
     }
 
-    public void setRules(Set<String> rules) {
+    public void setRules(ArrayList<String> rules) {
         this.rules = rules;
     }
 
@@ -78,31 +78,23 @@ public class Community implements Serializable {
         this.suspendedReason = suspendedReason;
     }
 
-    public Set<Flair> getFlairs() {
+    public ArrayList<Flair> getFlairs() {
         return flairs;
     }
 
-    public void setFlairs(Set<Flair> flairs) {
+    public void setFlairs(ArrayList<Flair> flairs) {
         this.flairs = flairs;
     }
 
-    public Set<Post> getPosts() {
-        return posts;
-    }
-
-    public void setPosts(Set<Post> posts) {
-        this.posts = posts;
-    }
-
-    public Set<Moderator> getModerators() {
+    public ArrayList<Moderator> getModerators() {
         return moderators;
     }
 
-    public void setModerators(Set<Moderator> moderators) {
+    public void setModerators(ArrayList<Moderator> moderators) {
         this.moderators = moderators;
     }
 
-    public Community(Integer id, String name, String description, LocalDate creationDate, Set<String> rules, Boolean isSuspended, String suspendedReason, Set<Flair> flairs, Set<Post> posts, Set<Moderator> moderators) {
+    public Community(Integer id, String name, String description, LocalDate creationDate, ArrayList<String> rules, Boolean isSuspended, String suspendedReason, ArrayList<Flair> flairs, ArrayList<Moderator> moderators) {
         this.id = id;
         this.name = name;
         this.description = description;
@@ -111,11 +103,10 @@ public class Community implements Serializable {
         this.isSuspended = isSuspended;
         this.suspendedReason = suspendedReason;
         this.flairs = flairs;
-        this.posts = posts;
         this.moderators = moderators;
     }
     @RequiresApi(api = Build.VERSION_CODES.O)
-    public Community(Integer id, String name, String description, Set<String> rules, List<Flair> flairs, List<Post> posts, List<Moderator> moderators) {
+    public Community(Integer id, String name, String description, ArrayList<String> rules, ArrayList<Flair> flairs, ArrayList<Moderator> moderators) {
         this.id = id;
         this.name = name;
         this.description = description;
@@ -123,9 +114,8 @@ public class Community implements Serializable {
         this.rules = rules;
         this.isSuspended = false;
         this.suspendedReason = null;
-        this.flairs = (Set<Flair>) flairs;
-        this.posts = (Set<Post>) posts;
-        this.moderators = (Set<Moderator>) moderators;
+        this.flairs = flairs;
+        this.moderators = moderators;
     }
 
     @Override
@@ -139,7 +129,6 @@ public class Community implements Serializable {
                 ", isSuspended=" + isSuspended +
                 ", suspendedReason='" + suspendedReason + '\'' +
                 ", flairs=" + flairs +
-                ", posts=" + posts +
                 ", moderators=" + moderators +
                 '}';
     }
