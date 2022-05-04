@@ -12,6 +12,7 @@ import com.example.redditcloneapp.R;
 import com.example.redditcloneapp.adapters.PostAdapter;
 import com.example.redditcloneapp.model.Post;
 import com.example.redditcloneapp.model.User;
+import com.example.redditcloneapp.tools.FragmentTransition;
 
 import java.time.format.DateTimeFormatter;
 import java.time.format.FormatStyle;
@@ -42,7 +43,12 @@ public class PostActivity extends AppCompatActivity {
         creationDate.setText(post.getCreationDate().format(DateTimeFormatter
                 .ofLocalizedDate(FormatStyle.LONG)));
         flair.setText(post.getFlair().getName());
-    }
 
+        FragmentTransition.to(PostCommentFragment.newInstance(), this, false, R.id.post_single_comments_fragment);
+
+    }
+    public Post getPost(){
+        return post;
+    }
 
 }

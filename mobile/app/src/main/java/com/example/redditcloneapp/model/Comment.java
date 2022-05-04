@@ -4,6 +4,8 @@ import android.os.Build;
 
 import androidx.annotation.RequiresApi;
 
+import com.example.redditcloneapp.model.enums.ReactionType;
+
 import java.io.Serializable;
 import java.time.LocalDate;
 import java.util.List;
@@ -92,6 +94,17 @@ public class Comment implements Serializable {
         this.user = user;
         this.childComments = childComments;
         this.reactions = reactions;
+    }
+
+    public String getCommentReaction(){
+        int vote = 0;
+        for (Reaction r:this.reactions) {
+            if(r.getType() == ReactionType.UPVOTE)
+                vote++;
+            else
+                vote--;
+        }
+        return String.valueOf(vote);
     }
 
     @Override
