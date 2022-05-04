@@ -41,7 +41,6 @@ public class HomeFragment extends ListFragment {
 //        return root;
 //    }
 
-
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         setHasOptionsMenu(true);
