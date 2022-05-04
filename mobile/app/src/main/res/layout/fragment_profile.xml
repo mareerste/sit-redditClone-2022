@@ -12,7 +12,7 @@
         android:orientation="vertical"
         android:gravity="center"
         android:layout_margin="20dp"
-        android:background="@drawable/textview_border">
+        android:background="@drawable/rounded_corners_bg">
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -141,7 +141,7 @@
                 android:gravity="center"
                 android:layout_gravity="center"
                 android:orientation="vertical"
-                android:visibility="gone">
+                android:visibility="visible">
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -173,17 +173,18 @@
                         android:text="@string/password"
                         android:gravity="center"
                         android:layout_gravity="center"/>
-                    <EditText
+                    <TextView
                         android:id="@+id/profile_password_edit"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_weight="25"
                         android:gravity="center"
+                        android:inputType="textPassword"
                         android:background="@drawable/textview_border"
                         android:layout_margin="10dp"/>
                     <Button
                         android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
+                        android:layout_height="40dp"
                         android:text="@string/edit"
                         android:id="@+id/profile_edit_password_btn"
                         android:layout_marginRight="10dp"/>

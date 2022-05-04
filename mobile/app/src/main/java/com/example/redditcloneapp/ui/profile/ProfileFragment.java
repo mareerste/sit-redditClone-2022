@@ -1,6 +1,7 @@
 package com.example.redditcloneapp.ui.profile;
 
 import android.app.Activity;
+import android.app.Dialog;
 import android.os.Build;
 import android.os.Bundle;
 import android.text.Layout;
@@ -57,7 +58,7 @@ public class ProfileFragment extends Fragment {
         TextView descShow = view.findViewById(R.id.profile_description);
 
         TextView usernameEdit = view.findViewById(R.id.profile_username_edit);
-        EditText passwordEdit = view.findViewById(R.id.profile_password_edit);
+        TextView passwordEdit = view.findViewById(R.id.profile_password_edit);
         EditText mailEdit = view.findViewById(R.id.profile_email_edit);
         TextView dateEdit = view.findViewById(R.id.profile_reg_date_edit);
         EditText descEdit = view.findViewById(R.id.profile_description_edit);
@@ -116,12 +117,10 @@ public class ProfileFragment extends Fragment {
         editPasswordBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                AlertDialog alertDialog = new AlertDialog.Builder(activity).create();
-                alertDialog.setTitle("hi");
-                alertDialog.setMessage("this is my app");
-                
-
-                alertDialog.show();  //<-- See This!
+                Dialog dialog = new Dialog(activity);
+                dialog.setContentView(R.layout.dialog_change_password_layout);
+                dialog.setTitle("Change password");
+                dialog.show();
             }
         });
     }
