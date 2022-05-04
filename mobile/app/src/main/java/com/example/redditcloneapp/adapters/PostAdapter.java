@@ -55,8 +55,7 @@ public class PostAdapter extends BaseAdapter {
         TextView date = vi.findViewById(R.id.post_date);
         TextView community = vi.findViewById(R.id.post_community);
         Button btnPost = vi.findViewById(R.id.btn_view_post);
-        Button btnComments = vi.findViewById(R.id.btn_post_comments);
-        ImageButton btnReport = vi.findViewById(R.id.btn_post_report);
+        Button btnReport = vi.findViewById(R.id.btn_post_report);
         title.setText(post.getTitle());
         text.setText(post.getText());
         karma.setText(post.getPostReaction());
@@ -80,13 +79,7 @@ public class PostAdapter extends BaseAdapter {
                 toast.show();
             }
         });
-        btnComments.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Toast toast = Toast.makeText(view.getContext(), post.getComments().toString(),Toast.LENGTH_SHORT);
-                toast.show();
-            }
-        });
+
         return vi;
     }
 }

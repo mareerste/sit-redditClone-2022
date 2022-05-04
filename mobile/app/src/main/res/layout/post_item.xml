@@ -6,7 +6,32 @@
     android:orientation="vertical"
     android:clickable="true">
 
-
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_weight="30"
+            android:layout_height="wrap_content"
+            android:layout_gravity="left"
+            android:id="@+id/post_user"
+            android:paddingLeft="5dp"/>
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_weight="30"
+            android:layout_height="wrap_content"
+            android:id="@+id/post_date"
+            android:paddingLeft="10dp"/>
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_weight="40"
+            android:layout_height="30dp"
+            android:layout_marginLeft="20dp"
+            android:id="@+id/post_flair"
+            android:gravity="center"
+            android:textColor="@color/red"/>
+    </LinearLayout>
     <TextView
         android:id="@+id/post_title"
         android:layout_width="match_parent"
@@ -14,42 +39,34 @@
         android:gravity="center"
         android:text="@string/title"
         android:textSize="25dp"
-        android:clickable="true"/>
+        android:clickable="true"
+        android:padding="5dp"/>
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:padding="5dp">
+        android:layout_gravity="center"
+        android:layout_marginBottom="5dp">
         <TextView
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="left"
-            android:id="@+id/post_user"
-            android:paddingLeft="5dp"/>
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:id="@+id/post_date"
-            android:paddingLeft="10dp"/>
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:id="@+id/post_flair"
-            android:gravity="right"
-            android:paddingLeft="10dp"/>
-    </LinearLayout>
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center">
-        <TextView
-            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:id="@+id/post_community"
             android:paddingLeft="20dp"
+            android:paddingRight="20dp"
             android:clickable="true"
+            android:layout_centerHorizontal="true"
+            android:layout_centerVertical="true"
+            android:gravity="center"
+            android:background="@drawable/rounded_corners_bg"
             android:textColor="@color/red"/>
     </LinearLayout>
+    <ImageView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/post_img"
+        android:src="@mipmap/ic_launcher_foreground"
+        android:layout_margin="5dp"
+        android:background="@drawable/rounded_corners_bg"/>
+<!--        android:visibility="gone"-->
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
@@ -70,27 +87,24 @@
                 android:id="@+id/post_buttons"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:gravity="bottom"
+                android:gravity="right"
                 android:layout_gravity="bottom"
                 android:padding="10dp">
                 <Button
                     android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="@string/view_post"
-                    android:id="@+id/btn_view_post"
-                    ></Button>
-                <Button
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
+                    android:layout_height="40dp"
                     android:text="@string/comments"
-                    android:id="@+id/btn_post_comments"
-                    android:layout_marginLeft="10dp"></Button>
-                <ImageButton
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:src="@drawable/ic_baseline_report_24"
+                    android:id="@+id/btn_view_post"
+                    android:layout_gravity="center"
+                    ></Button>
+
+                <Button
+                    android:layout_width="30dp"
+                    android:layout_height="30dp"
+                    android:background="@drawable/ic_baseline_report_24_red"
                     android:id="@+id/btn_post_report"
-                    android:layout_marginLeft="10dp"></ImageButton>
+                    android:layout_gravity="center"
+                    android:layout_marginLeft="10dp"></Button>
             </LinearLayout>
         </LinearLayout>
 
@@ -100,24 +114,26 @@
         android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:orientation="vertical">
-            <ImageButton
+            <Button
                 android:id="@+id/post_arrow_up"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:src="@drawable/ic_arrow_up_outline"
-                ></ImageButton>
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                android:layout_gravity="center"
+                android:background="@drawable/ic_arrow_up_outline"
+                ></Button>
             <TextView
                 android:id="@+id/post_karma"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
                 ></TextView>
-            <ImageButton
+            <Button
                 android:id="@+id/post_arrow_down"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:src="@drawable/ic_arrow_down"
-                ></ImageButton>
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                android:layout_gravity="center"
+                android:background="@drawable/ic_arrow_down"
+                ></Button>
     </LinearLayout>
     </LinearLayout>
 
