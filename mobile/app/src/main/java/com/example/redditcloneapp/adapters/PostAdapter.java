@@ -1,6 +1,7 @@
 package com.example.redditcloneapp.adapters;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
 import android.view.View;
@@ -13,18 +14,24 @@ import android.widget.Toast;
 
 import androidx.annotation.RequiresApi;
 
+import com.example.redditcloneapp.MainActivity;
 import com.example.redditcloneapp.R;
 import com.example.redditcloneapp.model.Mokap;
 import com.example.redditcloneapp.model.Post;
+import com.example.redditcloneapp.model.User;
+import com.example.redditcloneapp.post.PostActivity;
+import com.example.redditcloneapp.ui.access.SignInActivity;
 
+import java.io.Serializable;
 import java.time.format.DateTimeFormatter;
 import java.time.format.FormatStyle;
 
 public class PostAdapter extends BaseAdapter {
 
     private Activity activity;
+    private User user;
 
-    public PostAdapter(Activity activity){this.activity = activity;}
+    public PostAdapter(Activity activity){this.activity = activity;this.user=user;}
 
     @RequiresApi(api = Build.VERSION_CODES.O)
     @Override
@@ -50,17 +57,16 @@ public class PostAdapter extends BaseAdapter {
         TextView title = (TextView) vi.findViewById(R.id.post_title);
         TextView text = (TextView) vi.findViewById(R.id.post_text);
         TextView karma = (TextView) vi.findViewById(R.id.post_karma);
-        TextView user = vi.findViewById(R.id.post_user);
+        TextView userText = vi.findViewById(R.id.post_user);
         TextView flair = vi.findViewById(R.id.post_flair);
         TextView date = vi.findViewById(R.id.post_date);
         TextView community = vi.findViewById(R.id.post_community);
         Button btnPost = vi.findViewById(R.id.btn_view_post);
-        Button btnComments = vi.findViewById(R.id.btn_post_comments);
-        ImageButton btnReport = vi.findViewById(R.id.btn_post_report);
+        Button btnReport = vi.findViewById(R.id.btn_post_report);
         title.setText(post.getTitle());
         text.setText(post.getText());
         karma.setText(post.getPostReaction());
-        user.setText(post.getUser().getUsername());
+        userText.setText(post.getUser().getUsername());
         flair.setText(post.getFlair().getName());
         community.setText(post.getCommunity().getName());
         community.setOnClickListener(new View.OnClickListener() {
@@ -76,17 +82,16 @@ public class PostAdapter extends BaseAdapter {
         btnPost.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+
+                Intent intent = new Intent(activity, PostActivity.class);
+                intent.putExtra("user", user);
+                intent.putExtra("post", post);
+                activity.startActivity(intent);
                 Toast toast = Toast.makeText(view.getContext(), post.toString(),Toast.LENGTH_SHORT);
                 toast.show();
             }
         });
-        btnComments.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Toast toast = Toast.makeText(view.getContext(), post.getComments().toString(),Toast.LENGTH_SHORT);
-                toast.show();
-            }
-        });
+
         return vi;
     }
 }
