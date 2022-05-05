@@ -6,6 +6,9 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.os.Build;
 import android.os.Bundle;
+import android.view.View;
+import android.widget.Button;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.example.redditcloneapp.R;
@@ -44,6 +47,25 @@ public class PostActivity extends AppCompatActivity {
                 .ofLocalizedDate(FormatStyle.LONG)));
         flair.setText(post.getFlair().getName());
 
+        TextView comName = findViewById(R.id.single_post_community_name);
+        TextView comDesc = findViewById(R.id.single_post_community_desc);
+        TextView comDate = findViewById(R.id.single_post_community_created);
+
+        comName.setText(post.getCommunity().getName());
+        comDesc.setText(post.getCommunity().getDescription());
+        comDate.setText(post.getCommunity().getCreationDate().format(DateTimeFormatter
+                .ofLocalizedDate(FormatStyle.LONG)));
+        Button btnComments = findViewById(R.id.post_single_comments_btn);
+        btnComments.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                RelativeLayout commentsLay = findViewById(R.id.post_single_comments_fragment);
+                if (commentsLay.getVisibility() == View.GONE)
+                    commentsLay.setVisibility(View.VISIBLE);
+                else
+                    commentsLay.setVisibility(View.GONE);
+            }
+        });
         FragmentTransition.to(PostCommentFragment.newInstance(), this, false, R.id.post_single_comments_fragment);
 
     }

@@ -93,12 +93,11 @@
                     android:background="@drawable/ic_baseline_report_24_red"/>
             </LinearLayout>
         </LinearLayout>
-<!--        TODO: Import liste pod komentara-->
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+<!--        TODO: Import liste pod komentara - moguci problem zbog vise istih layouta sa istim idom-->
+        <RelativeLayout
             android:id="@+id/post_comment_comments"
-            android:orientation="vertical" />
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" />
     </LinearLayout>
 
 </LinearLayout>

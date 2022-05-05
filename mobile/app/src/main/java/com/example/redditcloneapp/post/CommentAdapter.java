@@ -5,9 +5,11 @@ import android.os.Build;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import androidx.annotation.RequiresApi;
+import androidx.fragment.app.Fragment;
 
 import com.example.redditcloneapp.R;
 import com.example.redditcloneapp.model.Comment;
@@ -24,6 +26,7 @@ public class CommentAdapter extends BaseAdapter {
     private List<Comment> comments;
 
     public CommentAdapter (Activity activity, Post post){this.activity = activity;this.post = post;this.comments=post.getComments();}
+    public CommentAdapter (Activity activity, Comment comment){this.activity = activity ;this.comments=comment.getChildComments();}
 
     @Override
     public int getCount() {
@@ -58,6 +61,7 @@ public class CommentAdapter extends BaseAdapter {
         text.setText(comment.getText());
         TextView karma = vi.findViewById(R.id.post_comment_karma);
         karma.setText(comment.getCommentReaction());
+
         return vi;
     }
 }
