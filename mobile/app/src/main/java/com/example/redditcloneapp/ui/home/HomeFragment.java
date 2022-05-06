@@ -26,21 +26,6 @@ import com.example.redditcloneapp.model.User;
 
 public class HomeFragment extends ListFragment {
 
-//    private MainActivity mainActivity;
-
-//    public View onCreateView(@NonNull LayoutInflater inflater,
-//                             ViewGroup container, Bundle savedInstanceState) {
-//        HomeViewModel homeViewModel =
-//                new ViewModelProvider(this).get(HomeViewModel.class);
-//        binding = FragmentHomeBinding.inflate(inflater, container, false);
-//        View root = binding.getRoot();
-//
-////        final TextView textView = binding.textHome;
-////        homeViewModel.getText().observe(getViewLifecycleOwner(), textView::setText);
-////        ((MainActivity)getActivity()).drawerLocked();
-//        return root;
-//    }
-
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         setHasOptionsMenu(true);

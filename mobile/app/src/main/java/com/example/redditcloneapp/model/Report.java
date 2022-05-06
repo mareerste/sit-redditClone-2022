@@ -85,4 +85,17 @@ public class Report implements Serializable {
         this.post = post;
         this.comment = comment;
     }
+
+    @Override
+    public String toString() {
+        return "Report{" +
+                "id=" + id +
+                ", reason=" + reason +
+                ", timestamp=" + timestamp +
+                ", user=" + user.getUsername() +
+                ", accepted=" + accepted +
+                ", post=" + ((post == null) ? " N/A" : (post.getId() + " " + post.getText())) +
+                ", comment=" + ((comment == null) ? " N/A" : comment.getText()) +
+                '}';
+    }
 }
