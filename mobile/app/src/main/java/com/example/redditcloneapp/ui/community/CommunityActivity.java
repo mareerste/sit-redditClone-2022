@@ -6,6 +6,7 @@ import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
+import android.widget.TextView;
 
 import com.example.redditcloneapp.R;
 import com.example.redditcloneapp.model.Community;
@@ -29,6 +30,7 @@ public class CommunityActivity extends AppCompatActivity {
             FragmentTransition.to(CommunityRulesFragment.newInstance(), this, false, R.id.comm_single_rules);
             FragmentTransition.to(CommunityModeratorsFragment.newInstance(), this, false, R.id.comm_single_moderators);
             FragmentTransition.to(CommunityFlairsFragment.newInstance(), this, false, R.id.comm_single_flairs);
+            FragmentTransition.to(CommunityPostsFragment.newInstance(),this,false,R.id.comm_single_posts);
 
             View dropDown = findViewById(R.id.comm_drop_down_lay);
             Button buttonVisibilityDown = findViewById(R.id.comm_drop_down_lay_btn_down);
@@ -42,7 +44,11 @@ public class CommunityActivity extends AppCompatActivity {
                     buttonVisibilityUp.setVisibility(View.VISIBLE);
                 }
             });
+            TextView commName = findViewById(R.id.comm_single_name);
+            commName.setText(community.getName());
 
+            TextView commDesc = findViewById(R.id.comm_single_desc);
+            commDesc.setText(community.getDescription());
             buttonVisibilityUp.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
@@ -51,9 +57,14 @@ public class CommunityActivity extends AppCompatActivity {
                     buttonVisibilityUp.setVisibility(View.GONE);
                 }
             });
+
         }
 
     public Community getCommunity() {
         return community;
+    }
+
+    public User getUser() {
+        return user;
     }
 }

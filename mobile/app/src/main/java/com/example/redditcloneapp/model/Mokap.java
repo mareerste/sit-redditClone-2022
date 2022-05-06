@@ -82,20 +82,10 @@ public class Mokap implements Serializable {
         rules.add("rule2");
         rules.add("rule3");
         rules.add("rule4");
-        communities.add(new Community(1, "Community1", "Prvi community", rules, getFlairs(),  getModerators()));
+        communities.add(new Community(1, "Community1", "Prvi community. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Suspendisse a ornare mi. Sed ut mi eros. In hac habitasse platea dictumst. Mauris a pharetra urna. In posuere nisl in nulla sollicitudin viverra. Praesent congue, velit vitae condimentum porttitor, sapien elit fermentum felis, ac gravida metus arcu et lorem.", rules, getFlairs(),  getModerators()));
         return communities;
     }
 
-    @RequiresApi(api = Build.VERSION_CODES.O)
-    public static ArrayList<Post>getPostsForCommunity(Community community){
-        ArrayList<Post>allPosts = getPosts();
-        ArrayList<Post>posts = new ArrayList<>();
-        for (Post p:allPosts) {
-            if (p.getCommunity().getId() == community.getId())
-                posts.add(p);
-        }
-        return posts;
-    }
     @RequiresApi(api = Build.VERSION_CODES.O)
     public static ArrayList<Post> getPosts(){
         ArrayList<Post> posts = new ArrayList<>();
@@ -109,6 +99,19 @@ public class Mokap implements Serializable {
         return posts;
     }
 
+    @RequiresApi(api = Build.VERSION_CODES.O)
+    public static ArrayList<Post>getPostsForCommunity(Community community){
+        ArrayList<Post>allPosts = getPosts();
+        ArrayList<Post>posts = new ArrayList<>();
+        for (Post p:allPosts) {
+            System.out.println(p.getCommunity().getId() == community.getId());
+            System.out.println(p.getCommunity().getId() + " " + community.getId());
+
+            if (p.getCommunity().getId() == community.getId())
+                posts.add(p);
+        }
+        return posts;
+    }
     @RequiresApi(api = Build.VERSION_CODES.O)
     public static ArrayList<Report> getReports(){
         ArrayList<Report> reports = new ArrayList<>();

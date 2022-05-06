@@ -12,7 +12,7 @@ import java.util.List;
 import java.util.Set;
 
 public class Community implements Serializable {
-    private Integer id;
+    private int id;
     private String name;
     private String description;
     private LocalDate creationDate;

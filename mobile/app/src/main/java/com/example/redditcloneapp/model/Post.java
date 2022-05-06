@@ -11,7 +11,7 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 
 public class Post implements Serializable {
-    private Integer id;
+    private int id;
     private String title;
     private String text;
     private LocalDate creationDate;

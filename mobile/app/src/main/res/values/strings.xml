@@ -48,5 +48,6 @@
     <string name="rules">Rules</string>
     <string name="flairs">Flairs</string>
     <string name="moderators">Moderators</string>
+    <string name="sort_by">Sort by</string>
 
 </resources>
