@@ -27,6 +27,7 @@ public class Mokap implements Serializable {
     public static ArrayList<Moderator> getModerators(){
         ArrayList<Moderator> moderators = new ArrayList<>();
         moderators.add(new Moderator("pera123","pera123","pera123@gmail.com","Moderatorska posla", false));
+        moderators.add(new Moderator("darko123","darko123","darko123@gmail.com","Moderatorska posla", false));
         return moderators;
     }
 
@@ -83,6 +84,17 @@ public class Mokap implements Serializable {
         rules.add("rule4");
         communities.add(new Community(1, "Community1", "Prvi community", rules, getFlairs(),  getModerators()));
         return communities;
+    }
+
+    @RequiresApi(api = Build.VERSION_CODES.O)
+    public static ArrayList<Post>getPostsForCommunity(Community community){
+        ArrayList<Post>allPosts = getPosts();
+        ArrayList<Post>posts = new ArrayList<>();
+        for (Post p:allPosts) {
+            if (p.getCommunity().getId() == community.getId())
+                posts.add(p);
+        }
+        return posts;
     }
     @RequiresApi(api = Build.VERSION_CODES.O)
     public static ArrayList<Post> getPosts(){

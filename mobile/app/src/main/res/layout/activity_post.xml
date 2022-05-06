@@ -204,18 +204,22 @@
             </LinearLayout>
         </LinearLayout>
     </LinearLayout>
+
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@id/post_single_layout"
         android:layout_above="@id/post_single_layout_comment"
-        android:layout_margin="5dp">
+        android:layout_below="@id/post_single_layout"
+        android:layout_marginStart="5dp"
+        android:layout_marginTop="5dp"
+        android:layout_marginEnd="5dp"
+        android:layout_marginBottom="5dp">
 
         <RelativeLayout
             android:id="@+id/post_single_comments_fragment"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:visibility="gone"/>
+            android:visibility="gone" />
     </RelativeLayout>
 
     <LinearLayout

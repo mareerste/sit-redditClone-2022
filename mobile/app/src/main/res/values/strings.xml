@@ -45,5 +45,8 @@
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="created">Created:</string>
     <string name="join">Join</string>
+    <string name="rules">Rules</string>
+    <string name="flairs">Flairs</string>
+    <string name="moderators">Moderators</string>
 
 </resources>

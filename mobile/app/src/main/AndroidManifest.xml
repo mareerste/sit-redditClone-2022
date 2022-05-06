@@ -10,6 +10,9 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.RedditCloneApp">
         <activity
+            android:name=".ui.community.CommunityActivity"
+            android:exported="false" />
+        <activity
             android:name=".post.PostActivity"
             android:exported="false" />
         <activity

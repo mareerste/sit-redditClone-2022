@@ -21,6 +21,7 @@ import com.example.redditcloneapp.model.Post;
 import com.example.redditcloneapp.model.User;
 import com.example.redditcloneapp.post.PostActivity;
 import com.example.redditcloneapp.ui.access.SignInActivity;
+import com.example.redditcloneapp.ui.community.CommunityActivity;
 
 import java.io.Serializable;
 import java.time.format.DateTimeFormatter;
@@ -74,6 +75,11 @@ public class PostAdapter extends BaseAdapter {
             public void onClick(View view) {
                 Toast toast = Toast.makeText(view.getContext(), post.getCommunity().toString(),Toast.LENGTH_SHORT);
                 toast.show();
+                Intent intent = new Intent(activity, CommunityActivity.class);
+                intent.putExtra("user", user);
+                intent.putExtra("community", post.getCommunity());
+                activity.startActivity(intent);
+
             }
         });
         date.setText(post.getCreationDate().format(DateTimeFormatter

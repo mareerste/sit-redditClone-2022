@@ -6,11 +6,14 @@
         <entry key="..\:/Users/HP/Documents/Predavanja/Semestar 4/Project_RedditClone_2022/mobile/app/src/main/res/drawable-v24/ic_launcher_foreground.xml" value="0.203" />
         <entry key="..\:/Users/HP/Documents/Predavanja/Semestar 4/Project_RedditClone_2022/mobile/app/src/main/res/drawable/circle_color.xml" value="0.188" />
         <entry key="..\:/Users/HP/Documents/Predavanja/Semestar 4/Project_RedditClone_2022/mobile/app/src/main/res/drawable/ic_arrow_up.xml" value="0.188" />
+        <entry key="..\:/Users/HP/Documents/Predavanja/Semestar 4/Project_RedditClone_2022/mobile/app/src/main/res/drawable/ic_baseline_arrow_drop_down_24.xml" value="0.1" />
+        <entry key="..\:/Users/HP/Documents/Predavanja/Semestar 4/Project_RedditClone_2022/mobile/app/src/main/res/drawable/ic_baseline_arrow_drop_up_24.xml" value="0.1" />
         <entry key="..\:/Users/HP/Documents/Predavanja/Semestar 4/Project_RedditClone_2022/mobile/app/src/main/res/drawable/ic_launcher_background.xml" value="0.203" />
         <entry key="..\:/Users/HP/Documents/Predavanja/Semestar 4/Project_RedditClone_2022/mobile/app/src/main/res/drawable/ic_menu_camera.xml" value="0.203" />
         <entry key="..\:/Users/HP/Documents/Predavanja/Semestar 4/Project_RedditClone_2022/mobile/app/src/main/res/drawable/ic_menu_gallery.xml" value="0.203" />
         <entry key="..\:/Users/HP/Documents/Predavanja/Semestar 4/Project_RedditClone_2022/mobile/app/src/main/res/drawable/ic_menu_slideshow.xml" value="0.203" />
         <entry key="..\:/Users/HP/Documents/Predavanja/Semestar 4/Project_RedditClone_2022/mobile/app/src/main/res/drawable/side_nav_bar.xml" value="0.203" />
+        <entry key="..\:/Users/HP/Documents/Predavanja/Semestar 4/Project_RedditClone_2022/mobile/app/src/main/res/layout/activity_community.xml" value="0.264" />
         <entry key="..\:/Users/HP/Documents/Predavanja/Semestar 4/Project_RedditClone_2022/mobile/app/src/main/res/layout/activity_drawer_list_adapter.xml" value="0.12588652482269502" />
         <entry key="..\:/Users/HP/Documents/Predavanja/Semestar 4/Project_RedditClone_2022/mobile/app/src/main/res/layout/activity_main.xml" value="0.16932907348242812" />
         <entry key="..\:/Users/HP/Documents/Predavanja/Semestar 4/Project_RedditClone_2022/mobile/app/src/main/res/layout/activity_post.xml" value="0.264" />
@@ -24,6 +27,8 @@
         <entry key="..\:/Users/HP/Documents/Predavanja/Semestar 4/Project_RedditClone_2022/mobile/app/src/main/res/layout/drawer_list_items.xml" value="0.2453125" />
         <entry key="..\:/Users/HP/Documents/Predavanja/Semestar 4/Project_RedditClone_2022/mobile/app/src/main/res/layout/fragment_comment_comments.xml" value="0.14356884057971014" />
         <entry key="..\:/Users/HP/Documents/Predavanja/Semestar 4/Project_RedditClone_2022/mobile/app/src/main/res/layout/fragment_community.xml" value="0.11614583333333334" />
+        <entry key="..\:/Users/HP/Documents/Predavanja/Semestar 4/Project_RedditClone_2022/mobile/app/src/main/res/layout/fragment_community_moderators.xml" value="0.259375" />
+        <entry key="..\:/Users/HP/Documents/Predavanja/Semestar 4/Project_RedditClone_2022/mobile/app/src/main/res/layout/fragment_community_rules.xml" value="0.264" />
         <entry key="..\:/Users/HP/Documents/Predavanja/Semestar 4/Project_RedditClone_2022/mobile/app/src/main/res/layout/fragment_gallery.xml" value="0.11614583333333334" />
         <entry key="..\:/Users/HP/Documents/Predavanja/Semestar 4/Project_RedditClone_2022/mobile/app/src/main/res/layout/fragment_home.xml" value="0.2" />
         <entry key="..\:/Users/HP/Documents/Predavanja/Semestar 4/Project_RedditClone_2022/mobile/app/src/main/res/layout/fragment_post_comment.xml" value="0.13632246376811594" />
@@ -34,6 +39,7 @@
         <entry key="..\:/Users/HP/Documents/Predavanja/Semestar 4/Project_RedditClone_2022/mobile/app/src/main/res/layout/post_item.xml" value="0.4" />
         <entry key="..\:/Users/HP/Documents/Predavanja/Semestar 4/Project_RedditClone_2022/mobile/app/src/main/res/layout/post_list_adapter.xml" value="0.1" />
         <entry key="..\:/Users/HP/Documents/Predavanja/Semestar 4/Project_RedditClone_2022/mobile/app/src/main/res/layout/post_map_layout.xml" value="0.1" />
+        <entry key="..\:/Users/HP/Documents/Predavanja/Semestar 4/Project_RedditClone_2022/mobile/app/src/main/res/layout/rule_item.xml" value="0.536" />
         <entry key="..\:/Users/HP/Documents/Predavanja/Semestar 4/Project_RedditClone_2022/mobile/app/src/main/res/menu/activity_main_drawer.xml" value="0.4" />
         <entry key="..\:/Users/HP/Documents/Predavanja/Semestar 4/Project_RedditClone_2022/mobile/app/src/main/res/menu/main.xml" value="0.264" />
         <entry key="..\:/Users/HP/Documents/Predavanja/Semestar 4/Project_RedditClone_2022/mobile/app/src/main/res/mipmap-anydpi-v26/ic_launcher.xml" value="0.127" />
