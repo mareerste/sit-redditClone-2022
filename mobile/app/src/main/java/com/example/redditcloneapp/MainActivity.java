@@ -10,6 +10,7 @@ import android.view.Menu;
 import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
+import android.widget.Toolbar;
 
 import com.example.redditcloneapp.adapters.DrawerController;
 import com.example.redditcloneapp.model.User;
@@ -56,9 +57,6 @@ public class MainActivity extends AppCompatActivity {
                 R.id.nav_home, R.id.nav_profile, R.id.nav_community, R.id.nav_report)
                 .setOpenableLayout(drawer)
                 .build();
-        NavController navController = Navigation.findNavController(this, R.id.nav_host_fragment_content_main);
-        NavigationUI.setupActionBarWithNavController(this, navController, mAppBarConfiguration);
-        NavigationUI.setupWithNavController(navigationView, navController);
 
         if(user == null){
             View userView = findViewById(R.id.navbar_with_user);
@@ -67,7 +65,13 @@ public class MainActivity extends AppCompatActivity {
             TextView description = (TextView) hw.findViewById(R.id.nav_header_description);
             username.setVisibility(View.GONE);
             description.setVisibility(View.GONE);
+            drawer.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED);
         } else{
+            drawer.setDrawerLockMode(DrawerLayout.LOCK_MODE_UNLOCKED);
+            NavController navController = Navigation.findNavController(this, R.id.nav_host_fragment_content_main);
+            NavigationUI.setupActionBarWithNavController(this, navController, mAppBarConfiguration);
+            NavigationUI.setupWithNavController(navigationView, navController);
+
             View userView = findViewById(R.id.navbar_without_user);
             userView.setVisibility(View.GONE);
             TextView username = (TextView) hw.findViewById(R.id.nav_header_username);
