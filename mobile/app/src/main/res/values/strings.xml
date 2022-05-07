@@ -52,5 +52,8 @@
     <string name="accept">Accept</string>
     <string name="reject">Reject</string>
     <string name="details">Details</string>
+    <string name="post">Post</string>
+    <string name="create_a_new_post">New Post</string>
+    <string name="cancel">Cancel</string>
 
 </resources>
