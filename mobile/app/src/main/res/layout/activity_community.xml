@@ -112,14 +112,75 @@
             android:background="@drawable/rounded_corners_bg"
             android:layout_margin="10dp"
             android:padding="5dp"/>
-        <Button
-            android:id="@+id/comm_single_sort_btn"
-            android:layout_width="wrap_content"
-            android:layout_height="30dp"
-            android:layout_gravity="right"
-            android:layout_marginRight="10dp"
-            android:text="@string/sort_by"
-            android:textSize="10dp"/>
+        <LinearLayout
+            android:id="@+id/comm_new_post_layout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:background="@drawable/rounded_corners_bg"
+            android:layout_margin="10dp"
+            android:paddingLeft="15dp"
+            android:paddingRight="15dp"
+            android:visibility="gone">
+            <EditText
+                android:id="@+id/comm_new_post_title"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="@string/title"
+                android:textAlignment="center"/>
+            <EditText
+                android:id="@+id/comm_new_post_text"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="@string/text"/>
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:gravity="right">
+                <Button
+                    android:layout_width="30dp"
+                    android:layout_height="35dp"
+                    android:layout_marginRight="10dp"
+                    android:layout_gravity="center"
+                    android:background="@drawable/ic_baseline_attach_file_24"/>
+                <Button
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/post"/>
+            </LinearLayout>
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center">
+            <Button
+                android:id="@+id/comm_suspend"
+                android:layout_width="wrap_content"
+                android:layout_height="35dp"
+                android:text="Suspend"
+                android:layout_gravity="right"
+                android:textSize="12dp"
+                android:visibility="invisible"/>
+            <Button
+                android:id="@+id/comm_new_post_btn_layout"
+                android:layout_width="wrap_content"
+                android:layout_height="35dp"
+                android:text="@string/create_a_new_post"
+                android:layout_gravity="right"
+                android:textSize="12dp"
+                android:layout_marginRight="15dp"
+                android:layout_marginLeft="15dp"/>
+            <Button
+                android:id="@+id/comm_single_sort_btn"
+                android:layout_width="wrap_content"
+                android:layout_height="35dp"
+                android:layout_gravity="right"
+                android:text="@string/sort_by"
+                android:textSize="12dp"/>
+        </LinearLayout>
+
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="fill_parent">

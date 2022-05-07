@@ -62,66 +62,79 @@
         android:layout_marginTop="10dp"
         android:textAlignment="center"
         android:textSize="20dp" />
+
     <LinearLayout
-        android:layout_width="match_parent"
         android:id="@+id/post_single_image_lay"
-        android:layout_below="@id/post_single_title"
-        android:layout_height="wrap_content">
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/post_single_title">
+
         <LinearLayout
             android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:layout_weight="30"
+            android:layout_height="wrap_content"
+            android:layout_margin="5dp"
+            android:layout_weight="20"
             android:background="@drawable/rounded_corners_bg"
-            android:orientation="vertical"
             android:gravity="center"
-            android:layout_margin="5dp">
+            android:orientation="vertical">
+
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
+
                 <TextView
                     android:id="@+id/single_post_community_name"
                     android:layout_width="match_parent"
-                    android:text="bla"
                     android:layout_height="wrap_content"
-                    android:gravity="center"/>
+                    android:gravity="center"
+                    android:text="bla" />
             </LinearLayout>
+
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
+
                 <TextView
                     android:id="@+id/single_post_community_desc"
                     android:layout_width="match_parent"
-                    android:text="bla"
                     android:layout_height="wrap_content"
-                    android:gravity="center"/>
+                    android:gravity="center"
+                    android:text="bla" />
             </LinearLayout>
+
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
+
                 <TextView
                     android:layout_width="wrap_content"
-                    android:layout_weight="50"
-                    android:text="@string/created"
                     android:layout_height="wrap_content"
-                    android:gravity="center"/>
+                    android:layout_weight="50"
+                    android:gravity="center"
+                    android:text="@string/created" />
+
                 <TextView
                     android:id="@+id/single_post_community_created"
                     android:layout_width="wrap_content"
-                    android:layout_weight="50"
-                    android:text="bla"
                     android:layout_height="wrap_content"
-                    android:gravity="center"/>
+                    android:layout_weight="50"
+                    android:gravity="center"
+                    android:text="bla" />
             </LinearLayout>
+
             <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content">
+                android:layout_height="wrap_content"
+                android:gravity="center">
+
                 <Button
-                    android:layout_width="match_parent"
-                    android:layout_height="30dp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="32dp"
                     android:layout_marginLeft="20dp"
                     android:layout_marginRight="20dp"
                     android:text="@string/join"
-                    android:textSize="10dp"/>
+                    android:textSize="10dp"
+                    android:gravity="center"/>
             </LinearLayout>
         </LinearLayout>
 
@@ -131,8 +144,8 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:layout_marginTop="5dp"
-            android:layout_weight="50"
             android:layout_marginBottom="5dp"
+            android:layout_weight="50"
             android:src="@mipmap/ic_launcher_foreground" />
     </LinearLayout>
 
@@ -193,13 +206,14 @@
 
                 <Button
                     android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
+                    android:layout_height="40dp"
                     android:text="@string/report"
-                    android:layout_marginRight="5dp"/>
+                    android:layout_marginRight="5dp"
+                    android:layout_gravity="center"/>
                 <Button
                     android:id="@+id/post_single_comments_btn"
                     android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
+                    android:layout_height="40dp"
                     android:text="@string/comments" />
             </LinearLayout>
         </LinearLayout>

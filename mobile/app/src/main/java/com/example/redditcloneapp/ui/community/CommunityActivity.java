@@ -58,6 +58,22 @@ public class CommunityActivity extends AppCompatActivity {
                 }
             });
 
+            View newPostView = findViewById(R.id.comm_new_post_layout);
+            Button newPostLayBtn = findViewById(R.id.comm_new_post_btn_layout);
+            newPostLayBtn.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    if(newPostView.getVisibility() == View.VISIBLE) {
+                        newPostView.setVisibility(View.GONE);
+                        newPostLayBtn.setText(R.string.create_a_new_post);
+                    }
+                    else {
+                        newPostView.setVisibility(View.VISIBLE);
+                        newPostLayBtn.setText(R.string.cancel);
+                    }
+                }
+            });
+
         }
 
     public Community getCommunity() {
