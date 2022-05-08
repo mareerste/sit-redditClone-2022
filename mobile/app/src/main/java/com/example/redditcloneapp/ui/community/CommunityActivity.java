@@ -93,4 +93,6 @@ public class CommunityActivity extends AppCompatActivity {
     public User getUser() {
         return user;
     }
+
+
 }

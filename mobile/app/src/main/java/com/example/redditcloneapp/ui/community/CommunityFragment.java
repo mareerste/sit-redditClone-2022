@@ -10,7 +10,10 @@ import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 
+import com.example.redditcloneapp.R;
 import com.example.redditcloneapp.databinding.FragmentCommunityBinding;
+import com.example.redditcloneapp.tools.FragmentTransition;
+import com.example.redditcloneapp.ui.community.mycommunities.MyCommunitiesFragment;
 
 public class CommunityFragment extends Fragment {
 
@@ -26,6 +29,8 @@ public class CommunityFragment extends Fragment {
 
         final TextView textView = binding.textSlideshow;
         slideshowViewModel.getText().observe(getViewLifecycleOwner(), textView::setText);
+
+        FragmentTransition.to(MyCommunitiesFragment.newInstance(), getActivity(),false, R.id.my_communities_list);
         return root;
     }
 

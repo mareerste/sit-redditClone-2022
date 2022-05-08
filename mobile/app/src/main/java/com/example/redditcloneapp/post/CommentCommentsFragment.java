@@ -27,6 +27,7 @@ public class CommentCommentsFragment extends ListFragment {
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
 //        TODO: Adapter za komentare
+//        TODO - layut za report dugmad
 
     }
 }
