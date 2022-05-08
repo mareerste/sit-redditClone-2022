@@ -1,8 +1,10 @@
 package com.example.redditcloneapp.ui.community;
 
+import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.graphics.drawable.Drawable;
+import android.os.Build;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
@@ -15,10 +17,14 @@ import com.example.redditcloneapp.model.User;
 import com.example.redditcloneapp.post.PostCommentFragment;
 import com.example.redditcloneapp.tools.FragmentTransition;
 
+import java.time.format.DateTimeFormatter;
+import java.time.format.FormatStyle;
+
 public class CommunityActivity extends AppCompatActivity {
 
     private User user;
     private Community community;
+        @RequiresApi(api = Build.VERSION_CODES.O)
         @Override
         protected void onCreate(Bundle savedInstanceState) {
             super.onCreate(savedInstanceState);
@@ -46,6 +52,10 @@ public class CommunityActivity extends AppCompatActivity {
             });
             TextView commName = findViewById(R.id.comm_single_name);
             commName.setText(community.getName());
+
+            TextView commDate = findViewById(R.id.comm_single_date);
+            commDate.setText(community.getCreationDate().format(DateTimeFormatter
+                    .ofLocalizedDate(FormatStyle.LONG)));
 
             TextView commDesc = findViewById(R.id.comm_single_desc);
             commDesc.setText(community.getDescription());

@@ -82,7 +82,7 @@ public class Mokap implements Serializable {
         rules.add("rule2");
         rules.add("rule3");
         rules.add("rule4");
-        communities.add(new Community(1, "Community1", "Prvi community. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Suspendisse a ornare mi. Sed ut mi eros. In hac habitasse platea dictumst. Mauris a pharetra urna. In posuere nisl in nulla sollicitudin viverra. Praesent congue, velit vitae condimentum porttitor, sapien elit fermentum felis, ac gravida metus arcu et lorem.", rules, getFlairs(),  getModerators()));
+        communities.add(new Community(1, "Community1", "Prvi community. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Suspendisse a ornare mi. Sed ut mi eros. In hac habitasse platea dictumst. Mauris a pharetra urna. In posuere nisl in nulla sollicitudin viverra. Praesent congue, velit vitae condimentum porttitor, sapien elit fermentum felis, ac gravida metus arcu et lorem.", rules, getFlairs(),  getModerators(), getUsers()));
         return communities;
     }
 
