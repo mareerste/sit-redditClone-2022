@@ -41,9 +41,8 @@ public class MyCommunitiesFragment extends ListFragment {
     public void onListItemClick(@NonNull ListView l, @NonNull View v, int position, long id) {
         super.onListItemClick(l, v, position, id);
         Community community = Mokap.getUsersCommunities((Moderator) ((MainActivity)getActivity()).getUser()).get(position);
-        Toast toast = Toast.makeText(getContext(),community.toString(), Toast.LENGTH_SHORT);
-        toast.show();
         Intent intent = new Intent((MainActivity)getActivity(),MyCommunityActivity.class);
+        intent.putExtra("community", community);
         startActivity(intent);
     }
 
@@ -51,7 +50,9 @@ public class MyCommunitiesFragment extends ListFragment {
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-        MyCommunitiesAdapter adapter = new MyCommunitiesAdapter(getActivity(), Mokap.getUsersCommunities((Moderator) ((MainActivity)getActivity()).getUser()));
-        setListAdapter(adapter);
+        if(((MainActivity)getActivity()).getUser() instanceof Moderator) {
+            MyCommunitiesAdapter adapter = new MyCommunitiesAdapter(getActivity(), Mokap.getUsersCommunities((Moderator) ((MainActivity) getActivity()).getUser()));
+            setListAdapter(adapter);
+        }
     }
 }

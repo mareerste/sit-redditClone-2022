@@ -15,7 +15,8 @@
         android:text="Community Name"
         android:textColor="@color/white"
         android:gravity="center"
-        android:padding="10dp"/>
+        android:padding="10dp"
+        android:textSize="20dp"/>
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -104,9 +105,11 @@
         </LinearLayout>
     </LinearLayout>
     <RelativeLayout
+        android:id="@+id/my_community_fragment"
         android:layout_margin="10dp"
         android:background="@drawable/rounded_corners_bg"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"/>
+        android:layout_height="wrap_content"
+        android:padding="5dp"/>
 
 </LinearLayout>

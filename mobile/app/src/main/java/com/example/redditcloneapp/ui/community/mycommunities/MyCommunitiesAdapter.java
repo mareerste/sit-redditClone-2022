@@ -37,7 +37,6 @@ public class MyCommunitiesAdapter extends BaseAdapter {
     public View getView(int i, View view, ViewGroup viewGroup) {
         View vi = view;
         Community community = communities.get(i);
-        System.out.println("MY COMMUNITIES" + communities);
         int count = i;
         count++;
         String counterText = count+".";
