@@ -32,7 +32,7 @@ public class PostAdapter extends BaseAdapter {
     private Activity activity;
     private User user;
 
-    public PostAdapter(Activity activity){this.activity = activity;this.user=user;}
+    public PostAdapter(Activity activity, User user){this.activity = activity;this.user=user;}
 
     @RequiresApi(api = Build.VERSION_CODES.O)
     @Override
@@ -73,8 +73,6 @@ public class PostAdapter extends BaseAdapter {
         community.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Toast toast = Toast.makeText(view.getContext(), post.getCommunity().toString(),Toast.LENGTH_SHORT);
-                toast.show();
                 Intent intent = new Intent(activity, CommunityActivity.class);
                 intent.putExtra("user", user);
                 intent.putExtra("community", post.getCommunity());

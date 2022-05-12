@@ -144,7 +144,19 @@ public class Mokap implements Serializable {
             if (u.username.equals(username) && u.password.equals(password))
                 return u;
         }
+        for (Administrator u : getAdinistrators()) {
+            if (u.username.equals(username) && u.password.equals(password))
+                return u;
+        }
         return null;
     }
-
+    @RequiresApi(api = Build.VERSION_CODES.O)
+    public static Administrator findAdminByUsername(String username){
+        ArrayList<Administrator> administrators = getAdinistrators();
+        for (Administrator a: administrators) {
+            if (a.getUsername().equals(username))
+                return a;
+        }
+        return null;
+    }
 }

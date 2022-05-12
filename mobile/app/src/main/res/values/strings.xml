@@ -60,5 +60,7 @@
     <string name="moderators">Moderators</string>
     <string name="name">Name</string>
     <string name="suspend_reason">Suspend reason</string>
+    <string name="block">Block</string>
+    <string name="view">View</string>
 
 </resources>

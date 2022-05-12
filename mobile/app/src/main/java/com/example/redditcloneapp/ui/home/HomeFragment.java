@@ -46,7 +46,7 @@ public class HomeFragment extends ListFragment {
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-        PostAdapter adapter = new PostAdapter(getActivity());
+        PostAdapter adapter = new PostAdapter(getActivity(), ((MainActivity)getActivity()).getUser());
         setListAdapter(adapter);
     }
 }
