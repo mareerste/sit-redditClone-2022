@@ -19,11 +19,13 @@
         android:layout_weight="50"
         android:gravity="right">
         <Button
+            android:id="@+id/my_community_members_block_btn"
             android:text="@string/block"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginRight="10dp"/>
         <Button
+            android:id="@+id/my_community_members_view_btn"
             android:text="@string/view"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"

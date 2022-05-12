@@ -10,6 +10,11 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.RedditCloneApp">
         <activity
+            android:name=".ui.profile.ProfileActivity"
+            android:exported="false"
+            android:label="@string/title_activity_profile"
+            android:theme="@style/Theme.RedditCloneApp.NoActionBar" />
+        <activity
             android:name=".ui.community.mycommunities.MyCommunityActivity"
             android:exported="false" />
         <activity

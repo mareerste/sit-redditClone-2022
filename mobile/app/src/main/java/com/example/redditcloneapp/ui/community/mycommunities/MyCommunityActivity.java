@@ -12,6 +12,7 @@ import com.example.redditcloneapp.model.User;
 import com.example.redditcloneapp.tools.FragmentTransition;
 import com.example.redditcloneapp.ui.community.CommunityModeratorsFragment;
 import com.example.redditcloneapp.ui.community.mycommunities.fragments.CommunityBasicInfoFragment;
+import com.example.redditcloneapp.ui.community.mycommunities.fragments.CommunityFlairsEditFragment;
 import com.example.redditcloneapp.ui.community.mycommunities.fragments.CommunityMembersFragment;
 import com.example.redditcloneapp.ui.community.mycommunities.fragments.CommunityModeratorsEditFragment;
 import com.example.redditcloneapp.ui.community.mycommunities.fragments.CommunityRulesEditFragment;
@@ -55,6 +56,13 @@ public class MyCommunityActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 FragmentTransition.to(CommunityRulesEditFragment.newInstance(), MyCommunityActivity.this,false,R.id.my_community_fragment);
+            }
+        });
+        Button btnFlairs = findViewById(R.id.my_community_flairs_btn);
+        btnFlairs.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                FragmentTransition.to(CommunityFlairsEditFragment.newInstance(), MyCommunityActivity.this,false,R.id.my_community_fragment);
             }
         });
     }
