@@ -14,6 +14,7 @@ import com.example.redditcloneapp.ui.community.CommunityModeratorsFragment;
 import com.example.redditcloneapp.ui.community.mycommunities.fragments.CommunityBasicInfoFragment;
 import com.example.redditcloneapp.ui.community.mycommunities.fragments.CommunityMembersFragment;
 import com.example.redditcloneapp.ui.community.mycommunities.fragments.CommunityModeratorsEditFragment;
+import com.example.redditcloneapp.ui.community.mycommunities.fragments.CommunityRulesEditFragment;
 
 public class MyCommunityActivity extends AppCompatActivity {
 
@@ -46,6 +47,14 @@ public class MyCommunityActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 FragmentTransition.to(CommunityModeratorsEditFragment.newInstance(), MyCommunityActivity.this,false,R.id.my_community_fragment);
+            }
+        });
+
+        Button btnRules = findViewById(R.id.my_community_rules_btn);
+        btnRules.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                FragmentTransition.to(CommunityRulesEditFragment.newInstance(), MyCommunityActivity.this,false,R.id.my_community_fragment);
             }
         });
     }

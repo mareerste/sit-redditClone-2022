@@ -3,6 +3,8 @@ package com.example.redditcloneapp.ui.community;
 import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.app.ActionBar;
+import android.app.Dialog;
 import android.graphics.drawable.Drawable;
 import android.os.Build;
 import android.os.Bundle;
@@ -12,6 +14,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.redditcloneapp.R;
+import com.example.redditcloneapp.model.Administrator;
 import com.example.redditcloneapp.model.Community;
 import com.example.redditcloneapp.model.Post;
 import com.example.redditcloneapp.model.User;
@@ -33,6 +36,11 @@ public class CommunityActivity extends AppCompatActivity {
 
             user = (User) getIntent().getSerializableExtra("user");
             community = (Community) getIntent().getSerializableExtra("community");
+//            STRELICA KA NAZAD
+//            ActionBar actionBar = getSupportActionBar();
+//            if(actionBar != null){
+//                actionBar.setDisplayHomeAsUpEnabled(true);
+//            }
 
             FragmentTransition.to(CommunityRulesFragment.newInstance(), this, false, R.id.comm_single_rules);
             FragmentTransition.to(CommunityModeratorsFragment.newInstance(), this, false, R.id.comm_single_moderators);
@@ -84,6 +92,26 @@ public class CommunityActivity extends AppCompatActivity {
                     }
                 }
             });
+
+            Button suspendBtn = findViewById(R.id.comm_suspend);
+            if (user instanceof Administrator){
+                suspendBtn.setVisibility(View.VISIBLE);
+                suspendBtn.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        Dialog dialog = new Dialog(CommunityActivity.this);
+                        dialog.setContentView(R.layout.dialog_suspend_community);
+                        TextView textReason = dialog.findViewById(R.id.dialog_suspend_comm_reason);
+                        Button btnLeft = dialog.findViewById(R.id.dialog_suspend_comm_sus_btn);
+                        btnLeft.setText("Suspend");
+                        Button btnRight = dialog.findViewById(R.id.dialog_suspend_comm_cancel_btn);
+                        TextView commName = dialog.findViewById(R.id.dialog_suspend_comm_name);
+                        commName.setText("Suspend community " + community.getName() );
+                        dialog.show();
+                    }
+                });
+
+            }
 
         }
 

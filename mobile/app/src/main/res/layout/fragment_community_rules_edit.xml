@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".ui.community.mycommunities.fragments.CommunityRulesEditFragment"
+    android:orientation="vertical">
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/community_rules"
+        android:gravity="center"/>
+    <LinearLayout
+        android:padding="15dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/rounded_corners_bg"
+        android:layout_margin="5dp">
+        <EditText
+            android:id="@+id/my_community_rules_text_rule"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="70"/>
+        <Button
+            android:id="@+id/my_community_rules_btn_add"
+            android:text="@string/add"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="20"/>
+    </LinearLayout>
+    <RelativeLayout
+        android:id="@+id/my_community_rules_list_rules"
+        android:layout_margin="15dp"
+        android:background="@drawable/rounded_corners_bg"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"/>
+
+</LinearLayout>

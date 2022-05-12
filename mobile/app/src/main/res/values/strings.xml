@@ -62,5 +62,8 @@
     <string name="suspend_reason">Suspend reason</string>
     <string name="block">Block</string>
     <string name="view">View</string>
+    <string name="community_rules">Community rules</string>
+    <string name="add">Add</string>
+    <string name="delete">Delete</string>
 
 </resources>
