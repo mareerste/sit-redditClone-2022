@@ -79,5 +79,6 @@
     <string name="hello_second_fragment">Hello second fragment. Arg: %1$s</string>
     <string name="report_post_text">Why are you reporting post </string>
     <string name="report_comment_text">Why are you reporting comment </string>
+    <string name="sus_reason">Suspend reason..</string>
 
 </resources>
