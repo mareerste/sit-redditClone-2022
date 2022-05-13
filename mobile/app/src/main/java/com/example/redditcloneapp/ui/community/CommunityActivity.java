@@ -5,6 +5,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.app.ActionBar;
 import android.app.Dialog;
+import android.content.Intent;
 import android.graphics.drawable.Drawable;
 import android.os.Build;
 import android.os.Bundle;
@@ -13,6 +14,7 @@ import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.redditcloneapp.MainActivity;
 import com.example.redditcloneapp.R;
 import com.example.redditcloneapp.model.Administrator;
 import com.example.redditcloneapp.model.Community;
@@ -20,6 +22,7 @@ import com.example.redditcloneapp.model.Post;
 import com.example.redditcloneapp.model.User;
 import com.example.redditcloneapp.post.PostCommentFragment;
 import com.example.redditcloneapp.tools.FragmentTransition;
+import com.example.redditcloneapp.ui.community.mycommunities.MyCommunityActivity;
 
 import java.time.format.DateTimeFormatter;
 import java.time.format.FormatStyle;
@@ -50,6 +53,19 @@ public class CommunityActivity extends AppCompatActivity {
             View dropDown = findViewById(R.id.comm_drop_down_lay);
             Button buttonVisibilityDown = findViewById(R.id.comm_drop_down_lay_btn_down);
             Button buttonVisibilityUp = findViewById(R.id.comm_drop_down_lay_btn_up);
+            View adminLayoutBtn = findViewById(R.id.comm_single_admin_view);
+            if(user instanceof Administrator){
+                adminLayoutBtn.setVisibility(View.VISIBLE);
+                Button viewCommunityBtn = findViewById(R.id.comm_single_admin_view_btn);
+                viewCommunityBtn.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        Intent intent = new Intent(CommunityActivity.this, MyCommunityActivity.class);
+                        intent.putExtra("community", community);
+                        startActivity(intent);
+                    }
+                });
+            }
 
             buttonVisibilityDown.setOnClickListener(new View.OnClickListener() {
                 @Override

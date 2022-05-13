@@ -187,7 +187,19 @@
                 android:text="@string/sort_by"
                 android:textSize="12dp"/>
         </LinearLayout>
-
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/comm_single_admin_view"
+            android:gravity="center"
+            android:visibility="gone">
+            <Button
+                android:id="@+id/comm_single_admin_view_btn"
+                android:text="@string/view"
+                android:layout_width="wrap_content"
+                android:layout_height="35dp"
+                android:textSize="12dp"/>
+        </LinearLayout>
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="fill_parent">
