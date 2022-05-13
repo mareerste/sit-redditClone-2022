@@ -5,7 +5,7 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="4c9ec0fb-919f-4c45-9c14-356f68dcf3d1" name="Changes" comment="">
-      <change beforePath="$PROJECT_DIR$/mobile/app/src/main/java/com/example/redditcloneapp/MainActivity.java" beforeDir="false" afterPath="$PROJECT_DIR$/mobile/app/src/main/java/com/example/redditcloneapp/MainActivity.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/mobile/app/src/main/java/com/example/redditcloneapp/adapters/PostAdapter.java" beforeDir="false" afterPath="$PROJECT_DIR$/mobile/app/src/main/java/com/example/redditcloneapp/adapters/PostAdapter.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -59,17 +59,6 @@
           <option name="ENABLED" value="true" />
         </pattern>
       </extension>
-      <method v="2">
-        <option name="Make" enabled="true" />
-      </method>
-    </configuration>
-    <configuration default="true" type="JetRunConfigurationType">
-      <method v="2">
-        <option name="Make" enabled="true" />
-      </method>
-    </configuration>
-    <configuration default="true" type="KotlinStandaloneScriptRunConfigurationType">
-      <option name="filePath" />
       <method v="2">
         <option name="Make" enabled="true" />
       </method>

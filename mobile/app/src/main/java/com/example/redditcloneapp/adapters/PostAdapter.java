@@ -1,14 +1,17 @@
 package com.example.redditcloneapp.adapters;
 
 import android.app.Activity;
+import android.app.Dialog;
 import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ArrayAdapter;
 import android.widget.BaseAdapter;
 import android.widget.Button;
 import android.widget.ImageButton;
+import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -18,10 +21,13 @@ import com.example.redditcloneapp.MainActivity;
 import com.example.redditcloneapp.R;
 import com.example.redditcloneapp.model.Mokap;
 import com.example.redditcloneapp.model.Post;
+import com.example.redditcloneapp.model.Report;
 import com.example.redditcloneapp.model.User;
+import com.example.redditcloneapp.model.enums.ReportReason;
 import com.example.redditcloneapp.post.PostActivity;
 import com.example.redditcloneapp.ui.access.SignInActivity;
 import com.example.redditcloneapp.ui.community.CommunityActivity;
+import com.example.redditcloneapp.ui.profile.ProfileActivity;
 
 import java.io.Serializable;
 import java.time.format.DateTimeFormatter;
@@ -67,7 +73,45 @@ public class PostAdapter extends BaseAdapter {
         title.setText(post.getTitle());
         text.setText(post.getText());
         karma.setText(post.getPostReaction());
+
+        btnReport.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Dialog dialog = new Dialog(activity);
+                dialog.setContentView(R.layout.dialog_report);
+                TextView text = dialog.findViewById(R.id.dialog_report_text);
+                text.setText(view.getContext().getResources().getString(R.string.report_post_text) + " " + post.getTitle() + "?");
+
+                Spinner mySpinner = (Spinner) dialog.findViewById(R.id.dialog_report_spinner);
+                mySpinner.setAdapter(new ArrayAdapter<ReportReason>(activity, android.R.layout.simple_spinner_item, ReportReason.values()));
+                Button btnLeft = dialog.findViewById(R.id.dialog_report_submit);
+                btnLeft.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        Report report = new Report(Mokap.getReports().size()+1, (ReportReason) mySpinner.getSelectedItem(), user,  post);
+                        Toast toast = Toast.makeText(view.getContext(),report.toString(),Toast.LENGTH_SHORT);
+                        toast.show();
+                    }
+                });
+                Button btnRight = dialog.findViewById(R.id.dialog_report_cancel);
+                btnRight.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        dialog.dismiss();
+                    }
+                });
+                dialog.show();
+            }
+        });
         userText.setText(post.getUser().getUsername());
+        userText.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(activity, ProfileActivity.class);
+                intent.putExtra("user", post.getUser());
+                activity.startActivity(intent);
+            }
+        });
         flair.setText(post.getFlair().getName());
         community.setText(post.getCommunity().getName());
         community.setOnClickListener(new View.OnClickListener() {

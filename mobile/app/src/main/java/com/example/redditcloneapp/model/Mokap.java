@@ -128,9 +128,9 @@ public class Mokap implements Serializable {
     public static ArrayList<Report> getReports() {
         ArrayList<Report> reports = new ArrayList<>();
         reports.add(new Report(1, ReportReason.BREAKS_RULES, getUsers().get(0), getPosts().get(0), null));
-        reports.add(new Report(2, ReportReason.BREAKS_RULES, getUsers().get(1), null, getComments().get(0)));
-        reports.add(new Report(3, ReportReason.COPYRIGHT_VIOLATION, getUsers().get(0), null, getComments().get(1)));
-        reports.add(new Report(4, ReportReason.SELF_HARM_OR_SUICIDE, getUsers().get(1), null, getComments().get(2)));
+        reports.add(new Report(2, ReportReason.BREAKS_RULES, getUsers().get(1), getComments().get(0)));
+        reports.add(new Report(3, ReportReason.COPYRIGHT_VIOLATION, getUsers().get(0), getComments().get(1)));
+        reports.add(new Report(4, ReportReason.SELF_HARM_OR_SUICIDE, getUsers().get(1), getComments().get(2)));
         return reports;
     }
 

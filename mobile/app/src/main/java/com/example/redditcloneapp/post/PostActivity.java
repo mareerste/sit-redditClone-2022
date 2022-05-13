@@ -73,4 +73,7 @@ public class PostActivity extends AppCompatActivity {
         return post;
     }
 
+    public User getUser() {
+        return user;
+    }
 }

@@ -10,6 +10,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.example.redditcloneapp.MainActivity;
 import com.example.redditcloneapp.R;
 import com.example.redditcloneapp.model.Post;
 
@@ -31,7 +32,7 @@ public class PostCommentFragment extends ListFragment {
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-        CommentAdapter adapter = new CommentAdapter(getActivity(),((PostActivity)getActivity()).getPost());
+        CommentAdapter adapter = new CommentAdapter(getActivity(),((PostActivity)getActivity()).getPost(), ((PostActivity)getActivity()).getUser());
         setListAdapter(adapter);
     }
 }
