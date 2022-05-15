@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.example.redditcloneapp">
+    package="com.example.redditcloneapp" >
 
     <application
         android:allowBackup="true"
@@ -8,7 +8,26 @@
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
-        android:theme="@style/Theme.RedditCloneApp">
+        android:theme="@style/Theme.RedditCloneApp" >
+        <activity
+            android:name=".ui.community.mycommunities.CreateCommunityActivity"
+            android:exported="false"
+            android:label="@string/title_activity_create_community"
+            android:theme="@style/Theme.RedditCloneApp.NoActionBar" />
+        <activity
+            android:name=".ui.profile.ProfileActivity"
+            android:exported="false"
+            android:label="@string/title_activity_profile"
+            android:theme="@style/Theme.RedditCloneApp.NoActionBar" />
+        <activity
+            android:name=".ui.community.mycommunities.MyCommunityActivity"
+            android:exported="false" />
+        <activity
+            android:name=".ui.community.CommunityActivity"
+            android:exported="false" />
+        <activity
+            android:name=".post.PostActivity"
+            android:exported="false" />
         <activity
             android:name=".ui.access.SignUpActivity"
             android:exported="false" />
@@ -17,7 +36,7 @@
             android:exported="false" />
         <activity
             android:name=".ui.splash.SplashActivity"
-            android:exported="true">
+            android:exported="true" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 

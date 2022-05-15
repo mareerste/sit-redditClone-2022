@@ -4,6 +4,7 @@ import android.os.Build;
 
 import androidx.annotation.RequiresApi;
 
+import com.example.redditcloneapp.model.enums.ReactionType;
 import com.example.redditcloneapp.model.enums.ReportReason;
 
 import java.io.Serializable;
@@ -76,6 +77,26 @@ public class Report implements Serializable {
     }
 
     @RequiresApi(api = Build.VERSION_CODES.O)
+    public Report(Integer id, ReportReason reason, User user, Post post) {
+        this.id = id;
+        this.reason = reason;
+        this.timestamp = LocalDate.now();
+        this.user = user;
+        this.accepted = null;
+        this.post = post;
+    }
+
+    @RequiresApi(api = Build.VERSION_CODES.O)
+    public Report(Integer id, ReportReason reason, User user, Comment comment) {
+        this.id = id;
+        this.reason = reason;
+        this.timestamp = LocalDate.now();
+        this.user = user;
+        this.accepted = null;
+        this.comment = comment;
+    }
+
+    @RequiresApi(api = Build.VERSION_CODES.O)
     public Report(Integer id, ReportReason reason, User user, Post post, Comment comment) {
         this.id = id;
         this.reason = reason;
@@ -84,5 +105,18 @@ public class Report implements Serializable {
         this.accepted = null;
         this.post = post;
         this.comment = comment;
+    }
+
+    @Override
+    public String toString() {
+        return "Report{" +
+                "id=" + id +
+                ", reason=" + reason +
+                ", timestamp=" + timestamp +
+                ", user=" + user.getUsername() +
+                ", accepted=" + accepted +
+                ", post=" + ((post == null) ? " N/A" : (post.getId() + " " + post.getText())) +
+                ", comment=" + ((comment == null) ? " N/A" : comment.getText()) +
+                '}';
     }
 }

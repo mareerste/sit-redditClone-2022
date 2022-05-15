@@ -2,6 +2,7 @@ package com.example.redditcloneapp.model;
 
 import android.os.Build;
 
+import androidx.annotation.Nullable;
 import androidx.annotation.RequiresApi;
 import androidx.lifecycle.ViewModel;
 
@@ -105,4 +106,14 @@ public class User implements Serializable {
                 ", deleted=" + deleted +
                 '}';
     }
+
+    @Override
+    public boolean equals(@Nullable Object obj) {
+        User user = (User) obj;
+        if (user.getUsername().equals(this.username))
+            return true;
+        else
+            return false;
+    }
+
 }

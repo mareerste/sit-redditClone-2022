@@ -4,8 +4,11 @@ import android.os.Build;
 
 import androidx.annotation.RequiresApi;
 
+import com.example.redditcloneapp.model.enums.ReactionType;
+
 import java.io.Serializable;
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 
@@ -15,8 +18,8 @@ public class Comment implements Serializable {
     private LocalDate timestamp;
     private Boolean isDeleted;
     private User user;
-    private List<Comment> childComments;
-    private List<Reaction> reactions;
+    private List<Comment> childComments = new ArrayList<>();
+    private List<Reaction> reactions = new ArrayList<>();
 
     public Integer getId() {
         return id;
@@ -92,6 +95,17 @@ public class Comment implements Serializable {
         this.user = user;
         this.childComments = childComments;
         this.reactions = reactions;
+    }
+
+    public String getCommentReaction(){
+        int vote = 0;
+        for (Reaction r:this.reactions) {
+            if(r.getType() == ReactionType.UPVOTE)
+                vote++;
+            else
+                vote--;
+        }
+        return String.valueOf(vote);
     }
 
     @Override

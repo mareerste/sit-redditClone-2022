@@ -5,6 +5,7 @@ import android.os.Build;
 import androidx.annotation.RequiresApi;
 
 import java.io.Serializable;
+import java.lang.reflect.Member;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -12,7 +13,7 @@ import java.util.List;
 import java.util.Set;
 
 public class Community implements Serializable {
-    private Integer id;
+    private int id;
     private String name;
     private String description;
     private LocalDate creationDate;
@@ -21,6 +22,7 @@ public class Community implements Serializable {
     private String suspendedReason;
     private ArrayList<Flair> flairs = new ArrayList<>();
     private ArrayList<Moderator> moderators = new ArrayList<>();
+    private ArrayList<User> members = new ArrayList<>();
 
     public Integer getId() {
         return id;
@@ -94,6 +96,30 @@ public class Community implements Serializable {
         this.moderators = moderators;
     }
 
+    public void setId(int id) {
+        this.id = id;
+    }
+
+    public ArrayList<User> getMembers() {
+        return members;
+    }
+
+    public void setMembers(ArrayList<User> members) {
+        this.members = members;
+    }
+
+    @RequiresApi(api = Build.VERSION_CODES.O)
+    public Community(User user) {
+        this.id = Mokap.getCommunities().size()+1;
+        this.creationDate = LocalDate.now();
+        this.isSuspended = false;
+        this.suspendedReason = null;
+        ArrayList<Moderator> moderators = new ArrayList<Moderator>();
+        moderators.add((Moderator) user);
+        this.moderators = moderators;
+        this.members = new ArrayList<>();
+    }
+
     public Community(Integer id, String name, String description, LocalDate creationDate, ArrayList<String> rules, Boolean isSuspended, String suspendedReason, ArrayList<Flair> flairs, ArrayList<Moderator> moderators) {
         this.id = id;
         this.name = name;
@@ -106,7 +132,7 @@ public class Community implements Serializable {
         this.moderators = moderators;
     }
     @RequiresApi(api = Build.VERSION_CODES.O)
-    public Community(Integer id, String name, String description, ArrayList<String> rules, ArrayList<Flair> flairs, ArrayList<Moderator> moderators) {
+    public Community(Integer id, String name, String description, ArrayList<String> rules, ArrayList<Flair> flairs, ArrayList<Moderator> moderators, ArrayList<User> members) {
         this.id = id;
         this.name = name;
         this.description = description;
@@ -116,6 +142,7 @@ public class Community implements Serializable {
         this.suspendedReason = null;
         this.flairs = flairs;
         this.moderators = moderators;
+        this.members = members;
     }
 
     @Override
