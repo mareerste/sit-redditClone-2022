@@ -16,10 +16,10 @@ public class Mokap implements Serializable {
     @RequiresApi(api = Build.VERSION_CODES.O)
     public static ArrayList<User> getUsers() {
         ArrayList<User> users = new ArrayList<>();
-        users.add(new User("marko123", "marko123", "marko123@gmail.com", "Suplja prica", false));
-        users.add(new User("milana123", "milana123", "milana123@gmail.com", "Nije nego", false));
-        users.add(new User("kosta123", "kosta123", "milana123@gmail.com", "ma ajde sada", false));
-        users.add(new User("dragisa123", "dragisa123", "dragisa123@gmail.com", "A nije nego", false));
+        users.add(new User("marko123", "marko123", "marko123@gmail.com", "Suplja prica"));
+        users.add(new User("milana123", "milana123", "milana123@gmail.com", "Nije nego"));
+        users.add(new User("kosta123", "kosta123", "milana123@gmail.com", "ma ajde sada"));
+        users.add(new User("dragisa123", "dragisa123", "dragisa123@gmail.com", "A nije nego"));
         return users;
     }
 

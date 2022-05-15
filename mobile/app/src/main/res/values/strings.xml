@@ -87,5 +87,9 @@
     <string name="community_desc_error">Community desc can\'t be empty</string>
     <string name="community_rules_error">Community rules can\'t be empty</string>
     <string name="community_flairs_error">Community flairs can\'t be empty</string>
+    <string name="user_username_error">Profile username can\'t be empty</string>
+    <string name="user_password_error">Profile password can\'t be empty</string>
+    <string name="user_mail_error">Profile mail can\'t be empty, check mail form</string>
+    <string name="user_description_error">Profile description can\'t be empty</string>
 
 </resources>

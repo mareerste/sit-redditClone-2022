@@ -85,13 +85,13 @@ public class User implements Serializable {
     }
 
     @RequiresApi(api = Build.VERSION_CODES.O)
-    public User(String username, String password, String email, String description, Boolean deleted) {
+    public User(String username, String password, String email, String description) {
         this.username = username;
         this.password = password;
         this.email = email;
         this.registrationDate = LocalDate.now();
         this.description = description;
-        this.deleted = deleted;
+        this.deleted = false;
     }
 
     @Override

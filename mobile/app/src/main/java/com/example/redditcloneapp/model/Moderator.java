@@ -23,6 +23,6 @@ public class Moderator extends User implements Serializable {
 
     @RequiresApi(api = Build.VERSION_CODES.O)
     public Moderator(String username, String password, String email, String description, Boolean deleted) {
-        super(username, password, email, description, deleted);
+        super(username, password, email, description);
     }
 }
