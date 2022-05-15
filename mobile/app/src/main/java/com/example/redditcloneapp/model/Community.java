@@ -108,6 +108,18 @@ public class Community implements Serializable {
         this.members = members;
     }
 
+    @RequiresApi(api = Build.VERSION_CODES.O)
+    public Community(User user) {
+        this.id = Mokap.getCommunities().size()+1;
+        this.creationDate = LocalDate.now();
+        this.isSuspended = false;
+        this.suspendedReason = null;
+        ArrayList<Moderator> moderators = new ArrayList<Moderator>();
+        moderators.add((Moderator) user);
+        this.moderators = moderators;
+        this.members = new ArrayList<>();
+    }
+
     public Community(Integer id, String name, String description, LocalDate creationDate, ArrayList<String> rules, Boolean isSuspended, String suspendedReason, ArrayList<Flair> flairs, ArrayList<Moderator> moderators) {
         this.id = id;
         this.name = name;

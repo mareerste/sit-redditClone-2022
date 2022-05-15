@@ -19,8 +19,9 @@ import java.util.List;
 public class CommunityRulesAdapter extends BaseAdapter {
     private Activity activity;
     private ArrayList<String> rules;
+    private Community community;
 
-    public CommunityRulesAdapter (Activity activity, Community community){this.activity = activity;this.rules = community.getRules();}
+    public CommunityRulesAdapter (Activity activity, Community community){this.activity = activity;this.rules = community.getRules();this.community = community;}
     @Override
     public int getCount() {
         return rules.size();
@@ -49,7 +50,7 @@ public class CommunityRulesAdapter extends BaseAdapter {
             @Override
             public void onClick(View view) {
                 rules.remove(i);
-                FragmentTransition.to(CommunityRulesListFragment.newInstance(), (FragmentActivity) activity,false,R.id.my_community_rules_list_rules);
+                FragmentTransition.to(CommunityRulesListFragment.newInstance(community), (FragmentActivity) activity,false,R.id.my_community_rules_list_rules);
             }
         });
 

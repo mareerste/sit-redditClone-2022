@@ -22,13 +22,18 @@ import com.example.redditcloneapp.ui.community.mycommunities.MyCommunityActivity
 import java.util.ArrayList;
 
 public class CommunityRulesEditFragment extends Fragment {
+    private Community community;
 
-    public static CommunityRulesEditFragment newInstance(){return new CommunityRulesEditFragment();}
+    public CommunityRulesEditFragment(Community community) {
+        this.community = community;
+    }
+
+    public static CommunityRulesEditFragment newInstance(Community community){return new CommunityRulesEditFragment(community);}
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        FragmentTransition.to(CommunityRulesListFragment.newInstance(), getActivity(),false,R.id.my_community_rules_list_rules);
+        FragmentTransition.to(CommunityRulesListFragment.newInstance(community), getActivity(),false,R.id.my_community_rules_list_rules);
     }
 
     @Override
@@ -41,7 +46,7 @@ public class CommunityRulesEditFragment extends Fragment {
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-        Community community = ((MyCommunityActivity) getActivity()).getCommunity();
+//        Community community = ((MyCommunityActivity) getActivity()).getCommunity();
         EditText ruleText = getActivity().findViewById(R.id.my_community_rules_text_rule);
 
         Button addBtn = getActivity().findViewById(R.id.my_community_rules_btn_add);
@@ -55,7 +60,7 @@ public class CommunityRulesEditFragment extends Fragment {
                     ArrayList<String> rules = community.getRules();
                     rules.add(newText);
                     community.setRules(rules);
-                    FragmentTransition.to(CommunityRulesListFragment.newInstance(), getActivity(),false,R.id.my_community_rules_list_rules);
+                    FragmentTransition.to(CommunityRulesListFragment.newInstance(community), getActivity(),false,R.id.my_community_rules_list_rules);
                 }else{
                     Toast toast = Toast.makeText(getContext(), R.string.rule_add_error, Toast.LENGTH_SHORT);
                     toast.show();

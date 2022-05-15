@@ -15,6 +15,13 @@
         android:textSize="20sp"
         android:layout_marginBottom="15dp"
         app:layout_constraintTop_toTopOf="parent" />
+    <Button
+        android:id="@+id/my_communities_create_btn"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:text="@string/create_community"
+        android:layout_marginBottom="20dp"/>
 
     <RelativeLayout
         android:id="@+id/my_communities_list"

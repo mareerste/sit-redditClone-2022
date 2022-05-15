@@ -80,5 +80,12 @@
     <string name="report_post_text">Why are you reporting post </string>
     <string name="report_comment_text">Why are you reporting comment </string>
     <string name="sus_reason">Suspend reason..</string>
+    <string name="unblock">Unblock</string>
+    <string name="create_community">Create community</string>
+    <string name="title_activity_create_community">CreateCommunityActivity</string>
+    <string name="community_name_error">Community name can\'t be empty</string>
+    <string name="community_desc_error">Community desc can\'t be empty</string>
+    <string name="community_rules_error">Community rules can\'t be empty</string>
+    <string name="community_flairs_error">Community flairs can\'t be empty</string>
 
 </resources>

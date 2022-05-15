@@ -26,7 +26,7 @@ public class CommunityMembersFragment extends ListFragment {
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-        CommunityMembersAdapter adapter = new CommunityMembersAdapter(getActivity(), ((MyCommunityActivity)getActivity()).getCommunity());
+        CommunityMembersAdapter adapter = new CommunityMembersAdapter(getActivity(), ((MyCommunityActivity)getActivity()).getCommunity(), ((MyCommunityActivity)getActivity()).getUser());
         setListAdapter(adapter);
     }
 }

@@ -14,11 +14,13 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ScrollView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.redditcloneapp.R;
 import com.example.redditcloneapp.databinding.FragmentCommunityBasicInfoBinding;
 import com.example.redditcloneapp.databinding.FragmentProfileBinding;
 import com.example.redditcloneapp.model.Community;
+import com.example.redditcloneapp.tools.FragmentTransition;
 import com.example.redditcloneapp.ui.community.CommunityActivity;
 import com.example.redditcloneapp.ui.community.mycommunities.MyCommunityActivity;
 
@@ -73,6 +75,22 @@ public class CommunityBasicInfoFragment extends Fragment {
                 comDes.setVisibility(View.GONE);
                 scrollView.setVisibility(View.GONE);
                 comDesEdit.setVisibility(View.VISIBLE);
+            }
+        });
+        Button btnSaveBasic = getView().findViewById(R.id.my_community_basic_btn_save);
+        btnSaveBasic.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if (comNameEdit.getText().toString().equals("")) {
+                    Toast.makeText(getContext(), R.string.community_name_error, Toast.LENGTH_LONG).show();
+                } else if (comDesEdit.getText().toString().equals("")) {
+                    Toast.makeText(getContext(), R.string.community_desc_error, Toast.LENGTH_LONG).show();
+                } else {
+                    community.setName(comNameEdit.getText().toString());
+                    community.setDescription(comDesEdit.getText().toString());
+
+                    FragmentTransition.to(CommunityBasicInfoFragment.newInstance(), getActivity(),false,R.id.my_community_fragment);
+                }
             }
         });
 

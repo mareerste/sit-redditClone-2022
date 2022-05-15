@@ -20,8 +20,9 @@ public class CommunityFlairsEditAdapter extends BaseAdapter {
 
     private Activity activity;
     private ArrayList<Flair> flairs;
+    private Community community;
 
-    public CommunityFlairsEditAdapter(Activity activity, Community community){this.activity = activity; this.flairs=community.getFlairs();}
+    public CommunityFlairsEditAdapter(Activity activity, Community community){this.activity = activity; this.flairs=community.getFlairs();this.community = community;}
 
     @Override
     public int getCount() {
@@ -51,7 +52,7 @@ public class CommunityFlairsEditAdapter extends BaseAdapter {
             @Override
             public void onClick(View view) {
                 flairs.remove(i);
-                FragmentTransition.to(CommunityFairsListFragment.newInstance(), (FragmentActivity) activity,false, R.id.my_community_flairs_list_flairs);
+                FragmentTransition.to(CommunityFairsListFragment.newInstance(community), (FragmentActivity) activity,false, R.id.my_community_flairs_list_flairs);
             }
         });
 

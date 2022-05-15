@@ -11,6 +11,7 @@ import android.os.Build;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -23,6 +24,7 @@ import com.example.redditcloneapp.model.User;
 import com.example.redditcloneapp.post.PostCommentFragment;
 import com.example.redditcloneapp.tools.FragmentTransition;
 import com.example.redditcloneapp.ui.community.mycommunities.MyCommunityActivity;
+import com.example.redditcloneapp.ui.community.mycommunities.fragments.CommunityBasicInfoFragment;
 
 import java.time.format.DateTimeFormatter;
 import java.time.format.FormatStyle;
@@ -62,6 +64,7 @@ public class CommunityActivity extends AppCompatActivity {
                     public void onClick(View view) {
                         Intent intent = new Intent(CommunityActivity.this, MyCommunityActivity.class);
                         intent.putExtra("community", community);
+                        intent.putExtra("user", user);
                         startActivity(intent);
                     }
                 });
@@ -115,15 +118,43 @@ public class CommunityActivity extends AppCompatActivity {
                 suspendBtn.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
+//                        Dialog dialog = new Dialog(CommunityActivity.this);
+//                        dialog.setContentView(R.layout.dialog_suspend_community);
+//                        TextView textReason = dialog.findViewById(R.id.dialog_suspend_comm_reason);
+//                        Button btnLeft = dialog.findViewById(R.id.dialog_suspend_comm_sus_btn);
+//                        btnLeft.setText("Suspend");
+//                        Button btnRight = dialog.findViewById(R.id.dialog_suspend_comm_cancel_btn);
+//                        TextView commName = dialog.findViewById(R.id.dialog_suspend_comm_name);
+//                        commName.setText("Suspend community " + community.getName() );
                         Dialog dialog = new Dialog(CommunityActivity.this);
-                        dialog.setContentView(R.layout.dialog_suspend_community);
-                        TextView textReason = dialog.findViewById(R.id.dialog_suspend_comm_reason);
-                        Button btnLeft = dialog.findViewById(R.id.dialog_suspend_comm_sus_btn);
+                        dialog.setContentView(R.layout.dialog_ban_or_view_user);
+                        TextView text = dialog.findViewById(R.id.dialog_ban_or_view_text);
+                        text.setText("Suspend community " + community.getName() );
+                        Button btnLeft = dialog.findViewById(R.id.dialog_ban_or_view_btn_left);
                         btnLeft.setText("Suspend");
-                        Button btnRight = dialog.findViewById(R.id.dialog_suspend_comm_cancel_btn);
-                        TextView commName = dialog.findViewById(R.id.dialog_suspend_comm_name);
-                        commName.setText("Suspend community " + community.getName() );
+                        Button btnRight = dialog.findViewById(R.id.dialog_ban_or_view_btn_right);
+                        btnRight.setText(R.string.cancel);
+                        EditText susReason = dialog.findViewById(R.id.dialog_ban_or_view_edit_text);
+                        susReason.setVisibility(View.VISIBLE);
+                        susReason.setHint(R.string.sus_reason);
                         dialog.show();
+                        btnRight.setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View view) {
+                                dialog.dismiss();
+                            }
+                        });
+                        btnLeft.setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View view) {
+                                if(!susReason.getText().toString().equals("")){
+                                    community.setSuspended(true);
+                                    community.setSuspendedReason(susReason.getText().toString());
+                                    dialog.dismiss();
+                                }
+                            }
+                        });
+
                     }
                 });
 

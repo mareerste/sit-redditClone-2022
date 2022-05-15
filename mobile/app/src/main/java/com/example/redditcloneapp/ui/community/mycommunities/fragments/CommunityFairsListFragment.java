@@ -11,11 +11,18 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.example.redditcloneapp.R;
+import com.example.redditcloneapp.model.Community;
 import com.example.redditcloneapp.ui.community.CommunityFlairsAdapter;
 import com.example.redditcloneapp.ui.community.mycommunities.MyCommunityActivity;
 
 public class CommunityFairsListFragment extends ListFragment {
-    public static CommunityFairsListFragment newInstance(){return new CommunityFairsListFragment();}
+    private Community community;
+
+    public CommunityFairsListFragment(Community community) {
+        this.community = community;
+    }
+
+    public static CommunityFairsListFragment newInstance(Community community){return new CommunityFairsListFragment(community);}
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -27,7 +34,7 @@ public class CommunityFairsListFragment extends ListFragment {
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-        CommunityFlairsEditAdapter adapter = new CommunityFlairsEditAdapter(getActivity(),((MyCommunityActivity)getActivity()).getCommunity());
+        CommunityFlairsEditAdapter adapter = new CommunityFlairsEditAdapter(getActivity(),community);
         setListAdapter(adapter);
     }
 }

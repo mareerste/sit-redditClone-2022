@@ -43,6 +43,7 @@ public class MyCommunitiesFragment extends ListFragment {
         Community community = Mokap.getUsersCommunities((Moderator) ((MainActivity)getActivity()).getUser()).get(position);
         Intent intent = new Intent((MainActivity)getActivity(),MyCommunityActivity.class);
         intent.putExtra("community", community);
+        intent.putExtra("user", ((MainActivity)getActivity()).getUser());
         startActivity(intent);
     }
 

@@ -9,12 +9,18 @@ import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.Button;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.RequiresApi;
 
+import com.example.redditcloneapp.MainActivity;
 import com.example.redditcloneapp.R;
+import com.example.redditcloneapp.model.Banned;
 import com.example.redditcloneapp.model.Community;
+import com.example.redditcloneapp.model.Mokap;
 import com.example.redditcloneapp.model.User;
+import com.example.redditcloneapp.tools.FragmentTransition;
+import com.example.redditcloneapp.ui.community.mycommunities.MyCommunityActivity;
 import com.example.redditcloneapp.ui.profile.ProfileActivity;
 
 import java.time.format.DateTimeFormatter;
@@ -24,8 +30,10 @@ import java.util.ArrayList;
 public class CommunityMembersAdapter extends BaseAdapter {
     private Activity activity;
     private ArrayList<User> users;
+    private Community community;
+    private User moderator;
 
-    public CommunityMembersAdapter(Activity activity, Community community){this.activity = activity; this.users = community.getMembers();}
+    public CommunityMembersAdapter(Activity activity, Community community, User moderator){this.activity = activity; this.users = community.getMembers();this.community = community;this.moderator = moderator;}
 
     @Override
     public int getCount() {
@@ -42,6 +50,7 @@ public class CommunityMembersAdapter extends BaseAdapter {
         return i;
     }
 
+    @RequiresApi(api = Build.VERSION_CODES.O)
     @Override
     public View getView(int i, View view, ViewGroup viewGroup) {
         View vi = view;
@@ -50,7 +59,32 @@ public class CommunityMembersAdapter extends BaseAdapter {
             vi = activity.getLayoutInflater().inflate(R.layout.community_member_item, null);
         TextView username = vi.findViewById(R.id.my_community_members_username);
         username.setText(user.getUsername());
+
         Button btnBlock = vi.findViewById(R.id.my_community_members_block_btn);
+        Banned banned = Mokap.findBanned(community,user);
+
+        if (banned != null){
+            btnBlock.setText(R.string.unblock);
+            btnBlock.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    Toast toast = Toast.makeText(view.getContext(), "Unblocked", Toast.LENGTH_SHORT);
+                    toast.show();
+                    btnBlock.setText(R.string.block);
+                }
+            });
+        }else {
+            btnBlock.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    Banned banned = new Banned(Mokap.getBanneds().size()+1, moderator, community, user);
+                    Toast toast = Toast.makeText(view.getContext(), banned.toString(), Toast.LENGTH_SHORT);
+                    toast.show();
+                    btnBlock.setText(R.string.unblock);
+                }
+            });
+        }
+
         Button btnView = vi.findViewById(R.id.my_community_members_view_btn);
         btnView.setOnClickListener(new View.OnClickListener() {
             @RequiresApi(api = Build.VERSION_CODES.O)
@@ -59,20 +93,6 @@ public class CommunityMembersAdapter extends BaseAdapter {
                 Intent intent = new Intent(activity, ProfileActivity.class);
                 intent.putExtra("user", user);
                 activity.startActivity(intent);
-//                Dialog dialog = new Dialog(activity);
-//                dialog.setContentView(R.layout.fragment_profile);
-//                TextView textUsername = dialog.findViewById(R.id.profile_username);
-//                textUsername.setText(user.getUsername());
-//                TextView textPassword = dialog.findViewById(R.id.profile_password);
-//                textPassword.setText(user.getPassword());
-//                TextView textMail = dialog.findViewById(R.id.profile_email);
-//                textMail.setText(user.getEmail());
-//                TextView textDate = dialog.findViewById(R.id.profile_reg_date);
-//                textDate.setText(user.getRegistrationDate().format(DateTimeFormatter
-//                        .ofLocalizedDate(FormatStyle.LONG)));
-//                TextView textDescr = dialog.findViewById(R.id.profile_description);
-//                textDescr.setText(user.getDescription());
-//                dialog.show();
             }
         });
 

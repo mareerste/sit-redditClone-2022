@@ -159,4 +159,22 @@ public class Mokap implements Serializable {
         }
         return null;
     }
+
+    @RequiresApi(api = Build.VERSION_CODES.O)
+    public static ArrayList<Banned> getBanneds(){
+        ArrayList<Banned> banneds = new ArrayList<>();
+        banneds.add(new Banned(1, getModerators().get(0), getCommunities().get(0), getUsers().get(2)));
+        return banneds;
+    }
+
+    @RequiresApi(api = Build.VERSION_CODES.O)
+    public static Banned findBanned(Community community, User user){
+        ArrayList<Banned> banneds = getBanneds();
+        for (Banned ban:banneds) {
+            if (ban.getCommunity().getId() == community.getId() && ban.getUser().getUsername().equals(user.getUsername())){
+                return ban;
+            }
+        }
+        return null;
+    }
 }

@@ -87,23 +87,33 @@
             android:layout_weight="50"
             android:gravity="center">
             <Button
-                android:text="@string/suspend_com"
-                android:id="@+id/my_community_suspend_comm_btn"
-                android:layout_width="150dp"
-                android:layout_height="wrap_content"/>
-        </LinearLayout>
-        <LinearLayout
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_weight="50"
-            android:gravity="center">
-            <Button
                 android:text="@string/moderators"
                 android:id="@+id/my_community_moderators_btn"
                 android:layout_width="150dp"
                 android:layout_height="wrap_content"/>
         </LinearLayout>
+        <LinearLayout
+            android:id="@+id/my_community_suspend_comm_btn_layout"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="50"
+            android:gravity="center"
+            android:visibility="gone">
+            <Button
+                android:text="@string/suspend_com"
+                android:id="@+id/my_community_suspend_comm_btn"
+                android:layout_width="150dp"
+                android:layout_height="wrap_content"
+                />
+        </LinearLayout>
     </LinearLayout>
+    <Button
+        android:text="@string/save"
+        android:id="@+id/my_community_save_btn"
+        android:layout_gravity="right"
+        android:layout_marginRight="20dp"
+        android:layout_width="150dp"
+        android:layout_height="wrap_content"/>
     <RelativeLayout
         android:id="@+id/my_community_fragment"
         android:layout_margin="10dp"
