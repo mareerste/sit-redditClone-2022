@@ -51,6 +51,7 @@
             android:layout_height="wrap_content">
 
             <LinearLayout
+                android:id="@+id/post_comment_vote_layout"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="50"
@@ -78,6 +79,7 @@
             </LinearLayout>
 
             <LinearLayout
+                android:id="@+id/post_comment_reply_report_layout"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="50"

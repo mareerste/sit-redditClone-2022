@@ -19,6 +19,7 @@ import com.example.redditcloneapp.model.Mokap;
 import com.example.redditcloneapp.model.Post;
 import com.example.redditcloneapp.model.User;
 import com.example.redditcloneapp.post.PostActivity;
+import com.example.redditcloneapp.ui.profile.ProfileActivity;
 
 import java.time.format.DateTimeFormatter;
 import java.time.format.FormatStyle;
@@ -70,6 +71,14 @@ public class CommunityPostAdapter extends BaseAdapter {
         text.setText(post.getText());
         karma.setText(post.getPostReaction());
         userText.setText(post.getUser().getUsername());
+        userText.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(activity, ProfileActivity.class);
+                intent.putExtra("user", post.getUser());
+                activity.startActivity(intent);
+            }
+        });
         flair.setText(post.getFlair().getName());
         community.setText(post.getCommunity().getName());
         community.setOnClickListener(new View.OnClickListener() {
@@ -99,6 +108,11 @@ public class CommunityPostAdapter extends BaseAdapter {
                 toast.show();
             }
         });
+        if(user == null){
+            vi.findViewById(R.id.post_vote_layout).setVisibility(View.GONE);
+            btnReport.setVisibility(View.GONE);
+            userText.setClickable(false);
+        }
 
 
         return vi;

@@ -139,6 +139,11 @@ public class PostAdapter extends BaseAdapter {
                 toast.show();
             }
         });
+        if(user == null){
+            vi.findViewById(R.id.post_vote_layout).setVisibility(View.GONE);
+            btnReport.setVisibility(View.GONE);
+            userText.setClickable(false);
+        }
 
         return vi;
     }

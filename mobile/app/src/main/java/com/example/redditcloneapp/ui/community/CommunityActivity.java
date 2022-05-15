@@ -111,21 +111,15 @@ public class CommunityActivity extends AppCompatActivity {
                     }
                 }
             });
-
+            if(user == null){
+                newPostLayBtn.setVisibility(View.GONE);
+            }
             Button suspendBtn = findViewById(R.id.comm_suspend);
             if (user instanceof Administrator){
                 suspendBtn.setVisibility(View.VISIBLE);
                 suspendBtn.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
-//                        Dialog dialog = new Dialog(CommunityActivity.this);
-//                        dialog.setContentView(R.layout.dialog_suspend_community);
-//                        TextView textReason = dialog.findViewById(R.id.dialog_suspend_comm_reason);
-//                        Button btnLeft = dialog.findViewById(R.id.dialog_suspend_comm_sus_btn);
-//                        btnLeft.setText("Suspend");
-//                        Button btnRight = dialog.findViewById(R.id.dialog_suspend_comm_cancel_btn);
-//                        TextView commName = dialog.findViewById(R.id.dialog_suspend_comm_name);
-//                        commName.setText("Suspend community " + community.getName() );
                         Dialog dialog = new Dialog(CommunityActivity.this);
                         dialog.setContentView(R.layout.dialog_ban_or_view_user);
                         TextView text = dialog.findViewById(R.id.dialog_ban_or_view_text);
@@ -154,10 +148,8 @@ public class CommunityActivity extends AppCompatActivity {
                                 }
                             }
                         });
-
                     }
                 });
-
             }
 
         }

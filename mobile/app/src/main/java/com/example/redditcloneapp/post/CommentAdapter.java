@@ -2,6 +2,7 @@ package com.example.redditcloneapp.post;
 
 import android.app.Activity;
 import android.app.Dialog;
+import android.content.Intent;
 import android.os.Build;
 import android.view.View;
 import android.view.ViewGroup;
@@ -25,6 +26,7 @@ import com.example.redditcloneapp.model.Post;
 import com.example.redditcloneapp.model.Report;
 import com.example.redditcloneapp.model.User;
 import com.example.redditcloneapp.model.enums.ReportReason;
+import com.example.redditcloneapp.ui.profile.ProfileActivity;
 
 import java.time.format.DateTimeFormatter;
 import java.time.format.FormatStyle;
@@ -65,6 +67,14 @@ public class CommentAdapter extends BaseAdapter {
             vi = activity.getLayoutInflater().inflate(R.layout.comment_item, null);}
         TextView userText = vi.findViewById(R.id.post_comment_user);
         userText.setText(comment.getUser().getUsername());
+        userText.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(activity, ProfileActivity.class);
+                intent.putExtra("user", comment.getUser());
+                activity.startActivity(intent);
+            }
+        });
         TextView date = vi.findViewById(R.id.post_comment_date);
         date.setText(comment.getTimestamp().format(DateTimeFormatter
                 .ofLocalizedDate(FormatStyle.LONG)));
@@ -102,6 +112,12 @@ public class CommentAdapter extends BaseAdapter {
                 dialog.show();
             }
         });
+
+        if(user == null){
+            vi.findViewById(R.id.post_comment_vote_layout).setVisibility(View.GONE);
+            vi.findViewById(R.id.post_comment_reply_report_layout).setVisibility(View.GONE);
+            userText.setClickable(false);
+        }
 
         return vi;
     }

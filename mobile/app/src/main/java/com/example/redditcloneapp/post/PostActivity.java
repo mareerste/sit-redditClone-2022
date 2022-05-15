@@ -4,6 +4,7 @@ import androidx.annotation.Nullable;
 import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
 import android.view.View;
@@ -16,6 +17,7 @@ import com.example.redditcloneapp.adapters.PostAdapter;
 import com.example.redditcloneapp.model.Post;
 import com.example.redditcloneapp.model.User;
 import com.example.redditcloneapp.tools.FragmentTransition;
+import com.example.redditcloneapp.ui.profile.ProfileActivity;
 
 import java.time.format.DateTimeFormatter;
 import java.time.format.FormatStyle;
@@ -43,6 +45,14 @@ public class PostActivity extends AppCompatActivity {
         text.setText(post.getText());
         karma.setText(post.getPostReaction());
         userText.setText(post.getUser().getUsername());
+        userText.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(PostActivity.this, ProfileActivity.class);
+                intent.putExtra("user", post.getUser());
+                startActivity(intent);
+            }
+        });
         creationDate.setText(post.getCreationDate().format(DateTimeFormatter
                 .ofLocalizedDate(FormatStyle.LONG)));
         flair.setText(post.getFlair().getName());
@@ -66,6 +76,19 @@ public class PostActivity extends AppCompatActivity {
                     commentsLay.setVisibility(View.GONE);
             }
         });
+
+        Button reportBtn = findViewById(R.id.post_single_report_btn);
+        Button joinBtn = findViewById(R.id.post_single_join_community_btn);
+        View commentLayout = findViewById(R.id.post_single_layout_comment);
+//        TODO: dialog na click
+
+        if(user == null){
+            findViewById(R.id.post_single_vote_layout).setVisibility(View.GONE);
+            reportBtn.setVisibility(View.GONE);
+            joinBtn.setVisibility(View.GONE);
+            commentLayout.setVisibility(View.GONE);
+            userText.setClickable(false);
+        }
         FragmentTransition.to(PostCommentFragment.newInstance(), this, false, R.id.post_single_comments_fragment);
 
     }
