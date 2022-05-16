@@ -5,107 +5,19 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="4c9ec0fb-919f-4c45-9c14-356f68dcf3d1" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/.idea/.name" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/runConfigurations.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/vcs.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/mobile/app/.idea/.gitignore" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/mobile/app/.idea/gradle.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/mobile/app/.idea/misc.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/mobile/app/.idea/modules.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/mobile/app/.idea/vcs.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/mobile/app/src/main/java/com/example/redditcloneapp/post/CommentAdapter.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/mobile/app/src/main/java/com/example/redditcloneapp/post/CommentCommentsFragment.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/mobile/app/src/main/java/com/example/redditcloneapp/post/PostActivity.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/mobile/app/src/main/java/com/example/redditcloneapp/post/PostCommentFragment.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/mobile/app/src/main/java/com/example/redditcloneapp/tools/FragmentTransition.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/mobile/app/src/main/java/com/example/redditcloneapp/ui/community/CommunityActivity.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/mobile/app/src/main/java/com/example/redditcloneapp/ui/community/CommunityFlairsAdapter.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/mobile/app/src/main/java/com/example/redditcloneapp/ui/community/CommunityFlairsFragment.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/mobile/app/src/main/java/com/example/redditcloneapp/ui/community/CommunityModeratorsAdapter.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/mobile/app/src/main/java/com/example/redditcloneapp/ui/community/CommunityModeratorsFragment.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/mobile/app/src/main/java/com/example/redditcloneapp/ui/community/CommunityPostAdapter.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/mobile/app/src/main/java/com/example/redditcloneapp/ui/community/CommunityPostsFragment.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/mobile/app/src/main/java/com/example/redditcloneapp/ui/community/CommunityRuleAdapter.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/mobile/app/src/main/java/com/example/redditcloneapp/ui/community/CommunityRulesFragment.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/mobile/app/src/main/java/com/example/redditcloneapp/ui/community/mycommunities/CreateCommunityActivity.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/mobile/app/src/main/java/com/example/redditcloneapp/ui/community/mycommunities/First2Fragment.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/mobile/app/src/main/java/com/example/redditcloneapp/ui/community/mycommunities/MyCommunitiesAdapter.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/mobile/app/src/main/java/com/example/redditcloneapp/ui/community/mycommunities/MyCommunitiesFragment.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/mobile/app/src/main/java/com/example/redditcloneapp/ui/community/mycommunities/MyCommunityActivity.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/mobile/app/src/main/java/com/example/redditcloneapp/ui/community/mycommunities/Second2Fragment.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/mobile/app/src/main/java/com/example/redditcloneapp/ui/community/mycommunities/fragments/CommunityBasicInfoFragment.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/mobile/app/src/main/java/com/example/redditcloneapp/ui/community/mycommunities/fragments/CommunityFairsListFragment.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/mobile/app/src/main/java/com/example/redditcloneapp/ui/community/mycommunities/fragments/CommunityFlairsEditAdapter.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/mobile/app/src/main/java/com/example/redditcloneapp/ui/community/mycommunities/fragments/CommunityFlairsEditFragment.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/mobile/app/src/main/java/com/example/redditcloneapp/ui/community/mycommunities/fragments/CommunityMembersAdapter.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/mobile/app/src/main/java/com/example/redditcloneapp/ui/community/mycommunities/fragments/CommunityMembersFragment.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/mobile/app/src/main/java/com/example/redditcloneapp/ui/community/mycommunities/fragments/CommunityModeratorsEditFragment.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/mobile/app/src/main/java/com/example/redditcloneapp/ui/community/mycommunities/fragments/CommunityRulesAdapter.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/mobile/app/src/main/java/com/example/redditcloneapp/ui/community/mycommunities/fragments/CommunityRulesEditFragment.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/mobile/app/src/main/java/com/example/redditcloneapp/ui/community/mycommunities/fragments/CommunityRulesListFragment.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/mobile/app/src/main/java/com/example/redditcloneapp/ui/profile/FirstFragment.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/mobile/app/src/main/java/com/example/redditcloneapp/ui/profile/ProfileActivity.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/mobile/app/src/main/java/com/example/redditcloneapp/ui/profile/SecondFragment.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/mobile/app/src/main/java/com/example/redditcloneapp/ui/report/ReportAdapter.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/mobile/app/src/main/res/drawable/ic_baseline_arrow_drop_down_24.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/mobile/app/src/main/res/drawable/ic_baseline_arrow_drop_up_24.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/mobile/app/src/main/res/drawable/ic_baseline_attach_file_24.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/mobile/app/src/main/res/layout/activity_community.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/mobile/app/src/main/res/layout/activity_create_community.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/mobile/app/src/main/res/layout/activity_my_community.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/mobile/app/src/main/res/layout/activity_post.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/mobile/app/src/main/res/layout/activity_profile.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/mobile/app/src/main/res/layout/comment_item.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/mobile/app/src/main/res/layout/community_member_item.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/mobile/app/src/main/res/layout/content_create_community.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/mobile/app/src/main/res/layout/content_profile.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/mobile/app/src/main/res/layout/dialog_ban_or_view_user.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/mobile/app/src/main/res/layout/dialog_report.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/mobile/app/src/main/res/layout/dialog_suspend_community.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/mobile/app/src/main/res/layout/fragment_comment_comments.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/mobile/app/src/main/res/layout/fragment_community_basic_info.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/mobile/app/src/main/res/layout/fragment_community_fairs_list.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/mobile/app/src/main/res/layout/fragment_community_flairs.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/mobile/app/src/main/res/layout/fragment_community_flairs_edit.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/mobile/app/src/main/res/layout/fragment_community_members.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/mobile/app/src/main/res/layout/fragment_community_moderators.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/mobile/app/src/main/res/layout/fragment_community_moderators_edit.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/mobile/app/src/main/res/layout/fragment_community_posts.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/mobile/app/src/main/res/layout/fragment_community_rules.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/mobile/app/src/main/res/layout/fragment_community_rules_edit.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/mobile/app/src/main/res/layout/fragment_community_rules_list.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/mobile/app/src/main/res/layout/fragment_first.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/mobile/app/src/main/res/layout/fragment_first2.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/mobile/app/src/main/res/layout/fragment_my_communities.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/mobile/app/src/main/res/layout/fragment_post_comment.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/mobile/app/src/main/res/layout/fragment_second.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/mobile/app/src/main/res/layout/fragment_second2.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/mobile/app/src/main/res/layout/report_item.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/mobile/app/src/main/res/layout/rule_edit_item.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/mobile/app/src/main/res/layout/rule_item.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/mobile/app/src/main/res/navigation/nav_graph.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/mobile/app/src/main/res/navigation/nav_graph2.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/mobile/.idea/deploymentTargetDropDown.xml" beforeDir="false" />
+      <change afterPath="$PROJECT_DIR$/mobile/app/src/main/java/com/example/redditcloneapp/post/PostEditActivity.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/mobile/app/src/main/java/com/example/redditcloneapp/ui/profile/CommentsActivity.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/mobile/app/src/main/java/com/example/redditcloneapp/ui/profile/MyPostsAdapter.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/mobile/app/src/main/java/com/example/redditcloneapp/ui/profile/PostsActivity.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/mobile/app/src/main/res/layout/activity_comments.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/mobile/app/src/main/res/layout/activity_post_edit.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/mobile/app/src/main/res/layout/activity_posts.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/mobile/app/src/main/res/layout/my_post_item.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/mobile/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/mobile/.idea/misc.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/mobile/app/build.gradle" beforeDir="false" afterPath="$PROJECT_DIR$/mobile/app/build.gradle" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/mobile/app/src/main/AndroidManifest.xml" beforeDir="false" afterPath="$PROJECT_DIR$/mobile/app/src/main/AndroidManifest.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/mobile/app/src/main/java/com/example/redditcloneapp/MainActivity.java" beforeDir="false" afterPath="$PROJECT_DIR$/mobile/app/src/main/java/com/example/redditcloneapp/MainActivity.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/mobile/app/src/main/java/com/example/redditcloneapp/adapters/PostAdapter.java" beforeDir="false" afterPath="$PROJECT_DIR$/mobile/app/src/main/java/com/example/redditcloneapp/adapters/PostAdapter.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/mobile/app/src/main/java/com/example/redditcloneapp/model/Banned.java" beforeDir="false" afterPath="$PROJECT_DIR$/mobile/app/src/main/java/com/example/redditcloneapp/model/Banned.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/mobile/app/src/main/java/com/example/redditcloneapp/model/Comment.java" beforeDir="false" afterPath="$PROJECT_DIR$/mobile/app/src/main/java/com/example/redditcloneapp/model/Comment.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/mobile/app/src/main/java/com/example/redditcloneapp/model/Community.java" beforeDir="false" afterPath="$PROJECT_DIR$/mobile/app/src/main/java/com/example/redditcloneapp/model/Community.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/mobile/app/src/main/java/com/example/redditcloneapp/model/Moderator.java" beforeDir="false" afterPath="$PROJECT_DIR$/mobile/app/src/main/java/com/example/redditcloneapp/model/Moderator.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/mobile/app/src/main/java/com/example/redditcloneapp/model/Mokap.java" beforeDir="false" afterPath="$PROJECT_DIR$/mobile/app/src/main/java/com/example/redditcloneapp/model/Mokap.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/mobile/app/src/main/java/com/example/redditcloneapp/model/Post.java" beforeDir="false" afterPath="$PROJECT_DIR$/mobile/app/src/main/java/com/example/redditcloneapp/model/Post.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/mobile/app/src/main/java/com/example/redditcloneapp/model/Report.java" beforeDir="false" afterPath="$PROJECT_DIR$/mobile/app/src/main/java/com/example/redditcloneapp/model/Report.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/mobile/app/src/main/java/com/example/redditcloneapp/model/User.java" beforeDir="false" afterPath="$PROJECT_DIR$/mobile/app/src/main/java/com/example/redditcloneapp/model/User.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/mobile/app/src/main/java/com/example/redditcloneapp/model/enums/ReportReason.java" beforeDir="false" afterPath="$PROJECT_DIR$/mobile/app/src/main/java/com/example/redditcloneapp/model/enums/ReportReason.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/mobile/app/src/main/java/com/example/redditcloneapp/ui/community/CommunityFragment.java" beforeDir="false" afterPath="$PROJECT_DIR$/mobile/app/src/main/java/com/example/redditcloneapp/ui/community/CommunityFragment.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/mobile/app/src/main/java/com/example/redditcloneapp/ui/community/CommunityViewModel.java" beforeDir="false" afterPath="$PROJECT_DIR$/mobile/app/src/main/java/com/example/redditcloneapp/ui/community/CommunityViewModel.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/mobile/app/src/main/java/com/example/redditcloneapp/ui/home/HomeFragment.java" beforeDir="false" afterPath="$PROJECT_DIR$/mobile/app/src/main/java/com/example/redditcloneapp/ui/home/HomeFragment.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/mobile/app/src/main/java/com/example/redditcloneapp/ui/report/ReportFragment.java" beforeDir="false" afterPath="$PROJECT_DIR$/mobile/app/src/main/java/com/example/redditcloneapp/ui/report/ReportFragment.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/mobile/app/src/main/res/layout/fragment_community.xml" beforeDir="false" afterPath="$PROJECT_DIR$/mobile/app/src/main/res/layout/fragment_community.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/mobile/app/src/main/java/com/example/redditcloneapp/ui/community/CommunityPostAdapter.java" beforeDir="false" afterPath="$PROJECT_DIR$/mobile/app/src/main/java/com/example/redditcloneapp/ui/community/CommunityPostAdapter.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/mobile/app/src/main/java/com/example/redditcloneapp/ui/profile/ProfileFragment.java" beforeDir="false" afterPath="$PROJECT_DIR$/mobile/app/src/main/java/com/example/redditcloneapp/ui/profile/ProfileFragment.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/mobile/app/src/main/res/layout/fragment_profile.xml" beforeDir="false" afterPath="$PROJECT_DIR$/mobile/app/src/main/res/layout/fragment_profile.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/mobile/app/src/main/res/values/strings.xml" beforeDir="false" afterPath="$PROJECT_DIR$/mobile/app/src/main/res/values/strings.xml" afterDir="false" />
     </list>

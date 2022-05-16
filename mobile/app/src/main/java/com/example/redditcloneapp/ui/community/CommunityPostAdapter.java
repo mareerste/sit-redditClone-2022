@@ -114,7 +114,6 @@ public class CommunityPostAdapter extends BaseAdapter {
             userText.setClickable(false);
         }
 
-
         return vi;
     }
 }

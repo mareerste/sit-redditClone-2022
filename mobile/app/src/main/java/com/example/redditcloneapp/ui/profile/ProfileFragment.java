@@ -2,6 +2,7 @@ package com.example.redditcloneapp.ui.profile;
 
 import android.app.Activity;
 import android.app.Dialog;
+import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
 import android.text.Layout;
@@ -110,6 +111,16 @@ public class ProfileFragment extends Fragment {
                 editableLayout.setVisibility(View.GONE);
                 saveLayout.setVisibility(View.GONE);
                 editLayout.setVisibility(View.VISIBLE);
+            }
+        });
+
+        Button postsBtn = view.findViewById(R.id.profile_my_posts_btn);
+        postsBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(getActivity(), PostsActivity.class);
+                intent.putExtra("user", user);
+                startActivity(intent);
             }
         });
 

@@ -91,5 +91,10 @@
     <string name="user_password_error">Profile password can\'t be empty</string>
     <string name="user_mail_error">Profile mail can\'t be empty, check mail form</string>
     <string name="user_description_error">Profile description can\'t be empty</string>
+    <string name="post_title_error">Post title can\'t be empty</string>
+    <string name="post_text_error">Post text can\'t be empty</string>
+    <string name="my_posts">My posts</string>
+    <string name="my_comments">My comments</string>
+    <string name="flair">Flair</string>
 
 </resources>

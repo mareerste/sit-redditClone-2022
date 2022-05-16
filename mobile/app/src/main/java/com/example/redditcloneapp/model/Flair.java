@@ -29,9 +29,6 @@ public class Flair implements Serializable {
 
     @Override
     public String toString() {
-        return "Flair{" +
-                "id=" + id +
-                ", name='" + name + '\'' +
-                '}';
+        return name ;
     }
 }

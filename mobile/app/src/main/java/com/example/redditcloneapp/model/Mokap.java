@@ -177,4 +177,15 @@ public class Mokap implements Serializable {
         }
         return null;
     }
+
+    @RequiresApi(api = Build.VERSION_CODES.O)
+    public static ArrayList<Post>findUserPosts(User user){
+        ArrayList<Post> allPosts = getPosts();
+        ArrayList<Post> posts = new ArrayList<>();
+        for (Post p:allPosts) {
+            if (p.getUser().getUsername().equals(user.getUsername()))
+                posts.add(p);
+        }
+        return posts;
+    }
 }
