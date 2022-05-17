@@ -17,6 +17,7 @@ import rs.ac.uns.ftn.informatika.redditClone.service.UserService;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 import java.util.Set;
 
 @RestController
@@ -70,8 +71,9 @@ public class CommunityController {
         community.setSuspendedReason(communityDTO.getSuspendedReason());
         community.setModerators(communityDTO.getModerators());
         community.setFlairs(communityDTO.getFlairs());
-
         community = communityService.save(community);
+        User user = community.getModerators().iterator().next();
+        setModerator(user.getUsername());
         return new ResponseEntity<>(new CommunityWithFlairsDTO(community), HttpStatus.CREATED);
     }
 
