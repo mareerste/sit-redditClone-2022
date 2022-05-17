@@ -3,8 +3,10 @@ package rs.ac.uns.ftn.informatika.redditClone.model.dto;
 import rs.ac.uns.ftn.informatika.redditClone.model.entity.Community;
 import rs.ac.uns.ftn.informatika.redditClone.model.entity.Flair;
 import rs.ac.uns.ftn.informatika.redditClone.model.entity.Moderator;
+import rs.ac.uns.ftn.informatika.redditClone.model.entity.User;
 
 import java.io.Serializable;
+import java.time.LocalDate;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -12,12 +14,12 @@ public class CommunityWithFlairsDTO implements Serializable {
     private Integer id;
     private String name;
     private String description;
-    private String creationDate;
+    private LocalDate creationDate;
     private Set<String> rules = new HashSet<>();
     private Boolean isSuspended;
     private String suspendedReason;
     private Set<Flair> flairs = new HashSet<>();
-    private Set<Moderator> moderators = new HashSet<>();
+    private Set<User> moderators = new HashSet<>();
 
     public Integer getId() {
         return id;
@@ -37,10 +39,10 @@ public class CommunityWithFlairsDTO implements Serializable {
     public void setDescription(String description) {
         this.description = description;
     }
-    public String getCreationDate() {
+    public LocalDate getCreationDate() {
         return creationDate;
     }
-    public void setCreationDate(String creationDate) {
+    public void setCreationDate(LocalDate creationDate) {
         this.creationDate = creationDate;
     }
     public Set<String> getRules() {
@@ -61,10 +63,10 @@ public class CommunityWithFlairsDTO implements Serializable {
     public void setSuspendedReason(String suspendedReason) {
         this.suspendedReason = suspendedReason;
     }
-    public Set<Moderator> getModerators() {
+    public Set<User> getModerators() {
         return moderators;
     }
-    public void setModerators(Set<Moderator> moderators) {
+    public void setModerators(Set<User> moderators) {
         this.moderators = moderators;
     }
     public Set<Flair> getFlairs() {
@@ -76,7 +78,7 @@ public class CommunityWithFlairsDTO implements Serializable {
     public CommunityWithFlairsDTO() {
     }
 
-    public CommunityWithFlairsDTO(Integer id, String name, String description, String creationDate, Set<String> rules, Boolean isSuspended, String suspendedReason, Set<Moderator> moderators, Set<Flair> flairs) {
+    public CommunityWithFlairsDTO(Integer id, String name, String description, LocalDate creationDate, Set<String> rules, Boolean isSuspended, String suspendedReason, Set<User> moderators, Set<Flair> flairs) {
         this.id = id;
         this.name = name;
         this.description = description;

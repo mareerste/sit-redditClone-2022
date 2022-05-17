@@ -23,17 +23,14 @@ public class Post {
 //    private Set<Comment> comments = new HashSet<>();
 //    @OneToMany(mappedBy = "post",fetch = FetchType.LAZY,cascade = CascadeType.ALL)
 //    private Set<Reaction> reactions = new HashSet<>();
-    @ManyToOne(fetch = FetchType.EAGER,cascade = CascadeType.ALL)
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "user_id", nullable = true)
     private User user;
 //    @OneToMany(mappedBy = "post",fetch = FetchType.LAZY,cascade = CascadeType.ALL)
 //    private Set<Report> reports = new HashSet<>();
-    @ManyToOne(cascade = CascadeType.ALL,fetch = FetchType.EAGER)
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "flair_id",nullable = true)
     private Flair flair;
-    @ManyToOne(cascade = CascadeType.ALL,fetch = FetchType.EAGER)
-    @JoinColumn(name = "community_id", nullable = true)
-    private Community community;
 
     public Integer getId() {
         return id;
@@ -99,37 +96,29 @@ public class Post {
         isDeleted = deleted;
     }
 
-    public Community getCommunity() {
-        return community;
-    }
-
-    public void setCommunity(Community community) {
-        this.community = community;
-    }
-
     public Post() {
+        this.creationDate = LocalDate.now();
+        this.isDeleted = false;
     }
 
-    public Post(String title, String text, String imagePath, User user, Flair flair, Community community) {
+    public Post(String title, String text, String imagePath, User user, Flair flair) {
         this.title = title;
         this.text = text;
         this.imagePath = imagePath;
         this.user = user;
         this.isDeleted = false;
         this.flair = flair;
-        this.community = community;
     }
 
-    public Post(String title, String text, User user, Flair flair, Community community) {
+    public Post(String title, String text, User user, Flair flair) {
         this.title = title;
         this.text = text;
         this.isDeleted = false;
         this.user = user;
         this.flair = flair;
-        this.community = community;
     }
 
-    public Post(String title, String text, LocalDate creationDate, String imagePath, User user, Flair flair, Community community) {
+    public Post(String title, String text, LocalDate creationDate, String imagePath, User user, Flair flair) {
         this.title = title;
         this.text = text;
         this.creationDate = creationDate;
@@ -137,7 +126,6 @@ public class Post {
         this.isDeleted = false;
         this.user = user;
         this.flair = flair;
-        this.community = community;
     }
 
     @Override

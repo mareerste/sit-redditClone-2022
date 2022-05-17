@@ -1,6 +1,7 @@
 package rs.ac.uns.ftn.informatika.redditClone.model.entity;
 
 import rs.ac.uns.ftn.informatika.redditClone.model.enumerations.ReactionType;
+import rs.ac.uns.ftn.informatika.redditClone.model.enumerations.ReportReason;
 
 import javax.persistence.*;
 import java.time.LocalDate;
@@ -11,13 +12,13 @@ public class Report {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
     @Column(name = "reason",nullable = false)
-    private ReactionType reason;
+    private ReportReason reason;
     @Column(name = "date",nullable = false)
     private LocalDate timestamp;
     @ManyToOne(fetch = FetchType.EAGER)
-    @JoinColumn(name = "user_id",nullable = true)
+    @JoinColumn(name = "user_id",nullable = false)
     private User user;
-    @Column(name = "accepted", nullable = false)
+    @Column(name = "accepted", nullable = true)
     private Boolean accepted;
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "post_id",nullable = true)
@@ -34,11 +35,11 @@ public class Report {
         this.id = id;
     }
 
-    public ReactionType getReason() {
+    public ReportReason getReason() {
         return reason;
     }
 
-    public void setReason(ReactionType reason) {
+    public void setReason(ReportReason reason) {
         this.reason = reason;
     }
 
@@ -85,14 +86,14 @@ public class Report {
     public Report() {
     }
 
-    public Report(ReactionType reason, User user, Post post) {
+    public Report(ReportReason reason, User user, Post post) {
         this.reason = reason;
         this.timestamp = LocalDate.now();
         this.user = user;
         this.accepted = null;
         this.post = post;
     }
-    public Report(ReactionType reason, User user, Comment comment) {
+    public Report(ReportReason reason, User user, Comment comment) {
         this.reason = reason;
         this.timestamp = LocalDate.now();
         this.user = user;
@@ -100,7 +101,7 @@ public class Report {
         this.comment = comment;
     }
 
-    public Report(Integer id, ReactionType reason, LocalDate timestamp, User user, Boolean accepted, Post post, Comment commen) {
+    public Report(Integer id, ReportReason reason, LocalDate timestamp, User user, Boolean accepted, Post post, Comment comment) {
         this.id = id;
         this.reason = reason;
         this.timestamp = timestamp;

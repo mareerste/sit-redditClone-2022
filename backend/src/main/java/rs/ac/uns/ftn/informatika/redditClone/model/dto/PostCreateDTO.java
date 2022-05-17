@@ -13,8 +13,7 @@ public class PostCreateDTO implements Serializable {
     private String imagePath;
     private Boolean isDeleted;
     private UserCreateDTO user;
-    private FlairDTO flair;
-    private CommunityDTO community;
+    private FlairCreateDTO flair;
 
     public Integer getId() {
         return id;
@@ -52,11 +51,8 @@ public class PostCreateDTO implements Serializable {
     public void setUser(UserCreateDTO user) {
         this.user = user;
     }
-    public FlairDTO getFlair() {
+    public FlairCreateDTO getFlair() {
         return flair;
-    }
-    public void setFlairs(FlairDTO flairs) {
-        this.flair = flairs;
     }
     public Boolean getDeleted() {
         return isDeleted;
@@ -64,27 +60,20 @@ public class PostCreateDTO implements Serializable {
     public void setDeleted(Boolean deleted) {
         isDeleted = deleted;
     }
-    public CommunityDTO getCommunity() {
-        return community;
-    }
-    public void setCommunity(CommunityDTO community) {
-        this.community = community;
-    }
-    public void setFlair(FlairDTO flair) {this.flair = flair;}
+    public void setFlair(FlairCreateDTO flair) {this.flair = flair;}
     public PostCreateDTO() {
     }
-    public PostCreateDTO(Integer id, String title, String text, LocalDate creationDate, String imagePath, Boolean isDeleted, UserCreateDTO user, FlairDTO flair, CommunityDTO community) {
+    public PostCreateDTO(Integer id, String title, String text, String imagePath, UserCreateDTO user, FlairCreateDTO flair) {
         this.id = id;
         this.title = title;
         this.text = text;
-        this.creationDate = creationDate;
+        this.creationDate = LocalDate.now();
         this.imagePath = imagePath;
-        this.isDeleted = isDeleted;
+        this.isDeleted = false;
         this.user = user;
         this.flair = flair;
-        this.community = community;
     }
-    public PostCreateDTO(Post post){this(post.getId(), post.getTitle(), post.getText(), post.getCreationDate(), post.getImagePath(), post.getDeleted(), new UserCreateDTO(post.getUser()),new FlairDTO(post.getFlair()), new CommunityDTO(post.getCommunity()));}
+    public PostCreateDTO(Post post){this(post.getId(), post.getTitle(), post.getText(), post.getImagePath(), new UserCreateDTO(post.getUser()),new FlairCreateDTO(post.getFlair()));}
 
     @Override
     public String toString() {

@@ -9,7 +9,5 @@ import rs.ac.uns.ftn.informatika.redditClone.model.entity.Post;
 import java.util.List;
 
 public interface PostRepository extends JpaRepository<Post,Integer> {
-    public List<Post> findByCommunity(Community community);
-    public List<Post> findByCommunityAndIsDeleted(Community community, Boolean isDeleted);
     public Page<Post> findAll(Pageable pageable);
 }

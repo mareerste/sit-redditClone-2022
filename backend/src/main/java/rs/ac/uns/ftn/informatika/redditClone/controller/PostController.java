@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.*;
 import rs.ac.uns.ftn.informatika.redditClone.model.dto.CommentDTO;
 import rs.ac.uns.ftn.informatika.redditClone.model.dto.PostCreateDTO;
 import rs.ac.uns.ftn.informatika.redditClone.model.dto.PostDTO;
+import rs.ac.uns.ftn.informatika.redditClone.model.dto.UserDTO;
 import rs.ac.uns.ftn.informatika.redditClone.model.entity.*;
 import rs.ac.uns.ftn.informatika.redditClone.service.*;
 
@@ -73,22 +74,14 @@ public class PostController {
     }
 
     @PostMapping(consumes = "application/json")
-    public ResponseEntity<PostCreateDTO> savePost(@RequestBody PostCreateDTO postDTO){
-        Post post = new Post();
-        post.setTitle(postDTO.getTitle());
-        post.setText(postDTO.getText());
-        post.setCreationDate(postDTO.getCreationDate());
-        Community community = communityService.findOne(postDTO.getCommunity().getId());
-        post.setCommunity(community);
-        post.setImagePath(postDTO.getImagePath());
-        post.setDeleted(postDTO.getDeleted());
-        User user = userService.findOne(postDTO.getUser().getUsername());
-        post.setUser(user);
-        Flair flair = flairService.findOne(postDTO.getFlair().getId());
-        post.setFlair(flair);
-
-        post = postService.save(post);
-        return new ResponseEntity<>(new PostCreateDTO(post),HttpStatus.CREATED);
+    public ResponseEntity<PostDTO> savePost(@RequestBody PostCreateDTO postDTO){
+        if(postDTO.getTitle().equals("")||postDTO.getTitle() == null || postDTO.getText().equals("")||postDTO.getText() == null)
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        Post post = postService.save(postDTO);
+        if(post == null){
+            return new ResponseEntity<>(null, HttpStatus.NOT_ACCEPTABLE);
+        }
+        return new ResponseEntity<>(new PostDTO(post),HttpStatus.CREATED);
     }
 
     @PutMapping(consumes = "application/json")
@@ -116,7 +109,9 @@ public class PostController {
         Post post = postService.findOne(id);
 
         if (post != null) {
-            postService.delete(post);
+            post.setDeleted(true);
+            postService.save(post);
+//            postService.delete(post);
             return new ResponseEntity<>(HttpStatus.OK);
         } else {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);

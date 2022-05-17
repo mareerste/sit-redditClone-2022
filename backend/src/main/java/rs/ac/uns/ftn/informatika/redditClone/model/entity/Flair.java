@@ -12,9 +12,9 @@ public class Flair {
 //    @ManyToOne(fetch = FetchType.EAGER)
 //    @JoinColumn(name = "post_id",nullable = true)
 //    private Post post;
-    @ManyToOne(fetch = FetchType.EAGER,cascade = CascadeType.ALL)
-    @JoinColumn(name = "community_id",nullable = true)
-    private Community community;
+//    @ManyToOne(fetch = FetchType.EAGER,cascade = CascadeType.ALL)
+//    @JoinColumn(name = "community_id",nullable = true)
+//    private Community community;
 
     public Integer getId() {
         return id;
@@ -40,13 +40,13 @@ public class Flair {
 //        this.post = post;
 //    }
 
-    public Community getCommunity() {
-        return community;
-    }
-
-    public void setCommunity(Community community) {
-        this.community = community;
-    }
+//    public Community getCommunity() {
+//        return community;
+//    }
+//
+//    public void setCommunity(Community community) {
+//        this.community = community;
+//    }
 
 //    public Flair(String name, Post post, Community community) {
 //        this.name = name;
@@ -60,9 +60,13 @@ public class Flair {
     public Flair(){
     }
 
-    public Flair(String name, Community community) {
+    public Flair(Integer id, String name) {
+        this.id = id;
         this.name = name;
-        this.community = community;
+    }
+
+    public Flair(String name) {
+        this.name = name;
     }
 
     @Override

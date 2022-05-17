@@ -7,4 +7,5 @@ import rs.ac.uns.ftn.informatika.redditClone.model.entity.User;
 public interface UserRepository extends JpaRepository<User, String> {
     public User findByUsernameAndPassword(String username, String password);
     public User findByEmail(String email);
+    public User findByUsername(String username);
 }

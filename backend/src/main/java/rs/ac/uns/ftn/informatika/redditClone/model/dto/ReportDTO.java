@@ -5,13 +5,14 @@ import rs.ac.uns.ftn.informatika.redditClone.model.entity.Post;
 import rs.ac.uns.ftn.informatika.redditClone.model.entity.Report;
 import rs.ac.uns.ftn.informatika.redditClone.model.entity.User;
 import rs.ac.uns.ftn.informatika.redditClone.model.enumerations.ReactionType;
+import rs.ac.uns.ftn.informatika.redditClone.model.enumerations.ReportReason;
 
 import java.io.Serializable;
 import java.time.LocalDate;
 
 public class ReportDTO implements Serializable {
     private Integer id;
-    private ReactionType reason;
+    private ReportReason reason;
     private LocalDate timestamp;
     private UserDTO user;
     private Boolean accepted;
@@ -26,11 +27,11 @@ public class ReportDTO implements Serializable {
         this.id = id;
     }
 
-    public ReactionType getReason() {
+    public ReportReason getReason() {
         return reason;
     }
 
-    public void setReason(ReactionType reason) {
+    public void setReason(ReportReason reason) {
         this.reason = reason;
     }
 
@@ -76,7 +77,7 @@ public class ReportDTO implements Serializable {
 
 public ReportDTO(){}
 
-    public ReportDTO(Integer id, ReactionType reason, LocalDate timestamp, UserDTO user, Boolean accepted, PostDTO post, CommentDTO comment) {
+    public ReportDTO(Integer id, ReportReason reason, LocalDate timestamp, UserDTO user, Boolean accepted, PostDTO post, CommentDTO comment) {
         this.id = id;
         this.reason = reason;
         this.timestamp = timestamp;

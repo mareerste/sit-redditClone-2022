@@ -25,6 +25,8 @@ public class User {
     protected LocalDate registrationDate;
     @Column(name = "description", nullable = false)
     protected String description;
+    @Column(name = "displayName", nullable = true)
+    protected String displayName;
     @Column(name = "deleted", nullable = false)
     protected Boolean deleted = false;
 //    @OneToMany(mappedBy = "user", fetch = FetchType.LAZY,cascade = CascadeType.ALL)
@@ -92,7 +94,18 @@ public class User {
         this.deleted = deleted;
     }
 
+    public String getDisplayName() {
+        return displayName;
+    }
+
+    public void setDisplayName(String displayName) {
+        this.displayName = displayName;
+    }
+
     public User() {
+        this.registrationDate = LocalDate.now();
+        this.displayName = null;
+        this.deleted = false;
     }
 
 //    public Set<Comment> getComments() {

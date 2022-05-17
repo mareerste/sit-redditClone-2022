@@ -61,6 +61,8 @@ public class Comment {
     }
 
     public Comment() {
+        this.timestamp = LocalDate.now();
+        this.isDeleted = false;
     }
     //create
     public Comment(String text) {
@@ -84,10 +86,9 @@ public class Comment {
         this.timestamp = LocalDate.now();
         this.isDeleted = false;
     }
-    public Comment(String text, Comment comment, Post post) {
+    public Comment(String text, Comment comment) {
         this.text = text;
         this.parentComment =  comment;
-        this.post = post;
         this.timestamp = LocalDate.now();
         this.isDeleted = false;
     }

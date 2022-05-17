@@ -18,8 +18,6 @@ import java.util.List;
 public class FlairController {
     @Autowired
     private FlairService flairService;
-    @Autowired
-    private CommunityService communityService;
     @GetMapping
     public ResponseEntity<List<FlairDTO>>getFlairs(){
         List<Flair> flairs = flairService.findAll();
@@ -42,7 +40,6 @@ public class FlairController {
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         Flair flair = new Flair();
         flair.setName(flairCreateDTO.getName());
-        flair.setCommunity(communityService.findOne(flairCreateDTO.getCommunity().getId()));
         flair = flairService.save(flair);
         return new ResponseEntity<>(new FlairDTO(flair),HttpStatus.CREATED);
     }

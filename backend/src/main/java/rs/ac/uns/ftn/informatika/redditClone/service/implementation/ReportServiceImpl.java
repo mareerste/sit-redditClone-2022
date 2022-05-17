@@ -24,25 +24,10 @@ public class ReportServiceImpl implements ReportService {
     public List<Report> findAllByCommentToAnswer(Comment comment){return reportRepository.findAllByCommentAndAccepted(comment, null);}
 
     @Override
-    public List<Report> findAllByCommentAndRespond(Comment comment, Boolean respond) {
-        return reportRepository.findAllByCommentAndRespond(comment,respond);
-    }
-
-    @Override
     public List<Report> findAllByPost(Post post){return reportRepository.findAllByPost(post);}
 
     @Override
-    public List<Report> findAllByRespond() {
-        return reportRepository.findAllByRespond(false);
-    }
-
-    @Override
     public List<Report> findAllByPostToAnswer(Post post){return reportRepository.findAllByPostAndAccepted(post, null);}
-
-    @Override
-    public List<Report> findAllByPostAndRespond(Post post, Boolean respond) {
-        return reportRepository.findAllByPostAndRespond(post,respond);
-    }
 
     @Override
     public Report save(Report report){return reportRepository.save(report);}

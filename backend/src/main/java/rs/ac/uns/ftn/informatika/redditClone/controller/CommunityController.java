@@ -6,10 +6,15 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import rs.ac.uns.ftn.informatika.redditClone.model.dto.CommunityDTO;
 import rs.ac.uns.ftn.informatika.redditClone.model.dto.CommunityWithFlairsDTO;
+import rs.ac.uns.ftn.informatika.redditClone.model.dto.PostCreateDTO;
 import rs.ac.uns.ftn.informatika.redditClone.model.dto.PostDTO;
 import rs.ac.uns.ftn.informatika.redditClone.model.entity.*;
 import rs.ac.uns.ftn.informatika.redditClone.service.CommunityService;
+import rs.ac.uns.ftn.informatika.redditClone.service.ModeratorService;
+import rs.ac.uns.ftn.informatika.redditClone.service.PostService;
+import rs.ac.uns.ftn.informatika.redditClone.service.UserService;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
@@ -19,6 +24,12 @@ import java.util.Set;
 public class CommunityController {
     @Autowired
     private CommunityService communityService;
+    @Autowired
+    private PostService postService;
+    @Autowired
+    private UserService userService;
+    @Autowired
+    private ModeratorService moderatorService;
 
     @GetMapping
     public ResponseEntity<List<CommunityDTO>> getCommunities(){
@@ -32,7 +43,7 @@ public class CommunityController {
     }
 
     @GetMapping(value = "/{id}")
-    public ResponseEntity<CommunityDTO> getCommunity(@PathVariable Integer id) {
+    public ResponseEntity<CommunityWithFlairsDTO> getCommunity(@PathVariable Integer id) {
 
         Community community = communityService.findOne(id);
 
@@ -40,7 +51,7 @@ public class CommunityController {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
 
-        return new ResponseEntity<>(new CommunityDTO(community), HttpStatus.OK);
+        return new ResponseEntity<>(new CommunityWithFlairsDTO(community), HttpStatus.OK);
     }
 
     @PostMapping(consumes = "application/json")
@@ -53,7 +64,7 @@ public class CommunityController {
         Community community = new Community();
         community.setName(communityDTO.getName());
         community.setDescription(communityDTO.getDescription());
-        community.setCreationDate(communityDTO.getCreationDate());
+        community.setCreationDate(LocalDate.now());
         community.setRules(communityDTO.getRules());
         community.setSuspended(communityDTO.getSuspended());
         community.setSuspendedReason(communityDTO.getSuspendedReason());
@@ -64,8 +75,25 @@ public class CommunityController {
         return new ResponseEntity<>(new CommunityWithFlairsDTO(community), HttpStatus.CREATED);
     }
 
+    public Moderator setModerator(String username){
+        User user = userService.findOne(username);
+        if (user == null)
+            return moderatorService.findOne(username);
+        Moderator moderator = new Moderator();
+        moderator.setUsername(user.getUsername());
+        moderator.setPassword(user.getPassword());
+        moderator.setEmail(user.getEmail());
+        moderator.setAvatar(user.getAvatar());
+        moderator.setRegistrationDate(user.getRegistrationDate());
+        moderator.setDescription(user.getDescription());
+        userService.delete(user.getUsername());
+        moderatorService.save(moderator);
+
+        return moderator;
+    }
+
     @PutMapping(consumes = "application/json")
-    public ResponseEntity<CommunityDTO> updateCommunity(@RequestBody CommunityDTO communityDTO) {
+    public ResponseEntity<CommunityWithFlairsDTO> updateCommunity(@RequestBody CommunityWithFlairsDTO communityDTO) {
 
         Community community = communityService.findOne(communityDTO.getId());
 
@@ -77,11 +105,12 @@ public class CommunityController {
         community.setDescription(communityDTO.getDescription());
         community.setCreationDate(communityDTO.getCreationDate());
         community.setRules(communityDTO.getRules());
+        community.setFlairs(communityDTO.getFlairs());
         community.setSuspended(communityDTO.getSuspended());
         community.setSuspendedReason(communityDTO.getSuspendedReason());
 
         community = communityService.save(community);
-        return new ResponseEntity<>(new CommunityDTO(community), HttpStatus.OK);
+        return new ResponseEntity<>(new CommunityWithFlairsDTO(community), HttpStatus.OK);
     }
 
     @DeleteMapping(value = "/{id}")
@@ -110,5 +139,25 @@ public class CommunityController {
         }
 
         return new ResponseEntity<>(postsDTO, HttpStatus.OK);
+    }
+
+    @PutMapping(value = "/{id}/posts")
+    public ResponseEntity<PostDTO> createPost(@PathVariable Integer id,@RequestBody PostCreateDTO postDTO) {
+
+        Community community = communityService.findOne(id);
+        if (community == null) {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+        if(postDTO.getTitle().equals("")||postDTO.getTitle() == null || postDTO.getText().equals("")||postDTO.getText() == null)
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        Post post = postService.save(postDTO);
+        if(post == null){
+            return new ResponseEntity<>(null, HttpStatus.NOT_ACCEPTABLE);
+        }
+        Set<Post> posts = community.getPosts();
+        posts.add(post);
+        community.setPosts(posts);
+        communityService.save(community);
+        return new ResponseEntity<>(new PostDTO(post),HttpStatus.CREATED);
     }
 }

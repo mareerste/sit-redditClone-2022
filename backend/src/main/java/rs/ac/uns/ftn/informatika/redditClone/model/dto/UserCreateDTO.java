@@ -11,7 +11,7 @@ public class UserCreateDTO implements Serializable {
     protected String password;
     protected String email;
     protected String avatar;
-    protected LocalDate registrationDate;
+    protected LocalDate registrationDate = LocalDate.now();
     protected String description;
 
     public String getUsername() {
@@ -65,31 +65,18 @@ public class UserCreateDTO implements Serializable {
     public UserCreateDTO() {
     }
 
-    public UserCreateDTO(String username, String password, String email, String avatar, LocalDate registrationDate, String description) {
+    public UserCreateDTO(String username, String password, String email, String avatar, String description) {
         this.username = username;
         this.password = password;
         this.email = email;
         this.avatar = avatar;
-        this.registrationDate = registrationDate;
+        this.registrationDate = LocalDate.now();
         this.description = description;
     }
 
-    public UserCreateDTO(String username, String email, String description) {
-        this.username = username;
-        this.email = email;
-        this.description = description;
-    }
-
-    public UserCreateDTO(String username, String password, String email, LocalDate registrationDate, String description) {
-        this.username = username;
-        this.password = password;
-        this.email = email;
-        this.registrationDate = registrationDate;
-        this.description = description;
-    }
 
     public UserCreateDTO(User user){
-        this(user.getUsername(), user.getPassword(), user.getEmail(), user.getAvatar(),user.getRegistrationDate(), user.getDescription());
+        this(user.getUsername(), user.getPassword(), user.getEmail(), user.getAvatar(), user.getDescription());
     }
     @Override
     public String toString() {

@@ -7,7 +7,6 @@ import java.io.Serializable;
 public class FlairCreateDTO  implements Serializable {
     private Integer id;
     private String name;
-    private CommunityDTO community;
 
     public Integer getId() {
         return id;
@@ -21,23 +20,16 @@ public class FlairCreateDTO  implements Serializable {
     public void setName(String name) {
         this.name = name;
     }
-    public CommunityDTO getCommunity() {
-        return community;
-    }
-    public void setCommunity(CommunityDTO community) {
-        this.community = community;
-    }
 
     public FlairCreateDTO(){
     }
 
-    public FlairCreateDTO(Integer id, String name, CommunityDTO community) {
+    public FlairCreateDTO(Integer id, String name) {
         this.id = id;
         this.name = name;
-        this.community = community;
     }
 
-    public FlairCreateDTO(Flair flair){this(flair.getId(), flair.getName(), new CommunityDTO(flair.getCommunity()));}
+    public FlairCreateDTO(Flair flair){this(flair.getId(), flair.getName());}
     @Override
     public String toString() {
         return "Flair{" +

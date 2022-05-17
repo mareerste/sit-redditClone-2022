@@ -15,20 +15,25 @@ public class Community {
     @Column(name = "description", nullable = true)
     private String description;
     @Column(name = "creationDate")
-    private String creationDate;
+    private LocalDate creationDate;
     @ElementCollection
     private Set<String> rules = new HashSet<>();
     @Column(name = "suspended",nullable = false)
     private Boolean isSuspended;
     @Column(name = "suspendedReason",nullable = true)
     private String suspendedReason;
-    @OneToMany(mappedBy = "community",fetch = FetchType.EAGER,cascade = CascadeType.ALL)
+//    @OneToMany(mappedBy = "community",fetch = FetchType.EAGER,cascade = CascadeType.ALL)
+    @ManyToMany
+    @JoinTable(name = "communityFlairs", joinColumns = @JoinColumn(name = "community_id",referencedColumnName = "id"),inverseJoinColumns = @JoinColumn(name = "flair_id", referencedColumnName = "id"))
     private Set<Flair> flairs = new HashSet<>();
-    @OneToMany(mappedBy = "community",fetch = FetchType.EAGER,cascade = CascadeType.ALL)
+//    @JoinTable(name = "communityPosts", joinColumns = @JoinColumn(name = "community_id",referencedColumnName = "id"),inverseJoinColumns = @JoinColumn(name = "post_id", referencedColumnName = "id"))
+//    @OneToMany(mappedBy = "community",fetch = FetchType.EAGER,cascade = CascadeType.ALL)
+    @OneToMany(cascade = CascadeType.ALL)
+    @JoinTable(name = "communityPosts", joinColumns = @JoinColumn(name = "community_id",referencedColumnName = "id"),inverseJoinColumns = @JoinColumn(name = "post_id", referencedColumnName = "id"))
     private Set<Post> posts = new HashSet<>();
     @ManyToMany
     @JoinTable(name = "moderators", joinColumns = @JoinColumn(name = "community_id",referencedColumnName = "id"),inverseJoinColumns = @JoinColumn(name = "moderator_id", referencedColumnName = "username"))
-    private Set<Moderator> moderators = new HashSet<>();
+    private Set<User> moderators = new HashSet<>();
 
     public Integer getId() {
         return id;
@@ -54,11 +59,11 @@ public class Community {
         this.description = description;
     }
 
-    public String getCreationDate() {
+    public LocalDate getCreationDate() {
         return creationDate;
     }
 
-    public void setCreationDate(String creationDate) {
+    public void setCreationDate(LocalDate creationDate) {
         this.creationDate = creationDate;
     }
 
@@ -102,21 +107,23 @@ public class Community {
         this.posts = posts;
     }
 
-    public Set<Moderator> getModerators() {
+    public Set<User> getModerators() {
         return moderators;
     }
 
-    public void setModerators(Set<Moderator> moderators) {
+    public void setModerators(Set<User> moderators) {
         this.moderators = moderators;
     }
 
     public Community() {
+        this.creationDate = LocalDate.now();
+        this.isSuspended = false;
     }
 
-    public Community(String name, String description, Set<String> rules, Set<Flair> flairs, Set<Moderator> moderators) {
+    public Community(String name, String description, Set<String> rules, Set<Flair> flairs, Set<User> moderators) {
         this.name = name;
         this.description = description;
-        this.creationDate = LocalDate.now().toString();
+        this.creationDate = LocalDate.now();
         this.rules = rules;
         this.isSuspended = false;
         this.flairs = flairs;
@@ -126,7 +133,7 @@ public class Community {
     public Community(String name, String description, Set<String> rules) {
         this.name = name;
         this.description = description;
-        this.creationDate = LocalDate.now().toString();
+        this.creationDate = LocalDate.now();
         this.rules = rules;
         this.isSuspended = false;
     }

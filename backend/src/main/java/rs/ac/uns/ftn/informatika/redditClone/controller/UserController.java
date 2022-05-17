@@ -9,6 +9,7 @@ import rs.ac.uns.ftn.informatika.redditClone.model.dto.UserDTO;
 import rs.ac.uns.ftn.informatika.redditClone.model.entity.User;
 import rs.ac.uns.ftn.informatika.redditClone.service.UserService;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -36,20 +37,13 @@ public class UserController {
         return new ResponseEntity<>(new UserDTO(user), HttpStatus.OK);
     }
     @PostMapping(consumes = "application/json")
-    public ResponseEntity<UserDTO> saveUser(@RequestBody UserCreateDTO userCreateDTO){
-        if(userCreateDTO.getUsername().equals("")||userCreateDTO.getUsername() == null || userCreateDTO.getPassword().equals("")||userCreateDTO.getPassword() == null)
+    public ResponseEntity<UserDTO> saveUser(@RequestBody UserCreateDTO newUserDTO){
+        if(newUserDTO.getUsername().equals("")||newUserDTO.getUsername() == null || newUserDTO.getPassword().equals("")||newUserDTO.getPassword() == null)
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
-        User checkUser = userService.findOne(userCreateDTO.getUsername());
-        if(checkUser != null)
-            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
-        User user = new User();
-        user.setUsername(userCreateDTO.getUsername());
-        user.setPassword(userCreateDTO.getPassword());
-        user.setEmail(userCreateDTO.getEmail());
-        user.setAvatar(userCreateDTO.getAvatar());
-        user.setRegistrationDate(userCreateDTO.getRegistrationDate());
-        user.setDescription(userCreateDTO.getDescription());
-        user = userService.save(user);
+        User user = userService.save(newUserDTO);
+        if(user == null){
+            return new ResponseEntity<>(null, HttpStatus.NOT_ACCEPTABLE);
+        }
         return new ResponseEntity<>(new UserDTO(user),HttpStatus.CREATED);
     }
 
@@ -72,7 +66,7 @@ public class UserController {
     public ResponseEntity<Void> deleteUser(@PathVariable String username){
         User user = userService.findOne(username);
         if(user != null){
-            userService.delete(username);
+            userService.delete(user.getUsername());
             return new ResponseEntity<>(HttpStatus.OK);
         }else{
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
@@ -98,4 +92,19 @@ public class UserController {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         return new ResponseEntity<>(new UserDTO(user),HttpStatus.OK);
     }
+
+    @PutMapping(value = "/changePassword",consumes = "application/json")
+    public ResponseEntity<UserDTO> changePassword(@RequestBody UserCreateDTO userCreateDTO){
+        if(userCreateDTO.getPassword().equals("")||userCreateDTO.getPassword() == null)
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        User user = userService.findOne(userCreateDTO.getUsername());
+        if(user == null)
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        user.setPassword(userCreateDTO.getPassword());
+        user = userService.save(user);
+        return new ResponseEntity<>(new UserDTO(user),HttpStatus.OK);
+    }
+
+
+
 }

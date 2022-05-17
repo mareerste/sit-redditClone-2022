@@ -8,10 +8,11 @@ public class ModeratorDTO extends UserCreateDTO implements Serializable {
     public ModeratorDTO() {
     }
 
-    public ModeratorDTO(String username, String email, String description) {
-        super(username, email, description);
+    public ModeratorDTO(String username, String password, String email, String avatar, String description) {
+        super(username, password, email, avatar, description);
     }
-    public ModeratorDTO(Moderator moderator){this(moderator.getUsername(), moderator.getEmail(), moderator.getDescription());}
+
+    public ModeratorDTO(Moderator moderator){this(moderator.getUsername(), moderator.getPassword(), moderator.getEmail(), moderator.getAvatar(),moderator.getDescription());}
 
     @Override
     public String toString() {

@@ -23,15 +23,27 @@ insert into moderators (community_id, moderator_id) values (1,'mirko123');
 insert into moderators (community_id, moderator_id) values (1,'pera123');
 insert into moderators (community_id, moderator_id) values (2,'pera123');
 
-insert into flair (name,community_id) values ('FeelFree',1);
-insert into flair (name,community_id) values ('FunAndFit',1);
-insert into flair (name,community_id) values ('Something',1);
-insert into flair (name,community_id) values ('Dodjavola',2);
+insert into flair (name) values ('FeelFree');
+insert into flair (name) values ('FunAndFit');
+insert into flair (name) values ('Something');
+insert into flair (name) values ('Dodjavola');
 
-insert into post (date,deleted, text,title,community_id,user_id,flair_id) values ('2022-04-03',false,'Kakav brutalan dan!','Random stvar',1,'marko123',1);
-insert into post (date,deleted, text,title,community_id,user_id,flair_id) values ('2022-04-03',false,'Gori ne moze..','Random stvar part 2',1,'marko123',1);
-insert into post (date,deleted, text,title,community_id,user_id,flair_id) values ('2022-04-03',false,'Kakav debilan dan!','Random stvar za drugi Community',2,'marko123',2);
-insert into post (date,deleted, text,title,community_id,user_id,flair_id) values ('2022-04-03',false,'Test post za kostu','Random stvar za drugi Community',2,'kosta123',2);
+insert into community_flairs(community_id, flair_id) values (1,1);
+insert into community_flairs(community_id, flair_id) values (1,2);
+insert into community_flairs(community_id, flair_id) values (2,1);
+insert into community_flairs(community_id, flair_id) values (2,2);
+insert into community_flairs(community_id, flair_id) values (2,3);
+insert into community_flairs(community_id, flair_id) values (2,4);
+
+insert into post (date,deleted, text,title,user_id,flair_id) values ('2022-04-03',false,'Kakav brutalan dan!','Random stvar','marko123',1);
+insert into post (date,deleted, text,title,user_id,flair_id) values ('2022-04-03',false,'Gori ne moze..','Random stvar part 2','marko123',1);
+insert into post (date,deleted, text,title,user_id,flair_id) values ('2022-04-03',false,'Kakav debilan dan!','Random stvar za drugi Community','marko123',2);
+insert into post (date,deleted, text,title,user_id,flair_id) values ('2022-04-03',false,'Test post za kostu','Random stvar za drugi Community','kosta123',2);
+
+insert into community_posts (community_id,post_id) values (1,1);
+insert into community_posts (community_id,post_id) values (1,2);
+insert into community_posts (community_id,post_id) values (2,3);
+insert into community_posts (community_id,post_id) values (2,4);
 
 insert into comment (deleted,text,timestamp,post_id,user_id) values (false,'dobar post!','2022-04-04',1,"marko123");
 insert into comment (deleted,text,timestamp,user_id,parent_comment_id) values (false,'Pa i nije nestoo','2022-04-04','mirko123',1);

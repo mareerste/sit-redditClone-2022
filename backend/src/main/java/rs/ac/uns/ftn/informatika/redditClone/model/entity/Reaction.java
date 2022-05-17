@@ -86,14 +86,6 @@ public class Reaction {
         this.comment = comment;
     }
 
-    public Reaction(ReactionType type, LocalDate timestamp, User user, Post post, Comment comment) {
-        this.type = type;
-        this.timestamp = timestamp;
-        this.user = user;
-        this.post = post;
-        this.comment = comment;
-    }
-
     public Reaction(ReactionType type, User user, Comment comment) {
         this.type = type;
         this.timestamp = LocalDate.now();

@@ -28,7 +28,6 @@ public class Moderator extends User{
 
     public Moderator(String username, String password, String email, String avatar, LocalDate registrationDate, String description, Boolean deleted) {
         super(username, password, email, avatar, registrationDate, description, deleted);
-//        this.communities = communities;
     }
 
     public Moderator(String username, String password, String email, String description) {

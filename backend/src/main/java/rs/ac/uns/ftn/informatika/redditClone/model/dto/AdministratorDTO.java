@@ -11,9 +11,10 @@ public class AdministratorDTO extends UserCreateDTO implements Serializable {
     public AdministratorDTO() {
     }
 
-    public AdministratorDTO(String username, String password, String email, String avatar, LocalDate registrationDate, String description) {
-        super(username, password, email, avatar, registrationDate, description);
+    public AdministratorDTO(String username, String password, String email, String avatar, String description) {
+        super(username, password, email, avatar, description);
     }
-    public AdministratorDTO(Administrator admin){this(admin.getUsername(), admin.getPassword(), admin.getEmail(),admin.getAvatar(),admin.getRegistrationDate(), admin.getDescription());}
+
+    public AdministratorDTO(Administrator admin){this(admin.getUsername(), admin.getPassword(), admin.getEmail(),admin.getAvatar(), admin.getDescription());}
 
 }

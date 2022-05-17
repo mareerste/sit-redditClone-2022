@@ -37,16 +37,6 @@ public class ReportController {
         }
         return new ResponseEntity<>(reportDTOList, HttpStatus.OK);
     }
-    @GetMapping(value = "/respond")
-    public ResponseEntity<List<ReportDTO>>getReportToRespond(){
-        List<Report>reports = reportService.findAllByRespond();
-        List<ReportDTO> reportDTOList = new ArrayList<>();
-        for (Report r:reports){
-            reportDTOList.add(new ReportDTO(r));
-        }
-        return  new ResponseEntity<>(reportDTOList,HttpStatus.OK);
-
-    }
     @GetMapping(value = "/{id}")
     public ResponseEntity<ReportDTO>getReport(@PathVariable Integer id){
         Report report = reportService.findOne(id);
@@ -94,7 +84,7 @@ public class ReportController {
         report = reportService.save(report);
         return new ResponseEntity<>(new ReportPostDTO(report),HttpStatus.OK);
     }
-    @PostMapping(consumes = "application/json", value = "/comment")
+    @PutMapping(consumes = "application/json", value = "/comment")
     public ResponseEntity<ReportCommentDTO> updateReportComment(@RequestBody ReportCommentDTO reportDTO){
         Report report = reportService.findOne(reportDTO.getId());
         report.setTimestamp(reportDTO.getTimestamp());
