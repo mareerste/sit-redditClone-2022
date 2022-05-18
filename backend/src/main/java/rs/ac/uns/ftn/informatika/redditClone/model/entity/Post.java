@@ -140,4 +140,10 @@ public class Post {
                 ", flair=" + flair +
                 '}';
     }
+
+    @Override
+    public boolean equals(Object obj) {
+        Post post = (Post) obj;
+        return this.id == post.getId();
+    }
 }

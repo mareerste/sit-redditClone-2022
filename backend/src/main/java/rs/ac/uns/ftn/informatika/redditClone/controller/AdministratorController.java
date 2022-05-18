@@ -3,6 +3,7 @@ package rs.ac.uns.ftn.informatika.redditClone.controller;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import rs.ac.uns.ftn.informatika.redditClone.model.dto.AdministratorDTO;
 import rs.ac.uns.ftn.informatika.redditClone.model.dto.UserCreateDTO;
@@ -28,6 +29,7 @@ public class AdministratorController {
         }
         return new ResponseEntity<>(administratorDTOList, HttpStatus.OK);
     }
+    @PreAuthorize("hasRole('ADMIN')")
     @GetMapping(value = "/{username}")
     public ResponseEntity<AdministratorDTO>getAdministrator(@PathVariable String username){
         Administrator administrator = administratorService.findOne(username);
@@ -35,6 +37,7 @@ public class AdministratorController {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         return new ResponseEntity<>(new AdministratorDTO(administrator),HttpStatus.OK);
     }
+    @PreAuthorize("hasRole('ADMIN')")
     @PutMapping(consumes = "application/json")
     public ResponseEntity<AdministratorDTO> updateUser(@RequestBody AdministratorDTO administratorDTO){
         if(administratorDTO.getUsername().equals("")||administratorDTO.getUsername() == null || administratorDTO.getPassword().equals("")||administratorDTO.getPassword() == null)

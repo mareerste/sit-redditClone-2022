@@ -27,19 +27,17 @@ public class UserDetailsServiceImpl implements UserDetailsService {
     public UserDetails loadUserByUsername(String s) throws UsernameNotFoundException {
         User user = userService.findOne(s);
 
-//        hasRole("USER")
-//          autorization("ROLE_USER")
         if(user == null)
             throw new UsernameNotFoundException("There is no user with username "+s);
         else {
             List<GrantedAuthority> grantedAuthorities = new ArrayList<>();
             String role = "ROLE_";
-            if(user instanceof User){
-                role+="USER";
+            if(user instanceof Administrator){
+                role+="ADMINISTRATOR";
             }else if (user instanceof Moderator){
                 role+="MODERATOR";
-            }else if(user instanceof Administrator){
-                role+="ADMINISTRATOR";
+            }else if(user instanceof User){
+                role+="USER";
             }
             grantedAuthorities.add(new SimpleGrantedAuthority(role));
 

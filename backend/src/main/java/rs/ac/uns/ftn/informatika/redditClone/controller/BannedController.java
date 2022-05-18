@@ -3,6 +3,7 @@ package rs.ac.uns.ftn.informatika.redditClone.controller;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import rs.ac.uns.ftn.informatika.redditClone.model.dto.BannedDTO;
 import rs.ac.uns.ftn.informatika.redditClone.model.entity.Banned;
@@ -29,6 +30,7 @@ public class BannedController {
     @Autowired
     ModeratorService moderatorService;
 
+    @PreAuthorize("hasAnyRole('MODERATOR', 'ADMIN')")
     @GetMapping
     public ResponseEntity<List<BannedDTO>> getBanneds(){
         List<Banned> bannedList = bannedService.findAll();
@@ -39,7 +41,7 @@ public class BannedController {
         }
         return new ResponseEntity<>(bannedDTOList, HttpStatus.OK);
     }
-
+    @PreAuthorize("hasAnyRole('MODERATOR', 'ADMIN')")
     @GetMapping(value = "/{id]")
     public ResponseEntity<BannedDTO>getBanned(@PathVariable Integer id){
         Banned banned = bannedService.findOne(id);
@@ -47,6 +49,7 @@ public class BannedController {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         return new ResponseEntity<>(new BannedDTO(banned),HttpStatus.OK);
     }
+    @PreAuthorize("hasAnyRole('MODERATOR', 'ADMIN')")
     @GetMapping(value = "/{idCommunity]/{idUser}")
     public ResponseEntity<BannedDTO>getBannedForJoin(@PathVariable Integer idCommunity, @PathVariable String idUser){
         User user = userService.findOne(idUser);
@@ -58,6 +61,7 @@ public class BannedController {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         return new ResponseEntity<>(new BannedDTO(banned),HttpStatus.OK);
     }
+    @PreAuthorize("hasAnyRole('MODERATOR', 'ADMIN')")
     @GetMapping(value = "/community/{id]")
     public ResponseEntity<List<BannedDTO>>getBannedForCommunity(@PathVariable Integer id){
         Community community = communityService.findOne(id);
@@ -70,6 +74,7 @@ public class BannedController {
         }
         return new ResponseEntity<>(bannedDTOList,HttpStatus.OK);
     }
+    @PreAuthorize("hasAnyRole('MODERATOR', 'ADMIN')")
     @GetMapping(value = "/user/{id]")
     public ResponseEntity<List<BannedDTO>>getBannedForUser(@PathVariable String username){
         User user = userService.findOne(username);
@@ -83,6 +88,7 @@ public class BannedController {
         return new ResponseEntity<>(bannedDTOList,HttpStatus.OK);
     }
 
+    @PreAuthorize("hasAnyRole('MODERATOR', 'ADMIN')")
     @PostMapping(consumes = "application/json")
     public ResponseEntity<BannedDTO> saveBanned(@RequestBody BannedDTO bannedDTO){
         if(bannedDTO.getCommunity() == null || bannedDTO.getUser() == null || bannedDTO.getModerator() == null)
@@ -95,6 +101,7 @@ public class BannedController {
         banned = bannedService.save(banned);
         return new ResponseEntity<>(new BannedDTO(banned), HttpStatus.CREATED);
     }
+    @PreAuthorize("hasAnyRole('MODERATOR', 'ADMIN')")
     @PutMapping(consumes = "application/json")
     public ResponseEntity<BannedDTO> updateBanned(@RequestBody BannedDTO bannedDTO){
         Banned banned = bannedService.findOne(bannedDTO.getId());
@@ -107,6 +114,7 @@ public class BannedController {
         banned = bannedService.save(banned);
         return new ResponseEntity<>(new BannedDTO(banned), HttpStatus.OK);
     }
+    @PreAuthorize("hasAnyRole('MODERATOR', 'ADMIN')")
     @DeleteMapping(value = "/{id}")
     public ResponseEntity<Void> deleteBanned(@PathVariable Integer id) {
 

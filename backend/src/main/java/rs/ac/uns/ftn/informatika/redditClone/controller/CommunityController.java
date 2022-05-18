@@ -3,6 +3,7 @@ package rs.ac.uns.ftn.informatika.redditClone.controller;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import rs.ac.uns.ftn.informatika.redditClone.model.dto.CommunityDTO;
 import rs.ac.uns.ftn.informatika.redditClone.model.dto.CommunityWithFlairsDTO;
@@ -15,10 +16,7 @@ import rs.ac.uns.ftn.informatika.redditClone.service.PostService;
 import rs.ac.uns.ftn.informatika.redditClone.service.UserService;
 
 import java.time.LocalDate;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
-import java.util.Set;
+import java.util.*;
 
 @RestController
 @RequestMapping(value = "/community")
@@ -54,7 +52,7 @@ public class CommunityController {
 
         return new ResponseEntity<>(new CommunityWithFlairsDTO(community), HttpStatus.OK);
     }
-
+    @PreAuthorize("hasAnyRole('USER','MODERATOR', 'ADMIN')")
     @PostMapping(consumes = "application/json")
     public ResponseEntity<CommunityWithFlairsDTO> saveCommunity(@RequestBody CommunityWithFlairsDTO communityDTO) {
 
@@ -93,7 +91,7 @@ public class CommunityController {
 
         return moderator;
     }
-
+    @PreAuthorize("hasAnyRole('MODERATOR', 'ADMIN')")
     @PutMapping(consumes = "application/json")
     public ResponseEntity<CommunityWithFlairsDTO> updateCommunity(@RequestBody CommunityWithFlairsDTO communityDTO) {
 
@@ -105,7 +103,6 @@ public class CommunityController {
 
         community.setName(communityDTO.getName());
         community.setDescription(communityDTO.getDescription());
-        community.setCreationDate(communityDTO.getCreationDate());
         community.setRules(communityDTO.getRules());
         community.setFlairs(communityDTO.getFlairs());
         community.setSuspended(communityDTO.getSuspended());
@@ -114,7 +111,7 @@ public class CommunityController {
         community = communityService.save(community);
         return new ResponseEntity<>(new CommunityWithFlairsDTO(community), HttpStatus.OK);
     }
-
+    @PreAuthorize("hasAnyRole('MODERATOR', 'ADMIN')")
     @DeleteMapping(value = "/{id}")
     public ResponseEntity<Void> deleteCommunity(@PathVariable Integer id) {
 
@@ -129,8 +126,8 @@ public class CommunityController {
     }
 
     @GetMapping(value = "/{id}/posts")
-    public ResponseEntity<List<PostDTO>> getCommunityPosts(@PathVariable Integer communityId) {
-        Community community = communityService.findOne(communityId);
+    public ResponseEntity<List<PostDTO>> getCommunityPosts(@PathVariable Integer id) {
+        Community community = communityService.findOne(id);
 
         Set<Post> posts = community.getPosts();
         List<PostDTO> postsDTO = new ArrayList<>();
@@ -142,8 +139,8 @@ public class CommunityController {
 
         return new ResponseEntity<>(postsDTO, HttpStatus.OK);
     }
-
-    @PutMapping(value = "/{id}/posts")
+    @PreAuthorize("hasAnyRole('USER','MODERATOR', 'ADMIN')")
+    @PostMapping(value = "/{id}/posts")
     public ResponseEntity<PostDTO> createPost(@PathVariable Integer id,@RequestBody PostCreateDTO postDTO) {
 
         Community community = communityService.findOne(id);
@@ -161,5 +158,29 @@ public class CommunityController {
         community.setPosts(posts);
         communityService.save(community);
         return new ResponseEntity<>(new PostDTO(post),HttpStatus.CREATED);
+    }
+    @PreAuthorize("hasAnyRole('USER','MODERATOR', 'ADMIN')")
+    @DeleteMapping(value = "/{id}/posts/{postId}")
+    public ResponseEntity<Void> deletePost(@PathVariable Integer id,@PathVariable Integer postId) {
+
+        Community community = communityService.findOne(id);
+        if (community == null) {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+        Post post = postService.findOne(postId);
+        if (post == null) {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        } else {
+            Set<Post> posts = community.getPosts();
+            Set<Post> newPosts = new HashSet<>();
+            for (Post p:posts) {
+                if (p.getId() != post.getId())
+                    newPosts.add(p);
+            }
+            community.setPosts(newPosts);
+            communityService.save(community);
+            postService.delete(post);
+            return new ResponseEntity<>(HttpStatus.OK);
+        }
     }
 }

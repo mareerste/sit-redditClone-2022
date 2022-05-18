@@ -67,16 +67,23 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
                 .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                 .and()
                 .authorizeRequests()
+                .antMatchers(HttpMethod.GET, "/").permitAll()
                 .antMatchers(HttpMethod.GET, "/user").permitAll()
+                .antMatchers(HttpMethod.GET, "/user/username").permitAll()
                 .antMatchers(HttpMethod.POST, "/user/login").permitAll()
                 .antMatchers(HttpMethod.POST, "/user").permitAll()
                 .antMatchers(HttpMethod.GET, "/post").permitAll()
+                .antMatchers(HttpMethod.GET, "/post/all").permitAll()
                 .antMatchers(HttpMethod.GET, "/post/{id}").permitAll()
                 .antMatchers(HttpMethod.GET, "/post/{id}/comments").permitAll()
                 .antMatchers(HttpMethod.GET, "/community/{id}").permitAll()
                 .antMatchers(HttpMethod.GET, "/community/{id}/posts").permitAll()
+                .antMatchers(HttpMethod.GET, "/reaction/post/{id}").permitAll()
+                .antMatchers(HttpMethod.GET, "/reaction/comment/{id}").permitAll()
                 .anyRequest().authenticated();
         //hasAnyRole("USER","ADMIN")
+        //hasRole("USER")
+        //autorization("ROLE_USER")
 
         httpSecurity.addFilterBefore(authenticationTokenFilterBean(), UsernamePasswordAuthenticationFilter.class);
     }

@@ -5,6 +5,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import rs.ac.uns.ftn.informatika.redditClone.model.dto.CommentDTO;
 import rs.ac.uns.ftn.informatika.redditClone.model.dto.PostCreateDTO;
@@ -72,7 +73,7 @@ public class PostController {
         }
         return new ResponseEntity<>(commentDTOList,HttpStatus.OK);
     }
-
+    @PreAuthorize("hasAnyRole('USER','MODERATOR', 'ADMIN')")
     @PostMapping(consumes = "application/json")
     public ResponseEntity<PostDTO> savePost(@RequestBody PostCreateDTO postDTO){
         if(postDTO.getTitle().equals("")||postDTO.getTitle() == null || postDTO.getText().equals("")||postDTO.getText() == null)
@@ -83,7 +84,7 @@ public class PostController {
         }
         return new ResponseEntity<>(new PostDTO(post),HttpStatus.CREATED);
     }
-
+    @PreAuthorize("hasAnyRole('USER','MODERATOR', 'ADMIN')")
     @PutMapping(consumes = "application/json")
     public ResponseEntity<PostDTO> updatePost(@RequestBody PostDTO postDTO){
         Post post = postService.findOne(postDTO.getId());
@@ -91,7 +92,6 @@ public class PostController {
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         post.setTitle(postDTO.getTitle());
         post.setText(postDTO.getText());
-        post.setCreationDate(postDTO.getCreationDate());
         post.setImagePath(postDTO.getImagePath());
         post.setDeleted(postDTO.getDeleted());
         User user = userService.findOne(postDTO.getUser().getUsername());
@@ -103,11 +103,10 @@ public class PostController {
         return new ResponseEntity<>(new PostDTO(post),HttpStatus.OK);
     }
 
+    @PreAuthorize("hasAnyRole('USER','MODERATOR', 'ADMIN')")
     @DeleteMapping(value = "/{id}")
     public ResponseEntity<Void> deletePost(@PathVariable Integer id) {
-
         Post post = postService.findOne(id);
-
         if (post != null) {
             post.setDeleted(true);
             postService.save(post);

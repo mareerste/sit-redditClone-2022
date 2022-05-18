@@ -3,6 +3,7 @@ package rs.ac.uns.ftn.informatika.redditClone.controller;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import rs.ac.uns.ftn.informatika.redditClone.model.dto.*;
 import rs.ac.uns.ftn.informatika.redditClone.model.entity.Comment;
@@ -77,8 +78,9 @@ public class ReactionController {
         return new ResponseEntity<>(reactionCommentDTOList, HttpStatus.OK);
     }
 
+    @PreAuthorize("hasAnyRole('USER','MODERATOR', 'ADMIN')")
     @PostMapping(consumes = "application/json")
-    public ResponseEntity<ReactionDTO> saveUser(@RequestBody ReactionDTO reactionDTO){
+    public ResponseEntity<ReactionDTO> saveReaction(@RequestBody ReactionDTO reactionDTO){
         if(reactionDTO.getComment() == null && reactionDTO.getPost() == null)
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         List<Reaction> reactionExist = reactionService.findByPostAndUser(postService.findOne(reactionDTO.getPost().getId()), userService.findOne(reactionDTO.getUser().getUsername()));
@@ -94,9 +96,9 @@ public class ReactionController {
 
         return new ResponseEntity<>(new ReactionDTO(reaction),HttpStatus.CREATED);
     }
-
+    @PreAuthorize("hasAnyRole('USER','MODERATOR', 'ADMIN')")
     @PutMapping(consumes = "application/json")
-    public ResponseEntity<ReactionDTO> updateUser(@RequestBody ReactionDTO reactionDTO){
+    public ResponseEntity<ReactionDTO> updateReaction(@RequestBody ReactionDTO reactionDTO){
         Reaction reaction = reactionService.findOne(reactionDTO.getId());
         if(reaction == null)
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
@@ -107,8 +109,9 @@ public class ReactionController {
 
         return new ResponseEntity<>(new ReactionDTO(reaction),HttpStatus.OK);
     }
+    @PreAuthorize("hasAnyRole('USER','MODERATOR', 'ADMIN')")
     @DeleteMapping(value = "/{id}")
-    public ResponseEntity<Void> deleteUser(@PathVariable Integer id){
+    public ResponseEntity<Void> deleteReaction(@PathVariable Integer id){
         Reaction reaction = reactionService.findOne(id);
         if(reaction != null){
             reactionService.delete(reaction);

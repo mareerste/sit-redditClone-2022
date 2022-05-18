@@ -3,6 +3,7 @@ package rs.ac.uns.ftn.informatika.redditClone.controller;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import rs.ac.uns.ftn.informatika.redditClone.model.dto.ReportCommentDTO;
 import rs.ac.uns.ftn.informatika.redditClone.model.dto.ReportDTO;
@@ -37,6 +38,7 @@ public class ReportController {
         }
         return new ResponseEntity<>(reportDTOList, HttpStatus.OK);
     }
+    @PreAuthorize("hasAnyRole('MODERATOR', 'ADMIN')")
     @GetMapping(value = "/{id}")
     public ResponseEntity<ReportDTO>getReport(@PathVariable Integer id){
         Report report = reportService.findOne(id);
@@ -44,7 +46,7 @@ public class ReportController {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         return new ResponseEntity<>(new ReportDTO(report), HttpStatus.OK);
     }
-
+    @PreAuthorize("hasAnyRole('USER','MODERATOR', 'ADMIN')")
     @PostMapping(consumes = "application/json", value = "/post")
     public ResponseEntity<ReportPostDTO> saveReportPost(@RequestBody ReportPostDTO reportDTO){
         if (reportDTO.getReason().equals("") || reportDTO.getReason() == null || reportDTO.getPost() == null)
@@ -58,6 +60,7 @@ public class ReportController {
         report = reportService.save(report);
         return new ResponseEntity<>(new ReportPostDTO(report),HttpStatus.CREATED);
     }
+    @PreAuthorize("hasAnyRole('USER','MODERATOR', 'ADMIN')")
     @PostMapping(consumes = "application/json", value = "/comment")
     public ResponseEntity<ReportCommentDTO> saveReportComment(@RequestBody ReportCommentDTO reportDTO){
         if (reportDTO.getReason().equals("") || reportDTO.getReason() == null || reportDTO.getComment() == null)
@@ -71,6 +74,7 @@ public class ReportController {
         report = reportService.save(report);
         return new ResponseEntity<>(new ReportCommentDTO(report),HttpStatus.CREATED);
     }
+    @PreAuthorize("hasAnyRole('USER','MODERATOR', 'ADMIN')")
     @PutMapping(consumes = "application/json", value = "/post")
     public ResponseEntity<ReportPostDTO> updateReportPost(@RequestBody ReportPostDTO reportDTO){
         Report report = reportService.findOne(reportDTO.getId());
@@ -84,6 +88,7 @@ public class ReportController {
         report = reportService.save(report);
         return new ResponseEntity<>(new ReportPostDTO(report),HttpStatus.OK);
     }
+    @PreAuthorize("hasAnyRole('USER','MODERATOR', 'ADMIN')")
     @PutMapping(consumes = "application/json", value = "/comment")
     public ResponseEntity<ReportCommentDTO> updateReportComment(@RequestBody ReportCommentDTO reportDTO){
         Report report = reportService.findOne(reportDTO.getId());
@@ -95,6 +100,7 @@ public class ReportController {
         report = reportService.save(report);
         return new ResponseEntity<>(new ReportCommentDTO(report),HttpStatus.OK);
     }
+    @PreAuthorize("hasAnyRole('USER','MODERATOR', 'ADMIN')")
     @DeleteMapping(value = "/{id}")
     public ResponseEntity<Void> deleteReport(@PathVariable Integer id) {
 

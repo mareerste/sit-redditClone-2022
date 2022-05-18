@@ -72,9 +72,6 @@ public class IndexController {
 //        bannedService.unbanUser(moderator1,community,user);
 //        System.out.println(bannedService.findAll());
 
-        User user1 = userService.findOne("marko123");
-        System.out.println(user1);
-
         return "<h2>Hello World</h2>";
     }
 }

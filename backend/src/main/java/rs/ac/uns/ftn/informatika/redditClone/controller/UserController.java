@@ -3,12 +3,14 @@ package rs.ac.uns.ftn.informatika.redditClone.controller;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 import rs.ac.uns.ftn.informatika.redditClone.model.dto.JwtAuthenticationRequest;
 import rs.ac.uns.ftn.informatika.redditClone.model.dto.UserCreateDTO;
@@ -33,7 +35,8 @@ public class UserController {
 
     @Autowired
     AuthenticationManager authenticationManager;
-
+    @Autowired
+    private PasswordEncoder passwordEncoder;
     @Autowired
     TokenUtils tokenUtils;
 
@@ -64,7 +67,7 @@ public class UserController {
         }
         return new ResponseEntity<>(new UserDTO(user),HttpStatus.CREATED);
     }
-
+    @PreAuthorize("hasAnyRole('USER','MODERATOR', 'ADMIN')")
     @PutMapping(consumes = "application/json")
     public ResponseEntity<UserDTO> updateUser(@RequestBody UserCreateDTO userCreateDTO){
         if(userCreateDTO.getUsername().equals("")||userCreateDTO.getUsername() == null || userCreateDTO.getPassword().equals("")||userCreateDTO.getPassword() == null)
@@ -80,6 +83,7 @@ public class UserController {
         user = userService.save(user);
         return new ResponseEntity<>(new UserDTO(user),HttpStatus.OK);
     }
+    @PreAuthorize("hasAnyRole('USER','MODERATOR', 'ADMIN')")
     @DeleteMapping(value = "/delete/{username}")
     public ResponseEntity<Void> deleteUser(@PathVariable String username){
         User user = userService.findOne(username);
@@ -90,7 +94,7 @@ public class UserController {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
     }
-
+    @PreAuthorize("hasAnyRole('USER','MODERATOR', 'ADMIN')")
     @DeleteMapping(value = "/{username}")
     public ResponseEntity<UserDTO> deleteUserLogic(@PathVariable String username){
         User user = userService.findOne(username);
@@ -131,15 +135,23 @@ public class UserController {
         // Vrati token kao odgovor na uspesnu autentifikaciju
         return ResponseEntity.ok(new UserTokenState(jwt, expiresIn));
     }
-
-    @PutMapping(value = "/changePassword",consumes = "application/json")
-    public ResponseEntity<UserDTO> changePassword(@RequestBody UserCreateDTO userCreateDTO){
-        if(userCreateDTO.getPassword().equals("")||userCreateDTO.getPassword() == null)
-            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
-        User user = userService.findOne(userCreateDTO.getUsername());
+    @PreAuthorize("hasAnyRole('USER','MODERATOR', 'ADMIN')")
+    @PutMapping(value = "/changePassword")
+    public ResponseEntity<UserDTO> changePassword(@RequestParam String username,@RequestParam String oldPassword, @RequestParam String newPassword,@RequestParam String newPasswordRepeat){
+        User user = userService.findOne(username);
         if(user == null)
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        oldPassword = passwordEncoder.encode(oldPassword);
+
+//        UserDetails userDetails = (UserDetails) SecurityContextHolder.getContext().getAuthentication()
+//                .getPrincipal();
+//        String password = userDetails.getPassword();
+
+//        if(!user.getPassword().equals(oldPassword))
+//            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        if(!newPassword.equals(newPasswordRepeat))
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
-        user.setPassword(userCreateDTO.getPassword());
+        user.setPassword(passwordEncoder.encode(newPassword));
         user = userService.save(user);
         return new ResponseEntity<>(new UserDTO(user),HttpStatus.OK);
     }

@@ -3,6 +3,7 @@ package rs.ac.uns.ftn.informatika.redditClone.controller;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import rs.ac.uns.ftn.informatika.redditClone.model.dto.CommentDTO;
 import rs.ac.uns.ftn.informatika.redditClone.model.entity.Comment;
@@ -25,6 +26,7 @@ public class CommentController {
     @Autowired
     private PostService postService;
 
+    @PreAuthorize("hasAnyRole('USER','MODERATOR', 'ADMIN')")
     @GetMapping
     public ResponseEntity<List<CommentDTO>> getComments(){
         List<Comment> comments = commentService.findAll();
@@ -35,7 +37,7 @@ public class CommentController {
         }
         return new ResponseEntity<>(commentDTOList,HttpStatus.OK);
     }
-
+    @PreAuthorize("hasAnyRole('USER','MODERATOR', 'ADMIN')")
     @GetMapping(value = "/{id}")
     public ResponseEntity<CommentDTO>getComment(@PathVariable Integer id){
         Comment comment = commentService.findOne(id);
@@ -55,6 +57,7 @@ public class CommentController {
         }
         return new ResponseEntity<>(commentDTOList,HttpStatus.OK);
     }
+    @PreAuthorize("hasAnyRole('USER','MODERATOR', 'ADMIN')")
     @PostMapping(consumes = "application/json")
     public ResponseEntity<CommentDTO>saveComment(@RequestBody CommentDTO commentDTO){
         if (commentDTO.getText() == null || commentDTO.getText() == "")
@@ -72,6 +75,7 @@ public class CommentController {
         comment = commentService.save(comment);
         return new ResponseEntity<>(new CommentDTO(comment), HttpStatus.CREATED);
     }
+    @PreAuthorize("hasAnyRole('USER','MODERATOR', 'ADMIN')")
     @PutMapping(consumes = "application/json")
     public ResponseEntity<CommentDTO>updateComment(@RequestBody CommentDTO commentDTO){
         Comment comment = commentService.findOne(commentDTO.getId());
@@ -91,6 +95,7 @@ public class CommentController {
         return new ResponseEntity<>(new CommentDTO(comment), HttpStatus.OK);
     }
 
+    @PreAuthorize("hasAnyRole('USER','MODERATOR', 'ADMIN')")
     @DeleteMapping(value = "/{id}")
     public ResponseEntity<Void>deleteComment(@PathVariable Integer id){
         Comment comment = commentService.findOne(id);

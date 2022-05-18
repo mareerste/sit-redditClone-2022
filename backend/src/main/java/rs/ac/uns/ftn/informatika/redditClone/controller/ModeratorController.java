@@ -3,6 +3,7 @@ package rs.ac.uns.ftn.informatika.redditClone.controller;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import rs.ac.uns.ftn.informatika.redditClone.model.dto.ModeratorCreateDTO;
 import rs.ac.uns.ftn.informatika.redditClone.model.dto.ModeratorDTO;
@@ -32,6 +33,7 @@ public class ModeratorController {
         }
         return new ResponseEntity<>(moderatorDTOList, HttpStatus.OK);
     }
+    @PreAuthorize("hasAnyRole('USER','MODERATOR', 'ADMIN')")
     @PostMapping(consumes = "application/json")
     public ResponseEntity<ModeratorDTO>saveModerator(@RequestBody ModeratorCreateDTO moderatorCreateDTO){
         Moderator moderator = new Moderator();
@@ -44,6 +46,7 @@ public class ModeratorController {
         moderator = moderatorService.save(moderator);
         return new ResponseEntity<>(new ModeratorDTO(moderator),HttpStatus.CREATED);
     }
+    @PreAuthorize("hasAnyRole('MODERATOR', 'ADMIN')")
     @PutMapping(consumes = "application/json")
     public ResponseEntity<ModeratorDTO>updateModerator(@RequestBody ModeratorCreateDTO moderatorCreateDTO){
         Moderator moderator = moderatorService.findOne(moderatorCreateDTO.getUsername());
@@ -57,6 +60,7 @@ public class ModeratorController {
         moderator = moderatorService.save(moderator);
         return new ResponseEntity<>(new ModeratorDTO(moderator),HttpStatus.CREATED);
     }
+    @PreAuthorize("hasAnyRole('USER','MODERATOR', 'ADMIN')")
     @PutMapping("/set/{username}")
     public ResponseEntity<Void>setModerator(@PathVariable String username){
         User user = userService.findOne(username);
@@ -74,6 +78,7 @@ public class ModeratorController {
 
         return new ResponseEntity<>(HttpStatus.OK);
     }
+    @PreAuthorize("hasRole('ADMIN')")
     @DeleteMapping(value = "/{username}")
     public ResponseEntity<Void>deleteModerator(@PathVariable String username){
         Moderator moderator = moderatorService.findOne(username);
