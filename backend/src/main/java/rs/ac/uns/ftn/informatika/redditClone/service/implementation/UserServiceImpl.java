@@ -1,6 +1,7 @@
 package rs.ac.uns.ftn.informatika.redditClone.service.implementation;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import rs.ac.uns.ftn.informatika.redditClone.model.dto.UserCreateDTO;
 import rs.ac.uns.ftn.informatika.redditClone.model.dto.UserDTO;
@@ -15,8 +16,8 @@ import java.util.Optional;
 public class UserServiceImpl implements UserService {
     @Autowired
     private UserRepository userRepository;
-//    @Autowired
-//    private PasswordEncoder passwordEncoder;
+    @Autowired
+    private PasswordEncoder passwordEncoder;
     @Override
     public User findOne(String username){return userRepository.findById(username).orElseGet(null);}
     @Override
@@ -30,7 +31,8 @@ public class UserServiceImpl implements UserService {
 
         User newUser = new User();
         newUser.setUsername(user.getUsername());
-        newUser.setPassword(user.getUsername());
+//        newUser.setPassword(user.getUsername());
+        newUser.setPassword(passwordEncoder.encode(user.getPassword()));
         newUser.setDescription(user.getDescription());
         newUser.setAvatar(user.getAvatar());
         newUser.setEmail(user.getEmail());

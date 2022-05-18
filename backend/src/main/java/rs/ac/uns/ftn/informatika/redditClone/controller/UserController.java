@@ -3,12 +3,22 @@ package rs.ac.uns.ftn.informatika.redditClone.controller;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.web.bind.annotation.*;
+import rs.ac.uns.ftn.informatika.redditClone.model.dto.JwtAuthenticationRequest;
 import rs.ac.uns.ftn.informatika.redditClone.model.dto.UserCreateDTO;
 import rs.ac.uns.ftn.informatika.redditClone.model.dto.UserDTO;
+import rs.ac.uns.ftn.informatika.redditClone.model.dto.UserTokenState;
 import rs.ac.uns.ftn.informatika.redditClone.model.entity.User;
+import rs.ac.uns.ftn.informatika.redditClone.security.TokenUtils;
 import rs.ac.uns.ftn.informatika.redditClone.service.UserService;
 
+import javax.servlet.http.HttpServletResponse;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
@@ -18,6 +28,14 @@ import java.util.List;
 public class UserController {
     @Autowired
     private UserService userService;
+    @Autowired
+    UserDetailsService userDetailsService;
+
+    @Autowired
+    AuthenticationManager authenticationManager;
+
+    @Autowired
+    TokenUtils tokenUtils;
 
     @GetMapping
     public ResponseEntity<List<UserDTO>>getUsers(){
@@ -85,12 +103,33 @@ public class UserController {
         }
     }
 
-    @GetMapping(value = "/login")
-    public ResponseEntity<UserDTO>login(@RequestParam String username, @RequestParam String password){
-        User user = userService.login(username,password);
-        if(user == null)
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-        return new ResponseEntity<>(new UserDTO(user),HttpStatus.OK);
+//    @PostMapping(value = "/login")
+//    public ResponseEntity<UserDTO>login(@RequestParam String username, @RequestParam String password){
+//        User user = userService.login(username,password);
+//        if(user == null)
+//            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+//        return new ResponseEntity<>(new UserDTO(user),HttpStatus.OK);
+//    }
+    @PostMapping("/login")
+    public ResponseEntity<UserTokenState> createAuthenticationToken(
+            @RequestBody JwtAuthenticationRequest authenticationRequest, HttpServletResponse response) {
+
+        // Ukoliko kredencijali nisu ispravni, logovanje nece biti uspesno, desice se
+        // AuthenticationException
+        Authentication authentication = authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(
+                authenticationRequest.getUsername(), authenticationRequest.getPassword()));
+
+        // Ukoliko je autentifikacija uspesna, ubaci korisnika u trenutni security
+        // kontekst
+        SecurityContextHolder.getContext().setAuthentication(authentication);
+
+        // Kreiraj token za tog korisnika
+        UserDetails user = (UserDetails) authentication.getPrincipal();
+        String jwt = tokenUtils.generateToken(user);
+        int expiresIn = tokenUtils.getExpiredIn();
+
+        // Vrati token kao odgovor na uspesnu autentifikaciju
+        return ResponseEntity.ok(new UserTokenState(jwt, expiresIn));
     }
 
     @PutMapping(value = "/changePassword",consumes = "application/json")

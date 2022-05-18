@@ -128,7 +128,7 @@ public class CommunityController {
         }
     }
 
-    @GetMapping(value = "/{communityId}/posts")
+    @GetMapping(value = "/{id}/posts")
     public ResponseEntity<List<PostDTO>> getCommunityPosts(@PathVariable Integer communityId) {
         Community community = communityService.findOne(communityId);
 

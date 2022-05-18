@@ -5,11 +5,11 @@
 -- insert into user (dtype,username, avatar, description, email, password, registration_date, deleted) values ('Administrator','zarko123', null,'Proba 123', 'zarko123@gmail.com', 'zarko123','2022-04-01',false);
 -- insert into user (dtype,username, avatar, description, email, password, registration_date, deleted) values ('Administrator','kosta123', null,'Proba 123', 'zarko123@gmail.com', 'kosta123','2022-04-01',false);
 
-insert into user (username, avatar, description, email, password, registration_date, deleted) values ('marko123', null,'Proba 123', 'marko123@gmail.com', 'marko123','2022-04-01',false);
-insert into moderator (username, avatar, description, email, password, registration_date, deleted) values ('mirko123', null,'Proba 123', 'mirko123@gmail.com', 'mirko123','2022-04-01',false);
-insert into moderator (username, avatar, description, email, password, registration_date, deleted) values ('pera123', null,'opis profila 123', 'pera123@gmail.com', 'pera123','2022-04-02',false);
-insert into administrator (username, avatar, description, email, password, registration_date, deleted) values ('zarko123', null,'Proba 123', 'zarko123@gmail.com', 'zarko123','2022-04-01',false);
-insert into user (username, avatar, description, email, password, registration_date, deleted) values ('kosta123', null,'Proba 123', 'zarko123@gmail.com', 'kosta123','2022-04-01',false);
+insert into user (username, avatar, description, email, password, registration_date, deleted) values ('marko123', null,'Proba 123', 'marko123@gmail.com', '$2a$04$w7h4Twv.ZStR9eoZuQRqHejSgydmzTrAV6Un0dUM5GOqVBCCw6IRC','2022-04-01',false);
+insert into moderator (username, avatar, description, email, password, registration_date, deleted) values ('mirko123', null,'Proba 123', 'mirko123@gmail.com', '$2a$04$Ylp9koY3.5pxYTqeCxEzBeWj07jc0kp3821.e8uq7LB1bQF0VZd9S','2022-04-01',false);
+insert into moderator (username, avatar, description, email, password, registration_date, deleted) values ('pera123', null,'opis profila 123', 'pera123@gmail.com', '$2a$04$VcEN0V/ociwRHnVNvAUC8e4dyG/lUYO6RevjmoWMJclGFxzODdtwq','2022-04-02',false);
+insert into administrator (username, avatar, description, email, password, registration_date, deleted) values ('zarko123', null,'Proba 123', 'zarko123@gmail.com', '$2a$04$V2M/DkHpiIbM34SMjoo23uD94DdY2IRnF.p1.vTstdLDWuvBRXOZO','2022-04-01',false);
+insert into user (username, avatar, description, email, password, registration_date, deleted) values ('kosta123', null,'Proba 123', 'kostao123@gmail.com', '$2a$04$BOrJt24UNCm4jCCmqC.Mpupa4SxnY/J.olflqUAiaQeRhwAwo9dgy','2022-04-01',false);
 
 
 insert into community(creation_date,description,suspended,name) values ('2022-04-01',"Opis prvog communitya",false,"Fun");
