@@ -27,6 +27,9 @@
               "src/assets"
             ],
             "styles": [
+              {
+                "input": "src/my-theme.scss"
+              },
               "src/styles.css"
             ],
             "scripts": []
@@ -94,12 +97,20 @@
               "src/assets"
             ],
             "styles": [
+              {
+                "input": "src/my-theme.scss"
+              },
               "src/styles.css"
             ],
             "scripts": []
           }
         }
       }
+    }
+  },
+  "schematics": {
+    "@schematics/angular:component": {
+      "style": "scss"
     }
   },
   "defaultProject": "RedditClone"

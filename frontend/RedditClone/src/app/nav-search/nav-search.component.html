@@ -1,0 +1,7 @@
+<form class="form" (ngSubmit)="filter()">
+    <mat-form-field class="search_field" appearance="fill">
+        <input matInput placeholder="Search.."  name="search-entry" [(ngModel)]="filterText">
+      </mat-form-field>
+    <button mat-icon-button type="submit" class="btn btn-primary pull-right" value="search"><mat-icon color="white">search</mat-icon></button>
+    <button mat-icon-button class="btn btn-primary pull-right" value="search" (click)="reset()"><mat-icon color="white">autorenew</mat-icon></button>
+  </form>

@@ -1,0 +1,4 @@
+<h1 style="color: red;text-align: center;margin: 30px;font-size: 40px;">Welcome to Our World</h1>
+<div *ngFor="let post of posts">
+    <post-list-item [showComments]="false" [post]="post"></post-list-item>
+</div>
