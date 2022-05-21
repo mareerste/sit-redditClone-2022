@@ -1,7 +1,18 @@
+import { SignUpComponent } from './pages/sign-up/sign-up.component';
+import { MainPageComponent } from './pages/main-page/main-page.component';
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 
-const routes: Routes = [];
+const routes: Routes = [
+  {
+  path: '',
+  component: MainPageComponent
+  },
+  {
+    path:'signup',
+    component:SignUpComponent
+  }
+];
 
 @NgModule({
   imports: [RouterModule.forRoot(routes)],

@@ -41,6 +41,12 @@ export class ConfigService {
     return this._community_url;
   }
 
+  // /{id}/posts
+  private _community_posts_url = this._api_url + '/community/{id}/posts';
+  get community_posts_url(): string {
+    return this._community_posts_url;
+  }
+
   private _post_url = this._api_url + '/post';
   get post_url(): string {
     return this._post_url;

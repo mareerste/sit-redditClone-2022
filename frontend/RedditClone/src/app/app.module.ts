@@ -22,12 +22,7 @@ import { ConfigService } from './services/config.service';
 import { PostService } from './services/post.service';
 import { PostComponent } from './main/post/post/post.component';
 import {MatCardModule} from '@angular/material/card';
-
-const appRoutes: Routes = [
-  {path: 'index', component: MainPageComponent},
-  {path:'', redirectTo: 'main',pathMatch:'full'}
-
-]
+import { SignUpComponent } from './pages/sign-up/sign-up.component';
 
 @NgModule({
   declarations: [
@@ -37,6 +32,7 @@ const appRoutes: Routes = [
     PostListComponent,
     MainPageComponent,
     PostComponent,
+    SignUpComponent,
   ],
   imports: [
     BrowserModule,
