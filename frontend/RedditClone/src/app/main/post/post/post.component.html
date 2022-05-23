@@ -20,11 +20,15 @@
           </p>
       </mat-card-content>
   
-      <mat-card-actions>
+      <mat-card-actions align="end">
         <button mat-raised-button color="primary">Vote</button>
+        <span class="spacer"></span>
         <button mat-raised-button color="primary">Report</button>
-        <button mat-raised-button color="primary">Comments</button>
+        <button mat-raised-button color="primary" (click)="showComments = !showComments">Comments</button>
       </mat-card-actions>
+      <div>
+        <app-comment-list *ngIf="showComments" [comments]="post.comments"></app-comment-list>
+      </div>
     </mat-card>
   
   </div>

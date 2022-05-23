@@ -19,7 +19,11 @@ export class PostComponent implements OnInit {
   constructor(private postService:PostService) { }
 
  ngOnInit(): void {
-   
+  console.log(this.post);
+ }
+
+ showCommentsMethod():void{
+   this.showComments = true;
  }
 
 }

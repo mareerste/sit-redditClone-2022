@@ -23,6 +23,8 @@ import { PostService } from './services/post.service';
 import { PostComponent } from './main/post/post/post.component';
 import {MatCardModule} from '@angular/material/card';
 import { SignUpComponent } from './pages/sign-up/sign-up.component';
+import { CommentListComponent } from './main/comment/comment-list/comment-list.component';
+import { CommentItemComponent } from './main/comment/comment-item/comment-item.component';
 
 @NgModule({
   declarations: [
@@ -33,6 +35,8 @@ import { SignUpComponent } from './pages/sign-up/sign-up.component';
     MainPageComponent,
     PostComponent,
     SignUpComponent,
+    CommentListComponent,
+    CommentItemComponent,
   ],
   imports: [
     BrowserModule,

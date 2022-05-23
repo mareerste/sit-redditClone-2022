@@ -3,6 +3,7 @@ import { Post } from './../../../model/post';
 import { PostService } from './../../../services/post.service';
 import { User } from './../../../model/user';
 import { Component, Input, OnInit } from '@angular/core';
+import { Observable } from 'rxjs';
 
 @Component({
   selector: 'post-list',
@@ -12,7 +13,7 @@ import { Component, Input, OnInit } from '@angular/core';
 export class PostListComponent implements OnInit {
 
   @Input()
-  posts:Post[];
+  posts:Observable<Post[]>;
   constructor(private router:Router){}
 
   ngOnInit(): void {

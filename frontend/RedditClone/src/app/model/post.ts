@@ -1,3 +1,4 @@
+import { Observable } from 'rxjs';
 import { Flair } from './flair';
 import { User } from './user';
 export class Post {
@@ -9,4 +10,5 @@ export class Post {
     isDeleted:boolean;
     user: User;
     flair: Flair;
+    comments?:Comment[] | [];
 }

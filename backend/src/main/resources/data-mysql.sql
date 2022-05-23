@@ -60,9 +60,9 @@ insert into comment (deleted,text,timestamp,user_id) values (false,'Bas je dobro
 -- insert into comment (deleted,text,timestamp,post_id,user_id) values (false,'Komentar za drugi post!','2022-04-06',2,"marko123");
 insert into comment (deleted,text,timestamp,user_id) values (false,'Komentar za drugi post!','2022-04-06',"marko123");
 -- insert into comment (deleted,text,timestamp,user_id,parent_comment_id) values (false,'Pod komentar za drugi post prvi','2022-04-07','mirko123',7);
-insert into comment (deleted,text,timestamp,user_id) values (false,'Pod komentar za drugi post prvi','2022-04-07','mirko123');
+insert into comment (deleted,text,timestamp,user_id) values (false,'Pod komentar za drugi post blablabla','2022-04-07','mirko123');
 -- insert into comment (deleted,text,timestamp,user_id,parent_comment_id) values (false,'Pod komentar za drugi post drugi','2022-04-08','marko123',7);
-insert into comment (deleted,text,timestamp,user_id) values (false,'Pod komentar za drugi post drugi','2022-04-08','marko123');
+insert into comment (deleted,text,timestamp,user_id) values (false,'Pod komentar za drugi post blabla','2022-04-08','marko123');
 
 insert into post_comments (post_id,comment_id) values (1,1);
 insert into post_comments (post_id,comment_id) values (1,5);
