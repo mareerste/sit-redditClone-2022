@@ -18,10 +18,10 @@ public class CommentServiceImpl implements CommentService {
     public Comment findOne(Integer id){return commentRepository.findById(id).orElseGet(null);}
     @Override
     public List<Comment>findAll(){return commentRepository.findAll();}
-    @Override
-    public List<Comment>findByPost(Post post){return commentRepository.findByPost(post);}
-    @Override
-    public List<Comment>findByParentComment(Comment comment){return commentRepository.findByParentComment(comment);}
+//    @Override
+//    public List<Comment>findByPost(Post post){return commentRepository.findByPost(post);}
+//    @Override
+//    public List<Comment>findByParentComment(Comment comment){return commentRepository.findByParentComment(comment);}
     @Override
     public Comment save(Comment comment){return commentRepository.save(comment);}
     @Override

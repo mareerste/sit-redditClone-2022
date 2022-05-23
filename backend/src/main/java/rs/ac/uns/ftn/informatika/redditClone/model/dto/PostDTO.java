@@ -1,9 +1,12 @@
 package rs.ac.uns.ftn.informatika.redditClone.model.dto;
 
+import rs.ac.uns.ftn.informatika.redditClone.model.entity.Comment;
 import rs.ac.uns.ftn.informatika.redditClone.model.entity.Post;
 
 import java.io.Serializable;
 import java.time.LocalDate;
+import java.util.HashSet;
+import java.util.Set;
 
 public class PostDTO implements Serializable {
     private Integer id;
@@ -14,6 +17,7 @@ public class PostDTO implements Serializable {
     private Boolean isDeleted;
     private UserCreateDTO user;
     private FlairDTO flair;
+    private Set<Comment> comments = new HashSet<>();
 
     public Integer getId() {
         return id;
@@ -64,9 +68,16 @@ public class PostDTO implements Serializable {
         isDeleted = deleted;
     }
     public void setFlair(FlairDTO flair) {this.flair = flair;}
+    public Set<Comment> getComments() {
+        return comments;
+    }
+    public void setComments(Set<Comment> comments) {
+        this.comments = comments;
+    }
+
     public PostDTO() {
     }
-    public PostDTO(Integer id, String title, String text, LocalDate creationDate, String imagePath, Boolean isDeleted, UserCreateDTO user, FlairDTO flair) {
+    public PostDTO(Integer id, String title, String text, LocalDate creationDate, String imagePath, Boolean isDeleted, UserCreateDTO user, FlairDTO flair, Set<Comment> comments) {
         this.id = id;
         this.title = title;
         this.text = text;
@@ -75,8 +86,9 @@ public class PostDTO implements Serializable {
         this.isDeleted = isDeleted;
         this.user = user;
         this.flair = flair;
+        this.comments = comments;
     }
-    public PostDTO(Post post){this(post.getId(), post.getTitle(), post.getText(), post.getCreationDate(), post.getImagePath(), post.getDeleted(), new UserCreateDTO(post.getUser()),new FlairDTO(post.getFlair()));}
+    public PostDTO(Post post){this(post.getId(), post.getTitle(), post.getText(), post.getCreationDate(), post.getImagePath(), post.getDeleted(), new UserCreateDTO(post.getUser()),new FlairDTO(post.getFlair()), post.getComments());}
 
     @Override
     public String toString() {

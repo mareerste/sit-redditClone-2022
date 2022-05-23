@@ -4,6 +4,8 @@ import rs.ac.uns.ftn.informatika.redditClone.model.entity.Comment;
 
 import java.io.Serializable;
 import java.time.LocalDate;
+import java.util.HashSet;
+import java.util.Set;
 
 public class CommentDTO implements Serializable {
 
@@ -12,8 +14,9 @@ public class CommentDTO implements Serializable {
     private LocalDate timestamp;
     private Boolean isDeleted;
     private UserCreateDTO user;
-    private CommentDTO parentComment;
-    private PostDTO post;
+//    private CommentDTO parentComment;
+//    private PostDTO post;
+    private Set<Comment> childComments = new HashSet<>();
 
     public Integer getId() {
         return id;
@@ -39,39 +42,47 @@ public class CommentDTO implements Serializable {
     public void setDeleted(Boolean deleted) {
         isDeleted = deleted;
     }
-    public PostDTO getPost() {
-        return post;
-    }
-    public void setPost(PostDTO post) {
-        this.post = post;
-    }
+//    public PostDTO getPost() {
+//        return post;
+//    }
+//    public void setPost(PostDTO post) {
+//        this.post = post;
+//    }
     public UserCreateDTO getUser() {
         return user;
     }
     public void setUser(UserCreateDTO user) {
         this.user = user;
     }
-    public CommentDTO getParentComment() {
-        return parentComment;
+//    public CommentDTO getParentComment() {
+//        return parentComment;
+//    }
+//    public void setParentComment(CommentDTO parentComment) {
+//        this.parentComment = parentComment;
+//    }
+    public Set<Comment> getChildComments() {
+        return childComments;
     }
-    public void setParentComment(CommentDTO parentComment) {
-        this.parentComment = parentComment;
+    public void setChildComments(Set<Comment> childComments) {
+        this.childComments = childComments;
     }
 
     public CommentDTO() {
     }
 
-    public CommentDTO(Integer id, String text, LocalDate timestamp, Boolean isDeleted, UserCreateDTO user, CommentDTO parentComment, PostDTO post) {
+    public CommentDTO(Integer id, String text, LocalDate timestamp, Boolean isDeleted, UserCreateDTO user, Set<Comment> childComments) {
         this.id = id;
         this.text = text;
         this.timestamp = timestamp;
         this.isDeleted = isDeleted;
         this.user = user;
-        this.parentComment = parentComment;
-        this.post = post;
+        this.childComments = childComments;
     }
-    //public CommentDTO(Comment comment){this(comment.getId(), comment.getText(), comment.getTimestamp(),comment.getDeleted(), new UserCreateDTO(comment.getUser()),(comment.getParentComment() != null && comment.getParentComment().getId() != null) ? new CommentDTO(comment.getParentComment()) : new CommentDTO(),new PostDTO(comment.getPost()));}
-    public CommentDTO(Comment comment){this(comment.getId(), comment.getText(), comment.getTimestamp(),comment.getDeleted(), new UserCreateDTO(comment.getUser()),(comment.getParentComment() != null && comment.getParentComment().getId() != null) ? new CommentDTO(comment.getParentComment()) : null,(comment.getPost() != null && comment.getPost().getId() != null) ? new PostDTO(comment.getPost()) : null);}
+
+//    public CommentDTO(Comment comment){this(comment.getId(), comment.getText(), comment.getTimestamp(),comment.getDeleted(), new UserCreateDTO(comment.getUser()),(comment.getParentComment() != null && comment.getParentComment().getId() != null) ? new CommentDTO(comment.getParentComment()) : new CommentDTO(),new PostDTO(comment.getPost()));}
+//    public CommentDTO(Comment comment){this(comment.getId(), comment.getText(), comment.getTimestamp(),comment.getDeleted(), new UserCreateDTO(comment.getUser()),(comment.getParentComment() != null && comment.getParentComment().getId() != null) ? new CommentDTO(comment.getParentComment()) : null,(comment.getPost() != null && comment.getPost().getId() != null) ? new PostDTO(comment.getPost()) : null);}
+
+    public  CommentDTO(Comment comment){this(comment.getId(), comment.getText(), comment.getTimestamp(),comment.getDeleted(),new UserCreateDTO(comment.getUser()),comment.getChildComments());}
 
     @Override
     public String toString() {

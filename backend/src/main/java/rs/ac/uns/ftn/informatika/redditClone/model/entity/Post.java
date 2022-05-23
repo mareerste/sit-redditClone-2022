@@ -2,6 +2,8 @@ package rs.ac.uns.ftn.informatika.redditClone.model.entity;
 
 import javax.persistence.*;
 import java.time.LocalDate;
+import java.util.HashSet;
+import java.util.Set;
 
 @Entity
 public class Post {
@@ -31,6 +33,9 @@ public class Post {
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "flair_id",nullable = true)
     private Flair flair;
+    @OneToMany(cascade = CascadeType.ALL)
+    @JoinTable(name = "postComments", joinColumns = @JoinColumn(name = "post_id",referencedColumnName = "id"),inverseJoinColumns = @JoinColumn(name = "comment_id", referencedColumnName = "id"))
+    private Set<Comment> comments = new HashSet<>();
 
     public Integer getId() {
         return id;
@@ -96,18 +101,27 @@ public class Post {
         isDeleted = deleted;
     }
 
+    public Set<Comment> getComments() {
+        return comments;
+    }
+
+    public void setComments(Set<Comment> comments) {
+        this.comments = comments;
+    }
+
     public Post() {
         this.creationDate = LocalDate.now();
         this.isDeleted = false;
     }
 
-    public Post(String title, String text, String imagePath, User user, Flair flair) {
+    public Post(String title, String text, String imagePath, User user, Flair flair, Set<Comment> comments) {
         this.title = title;
         this.text = text;
         this.imagePath = imagePath;
         this.user = user;
         this.isDeleted = false;
         this.flair = flair;
+        this.comments = comments;
     }
 
     public Post(String title, String text, User user, Flair flair) {
@@ -118,7 +132,7 @@ public class Post {
         this.flair = flair;
     }
 
-    public Post(String title, String text, LocalDate creationDate, String imagePath, User user, Flair flair) {
+    public Post(String title, String text, LocalDate creationDate, String imagePath, User user, Flair flair, Set<Comment> comments) {
         this.title = title;
         this.text = text;
         this.creationDate = creationDate;
@@ -126,6 +140,7 @@ public class Post {
         this.isDeleted = false;
         this.user = user;
         this.flair = flair;
+        this.comments = comments;
     }
 
     @Override
@@ -138,6 +153,7 @@ public class Post {
                 ", imagePath='" + imagePath + '\'' +
                 ", user=" + user +
                 ", flair=" + flair +
+                ",comments=" + comments +
                 '}';
     }
 

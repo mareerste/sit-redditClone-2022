@@ -14,6 +14,7 @@ import rs.ac.uns.ftn.informatika.redditClone.service.UserService;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 
 @RestController
 @RequestMapping(value = "/comment")
@@ -45,18 +46,18 @@ public class CommentController {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         return new ResponseEntity<>(new CommentDTO(comment),HttpStatus.OK);
     }
-    @GetMapping(value = "/{id}/subcomments")
-    public ResponseEntity<List<CommentDTO>>getCommentChildrens(@PathVariable Integer id){
-        Comment comment = commentService.findOne(id);
-        if (comment == null)
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-        List<Comment> childComments = commentService.findByParentComment(comment);
-        List<CommentDTO> commentDTOList = new ArrayList<>();
-        for ( Comment c: childComments) {
-            commentDTOList.add(new CommentDTO(c));
-        }
-        return new ResponseEntity<>(commentDTOList,HttpStatus.OK);
-    }
+//    @GetMapping(value = "/{id}/subcomments")
+//    public ResponseEntity<List<CommentDTO>>getCommentChildrens(@PathVariable Integer id){
+//        Comment comment = commentService.findOne(id);
+//        if (comment == null)
+//            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+//        List<Comment> childComments = commentService.findByParentComment(comment);
+//        List<CommentDTO> commentDTOList = new ArrayList<>();
+//        for ( Comment c: childComments) {
+//            commentDTOList.add(new CommentDTO(c));
+//        }
+//        return new ResponseEntity<>(commentDTOList,HttpStatus.OK);
+//    }
     @PreAuthorize("hasAnyRole('USER','MODERATOR', 'ADMIN')")
     @PostMapping(consumes = "application/json")
     public ResponseEntity<CommentDTO>saveComment(@RequestBody CommentDTO commentDTO){
@@ -66,13 +67,35 @@ public class CommentController {
         comment.setText(commentDTO.getText());
         comment.setTimestamp(commentDTO.getTimestamp());
         comment.setDeleted(commentDTO.getDeleted());
+        comment.setChildComments(commentDTO.getChildComments());
         User user = userService.findOne(commentDTO.getUser().getUsername());
         comment.setUser(user);
-        if (commentDTO.getParentComment() != null)
-            comment.setParentComment(commentService.findOne(commentDTO.getParentComment().getId()));
-        if (commentDTO.getPost() != null)
-            comment.setPost(postService.findOne(commentDTO.getPost().getId()));
+//        if (commentDTO.getPost() != null)
+//            comment.setPost(postService.findOne(commentDTO.getPost().getId()));
         comment = commentService.save(comment);
+        return new ResponseEntity<>(new CommentDTO(comment), HttpStatus.CREATED);
+    }
+    @PreAuthorize("hasAnyRole('USER','MODERATOR', 'ADMIN')")
+    @PostMapping(value = "/{id}",consumes = "application/json")
+    public ResponseEntity<CommentDTO>saveCommentWithParent(@PathVariable Integer id ,@RequestBody CommentDTO commentDTO){
+        if (commentDTO.getText() == null || commentDTO.getText() == "")
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        Comment parentComment = commentService.findOne(id);
+        if (parentComment == null)
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        Comment comment = new Comment();
+        comment.setText(commentDTO.getText());
+        comment.setTimestamp(commentDTO.getTimestamp());
+        comment.setChildComments(commentDTO.getChildComments());
+        comment.setDeleted(commentDTO.getDeleted());
+        User user = userService.findOne(commentDTO.getUser().getUsername());
+        comment.setUser(user);
+//        if (commentDTO.getPost() != null)
+//            comment.setPost(postService.findOne(commentDTO.getPost().getId()));
+        comment = commentService.save(comment);
+        Set<Comment> commentsFromParent = parentComment.getChildComments();
+        commentsFromParent.add(comment);
+        parentComment = commentService.save(parentComment);
         return new ResponseEntity<>(new CommentDTO(comment), HttpStatus.CREATED);
     }
     @PreAuthorize("hasAnyRole('USER','MODERATOR', 'ADMIN')")
@@ -85,12 +108,12 @@ public class CommentController {
         comment.setText(commentDTO.getText());
         comment.setTimestamp(commentDTO.getTimestamp());
         comment.setDeleted(commentDTO.getDeleted());
+        comment.setChildComments(commentDTO.getChildComments());
         User user = userService.findOne(commentDTO.getUser().getUsername());
         comment.setUser(user);
-        if (commentDTO.getParentComment() != null)
-            comment.setParentComment(commentService.findOne(commentDTO.getParentComment().getId()));
-        if (commentDTO.getPost() != null)
-            comment.setPost(postService.findOne(commentDTO.getPost().getId()));
+
+//        if (commentDTO.getPost() != null)
+//            comment.setPost(postService.findOne(commentDTO.getPost().getId()));
         comment = commentService.save(comment);
         return new ResponseEntity<>(new CommentDTO(comment), HttpStatus.OK);
     }

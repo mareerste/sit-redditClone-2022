@@ -1,9 +1,12 @@
 package rs.ac.uns.ftn.informatika.redditClone.model.dto;
 
+import rs.ac.uns.ftn.informatika.redditClone.model.entity.Comment;
 import rs.ac.uns.ftn.informatika.redditClone.model.entity.Post;
 
 import java.io.Serializable;
 import java.time.LocalDate;
+import java.util.HashSet;
+import java.util.Set;
 
 public class PostCreateDTO implements Serializable {
     private Integer id;
@@ -14,6 +17,7 @@ public class PostCreateDTO implements Serializable {
     private Boolean isDeleted;
     private UserCreateDTO user;
     private FlairCreateDTO flair;
+    private Set<Comment> comments = new HashSet<>();
 
     public Integer getId() {
         return id;
@@ -61,9 +65,17 @@ public class PostCreateDTO implements Serializable {
         isDeleted = deleted;
     }
     public void setFlair(FlairCreateDTO flair) {this.flair = flair;}
+
+    public Set<Comment> getComments() {
+        return comments;
+    }
+    public void setComments(Set<Comment> comments) {
+        this.comments = comments;
+    }
+
     public PostCreateDTO() {
     }
-    public PostCreateDTO(Integer id, String title, String text, String imagePath, UserCreateDTO user, FlairCreateDTO flair) {
+    public PostCreateDTO(Integer id, String title, String text, String imagePath, UserCreateDTO user, FlairCreateDTO flair, Set<Comment>comments) {
         this.id = id;
         this.title = title;
         this.text = text;
@@ -72,8 +84,9 @@ public class PostCreateDTO implements Serializable {
         this.isDeleted = false;
         this.user = user;
         this.flair = flair;
+        this.comments = comments;
     }
-    public PostCreateDTO(Post post){this(post.getId(), post.getTitle(), post.getText(), post.getImagePath(), new UserCreateDTO(post.getUser()),new FlairCreateDTO(post.getFlair()));}
+    public PostCreateDTO(Post post){this(post.getId(), post.getTitle(), post.getText(), post.getImagePath(), new UserCreateDTO(post.getUser()),new FlairCreateDTO(post.getFlair()), post.getComments());}
 
     @Override
     public String toString() {

@@ -61,19 +61,19 @@ public class PostController {
         return new ResponseEntity<>(new PostDTO(post),HttpStatus.OK);
     }
 
-    @GetMapping(value = "/{id}/comments")
-    public ResponseEntity<List<CommentDTO>> getPostComments(@PathVariable Integer id){
-        Post post = postService.findOne(id);
-        if(post == null) {
-            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
-        }
-        List<Comment> comments = commentService.findByPost(post);
-        List<CommentDTO> commentDTOList = new ArrayList<>();
-        for (Comment c: comments) {
-            commentDTOList.add(new CommentDTO(c));
-        }
-        return new ResponseEntity<>(commentDTOList,HttpStatus.OK);
-    }
+//    @GetMapping(value = "/{id}/comments")
+//    public ResponseEntity<List<CommentDTO>> getPostComments(@PathVariable Integer id){
+//        Post post = postService.findOne(id);
+//        if(post == null) {
+//            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+//        }
+//        List<Comment> comments = commentService.findByPost(post);
+//        List<CommentDTO> commentDTOList = new ArrayList<>();
+//        for (Comment c: comments) {
+//            commentDTOList.add(new CommentDTO(c));
+//        }
+//        return new ResponseEntity<>(commentDTOList,HttpStatus.OK);
+//    }
     @PreAuthorize("hasAnyRole('USER','MODERATOR', 'ADMIN')")
     @PostMapping(consumes = "application/json")
     public ResponseEntity<PostDTO> savePost(@RequestBody PostCreateDTO postDTO){
@@ -95,6 +95,7 @@ public class PostController {
         post.setText(postDTO.getText());
         post.setImagePath(postDTO.getImagePath());
         post.setDeleted(postDTO.getDeleted());
+        post.setComments(postDTO.getComments());
         User user = userService.findOne(postDTO.getUser().getUsername());
         post.setUser(user);
         Flair flair = flairService.findOne(postDTO.getFlair().getId());

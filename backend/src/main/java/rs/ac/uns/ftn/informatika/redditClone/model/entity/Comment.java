@@ -2,6 +2,8 @@ package rs.ac.uns.ftn.informatika.redditClone.model.entity;
 
 import javax.persistence.*;
 import java.time.LocalDate;
+import java.util.HashSet;
+import java.util.Set;
 
 @Entity
 public class Comment {
@@ -17,12 +19,15 @@ public class Comment {
     @ManyToOne(cascade = CascadeType.ALL,fetch = FetchType.EAGER)
     @JoinColumn(name = "user_id")
     private User user;
-    @ManyToOne(cascade = CascadeType.ALL,fetch = FetchType.EAGER)
-    @JoinColumn(name = "parentCommentId", referencedColumnName = "id",nullable = true)
-    private Comment parentComment;
-    @ManyToOne(cascade = CascadeType.ALL,fetch = FetchType.EAGER)
-    @JoinColumn(name = "post_id",nullable = true)
-    private Post post;
+//    @ManyToOne(cascade = CascadeType.ALL,fetch = FetchType.EAGER)
+//    @JoinColumn(name = "parentCommentId", referencedColumnName = "id",nullable = true)
+//    private Comment parentComment;
+    @OneToMany(cascade = CascadeType.ALL)
+    @JoinTable(name = "childComments", joinColumns = @JoinColumn(name = "comment_id",referencedColumnName = "id"),inverseJoinColumns = @JoinColumn(name = "child_id", referencedColumnName = "id"))
+    private Set<Comment> childComments = new HashSet<>();
+//    @ManyToOne(cascade = CascadeType.ALL,fetch = FetchType.EAGER)
+//    @JoinColumn(name = "post_id",nullable = true)
+//    private Post post;
 //    @OneToMany(mappedBy = "comment",fetch = FetchType.LAZY,cascade = CascadeType.ALL)
 //    Set<Reaction> reactions = new HashSet<>();
 //    @OneToMany(mappedBy = "comment",fetch = FetchType.LAZY,cascade = CascadeType.ALL)
@@ -60,6 +65,14 @@ public class Comment {
         isDeleted = deleted;
     }
 
+    public Set<Comment> getChildComments() {
+        return childComments;
+    }
+
+    public void setChildComments(Set<Comment> childComments) {
+        this.childComments = childComments;
+    }
+
     public Comment() {
         this.timestamp = LocalDate.now();
         this.isDeleted = false;
@@ -71,34 +84,19 @@ public class Comment {
         this.isDeleted = false;
     }
 
-    public Comment(String text, User user, Comment parentComment, Post post) {
+    public Comment(String text, User user,Set<Comment> childComments) {
         this.text = text;
         this.user = user;
-        this.parentComment = parentComment;
-        this.post = post;
+        this.childComments = childComments;
         this.timestamp = LocalDate.now();
         this.isDeleted = false;
     }
-    public Comment(String text, User user, Post post) {
+    public Comment(String text, User user) {
         this.text = text;
         this.user = user;
-        this.post = post;
+//        this.post = post;
         this.timestamp = LocalDate.now();
         this.isDeleted = false;
-    }
-    public Comment(String text, Comment comment) {
-        this.text = text;
-        this.parentComment =  comment;
-        this.timestamp = LocalDate.now();
-        this.isDeleted = false;
-    }
-
-    public Post getPost() {
-        return post;
-    }
-
-    public void setPost(Post post) {
-        this.post = post;
     }
 
     public User getUser() {
@@ -107,14 +105,6 @@ public class Comment {
 
     public void setUser(User user) {
         this.user = user;
-    }
-
-    public Comment getParentComment() {
-        return parentComment;
-    }
-
-    public void setParentComment(Comment parentComment) {
-        this.parentComment = parentComment;
     }
 
     @Override

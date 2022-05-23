@@ -43,6 +43,7 @@ public class PostServiceImpl implements PostService {
         newPost.setImagePath(post.getImagePath());
         newPost.setUser(userService.findOne(post.getUser().getUsername()));
         newPost.setFlair(flairService.findOne(post.getFlair().getId()));
+        newPost.setComments(post.getComments());
         save(newPost);
         return newPost;
     }
