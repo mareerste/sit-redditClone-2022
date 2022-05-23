@@ -39,4 +39,11 @@ export class PostService {
       return this.http.delete<void>(`${this.postUrl}/${id}`);
     }
 
+    filter(entryText:string):Observable<Post[]>{
+      // const params:HttpParams = new HttpParams().set('entry',entryText);
+      let params:HttpParams = new HttpParams();
+      params = params.append('entry',entryText);
+      return this.http.get<Post[]>(this.allPostsUrl,{params});
+    }
+
   }

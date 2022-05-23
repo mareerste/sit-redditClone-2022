@@ -11,11 +11,14 @@ const routes: Routes = [
   {
     path:'signup',
     component:SignUpComponent
-  }
+  },
+  {path:'search/:entry',
+  component:MainPageComponent}
 ];
 
 @NgModule({
   imports: [RouterModule.forRoot(routes)],
-  exports: [RouterModule]
+  exports: [RouterModule],
+  declarations:[]
 })
 export class AppRoutingModule { }
