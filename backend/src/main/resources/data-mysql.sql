@@ -76,6 +76,6 @@ insert into child_comments (comment_id,child_id) values (7,8);
 insert into child_comments (comment_id,child_id) values (7,9);
 
 insert into reaction (date, type, comment_id,user_id) values ('2022-04-05',0,1,'marko123');
-insert into reaction (date, type, post_id,user_id) values ('2022-04-05',1,1,'marko123');
-insert into reaction (date, type, post_id,user_id) values ('2022-04-05',1,1,'mirko123');
+insert into reaction (date, type, post_id,user_id) values ('2022-04-05',0,1,'marko123');
+insert into reaction (date, type, post_id,user_id) values ('2022-04-05',0,1,'mirko123');
 insert into reaction (date, type, post_id,user_id) values ('2022-04-05',1,1,'pera123');

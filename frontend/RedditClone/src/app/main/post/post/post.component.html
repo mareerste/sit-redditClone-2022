@@ -21,7 +21,15 @@
       </mat-card-content>
   
       <mat-card-actions align="end">
-        <button mat-raised-button color="primary">Vote</button>
+        <form class="form">
+          <label style="visibility: hidden;" name="postId">{{post.id}}</label>
+          <button mat-icon-button type="submit" class="btn pull-right" style="background-color: red;" value="search"><mat-icon color="white">arrow_upwards</mat-icon></button>
+        </form>
+        <button class="rounded" mat-raised-button color="primary">{{karma}}</button>
+        <form class="form">
+          <label style="visibility: hidden;" name="postId">{{post.id}}</label>
+          <button mat-icon-button type="submit" class="btn pull-right" style="background-color: red;" value="search"><mat-icon color="white">arrow_downward</mat-icon></button>
+        </form>
         <span class="spacer"></span>
         <button mat-raised-button color="primary">Report</button>
         <button mat-raised-button color="primary" (click)="showComments = !showComments">Comments</button>

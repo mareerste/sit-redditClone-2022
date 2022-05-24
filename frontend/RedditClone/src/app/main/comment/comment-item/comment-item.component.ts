@@ -1,5 +1,6 @@
 import { Comment } from './../../../model/comment';
 import { Component, OnInit, Input } from '@angular/core';
+import { ReactionService } from 'src/app/services/reaction.service';
 
 @Component({
   selector: 'app-comment-item',
@@ -12,10 +13,14 @@ export class CommentItemComponent implements OnInit {
   comment:Comment;
   @Input()
   showComments:boolean;
+  karma:number = 0;
 
-  constructor() { }
+  constructor(private reactionService:ReactionService) { }
 
   ngOnInit(): void {
+    this.reactionService.getKarmaForComment(this.comment.id).subscribe(Data => {
+      this.karma = Data
+    })
   }
 
 }

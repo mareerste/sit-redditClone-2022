@@ -2,7 +2,15 @@
     <mat-card-title style="font-size: 14px;">Posted bt: {{comment.user.username}} - {{comment.timestamp| date:"dd.MM.yy"}}</mat-card-title>
     <mat-card-subtitle style="font-size: 18px;">{{comment.text}}</mat-card-subtitle>
     <mat-card-actions align="end">
-      <button mat-button>Vote</button>
+        <form class="form">
+            <label style="visibility: hidden;" name="postId">{{comment.id}}</label>
+            <button mat-icon-button type="submit" class="btn pull-right" ><mat-icon style="color: white;">arrow_upwards</mat-icon></button>
+          </form>
+          <button class="rounded" mat-raised-button color="primary">{{karma}}</button>
+          <form class="form">
+            <label style="visibility: hidden;" name="postId">{{comment.id}}</label>
+            <button mat-icon-button type="submit" class="btn pull-right" ><mat-icon style="color: white;">arrow_downward</mat-icon></button>
+          </form>
       <span class="spacer"></span>
       <button mat-button>Report</button>
       <button mat-button (click)="showComments = !showComments">Comments</button>

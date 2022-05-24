@@ -10,6 +10,7 @@ import rs.ac.uns.ftn.informatika.redditClone.model.entity.Comment;
 import rs.ac.uns.ftn.informatika.redditClone.model.entity.Post;
 import rs.ac.uns.ftn.informatika.redditClone.model.entity.Reaction;
 import rs.ac.uns.ftn.informatika.redditClone.model.entity.User;
+import rs.ac.uns.ftn.informatika.redditClone.model.enumerations.ReactionType;
 import rs.ac.uns.ftn.informatika.redditClone.service.CommentService;
 import rs.ac.uns.ftn.informatika.redditClone.service.PostService;
 import rs.ac.uns.ftn.informatika.redditClone.service.ReactionService;
@@ -18,6 +19,7 @@ import rs.ac.uns.ftn.informatika.redditClone.service.UserService;
 import java.util.ArrayList;
 import java.util.List;
 
+//@CrossOrigin(origins = "http://localhost:4200")
 @RestController
 @RequestMapping(value = "/reaction")
 public class ReactionController {
@@ -67,6 +69,20 @@ public class ReactionController {
         }
         return new ResponseEntity<>(reactionPostDTOList, HttpStatus.OK);
     }
+
+    @GetMapping(value = "/post/{id}/karma")
+    public ResponseEntity<Integer>getPostReactionsKarma(@PathVariable Integer id){
+        Post post = postService.findOne(id);
+        List<Reaction> reactions = reactionService.findAllByPost(post);
+        int result = 0;
+        for (Reaction r:reactions) {
+            if(r.getType() == ReactionType.UPVOTE)
+                result ++;
+            else
+                result --;
+        }
+        return new ResponseEntity<>(result, HttpStatus.OK);
+    }
     @GetMapping(value = "/comment/{id}")
     public ResponseEntity<List<ReactionCommentDTO>>getCommentReactions(@PathVariable Integer id){
         Comment comment = commentService.findOne(id);
@@ -76,6 +92,19 @@ public class ReactionController {
             reactionCommentDTOList.add(new ReactionCommentDTO(r));
         }
         return new ResponseEntity<>(reactionCommentDTOList, HttpStatus.OK);
+    }
+    @GetMapping(value = "/comment/{id}/karma")
+    public ResponseEntity<Integer>getCommentReactionsKarma(@PathVariable Integer id){
+        Comment comment = commentService.findOne(id);
+        List<Reaction> reactions = reactionService.findAllByComment(comment);
+        int result = 0;
+        for (Reaction r:reactions) {
+            if(r.getType() == ReactionType.UPVOTE)
+                result ++;
+            else
+                result --;
+        }
+        return new ResponseEntity<>(result, HttpStatus.OK);
     }
 
     @PreAuthorize("hasAnyRole('USER','MODERATOR', 'ADMIN')")

@@ -25,6 +25,7 @@ import {MatCardModule} from '@angular/material/card';
 import { SignUpComponent } from './pages/sign-up/sign-up.component';
 import { CommentListComponent } from './main/comment/comment-list/comment-list.component';
 import { CommentItemComponent } from './main/comment/comment-item/comment-item.component';
+import { ReactionService } from './services/reaction.service';
 
 @NgModule({
   declarations: [
@@ -62,7 +63,8 @@ import { CommentItemComponent } from './main/comment/comment-item/comment-item.c
     // },
     ApiService,
     ConfigService,
-    PostService
+    PostService,
+    ReactionService
   ],
   bootstrap: [AppComponent]
 })

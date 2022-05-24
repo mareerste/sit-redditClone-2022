@@ -56,4 +56,10 @@ export class ConfigService {
   get signup_url(): string {
     return this._signup_url;
   }
+
+  private _reaction_url = this._api_url + '/reaction';
+  get reaction_url(): string {
+    return this._reaction_url;
+  }
+
 }
