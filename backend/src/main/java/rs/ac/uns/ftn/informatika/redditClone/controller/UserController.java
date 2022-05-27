@@ -21,6 +21,7 @@ import rs.ac.uns.ftn.informatika.redditClone.security.TokenUtils;
 import rs.ac.uns.ftn.informatika.redditClone.service.UserService;
 
 import javax.servlet.http.HttpServletResponse;
+import java.security.Principal;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
@@ -156,6 +157,11 @@ public class UserController {
         return new ResponseEntity<>(new UserDTO(user),HttpStatus.OK);
     }
 
+    @GetMapping("/whoami")
+    @PreAuthorize("hasAnyRole('USER','MODERATOR', 'ADMIN')")
+    public User user(Principal user) {
+        return this.userService.findOne(user.getName());
+    }
 
 
 }

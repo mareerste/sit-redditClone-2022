@@ -26,6 +26,11 @@ export class ConfigService {
     return this._login_url;
   }
 
+  private _whoami_url = this._user_url + '/whoami';
+  get whoami_url(): string {
+    return this._whoami_url;
+  }
+
   private _posts_url = this._api_url + '/post';
   get posts_url(): string {
     return this._all_posts_url;

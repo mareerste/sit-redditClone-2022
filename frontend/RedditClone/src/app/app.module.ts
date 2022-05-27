@@ -1,3 +1,4 @@
+import { TokenInterceptor } from './interceptor/TokenInterceptor';
 import { NgModule, Component } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { AppRoutingModule } from './app-routing.module';
@@ -16,7 +17,7 @@ import {MatInputModule} from '@angular/material/input';
 import { PostListComponent } from './main/post/post-list/post-list.component';
 import { RouterModule, Routes } from '@angular/router';
 import { MainPageComponent } from './pages/main-page/main-page.component';
-import { HttpClientModule } from '@angular/common/http';
+import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { ApiService } from './services/api.service';
 import { ConfigService } from './services/config.service';
 import { PostService } from './services/post.service';
@@ -26,6 +27,8 @@ import { SignUpComponent } from './pages/sign-up/sign-up.component';
 import { CommentListComponent } from './main/comment/comment-list/comment-list.component';
 import { CommentItemComponent } from './main/comment/comment-item/comment-item.component';
 import { ReactionService } from './services/reaction.service';
+import { SignInComponent } from './pages/sign-in/sign-in.component';
+import  {ReactiveFormsModule} from '@angular/forms';
 
 @NgModule({
   declarations: [
@@ -38,6 +41,7 @@ import { ReactionService } from './services/reaction.service';
     SignUpComponent,
     CommentListComponent,
     CommentItemComponent,
+    SignInComponent,
   ],
   imports: [
     BrowserModule,
@@ -53,7 +57,8 @@ import { ReactionService } from './services/reaction.service';
     FormsModule,
     MatInputModule,
     HttpClientModule,
-    MatCardModule
+    MatCardModule,
+    ReactiveFormsModule
   ],
   providers: [
     // {
@@ -61,6 +66,11 @@ import { ReactionService } from './services/reaction.service';
     //   useClass: TokenInterceptor,
     //   multi: true
     // },
+    {
+      provide: HTTP_INTERCEPTORS,
+      useClass: TokenInterceptor,
+      multi: true
+    },
     ApiService,
     ConfigService,
     PostService,
