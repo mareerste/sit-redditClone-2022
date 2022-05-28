@@ -1,6 +1,8 @@
+import { CommunityService } from './../service/community.service';
 import { Component, OnInit } from '@angular/core';
 import {AuthService} from '../service/auth.service';
 import {UserService} from '../service/user.service';
+import { Community } from '../model/community';
 
 @Component({
   selector: 'app-user-menu',
@@ -9,14 +11,18 @@ import {UserService} from '../service/user.service';
 })
 export class UserMenuComponent implements OnInit {
 
-  user: any;
+  myCommunities:Community[];  
 
   constructor(
     private authService: AuthService,
-    private userService: UserService) { }
+    private userService: UserService,
+    private communityService:CommunityService,
+    ) { }
 
   ngOnInit() {
-    this.user = this.userService.currentUser;
+    this.communityService.getUsersCommunities(this.authService.getCurrentUser().username).subscribe(data => {
+      this.myCommunities = data
+    });
   }
 
   logout() {

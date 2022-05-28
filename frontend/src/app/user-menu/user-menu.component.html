@@ -1,1 +1,10 @@
-<button (click)="logout()" mat-menu-item>SIGN OUT</button>
+<div>
+    <button (click)="logout()" mat-menu-item>Create new Community</button>
+    <hr>
+    <mat-list *ngFor="let comm of myCommunities">
+        <mat-list-item>{{comm.name}}</mat-list-item>
+    </mat-list>
+    <!-- <div *ngFor="let post of posts | async;">
+        <post-list-item [showComments]="false" [post]="post"></post-list-item>
+    </div> -->
+</div>

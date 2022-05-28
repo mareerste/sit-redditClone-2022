@@ -13,6 +13,7 @@ public class UserCreateDTO implements Serializable {
     protected String avatar;
     protected LocalDate registrationDate = LocalDate.now();
     protected String description;
+    protected String displayName;
 
     public String getUsername() {
         return username;
@@ -62,21 +63,30 @@ public class UserCreateDTO implements Serializable {
         this.description = description;
     }
 
+    public String getDisplayName() {
+        return displayName;
+    }
+
+    public void setDisplayName(String displayName) {
+        this.displayName = displayName;
+    }
+
     public UserCreateDTO() {
     }
 
-    public UserCreateDTO(String username, String password, String email, String avatar, String description) {
+    public UserCreateDTO(String username, String password, String email, String avatar, String description, String displayName) {
         this.username = username;
         this.password = password;
         this.email = email;
         this.avatar = avatar;
         this.registrationDate = LocalDate.now();
         this.description = description;
+        this.displayName = displayName;
     }
 
 
     public UserCreateDTO(User user){
-        this(user.getUsername(), user.getPassword(), user.getEmail(), user.getAvatar(), user.getDescription());
+        this(user.getUsername(), user.getPassword(), user.getEmail(), user.getAvatar(), user.getDescription(), user.getDisplayName());
     }
     @Override
     public String toString() {

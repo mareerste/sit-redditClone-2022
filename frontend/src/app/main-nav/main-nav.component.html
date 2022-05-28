@@ -28,14 +28,18 @@
       <span class="spacer"></span>
       <!-- <nav-search></nav-search>
       <span class="spacer"></span> -->
-      <mat-nav-list *ngIf="!hasSignedIn()">
+      <mat-nav-list *ngIf="!isLoggedIn()">
         <a routerLink="/login" >Sign In</a>
         <a routerLink="/signup">Sign Up</a>
       </mat-nav-list>
-      <mat-nav-list *ngIf="hasSignedIn()">
-        <a href="#">{{userName()}}</a>
-        <a href="#">Community</a>
+      <mat-nav-list *ngIf="isLoggedIn()">
+        <a href="#">Profile</a>
+        <a type="button" [matMenuTriggerFor]="userMenu">Community</a>
         <a href="/" (click)="logout()">Sign Out</a>
+
+        <mat-menu #userMenu [overlapTrigger]="false" class="app-header-userMenu" yposition="below">
+          <app-user-menu></app-user-menu>
+      </mat-menu>
       </mat-nav-list>
     </mat-toolbar>
     <ng-content></ng-content>

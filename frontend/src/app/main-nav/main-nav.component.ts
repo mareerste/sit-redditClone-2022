@@ -33,6 +33,9 @@ export class MainNavComponent implements OnInit{
     hasSignedIn() {
       return !!this.authService.getCurrentUser();
     }
+    isLoggedIn():boolean{
+      return this.authService.isLoggedIn();
+    }
   
     userName() {
       const user = this.authService.getCurrentUser();

@@ -12,12 +12,11 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
-import rs.ac.uns.ftn.informatika.redditClone.model.dto.JwtAuthenticationRequest;
-import rs.ac.uns.ftn.informatika.redditClone.model.dto.UserCreateDTO;
-import rs.ac.uns.ftn.informatika.redditClone.model.dto.UserDTO;
-import rs.ac.uns.ftn.informatika.redditClone.model.dto.UserTokenState;
+import rs.ac.uns.ftn.informatika.redditClone.model.dto.*;
+import rs.ac.uns.ftn.informatika.redditClone.model.entity.Community;
 import rs.ac.uns.ftn.informatika.redditClone.model.entity.User;
 import rs.ac.uns.ftn.informatika.redditClone.security.TokenUtils;
+import rs.ac.uns.ftn.informatika.redditClone.service.CommunityService;
 import rs.ac.uns.ftn.informatika.redditClone.service.UserService;
 
 import javax.servlet.http.HttpServletResponse;
@@ -33,7 +32,9 @@ public class UserController {
     @Autowired
     private UserService userService;
     @Autowired
-    UserDetailsService userDetailsService;
+    private UserDetailsService userDetailsService;
+    @Autowired
+    private CommunityService communityService;
 
     @Autowired
     AuthenticationManager authenticationManager;
@@ -82,6 +83,7 @@ public class UserController {
         user.setAvatar(userCreateDTO.getAvatar());
         user.setRegistrationDate(userCreateDTO.getRegistrationDate());
         user.setDescription(userCreateDTO.getDescription());
+        user.setDisplayName(userCreateDTO.getDisplayName());
         user = userService.save(user);
         return new ResponseEntity<>(new UserDTO(user),HttpStatus.OK);
     }
@@ -162,6 +164,24 @@ public class UserController {
     @PreAuthorize("hasAnyRole('USER','MODERATOR', 'ADMIN')")
     public User user(Principal user) {
         return this.userService.findOne(user.getName());
+    }
+
+    @GetMapping(value = "/{username}/communities")
+    @PreAuthorize("hasAnyRole('USER','MODERATOR', 'ADMIN')")
+    public ResponseEntity<List<CommunityDTO>> getCommunities(@PathVariable String username){
+
+        User user = userService.findOne(username);
+        if(user != null){
+            List<Community> communities = communityService.findAllByUser(user);
+            List<CommunityDTO> communityDTOList = new ArrayList<>();
+            for (Community com :communities){
+                communityDTOList.add(new CommunityDTO(com));
+            }
+            return new ResponseEntity<>(communityDTOList, HttpStatus.OK);
+        }else{
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+
     }
 
 

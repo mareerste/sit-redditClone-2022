@@ -37,3 +37,11 @@ main-toolbar img{
     display: none;
   }
 }
+
+.app-header-userMenu{
+  background-color: rgb(30, 30, 30, 0.7%);
+  border-color: red;
+    border-style: solid;
+    border-width: 2px;
+    border-radius: 5%;
+}

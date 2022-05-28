@@ -1,3 +1,4 @@
+import { CommunityService } from './service/community.service';
 import { JwtUtilsService } from './service/jwt-utils.service';
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
@@ -20,6 +21,7 @@ import {AuthService} from './service/auth.service';
 import {UserService} from './service/user.service';
 import {ConfigService} from './service/config.service';
 import { ReactionService } from './service/reaction.service';
+
 
 
 import { HTTP_INTERCEPTORS } from '@angular/common/http';
@@ -79,7 +81,8 @@ import { NavSearchComponent } from './nav-search/nav-search.component';
     UserService,
     ConfigService,
     ReactionService,
-    JwtUtilsService
+    JwtUtilsService,
+    CommunityService
   ],
   bootstrap: [AppComponent]
 })
