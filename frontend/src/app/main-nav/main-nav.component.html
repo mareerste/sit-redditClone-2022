@@ -28,14 +28,14 @@
       <span class="spacer"></span>
       <!-- <nav-search></nav-search>
       <span class="spacer"></span> -->
-      <mat-nav-list>
+      <mat-nav-list *ngIf="!hasSignedIn()">
         <a routerLink="/login" >Sign In</a>
         <a routerLink="/signup">Sign Up</a>
       </mat-nav-list>
-      <mat-nav-list>
+      <mat-nav-list *ngIf="hasSignedIn()">
+        <a href="#">{{userName()}}</a>
         <a href="#">Community</a>
-        <a href="#">Profile</a>
-        <a href="#">Sign Out</a>
+        <a href="/" (click)="logout()">Sign Out</a>
       </mat-nav-list>
     </mat-toolbar>
     <ng-content></ng-content>

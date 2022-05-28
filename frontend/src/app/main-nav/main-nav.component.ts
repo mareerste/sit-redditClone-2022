@@ -1,6 +1,9 @@
+import { AuthService } from './../service/auth.service';
+import { UserService } from './../service/user.service';
+
 import { ConfigService } from './../service/config.service';
 import { Router } from '@angular/router';
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { BreakpointObserver, Breakpoints } from '@angular/cdk/layout';
 import { Observable } from 'rxjs';
 import { map, shareReplay } from 'rxjs/operators';
@@ -10,7 +13,7 @@ import { map, shareReplay } from 'rxjs/operators';
   templateUrl: './main-nav.component.html',
   styleUrls: ['./main-nav.component.css']
 })
-export class MainNavComponent {
+export class MainNavComponent implements OnInit{
 
   isHandset$: Observable<boolean> = this.breakpointObserver.observe(Breakpoints.Handset)
     .pipe(
@@ -20,9 +23,24 @@ export class MainNavComponent {
 
   constructor(private breakpointObserver: BreakpointObserver,
               private router:Router,
-              private configService: ConfigService) {}
+              private configService: ConfigService,
+              private userService:UserService,
+              private authService:AuthService
+              ) {}
+  ngOnInit(): void {
+  }
 
-    signIn(){
-      this.router.navigate([this.configService.login_url])
+    hasSignedIn() {
+      return !!this.authService.getCurrentUser();
+    }
+  
+    userName() {
+      const user = this.authService.getCurrentUser();
+      return user.username;
+    }
+
+    logout():void{
+      this.authService.logout();
+      // this.router.navigate(['/']);
     }
 }

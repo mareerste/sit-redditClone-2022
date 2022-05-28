@@ -1,3 +1,4 @@
+import { JwtUtilsService } from './service/jwt-utils.service';
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
 import {HttpClientModule} from '@angular/common/http';
@@ -77,7 +78,8 @@ import { NavSearchComponent } from './nav-search/nav-search.component';
     ApiService,
     UserService,
     ConfigService,
-    ReactionService
+    ReactionService,
+    JwtUtilsService
   ],
   bootstrap: [AppComponent]
 })
