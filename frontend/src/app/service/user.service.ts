@@ -24,8 +24,4 @@ export class UserService {
       }));
   }
 
-  getAll() {
-    return this.apiService.get(this.config.users_url);
-  }
-
 }

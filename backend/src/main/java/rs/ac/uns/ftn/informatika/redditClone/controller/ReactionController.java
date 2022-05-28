@@ -19,7 +19,7 @@ import rs.ac.uns.ftn.informatika.redditClone.service.UserService;
 import java.util.ArrayList;
 import java.util.List;
 
-//@CrossOrigin(origins = "http://localhost:4200")
+@CrossOrigin(origins = "http://localhost:4200")
 @RestController
 @RequestMapping(value = "/reaction")
 public class ReactionController {

@@ -15,6 +15,7 @@ import rs.ac.uns.ftn.informatika.redditClone.service.AdministratorService;
 import java.util.ArrayList;
 import java.util.List;
 
+@CrossOrigin(origins = "http://localhost:4200")
 @RestController
 @RequestMapping(value = "/administrator")
 public class AdministratorController {

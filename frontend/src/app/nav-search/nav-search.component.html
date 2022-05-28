@@ -1,0 +1,12 @@
+<div class="background">
+    <span class="spacer"></span>
+  <form class="form" (ngSubmit)="filter()" style="margin-left: 400px;">
+      <mat-form-field class="search_field" appearance="fill">
+          <input matInput placeholder="Search.."  name="search-entry" type="text" ((change)="search()" [(ngModel)]="filterText">
+        </mat-form-field>
+      <button mat-icon-button type="submit" class="btn btn-primary pull-right" value="search"><mat-icon color="white">search</mat-icon></button>
+      <button mat-icon-button class="btn btn-primary pull-right" value="search" (click)="reset()"><mat-icon color="white">autorenew</mat-icon></button>
+    </form>
+    <span class="spacer"></span>
+  </div>
+  

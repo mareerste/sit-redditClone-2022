@@ -18,6 +18,7 @@ import rs.ac.uns.ftn.informatika.redditClone.service.UserService;
 import java.time.LocalDate;
 import java.util.*;
 
+@CrossOrigin(origins = "http://localhost:4200")
 @RestController
 @RequestMapping(value = "/community")
 public class CommunityController {

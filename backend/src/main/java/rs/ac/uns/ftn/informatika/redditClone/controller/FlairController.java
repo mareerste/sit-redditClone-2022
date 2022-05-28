@@ -14,6 +14,7 @@ import rs.ac.uns.ftn.informatika.redditClone.service.FlairService;
 import java.util.ArrayList;
 import java.util.List;
 
+@CrossOrigin(origins = "http://localhost:4200")
 @RestController
 @RequestMapping(value = "/flair")
 public class FlairController {
