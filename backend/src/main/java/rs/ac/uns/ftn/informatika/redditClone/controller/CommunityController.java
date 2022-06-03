@@ -4,11 +4,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
-import rs.ac.uns.ftn.informatika.redditClone.model.dto.CommunityDTO;
-import rs.ac.uns.ftn.informatika.redditClone.model.dto.CommunityWithFlairsDTO;
-import rs.ac.uns.ftn.informatika.redditClone.model.dto.PostCreateDTO;
-import rs.ac.uns.ftn.informatika.redditClone.model.dto.PostDTO;
+import rs.ac.uns.ftn.informatika.redditClone.model.dto.*;
 import rs.ac.uns.ftn.informatika.redditClone.model.entity.*;
 import rs.ac.uns.ftn.informatika.redditClone.service.CommunityService;
 import rs.ac.uns.ftn.informatika.redditClone.service.ModeratorService;
@@ -142,7 +140,7 @@ public class CommunityController {
     }
     @PreAuthorize("hasAnyRole('USER','MODERATOR', 'ADMIN')")
     @PostMapping(value = "/{id}/posts")
-    public ResponseEntity<PostDTO> createPost(@PathVariable Integer id,@RequestBody PostCreateDTO postDTO) {
+    public ResponseEntity<PostDTO> createPost(@PathVariable Integer id, @RequestBody PostCreateDTO postDTO, Authentication authentication) {
 
         Community community = communityService.findOne(id);
         if (community == null) {
@@ -150,6 +148,8 @@ public class CommunityController {
         }
         if(postDTO.getTitle().equals("")||postDTO.getTitle() == null || postDTO.getText().equals("")||postDTO.getText() == null)
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+
+        postDTO.setUser(new UserCreateDTO(userService.findOne(authentication.getName())));
         Post post = postService.save(postDTO);
         if(post == null){
             return new ResponseEntity<>(null, HttpStatus.NOT_ACCEPTABLE);

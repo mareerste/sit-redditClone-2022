@@ -1,0 +1,68 @@
+.content {
+    margin-left: auto;
+    margin-right: auto;
+    margin-top: 10px;
+    width: 90%;
+    /* padding: 10px; */
+    border-color: red;
+    border-style: solid;
+    border-width: 2px;
+    border-radius: 3%;
+    background-color: transparent;
+    color: white;
+    margin: auto;
+  }
+
+  input,select{
+    border-color: red;
+    border-style: solid;
+    border-width: 2px;
+    border-radius: 3%;
+    height: 30px;
+    /* margin: 10px; */
+  }
+
+  select{
+      width: 130px;
+  }
+
+  mat-form-field{
+      padding-left: 10%;
+      padding-right: 10%;
+      
+  }
+  
+  mat-card {
+    text-align: center;
+    animation: fadein 1s;
+    -o-animation: fadein 1s; /* Opera */
+    -moz-animation: fadein 1s; /* Firefox */
+    -webkit-animation: fadein 1s; /* Safari and Chrome */
+    padding: 5px;
+  
+  }
+  
+  mat-input-container {
+    display: block;
+  }
+  
+  mat-spinner {
+    width: 25px;
+    height: 25px;
+    margin: 20px auto 0 auto;
+  }
+  
+  .error {
+    color: #D50000;
+  }
+  
+  .success {
+    color: #8BC34A;
+  }
+  
+  a {
+    text-decoration: none;
+    cursor: auto;
+    color: #FFFFFF;
+  }
+  

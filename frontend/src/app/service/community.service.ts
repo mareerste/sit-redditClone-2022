@@ -1,8 +1,10 @@
+import { map } from 'rxjs/operators';
+import { Post } from 'src/app/model/post';
 import { Observable } from 'rxjs';
 import { ConfigService } from './config.service';
 import { ApiService } from './api.service';
 import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Community } from '../model/community';
 
 @Injectable({
@@ -16,6 +18,33 @@ export class CommunityService {
     private http:HttpClient
   ) {
   }
+
+  savePostInCommunity(data:Post, commId:number){
+    const createPostHeaders = new HttpHeaders({
+          'Accept': 'application/json',
+          'Content-Type': 'application/json'
+        });
+        // data.flair = this.community.flairs[0]
+        console.log("ovde")
+        console.log(data)
+        return this.apiService.post(`${this.config.community_url}/${commId}/posts`, data, createPostHeaders)
+            .pipe(map(() => {
+              console.log('Post created successfully');
+            }));
+  }
+  // createPost(post) {
+  //   const createPostHeaders = new HttpHeaders({
+  //     'Accept': 'application/json',
+  //     'Content-Type': 'application/json'
+  //   });
+  //   post.flair = this.community.flairs[0]
+  //   console.log(JSON.stringify(post));
+    
+  //   return this.apiService.post(`${this.config.community_url}/${this.community.id}/posts`, JSON.stringify(post), createPostHeaders)
+  //     .pipe(map(() => {
+  //       console.log('Post created successfully');
+  //     }));
+  // }
 
   getUsersCommunities(username:string):Observable<Community[]> {
     return this.http.get<Community[]>(`${this.config.user_url}/${username}/communities`);

@@ -1,1 +1,35 @@
-<p>community-create-post works!</p>
+<mat-card elevation="5" fxFlex class="content">
+
+    <mat-card-content>
+        <p *ngIf="notification" [class]="notification.msgType">{{notification.msgBody}}</p>
+        <form #postForm="ngForm" (ngSubmit)="onSubmit(postForm.value)" *ngIf="!submitted" [formGroup]="form">
+            <mat-form-field>
+                <label>Title: </label>
+                <input formControlName="title" matInput required>
+            </mat-form-field>
+            <mat-form-field>
+                <label>Text: </label>
+                <input formControlName="text" matInput required type="text">
+            </mat-form-field>
+            <br/>
+            <mat-form-field>
+                <label>Colour</label>
+                <!-- <div> -->
+                    <!-- <br/> -->
+                <select id="flairId" formControlName="flair"  matInput required>
+                    <option *ngFor="let flair of community.flairs" [value]="flair | json">{{flair.name}}</option>
+                    
+                </select>
+            <!-- </div> -->
+            </mat-form-field>
+            
+            <button [disabled]="!form.valid" color="primary" mat-raised-button type="submit">Sign up</button>
+            
+        </form>
+        <br>
+        <mat-spinner *ngIf="submitted" mode="indeterminate"></mat-spinner>
+        <br>
+        <hr>
+    </mat-card-content>
+    
+</mat-card>

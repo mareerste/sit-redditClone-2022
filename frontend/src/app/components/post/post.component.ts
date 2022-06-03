@@ -26,6 +26,7 @@ export class PostComponent implements OnInit {
   this.reactionService.getKarmaForPost(this.post.id).subscribe(Data => {
     this.karma = Data
   })
+  console.log(this.post)
  }
 
  showCommentsMethod():void{
