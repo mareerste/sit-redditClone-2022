@@ -26,8 +26,6 @@ export class MainPageComponent implements OnInit {
   ngOnInit(): void {
     // this.userService.getMyInfo().subscribe();
     this.posts = this.postService.getPosts();
-    console.log(this.auth.getCurrentUser());
-    console.log("TOKEN " +this.auth.getToken());
   }
 
   filter(text:string){

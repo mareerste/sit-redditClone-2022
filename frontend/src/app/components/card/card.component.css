@@ -1,0 +1,30 @@
+.example-card {
+    max-width: 400px;
+    color: white;
+    border-style: solid;
+    border-color: red;
+    border-width: 2px;
+    background-color: transparent;
+    border-radius: 20px;
+    /* width: 90%; */
+    margin: auto;
+    margin-bottom: 10px;
+    margin-top: 10px;
+  }
+
+.example-card button{
+margin: auto;
+}
+
+.button{
+  border-style: solid;
+    border-color: red;
+    border-width: 2px;
+    background-color: transparent;
+    border-radius: 10px;
+}
+
+p{
+  font-size: 20px;
+  font-style: italic;
+}

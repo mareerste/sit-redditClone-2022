@@ -1,3 +1,5 @@
+import { SingleCommunityComponent } from './pages/community/single-community/single-community/single-community.component';
+import { SinglePostComponent } from './pages/single-post/single-post.component';
 import { MainPageComponent } from './pages/main-page/main-page.component';
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
@@ -19,6 +21,14 @@ const routes: Routes = [
     path: 'signup',
     component: SignUpComponent,
   },
+  {
+    path:'post/:id',
+    component:SinglePostComponent
+  },
+  {
+    path:'community/:id/posts',
+    component:SingleCommunityComponent
+  }
 ];
 
 @NgModule({

@@ -21,4 +21,16 @@ export class CommunityService {
     return this.http.get<Community[]>(`${this.config.user_url}/${username}/communities`);
   }
 
+  getPostCommunity(id:number):Observable<Community> {
+    return this.http.get<Community>(`${this.config.post_url}/${id}/community`);
+  }
+
+  getCommunity(id):Observable<Community>{
+    return this.http.get<Community>(`${this.config.community_url}/${id}`);
+  }
+
+  getCommunityPosts(id) {
+    return this.apiService.get(`${this.config.community_url}/${id}/posts`);
+  }
+
 }

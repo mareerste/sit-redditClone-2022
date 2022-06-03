@@ -1,4 +1,4 @@
-import { HttpParams } from '@angular/common/http';
+import { HttpClient, HttpParams } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { Post } from './../model/post';
 import {Injectable} from '@angular/core';
@@ -10,7 +10,8 @@ export class PostService {
 
   constructor(
     private apiService: ApiService,
-    private config: ConfigService
+    private config: ConfigService,
+    private http:HttpClient
   ) {
   }
 
@@ -20,6 +21,10 @@ export class PostService {
 
   getPost(id){
     return this.apiService.get(this.config.post_url,id);
+  }
+
+  getPost2(id:number):Observable<Post> {
+    return this.http.get<Post>(`${this.config.post_url}/${id}`);
   }
 
   updatePost(post:Post){

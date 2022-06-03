@@ -39,6 +39,15 @@ import { PostListComponent } from './components/post-list/post-list.component';
 import { CommentListComponent } from './components/comment/comment-list/comment-list.component';
 import { CommentItemComponent } from './components/comment/comment-item/comment-item.component';
 import { NavSearchComponent } from './nav-search/nav-search.component';
+import { SinglePostComponent } from './pages/single-post/single-post.component';
+import { CardComponent } from './components/card/card.component';
+import { SingleCommunityComponent } from './pages/community/single-community/single-community/single-community.component';
+import { CommunityListAtributeComponent } from './pages/community/single-community/community-list-atribute/community-list-atribute.component';
+import { CommunityPostsComponent } from './pages/community/single-community/community-posts/community-posts.component';
+import { CommunityEditComponent } from './pages/community/single-community/community-edit/community-edit.component';
+import { CommunityListFlairsComponent } from './pages/community/single-community/community-list-flairs/community-list-flairs.component';
+import { CommunityListModeratorsComponent } from './pages/community/single-community/community-list-moderators/community-list-moderators.component';
+import { CommunityCreatePostComponent } from './pages/community/single-community/community-create-post/community-create-post.component';
 
 @NgModule({
   declarations: [
@@ -53,6 +62,15 @@ import { NavSearchComponent } from './nav-search/nav-search.component';
     CommentListComponent,
     CommentItemComponent,
     NavSearchComponent,
+    SinglePostComponent,
+    CardComponent,
+    SingleCommunityComponent,
+    CommunityListAtributeComponent,
+    CommunityPostsComponent,
+    CommunityEditComponent,
+    CommunityListFlairsComponent,
+    CommunityListModeratorsComponent,
+    CommunityCreatePostComponent,
   ],
   imports: [
     BrowserModule,

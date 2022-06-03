@@ -11,7 +11,8 @@
 
 // hue. Available color palettes: https://material.io/design/color/
 
-$theming-material-components-primary: mat-palette($mat-red,800);
+// $theming-material-components-primary: mat-palette($mat-red,800);
+$theming-material-components-primary: mat-palette($mat-red,900);
 $theming-material-components-accent: mat-palette($mat-grey, A200, A100, A400);
 
 // The warn palette is optional (defaults to red).

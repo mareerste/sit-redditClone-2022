@@ -184,4 +184,20 @@ public class CommunityController {
             return new ResponseEntity<>(HttpStatus.OK);
         }
     }
+
+    @PreAuthorize("hasAnyRole('USER','MODERATOR', 'ADMIN')")
+    @GetMapping(value = "/{id}/posts/{postId}")
+    public ResponseEntity<PostDTO> getPost(@PathVariable Integer id,@PathVariable Integer postId) {
+
+        Community community = communityService.findOne(id);
+        if (community == null) {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+        Post post = postService.findOne(postId);
+        if (post == null) {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        } else {
+            return new ResponseEntity<>(new PostDTO(post),HttpStatus.OK);
+        }
+    }
 }

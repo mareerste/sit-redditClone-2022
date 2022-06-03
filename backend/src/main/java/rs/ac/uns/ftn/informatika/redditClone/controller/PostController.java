@@ -7,10 +7,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
-import rs.ac.uns.ftn.informatika.redditClone.model.dto.CommentDTO;
-import rs.ac.uns.ftn.informatika.redditClone.model.dto.PostCreateDTO;
-import rs.ac.uns.ftn.informatika.redditClone.model.dto.PostDTO;
-import rs.ac.uns.ftn.informatika.redditClone.model.dto.UserDTO;
+import rs.ac.uns.ftn.informatika.redditClone.model.dto.*;
 import rs.ac.uns.ftn.informatika.redditClone.model.entity.*;
 import rs.ac.uns.ftn.informatika.redditClone.service.*;
 
@@ -59,6 +56,18 @@ public class PostController {
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
         return new ResponseEntity<>(new PostDTO(post),HttpStatus.OK);
+    }
+    @GetMapping(value = "/{id}/community")
+    public ResponseEntity<CommunityDTO> getPostCommunity(@PathVariable Integer id){
+        Post post = postService.findOne(id);
+        if(post == null) {
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        }
+        Community community = communityService.findByPost(id);
+        if(community == null) {
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        }
+        return new ResponseEntity<>(new CommunityDTO(community),HttpStatus.OK);
     }
 
 //    @GetMapping(value = "/{id}/comments")
