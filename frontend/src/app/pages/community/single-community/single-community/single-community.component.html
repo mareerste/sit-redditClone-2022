@@ -15,14 +15,14 @@
   
   <div style="display: flex;flex-direction: row;">
     <div style="flex: 1 1 100%;box-sizing: border-box;max-width: 40%;">
-      <app-card [title]="community.name" [text]="community.description" [button]="community.creationDate"></app-card>
+      <app-card [title]="community.name" [text]="community.description" [button]="community.creationDate| date:'dd.MM.yyyy'"></app-card>
       <app-community-list-atribute [title]="comRulesTitle" [listItems]="community.rules"></app-community-list-atribute>
       <app-community-list-flairs [title]="comFlairsTitle" [listItems]="community.flairs"></app-community-list-flairs>
       <app-community-list-moderators [title]="comModeratorsTitle" [listItems]="community.moderators"></app-community-list-moderators>
     </div>
     <div style="flex: 1 1 0%;box-sizing: border-box;">
       
-      <post-list [posts]="posts" ></post-list>
+      <post-list [posts]="posts" (clickedEventEmit)="getChange($event)"></post-list>
       <app-community-create-post [community]="community"></app-community-create-post>
     </div>
   </div>

@@ -4,6 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 import rs.ac.uns.ftn.informatika.redditClone.model.dto.*;
 import rs.ac.uns.ftn.informatika.redditClone.model.entity.Comment;
@@ -109,18 +110,44 @@ public class ReactionController {
 
     @PreAuthorize("hasAnyRole('USER','MODERATOR', 'ADMIN')")
     @PostMapping(consumes = "application/json")
-    public ResponseEntity<ReactionDTO> saveReaction(@RequestBody ReactionDTO reactionDTO){
+    public ResponseEntity<ReactionDTO> saveReaction(@RequestBody ReactionDTO reactionDTO, Authentication authentication){
         if(reactionDTO.getComment() == null && reactionDTO.getPost() == null)
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
-        List<Reaction> reactionExist = reactionService.findByPostAndUser(postService.findOne(reactionDTO.getPost().getId()), userService.findOne(reactionDTO.getUser().getUsername()));
-        if(!reactionExist.isEmpty())
-            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+
+        if(reactionDTO.getPost() != null) {
+            List<Reaction> reactionExistPost = reactionService.findByPostAndUser(postService.findOne(reactionDTO.getPost()), userService.findOne(authentication.getName()));
+            if (!reactionExistPost.isEmpty()) {
+                if (reactionExistPost.get(0).getType() == reactionDTO.getType())
+                    return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+                else {
+                    Reaction reactionUpdate = reactionService.findOne(reactionExistPost.get(0).getId());
+                    reactionUpdate.setType(reactionDTO.getType());
+                    Reaction result = reactionService.save(reactionUpdate);
+
+                    return new ResponseEntity<>(new ReactionDTO(result), HttpStatus.OK);
+                }
+            }
+        }
+        if(reactionDTO.getComment() != null) {
+            List<Reaction> reactionExistComment = reactionService.findByCommentAndUser(commentService.findOne(reactionDTO.getComment()), userService.findOne(authentication.getName()));
+            if (!reactionExistComment.isEmpty())
+                if(reactionExistComment.get(0).getType() == reactionDTO.getType())
+                    return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+                else{
+                    Reaction reactionUpdate = reactionService.findOne(reactionExistComment.get(0).getId());
+                    reactionUpdate.setType(reactionDTO.getType());
+                    Reaction result = reactionService.save(reactionUpdate);
+
+                    return new ResponseEntity<>(new ReactionDTO(result),HttpStatus.OK);
+                }
+        }
         Reaction reaction = new Reaction();
         reaction.setType(reactionDTO.getType());
-        reaction.setTimestamp(reactionDTO.getTimestamp());
-        reaction.setUser(userService.findOne(reactionDTO.getUser().getUsername()));
-        reaction.setComment(commentService.findOne(reactionDTO.getComment().getId()));
-        reaction.setPost(postService.findOne(reactionDTO.getPost().getId()));
+        reaction.setUser(userService.findOne(authentication.getName()));
+        if(reactionDTO.getComment() != null)
+            reaction.setComment(commentService.findOne(reactionDTO.getComment()));
+        if(reactionDTO.getPost() != null)
+            reaction.setPost(postService.findOne(reactionDTO.getPost()));
         reaction = reactionService.save(reaction);
 
         return new ResponseEntity<>(new ReactionDTO(reaction),HttpStatus.CREATED);

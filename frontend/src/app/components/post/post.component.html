@@ -21,14 +21,16 @@
       </mat-card-content>
   
       <mat-card-actions align="end">
-        <form class="form">
-          <label style="visibility: hidden;" name="postId">{{post.id}}</label>
+        <form class="form" (ngSubmit)="onSubmitUp()" [formGroup]="form">
+          <!-- <label style="visibility: hidden;" name="postId">{{post.id}}</label> -->
+          <input formControlName="type" style="visibility: hidden;" value="UPVOTE" matInput required>
+          <input formControlName="post" style="visibility: hidden;" [value]="post.id" matInput required>
           <button mat-icon-button type="submit" class="btn pull-right" style="background-color: #b71c1c;" value="search"><mat-icon color="white">arrow_upwards</mat-icon></button>
         </form>
         <button class="rounded" mat-raised-button color="primary">{{karma}}</button>
         <form class="form">
           <label style="visibility: hidden;" name="postId">{{post.id}}</label>
-          <button mat-icon-button type="submit" class="btn pull-right" style="background-color: #b71c1c;" value="search"><mat-icon color="white">arrow_downward</mat-icon></button>
+          <button (click)="onSubmitDown()" mat-icon-button type="submit" class="btn pull-right" style="background-color: #b71c1c;" value="search"><mat-icon color="white">arrow_downward</mat-icon></button>
         </form>
         <span class="spacer"></span>
         <button mat-raised-button color="primary">Report</button>

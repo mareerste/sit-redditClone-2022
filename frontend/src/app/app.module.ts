@@ -10,18 +10,15 @@ import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { UserMenuComponent } from './user-menu/user-menu.component';
 import { LoginComponent } from './login/login.component';
 import { SignUpComponent } from './sign-up/sign-up.component';
-
 import {AngularMaterialModule} from './angular-material/angular-material.module';
-
 import {FormsModule, ReactiveFormsModule} from '@angular/forms';
-
 import {ApiService} from './service/api.service';
 import {PostService} from './service/post.service';
 import {AuthService} from './service/auth.service';
 import {UserService} from './service/user.service';
 import {ConfigService} from './service/config.service';
 import { ReactionService } from './service/reaction.service';
-
+import { NotifierService } from './service/notifier.service';
 
 
 import { HTTP_INTERCEPTORS } from '@angular/common/http';
@@ -100,7 +97,8 @@ import { CommunityCreatePostComponent } from './pages/community/single-community
     ConfigService,
     ReactionService,
     JwtUtilsService,
-    CommunityService
+    CommunityService,
+    NotifierService,
   ],
   bootstrap: [AppComponent]
 })

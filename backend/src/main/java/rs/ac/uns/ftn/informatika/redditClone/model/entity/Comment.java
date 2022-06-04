@@ -16,7 +16,7 @@ public class Comment {
     private LocalDate timestamp;
     @Column(name = "deleted", nullable = false)
     private Boolean isDeleted;
-    @ManyToOne(cascade = CascadeType.ALL,fetch = FetchType.EAGER)
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "user_id")
     private User user;
 //    @ManyToOne(cascade = CascadeType.ALL,fetch = FetchType.EAGER)
@@ -28,8 +28,8 @@ public class Comment {
 //    @ManyToOne(cascade = CascadeType.ALL,fetch = FetchType.EAGER)
 //    @JoinColumn(name = "post_id",nullable = true)
 //    private Post post;
-//    @OneToMany(mappedBy = "comment",fetch = FetchType.LAZY,cascade = CascadeType.ALL)
-//    Set<Reaction> reactions = new HashSet<>();
+    @OneToMany(mappedBy = "comment",fetch = FetchType.LAZY,cascade = CascadeType.ALL)
+    Set<Reaction> reactions = new HashSet<>();
 //    @OneToMany(mappedBy = "comment",fetch = FetchType.LAZY,cascade = CascadeType.ALL)
 //    Set<Report> reports = new HashSet<>();
 

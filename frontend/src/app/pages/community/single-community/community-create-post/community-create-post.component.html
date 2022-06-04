@@ -2,30 +2,31 @@
 
     <mat-card-content>
         <p *ngIf="notification" [class]="notification.msgType">{{notification.msgBody}}</p>
-        <form #postForm="ngForm" (ngSubmit)="onSubmit(postForm.value)" *ngIf="!submitted" [formGroup]="form">
+        <!-- <form #postForm="ngForm" (ngSubmit)="onSubmit(postForm.value)" *ngIf="!submitted" [formGroup]="form"> -->
+        <form (ngSubmit)="onSubmit()" *ngIf="!submitted" [formGroup]="form">
             <mat-form-field>
                 <label>Title: </label>
                 <input formControlName="title" matInput required>
+                <span *ngIf="titleRequired" class="field-error" style="color: red;">Required field.</span>
             </mat-form-field>
             <mat-form-field>
                 <label>Text: </label>
                 <input formControlName="text" matInput required type="text">
+                <span *ngIf="textRequired" class="field-error" style="color: red;">Required field.</span>
             </mat-form-field>
             <br/>
             <mat-form-field>
-                <label>Colour</label>
-                <!-- <div> -->
-                    <!-- <br/> -->
+                <label>Flair</label>
                 <select id="flairId" formControlName="flair"  matInput required>
                     <option *ngFor="let flair of community.flairs" [value]="flair | json">{{flair.name}}</option>
-                    
                 </select>
-            <!-- </div> -->
+                <span *ngIf="flairRequired" class="field-error" style="color: red;">Required field.</span>
             </mat-form-field>
             
-            <button [disabled]="!form.valid" color="primary" mat-raised-button type="submit">Sign up</button>
+            <button [disabled]="!form.valid" color="primary" mat-raised-button type="submit">Post</button>
             
         </form>
+
         <br>
         <mat-spinner *ngIf="submitted" mode="indeterminate"></mat-spinner>
         <br>

@@ -3,9 +3,10 @@ import { ConfigService } from './../../service/config.service';
 import { Post } from './../../model/post';
 import { ActivatedRoute } from '@angular/router';
 import { PostService } from './../../service/post.service';
-import { Observable } from 'rxjs';
+import { BehaviorSubject, Observable } from 'rxjs';
 import { Component, OnInit } from '@angular/core';
 import { AuthService } from 'src/app/service';
+import { switchMap } from 'rxjs/operators';
 
 @Component({
   selector: 'app-main-page',
@@ -16,6 +17,7 @@ export class MainPageComponent implements OnInit {
 
   whoamIResponse = {};
   posts:Observable<Post[]>;
+  refreshPosts = new BehaviorSubject<boolean>(true);
   constructor(
     private postService:PostService, 
     private route:ActivatedRoute,
@@ -24,7 +26,10 @@ export class MainPageComponent implements OnInit {
     private auth:AuthService) { }
 
   ngOnInit(): void {
-    // this.userService.getMyInfo().subscribe();
+    this.posts = this.postService.getPosts();
+    // this.posts = this.refreshPosts.pipe(switchMap(_ => this.postService.getPosts()));
+  }
+  getChange(){
     this.posts = this.postService.getPosts();
   }
 

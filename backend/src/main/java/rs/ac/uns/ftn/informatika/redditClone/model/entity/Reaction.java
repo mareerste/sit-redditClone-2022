@@ -14,13 +14,13 @@ public class Reaction {
     private ReactionType type;
     @Column(name = "date",nullable = false)
     private LocalDate timestamp;
-    @ManyToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "user_id")
     private User user;
-    @ManyToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "post_id",nullable = true)
     private Post post;
-    @ManyToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "comment_id",nullable = true)
     private Comment comment;
 
@@ -72,6 +72,7 @@ public class Reaction {
         this.comment = comment;
     }
     public Reaction() {
+        this.timestamp = LocalDate.now();
     }
     public Reaction(User user, Post post) {
         this.type = ReactionType.UPVOTE;

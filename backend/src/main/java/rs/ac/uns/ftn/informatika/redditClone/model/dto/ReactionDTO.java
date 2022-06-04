@@ -12,8 +12,8 @@ public class ReactionDTO implements Serializable {
     private ReactionType type;
     private LocalDate timestamp;
     private UserCreateDTO user;
-    private PostDTO post;
-    private CommentDTO comment;
+    private Integer post;
+    private Integer comment;
 
     public Integer getId() {
         return id;
@@ -40,26 +40,26 @@ public class ReactionDTO implements Serializable {
         this.user = user;
     }
 
-    public PostDTO getPost() {
+    public Integer getPost() {
         return post;
     }
 
-    public void setPost(PostDTO post) {
+    public void setPost(Integer post) {
         this.post = post;
     }
 
-    public CommentDTO getComment() {
+    public Integer getComment() {
         return comment;
     }
 
-    public void setComment(CommentDTO comment) {
+    public void setComment(Integer comment) {
         this.comment = comment;
     }
 
     public ReactionDTO() {
     }
 
-    public ReactionDTO(Integer id, ReactionType type, LocalDate timestamp, UserCreateDTO user, PostDTO postDTO, CommentDTO commentDTO) {
+    public ReactionDTO(Integer id, ReactionType type, LocalDate timestamp, UserCreateDTO user, Integer postDTO, Integer commentDTO) {
         this.id = id;
         this.type = type;
         this.timestamp = timestamp;
@@ -67,7 +67,7 @@ public class ReactionDTO implements Serializable {
         this.post = postDTO;
         this.comment = commentDTO;
     }
-    public ReactionDTO(Reaction reaction){this(reaction.getId(), reaction.getType(),reaction.getTimestamp(),new UserCreateDTO(reaction.getUser()), ((reaction.getPost() == null) ? null : new PostDTO(reaction.getPost())), ((reaction.getComment() == null) ? null : new CommentDTO(reaction.getComment())));}
+    public ReactionDTO(Reaction reaction){this(reaction.getId(), reaction.getType(),reaction.getTimestamp(),new UserCreateDTO(reaction.getUser()), ((reaction.getPost() == null) ? null : reaction.getPost().getId()), ((reaction.getComment() == null) ? null : reaction.getComment().getId()));}
     @Override
     public String toString() {
         return "Reaction{" +

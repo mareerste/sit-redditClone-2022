@@ -1,4 +1,4 @@
 export enum ReactionType {
-    UPVOTE = -1,
+    UPVOTE = 0,
     DOWNVOTE = 1
 }

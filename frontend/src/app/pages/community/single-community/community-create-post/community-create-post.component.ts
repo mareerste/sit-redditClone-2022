@@ -21,17 +21,18 @@ interface DisplayMessage {
 })
 export class CommunityCreatePostComponent implements OnInit {
 
-  title = 'Sign up';
+  title = 'Create post';
   form: FormGroup;
   submitted = false;
   @Input()
   private community:Community;
-  private selectedFlair:Flair;
-
   notification: DisplayMessage;
-
   returnUrl: string;
   private ngUnsubscribe: Subject<void> = new Subject<void>();
+
+  titleRequired = false;
+  textRequired = false;
+  flairRequired = false;
 
   constructor(
     private userService: UserService,
@@ -54,12 +55,10 @@ export class CommunityCreatePostComponent implements OnInit {
       });
     // get return url from route parameters or default to '/'
     this.returnUrl = this.route.snapshot.queryParams['returnUrl'] || '/';
-    console.log(this.returnUrl)
     this.form = this.formBuilder.group({
-      title: ['', Validators.compose([Validators.required, Validators.minLength(3), Validators.maxLength(30)])],
-      text: ['', Validators.compose([Validators.required, Validators.minLength(3)])],
+      title: ['', Validators.compose([Validators.required, Validators.minLength(3), Validators.maxLength(64)])],
+      text: ['', Validators.compose([Validators.required, Validators.minLength(3), Validators.maxLength(32)])],
       flair: []
-      // email: ['', Validators.compose([Validators.required, Validators.minLength(10), Validators.maxLength(64),Validators.email])],
     });
   }
 
@@ -68,62 +67,36 @@ export class CommunityCreatePostComponent implements OnInit {
     this.ngUnsubscribe.complete();
   }
 
-  onSubmit(post) {
+  // onSubmit(post) {
+  onSubmit() {
     
     this.notification = undefined;
     this.submitted = true;
-    // console.log("POSTTTTT")
-    // post.flair = this.community.flairs[0]
-    // console.log(post)
-    // this.communityService.savePostInCommunity(post,this.community.id).subscribe(data => {
-    //   console.log(data)
-    // },
-    //     error => {
-    //       this.submitted = false;
-    //       console.log('Create post error');
-    //       this.notification = { msgType: 'error', msgBody: error['error'].message };
-    //     });
-
-// OVO SADA RADIIII
-    // this.form.value.flair = this.community.flairs[0]
-    // const json = JSON.stringify(obj);
-    // const flairTag = JSON.stringify(this.form.value.flair)
-    // console.log(flairTag)
-    // this.form.value.flair = flairTag
-    console.log(this.form.value.flair)
+    this.titleRequired = false;
+    this.textRequired = false;
+    this.flairRequired = false;
+    
     this.form.value.flair = JSON.parse(this.form.value.flair);
     this.communityService.savePostInCommunity(this.form.value,this.community.id)
       .subscribe(data => {
-        // console.log(data);
-        // window.location.reload();
-        // this.router.navigate([this.returnUrl]);
-        // console.log(this.router.url)
-        // this.router.navigate(
-        //   ['community/'+this.community.id+'/posts']
-        //   )
         window.location.reload()
-        
       },
         error => {
           this.submitted = false;
+          var textt:string = this.form.value.text
+          if(this.form.value.text.length == 0)
+            this.textRequired = true
+          if(this.form.value.title.length == 0)
+            this.titleRequired = true
+          if(this.form.value.flair == null)
+            this.flairRequired = true
+
+          console.log(error)
+          console.log(error['status'])
           console.log('Create post error');
-          this.notification = { msgType: 'error', msgBody: error['error'].message };
+          this.notification = { msgType: 'error', msgBody: 'Please fill all fields' };
         });
 
-  }
-
-  createPost(post) {
-    const createPostHeaders = new HttpHeaders({
-      'Accept': 'application/json',
-      'Content-Type': 'application/json'
-    });
-    post.flair = this.community.flairs[0]
-    console.log(JSON.stringify(post));
-    
-    return this.apiService.post(`${this.config.community_url}/${this.community.id}/posts`, JSON.stringify(post), createPostHeaders)
-      .pipe(map(() => {
-        console.log('Post created successfully');
-      }));
   }
 
 }

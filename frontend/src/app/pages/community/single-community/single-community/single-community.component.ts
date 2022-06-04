@@ -37,6 +37,10 @@ export class SingleCommunityComponent implements OnInit {
     // this.creationDate = this.community.creationDate
   }
 
+  getChange(){
+    this.posts = this.communityService.getCommunityPosts(this.communityId);
+  }
+
   loadCommunity(id:number){
     this.communityService.getCommunity(id).subscribe(data=>{
       this.community = data;

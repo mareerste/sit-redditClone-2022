@@ -83,6 +83,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
                 .antMatchers(HttpMethod.GET, "/reaction/post/{id}/karma").permitAll()
                 .antMatchers(HttpMethod.GET, "/reaction/comment/{id}").permitAll()
                 .antMatchers(HttpMethod.GET, "/reaction/comment/{id}/karma").permitAll()
+                .antMatchers(HttpMethod.GET, "/reaction").permitAll()
                 .anyRequest().authenticated();
         //hasAnyRole("USER","ADMIN")
         //hasRole("USER")

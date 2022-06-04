@@ -19,6 +19,9 @@
     border-radius: 50%;
   }
 
+  .mat-input-element{
+    width: 0;
+  }
   .example-card p{
       color: white;
       margin: auto;

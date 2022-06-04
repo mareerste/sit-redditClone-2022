@@ -8,10 +8,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 import rs.ac.uns.ftn.informatika.redditClone.model.dto.*;
 import rs.ac.uns.ftn.informatika.redditClone.model.entity.*;
-import rs.ac.uns.ftn.informatika.redditClone.service.CommunityService;
-import rs.ac.uns.ftn.informatika.redditClone.service.ModeratorService;
-import rs.ac.uns.ftn.informatika.redditClone.service.PostService;
-import rs.ac.uns.ftn.informatika.redditClone.service.UserService;
+import rs.ac.uns.ftn.informatika.redditClone.service.*;
 
 import java.time.LocalDate;
 import java.util.*;
@@ -28,6 +25,8 @@ public class CommunityController {
     private UserService userService;
     @Autowired
     private ModeratorService moderatorService;
+    @Autowired
+    private ReactionService reactionService;
 
     @GetMapping
     public ResponseEntity<List<CommunityDTO>> getCommunities(){
@@ -154,10 +153,14 @@ public class CommunityController {
         if(post == null){
             return new ResponseEntity<>(null, HttpStatus.NOT_ACCEPTABLE);
         }
+        Reaction reaction = new Reaction(userService.findOne(authentication.getName()),post);
+        reactionService.save(reaction);
+
         Set<Post> posts = community.getPosts();
         posts.add(post);
         community.setPosts(posts);
         communityService.save(community);
+
         return new ResponseEntity<>(new PostDTO(post),HttpStatus.CREATED);
     }
     @PreAuthorize("hasAnyRole('USER','MODERATOR', 'ADMIN')")

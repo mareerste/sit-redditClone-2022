@@ -14,8 +14,6 @@ export class SinglePostComponent implements OnInit {
 
   
   button = "View";
-  
-
   postId;
   post;
   community;

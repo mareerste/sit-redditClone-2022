@@ -1,8 +1,10 @@
+import { map } from 'rxjs/operators';
 import { Observable } from 'rxjs';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { ConfigService } from './config.service';
 import { ApiService } from './api.service';
 import { Injectable } from '@angular/core';
+import { Reaction } from '../model/reaction';
 
 @Injectable({
   providedIn: 'root'
@@ -26,5 +28,17 @@ export class ReactionService {
 
   getKarmaForComment(id:number):Observable<number> {
     return this.http.get<number>(`${this.config.reaction_url}/comment/${id}/karma`);
+  }
+
+  sendReaction(data:Reaction){
+    const createPostHeaders = new HttpHeaders({
+          'Accept': 'application/json',
+          'Content-Type': 'application/json'
+        });
+        console.log(data)
+        return this.apiService.post(`${this.config.reaction_url}`, data, createPostHeaders)
+            .pipe(map(() => {
+              console.log('Reaction created successfully');
+            }));
   }
 }
