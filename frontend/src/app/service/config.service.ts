@@ -38,6 +38,11 @@ export class ConfigService {
     return this._community_url;
   }
 
+  private _flair_url = this._api_url + '/flair';
+  get flair_url(): string {
+    return this._flair_url;
+  }
+
   // /{id}/posts
   private _community_posts_url = this._api_url + '/community/{id}/posts';
   get community_posts_url(): string {

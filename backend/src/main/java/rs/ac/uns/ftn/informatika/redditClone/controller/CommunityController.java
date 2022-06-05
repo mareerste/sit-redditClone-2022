@@ -52,9 +52,9 @@ public class CommunityController {
     }
     @PreAuthorize("hasAnyRole('USER','MODERATOR', 'ADMIN')")
     @PostMapping(consumes = "application/json")
-    public ResponseEntity<CommunityWithFlairsDTO> saveCommunity(@RequestBody CommunityWithFlairsDTO communityDTO) {
+    public ResponseEntity<CommunityWithFlairsDTO> saveCommunity(@RequestBody CommunityWithFlairsDTO communityDTO, Authentication authentication) {
 
-        if(communityDTO.getName() == null || communityDTO.getModerators().isEmpty() || communityDTO.getDescription() == null){
+        if(communityDTO.getName() == null || communityDTO.getDescription() == null){
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
 
@@ -63,9 +63,12 @@ public class CommunityController {
         community.setDescription(communityDTO.getDescription());
         community.setCreationDate(LocalDate.now());
         community.setRules(communityDTO.getRules());
-        community.setSuspended(communityDTO.getSuspended());
-        community.setSuspendedReason(communityDTO.getSuspendedReason());
-        community.setModerators(communityDTO.getModerators());
+        community.setSuspended(false);
+        community.setSuspendedReason(null);
+
+        Set<User> moderators = new HashSet<>();
+        moderators.add(userService.findOne(authentication.getName()));
+        community.setModerators(moderators);
         community.setFlairs(communityDTO.getFlairs());
         community = communityService.save(community);
         User user = community.getModerators().iterator().next();

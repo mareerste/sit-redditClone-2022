@@ -1,1 +1,47 @@
-<p>community-create works!</p>
+
+<mat-card elevation="5" fxFlex class="content">
+    <mat-card-title>
+        <h2>Create Community</h2>
+    </mat-card-title>
+    
+    <mat-card-content>
+        <p *ngIf="notification" [class]="notification.msgType">{{notification.msgBody}}</p>
+        <form (ngSubmit)="onSubmit()" *ngIf="!submitted" [formGroup]="form">
+            <mat-form-field>
+                <label>Name: </label>
+                <input formControlName="name" matInput required>
+            </mat-form-field>
+            <mat-form-field>
+                <label>Description: </label>
+                <input formControlName="description" matInput required>
+            </mat-form-field>
+            <mat-form-field>
+                <label>Rules: </label>
+                <div formArrayName="rules">
+                    <ng-container *ngFor="let rule of form.get('rules')['controls'];index as i">
+                        <input formControlName="{{i}}" class="smallInput" type="text">
+                        <input type="button" (click)="removeRule(i)" value="X" class="xButton">
+                    </ng-container>
+                    <input type="button" value="+ Add Rule" (click)="addRule()">
+                </div>
+            </mat-form-field>
+            <mat-form-field>
+                <label>Flairs: </label>
+                <div formArrayName="flairs">
+                    <ng-container *ngFor="let flair of form.get('flairs')['controls'];index as i">
+                        <input formControlName="{{i}}" class="smallInput" type="text">
+                        <input type="button" (click)="removeFlair(i)" value="X" class="xButton">
+                    </ng-container>
+                    <input (click)="addFlair()" type="button" value="+ Add Flair">
+                </div>
+            </mat-form-field>
+            <button [disabled]="!form.valid" color="primary" mat-raised-button type="submit">Create</button>
+            <br>
+            <button color="primary" mat-raised-button routerLink="/" >Go Back</button>
+        </form>
+        <br>
+        <mat-spinner *ngIf="submitted" mode="indeterminate"></mat-spinner>
+        <br>
+        <hr>
+    </mat-card-content>
+</mat-card>

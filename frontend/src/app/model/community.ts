@@ -2,13 +2,20 @@ import { User } from './user';
 
 import { Flair } from './flair';
 export class Community {
-    id:number;
+    id?:number;
     name:string;
     description:string;
-    creationDate:Date;
+    creationDate?:Date;
     rules?:string[];
-    isSuspended:boolean;
+    isSuspended?:boolean;
     suspendedReason?:string;
     flairs:Flair[]|[];
-    moderators:User[]|[];
+    moderators?:User[]|[];
+
+    constructor(name:string, description:string, rules:string[], flairs:Flair[]) {
+        this.name = name,
+        this.description = description,
+        this.rules = rules,
+        this.flairs = flairs
+      }
 }
