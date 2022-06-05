@@ -47,6 +47,10 @@ export class SinglePostComponent implements OnInit {
     });  
   }
 
+  getChange(){
+    window.location.reload()
+  }
+
   showPost(){
     this.router.navigate(
       ['community',this.community.id,'posts']

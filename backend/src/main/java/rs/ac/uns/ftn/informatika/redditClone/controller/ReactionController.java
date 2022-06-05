@@ -60,15 +60,26 @@ public class ReactionController {
         }
         return new ResponseEntity<>(reactionPostDTOList, HttpStatus.OK);
     }
+//    @GetMapping(value = "/post/{id}")
+//    public ResponseEntity<List<ReactionPostDTO>>getPostReactions(@PathVariable Integer id){
+//        Post post = postService.findOne(id);
+//        List<Reaction> reactions = reactionService.findAllByPost(post);
+//        List<ReactionPostDTO> reactionPostDTOList = new ArrayList<>();
+//        for (Reaction r:reactions) {
+//            reactionPostDTOList.add(new ReactionPostDTO(r));
+//        }
+//        return new ResponseEntity<>(reactionPostDTOList, HttpStatus.OK);
+//    }
+
     @GetMapping(value = "/post/{id}")
-    public ResponseEntity<List<ReactionPostDTO>>getPostReactions(@PathVariable Integer id){
+    public ResponseEntity<Integer>getPostReactions(@PathVariable Integer id){
         Post post = postService.findOne(id);
         List<Reaction> reactions = reactionService.findAllByPost(post);
         List<ReactionPostDTO> reactionPostDTOList = new ArrayList<>();
         for (Reaction r:reactions) {
             reactionPostDTOList.add(new ReactionPostDTO(r));
         }
-        return new ResponseEntity<>(reactionPostDTOList, HttpStatus.OK);
+        return new ResponseEntity<>(reactions.size(), HttpStatus.OK);
     }
 
     @GetMapping(value = "/post/{id}/karma")

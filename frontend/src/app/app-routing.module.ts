@@ -1,3 +1,4 @@
+import { CommunityCreateComponent } from './pages/community/community-create/community-create.component';
 import { SingleCommunityComponent } from './pages/community/single-community/single-community/single-community.component';
 import { SinglePostComponent } from './pages/single-post/single-post.component';
 import { MainPageComponent } from './pages/main-page/main-page.component';
@@ -28,6 +29,10 @@ const routes: Routes = [
   {
     path:'community/:id/posts',
     component:SingleCommunityComponent
+  },
+  {
+    path:'community/create',
+    component:CommunityCreateComponent
   }
 ];
 

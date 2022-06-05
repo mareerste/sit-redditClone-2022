@@ -18,6 +18,7 @@ public class PostCreateDTO implements Serializable {
     private UserCreateDTO user;
     private FlairCreateDTO flair;
     private Set<Comment> comments = new HashSet<>();
+    private Integer reactions;
 
     public Integer getId() {
         return id;
@@ -66,6 +67,14 @@ public class PostCreateDTO implements Serializable {
     }
     public void setFlair(FlairCreateDTO flair) {this.flair = flair;}
 
+    public Integer getReactions() {
+        return reactions;
+    }
+
+    public void setReactions(Integer reactions) {
+        this.reactions = reactions;
+    }
+
     public Set<Comment> getComments() {
         return comments;
     }
@@ -75,7 +84,7 @@ public class PostCreateDTO implements Serializable {
 
     public PostCreateDTO() {
     }
-    public PostCreateDTO(Integer id, String title, String text, String imagePath, UserCreateDTO user, FlairCreateDTO flair, Set<Comment>comments) {
+    public PostCreateDTO(Integer id, String title, String text, String imagePath, UserCreateDTO user, FlairCreateDTO flair, Set<Comment>comments, Integer reactions) {
         this.id = id;
         this.title = title;
         this.text = text;
@@ -85,8 +94,9 @@ public class PostCreateDTO implements Serializable {
         this.user = user;
         this.flair = flair;
         this.comments = comments;
+        this.reactions = reactions;
     }
-    public PostCreateDTO(Post post){this(post.getId(), post.getTitle(), post.getText(), post.getImagePath(), new UserCreateDTO(post.getUser()),new FlairCreateDTO(post.getFlair()), post.getComments());}
+    public PostCreateDTO(Post post){this(post.getId(), post.getTitle(), post.getText(), post.getImagePath(), new UserCreateDTO(post.getUser()),new FlairCreateDTO(post.getFlair()), post.getComments(), post.getReactions().size());}
 
     @Override
     public String toString() {

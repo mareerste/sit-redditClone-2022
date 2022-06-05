@@ -1,3 +1,4 @@
+import { async } from '@angular/core/testing';
 import { filter } from 'rxjs/operators';
 import { Observable } from 'rxjs/Observable';
 import { Component, OnInit } from '@angular/core';
@@ -15,7 +16,8 @@ import { DatePipe } from '@angular/common';
 })
 export class SingleCommunityComponent implements OnInit {
 
-  posts:Observable<Post[]>;
+  posts:Post[];
+  postsClone:Post[];
   community:Community = null;
   communityId;
   // creationDate;
@@ -33,17 +35,29 @@ export class SingleCommunityComponent implements OnInit {
   ngOnInit() {
     this.communityId = this.route.snapshot.paramMap.get('id');
     this.loadCommunity(this.communityId)
-    this.posts = this.communityService.getCommunityPosts(this.communityId);
+    this.communityService.getCommunityPosts(this.communityId).subscribe(data=>{
+      this.posts = data;
+    });
+    
     // this.creationDate = this.community.creationDate
   }
 
+  saveNewPost(post:Post){
+    // this.posts = this.communityService.getCommunityPosts(this.communityId);
+    this.posts.push(post)
+  }
+
   getChange(){
-    this.posts = this.communityService.getCommunityPosts(this.communityId);
+    // this.posts = this.communityService.getCommunityPosts(this.communityId);
+    this.communityService.getCommunityPosts(this.communityId).subscribe(data=>{
+      this.posts = data;
+    });
   }
 
   loadCommunity(id:number){
     this.communityService.getCommunity(id).subscribe(data=>{
       this.community = data;
+      console.log(this.community)
       // this.creationDate = this.community.creationDate
     })
   }

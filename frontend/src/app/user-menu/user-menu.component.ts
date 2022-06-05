@@ -3,6 +3,7 @@ import { Component, OnInit } from '@angular/core';
 import {AuthService} from '../service/auth.service';
 import {UserService} from '../service/user.service';
 import { Community } from '../model/community';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-user-menu',
@@ -17,6 +18,7 @@ export class UserMenuComponent implements OnInit {
     private authService: AuthService,
     private userService: UserService,
     private communityService:CommunityService,
+    private router:Router
     ) { }
 
   ngOnInit() {
@@ -25,8 +27,10 @@ export class UserMenuComponent implements OnInit {
     });
   }
 
-  logout() {
-    this.authService.logout();
+  navigate() {
+    this.router.navigate(
+      ['community/create']
+      )
   }
 
 }

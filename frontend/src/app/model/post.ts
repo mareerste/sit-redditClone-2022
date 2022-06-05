@@ -1,6 +1,8 @@
 import { Observable } from 'rxjs';
 import { Flair } from './flair';
+import { Reaction } from './reaction';
 import { User } from './user';
+
 export class Post {
     id:number;
     title: string;
@@ -11,4 +13,5 @@ export class Post {
     user: User;
     flair: Flair;
     comments?:Comment[] | [];
+    reactions:number;
 }

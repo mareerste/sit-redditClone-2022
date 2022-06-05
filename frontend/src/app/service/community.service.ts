@@ -19,18 +19,19 @@ export class CommunityService {
   ) {
   }
 
-  savePostInCommunity(data:Post, commId:number){
-    const createPostHeaders = new HttpHeaders({
+  savePostInCommunity(data:Post, commId:number):Observable<Post>{
+    const headers = new HttpHeaders({
           'Accept': 'application/json',
           'Content-Type': 'application/json'
         });
+        let options = {headers: headers}
         // data.flair = this.community.flairs[0]
         console.log("ovde")
         console.log(data)
-        return this.apiService.post(`${this.config.community_url}/${commId}/posts`, data, createPostHeaders)
-            .pipe(map(() => {
-              console.log('Post created successfully');
-            }));
+        return this.http.post<Post>(`${this.config.community_url}/${commId}/posts`, data, options)
+            // .pipe(map(() => {
+            //   console.log('Post created successfully');
+            // }));
   }
   // createPost(post) {
   //   const createPostHeaders = new HttpHeaders({

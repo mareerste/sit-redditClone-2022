@@ -16,7 +16,7 @@ import { switchMap } from 'rxjs/operators';
 export class MainPageComponent implements OnInit {
 
   whoamIResponse = {};
-  posts:Observable<Post[]>;
+  posts:Post[];
   refreshPosts = new BehaviorSubject<boolean>(true);
   constructor(
     private postService:PostService, 
@@ -26,11 +26,16 @@ export class MainPageComponent implements OnInit {
     private auth:AuthService) { }
 
   ngOnInit(): void {
-    this.posts = this.postService.getPosts();
+    // this.posts = this.postService.getPosts();
+    this.postService.getPosts().subscribe(data=>{
+      this.posts= data
+    })
     // this.posts = this.refreshPosts.pipe(switchMap(_ => this.postService.getPosts()));
   }
   getChange(){
-    this.posts = this.postService.getPosts();
+    this.postService.getPosts().subscribe(data=>{
+      this.posts= data
+    })
   }
 
   filter(text:string){

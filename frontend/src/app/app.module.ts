@@ -45,6 +45,7 @@ import { CommunityEditComponent } from './pages/community/single-community/commu
 import { CommunityListFlairsComponent } from './pages/community/single-community/community-list-flairs/community-list-flairs.component';
 import { CommunityListModeratorsComponent } from './pages/community/single-community/community-list-moderators/community-list-moderators.component';
 import { CommunityCreatePostComponent } from './pages/community/single-community/community-create-post/community-create-post.component';
+import { CommunityCreateComponent } from './pages/community/community-create/community-create.component';
 
 @NgModule({
   declarations: [
@@ -68,6 +69,7 @@ import { CommunityCreatePostComponent } from './pages/community/single-community
     CommunityListFlairsComponent,
     CommunityListModeratorsComponent,
     CommunityCreatePostComponent,
+    CommunityCreateComponent,
   ],
   imports: [
     BrowserModule,

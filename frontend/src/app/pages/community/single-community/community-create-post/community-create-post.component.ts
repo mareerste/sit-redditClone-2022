@@ -1,6 +1,6 @@
 import { takeUntil, map } from 'rxjs/operators';
 import { CommunityService } from 'src/app/service/community.service';
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, Input, OnInit, Output, EventEmitter } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Subject } from 'rxjs';
@@ -8,6 +8,7 @@ import { ApiService, AuthService, ConfigService, UserService } from 'src/app/ser
 import { HttpHeaders } from '@angular/common/http';
 import { Community } from 'src/app/model/community';
 import { Flair } from 'src/app/model/flair';
+import { Post } from 'src/app/model/post';
 
 interface DisplayMessage {
   msgType: string;
@@ -29,6 +30,10 @@ export class CommunityCreatePostComponent implements OnInit {
   notification: DisplayMessage;
   returnUrl: string;
   private ngUnsubscribe: Subject<void> = new Subject<void>();
+
+  @Output()
+  saveNewPost = new EventEmitter<Post>();
+  newPost;
 
   titleRequired = false;
   textRequired = false;
@@ -67,7 +72,6 @@ export class CommunityCreatePostComponent implements OnInit {
     this.ngUnsubscribe.complete();
   }
 
-  // onSubmit(post) {
   onSubmit() {
     
     this.notification = undefined;
@@ -77,13 +81,19 @@ export class CommunityCreatePostComponent implements OnInit {
     this.flairRequired = false;
     
     this.form.value.flair = JSON.parse(this.form.value.flair);
+    // this.communityService.savePostInCommunity(this.form.value,this.community.id)
     this.communityService.savePostInCommunity(this.form.value,this.community.id)
       .subscribe(data => {
-        window.location.reload()
+        console.log("OVO SAM DOBIO")
+        console.log(data)
+        this.saveNewPost.emit(data);
+        this.submitted = false;
+        this.form.reset();
+        
+        // window.location.reload()
       },
         error => {
           this.submitted = false;
-          var textt:string = this.form.value.text
           if(this.form.value.text.length == 0)
             this.textRequired = true
           if(this.form.value.title.length == 0)
@@ -96,7 +106,8 @@ export class CommunityCreatePostComponent implements OnInit {
           console.log('Create post error');
           this.notification = { msgType: 'error', msgBody: 'Please fill all fields' };
         });
-
+        // console.log("new Posttt")
+        // console.log(newPost)
   }
 
 }

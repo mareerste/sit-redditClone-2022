@@ -23,6 +23,6 @@
     <div style="flex: 1 1 0%;box-sizing: border-box;">
       
       <post-list [posts]="posts" (clickedEventEmit)="getChange($event)"></post-list>
-      <app-community-create-post [community]="community"></app-community-create-post>
+      <app-community-create-post [community]="community" (saveNewPost)="saveNewPost($event)"></app-community-create-post>
     </div>
   </div>

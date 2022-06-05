@@ -18,6 +18,7 @@ public class PostDTO implements Serializable {
     private UserCreateDTO user;
     private FlairDTO flair;
     private Set<Comment> comments = new HashSet<>();
+    private Integer reactions;
 
     public Integer getId() {
         return id;
@@ -75,9 +76,17 @@ public class PostDTO implements Serializable {
         this.comments = comments;
     }
 
+    public Integer getReactions() {
+        return reactions;
+    }
+
+    public void setReactions(Integer reactions) {
+        this.reactions = reactions;
+    }
+
     public PostDTO() {
     }
-    public PostDTO(Integer id, String title, String text, LocalDate creationDate, String imagePath, Boolean isDeleted, UserCreateDTO user, FlairDTO flair, Set<Comment> comments) {
+    public PostDTO(Integer id, String title, String text, LocalDate creationDate, String imagePath, Boolean isDeleted, UserCreateDTO user, FlairDTO flair, Set<Comment> comments, Integer reactions) {
         this.id = id;
         this.title = title;
         this.text = text;
@@ -87,8 +96,9 @@ public class PostDTO implements Serializable {
         this.user = user;
         this.flair = flair;
         this.comments = comments;
+        this.reactions = reactions;
     }
-    public PostDTO(Post post){this(post.getId(), post.getTitle(), post.getText(), post.getCreationDate(), post.getImagePath(), post.getDeleted(), new UserCreateDTO(post.getUser()),new FlairDTO(post.getFlair()), post.getComments());}
+    public PostDTO(Post post){this(post.getId(), post.getTitle(), post.getText(), post.getCreationDate(), post.getImagePath(), post.getDeleted(), new UserCreateDTO(post.getUser()),new FlairDTO(post.getFlair()), post.getComments(), post.getReactions().size());}
 
     @Override
     public String toString() {

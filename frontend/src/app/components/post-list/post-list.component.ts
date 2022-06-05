@@ -1,7 +1,10 @@
+import { async } from '@angular/core/testing';
+import { ReactionService } from './../../service/reaction.service';
 import { Router } from '@angular/router';
 import { Post } from './../../model/post';
 import { Observable } from 'rxjs';
 import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
+import { take } from 'rxjs/operators';
 
 @Component({
   selector: 'post-list',
@@ -11,12 +14,22 @@ import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 export class PostListComponent implements OnInit {
 
   @Input()
-  posts:Observable<Post[]>;
+  posts:Post[];
   @Output()
   clickedEventEmit = new EventEmitter<void>();
-  constructor(private router:Router){}
+  constructor(
+    private router:Router,
+    private reactionService: ReactionService,
+    ){}
 
   ngOnInit(): void {
+    // this.posts.sort();
+    this.sortByPopularity()
+  }
+
+  sortByPopularity(){
+    this.posts.sort((first,second) => second.reactions - first.reactions)
+    console.log(this.posts)
   }
 
   getChange(){

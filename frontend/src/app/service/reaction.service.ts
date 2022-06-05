@@ -26,6 +26,10 @@ export class ReactionService {
     return this.http.get<number>(`${this.config.reaction_url}/post/${id}/karma`);
   }
 
+  getReactionsForPost(id:number):Observable<number> {
+    return this.apiService.get(`${this.config.reaction_url}/post/${id}`);
+  }
+
   getKarmaForComment(id:number):Observable<number> {
     return this.http.get<number>(`${this.config.reaction_url}/comment/${id}/karma`);
   }
