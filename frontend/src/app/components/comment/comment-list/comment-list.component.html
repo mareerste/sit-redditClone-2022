@@ -1,5 +1,5 @@
 <ul class="list-unstyled">
-    <form>
+    <form *ngIf="loggedUser">
         <mat-form-field class="example-full-width" appearance="fill">
             <mat-label style="font-size: 16px; color: white;">Leave a comment</mat-label>
             <textarea matInput style="font-size: 16px;" style="color: white;" placeholder="Write something..."></textarea>
@@ -7,7 +7,7 @@
           <button mat-icon-button type="submit" class="btn btn-primary pull-right" style="background-color: white;" value="submit"><mat-icon >reply</mat-icon></button>
     </form>
     <li *ngFor="let comment of comments">
-      <app-comment-item [comment]="comment"></app-comment-item>
+      <app-comment-item [comment]="comment" (clickedEventEmit)="getChange($event)"></app-comment-item>
       <!-- <button *ngIf="isLoggedIn()" class="btn btn-default" (click)="details(blogEntry)">details</button>
       <button *ngIf="isLoggedIn()" class="btn btn-danger" (click)="delete(blogEntry._id)">delete</button> -->
     </li>

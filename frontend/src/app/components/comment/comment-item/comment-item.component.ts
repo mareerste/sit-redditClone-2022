@@ -1,6 +1,10 @@
 import { ReactionService } from './../../../service/reaction.service';
 import { Comment } from './../../../model/comment';
-import { Component, OnInit, Input } from '@angular/core';
+import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { NotifierService } from 'src/app/service/notifier.service';
+import { AuthService } from 'src/app/service';
+import { ReactionType } from 'src/app/model/enumerations/reaction-type.enum';
 
 @Component({
   selector: 'app-comment-item',
@@ -14,10 +18,76 @@ export class CommentItemComponent implements OnInit {
   @Input()
   showComments:boolean;
   karma:number = 0;
+  form: FormGroup;
+  @Output()
+  clickedEventEmit = new EventEmitter<ReactionType>()
+  // @Output()
+  // CommentEventEmit = new EventEmitter<Comment>()
 
-  constructor(private reactionService:ReactionService) { }
+  constructor(
+    private reactionService:ReactionService,
+    private formBuilder: FormBuilder,
+    private notifierService: NotifierService,
+    private auth:AuthService,
+    ) { }
 
   ngOnInit(): void {
+    this.loadKarma()
+    this.form = this.formBuilder.group({
+      type: ['', Validators.compose([Validators.required])],
+      comment: ['', Validators.compose([])]
+    });
+  }
+
+  onSubmitUp() {
+    if (this.isLoggedIn()) {
+      this.form.value.type = "UPVOTE"
+      this.form.value.comment = this.comment.id
+      console.log(this.form.value)
+      this.reactionService.sendReaction(this.form.value)
+        .subscribe(data => {
+          // this.clickedEventEmit.emit(ReactionType.UPVOTE);
+          this.loadKarma()
+          console.log(data)
+        },
+          error => {
+            this.notifierService.showNotification("You are already up vote this comment")
+            console.log(error)
+            console.log(error['status'])
+            console.log('Create reaction error');
+          });
+    } else {
+      this.notifierService.showNotification("You need to login first")
+    }
+  }
+
+  onSubmitDown() {
+    if (this.isLoggedIn()) {
+      this.form.value.type = "DOWNVOTE"
+      this.form.value.comment = this.comment.id
+      console.log(this.form.value)
+      this.reactionService.sendReaction(this.form.value)
+        .subscribe(data => {
+          // this.clickedEventEmit.emit(ReactionType.DOWNVOTE);
+          this.loadKarma()
+          console.log(data)
+        },
+          error => {
+            this.notifierService.showNotification("You are already down vote this comment")
+            console.log(error)
+            console.log(error['status'])
+            console.log('Create reaction error');
+          });
+    } else {
+      this.notifierService.showNotification("You need to login first")
+    }
+
+  }
+
+  isLoggedIn() {
+    return this.auth.getCurrentUser();
+  }
+  loadKarma(){
     this.reactionService.getKarmaForComment(this.comment.id).subscribe(Data => {
       this.karma = Data
     })
@@ -25,3 +95,4 @@ export class CommentItemComponent implements OnInit {
 
 
 }
+;

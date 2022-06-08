@@ -1,3 +1,4 @@
+import { CommunityCreatePostComponent } from './pages/community/single-community/community-create-post/community-create-post.component';
 import { CommunityCreateComponent } from './pages/community/community-create/community-create.component';
 import { SingleCommunityComponent } from './pages/community/single-community/single-community/single-community.component';
 import { SinglePostComponent } from './pages/single-post/single-post.component';
@@ -29,6 +30,10 @@ const routes: Routes = [
   {
     path:'community/:id/posts',
     component:SingleCommunityComponent
+  },
+  {
+    path:'community/:id/create',
+    component:CommunityCreatePostComponent
   },
   {
     path:'community/create',

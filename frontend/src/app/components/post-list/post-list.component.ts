@@ -14,26 +14,34 @@ import { take } from 'rxjs/operators';
 export class PostListComponent implements OnInit {
 
   @Input()
-  posts:Post[];
+  posts: Post[];
   @Output()
   clickedEventEmit = new EventEmitter<void>();
   constructor(
-    private router:Router,
+    private router: Router,
     private reactionService: ReactionService,
-    ){}
+  ) { }
 
   ngOnInit(): void {
     // this.posts.sort();
     this.sortByPopularity()
   }
 
-  sortByPopularity(){
-    this.posts.sort((first,second) => second.reactions - first.reactions)
+  sortByPopularity() {
+    this.posts.sort((first, second) => second.reactions - first.reactions)
     console.log(this.posts)
   }
 
-  getChange(){
-    this.clickedEventEmit.emit();
+  getChange(post:Post) {
+    let index = this.posts.findIndex(p => p.id == post.id);
+    this.posts[index] = post;
+  }
+
+  getDelete(post: Post) {
+    let index = this.posts.findIndex(p => p.id == post.id);
+    if (index !== -1) {
+      this.posts.splice(index, 1);
+    }
   }
 
 }

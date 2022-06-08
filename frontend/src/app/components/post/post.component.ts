@@ -7,6 +7,9 @@ import { Router } from '@angular/router';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ReactionType } from 'src/app/model/enumerations/reaction-type.enum';
 import { NotifierService } from 'src/app/service/notifier.service';
+import { CommunityService } from 'src/app/service/community.service';
+import { Community } from 'src/app/model/community';
+import { AuthService } from 'src/app/service';
 
 @Component({
   selector: 'post-list-item',
@@ -16,74 +19,106 @@ import { NotifierService } from 'src/app/service/notifier.service';
 export class PostComponent implements OnInit {
 
   @Input()
-  post:Post;
+  post: Post;
   @Input()
-  showComments:boolean;
-  karma:number = 0;
+  showComments: boolean;
+  karma: number = 0;
   form: FormGroup;
-
+  community: Community
   @Output()
-  clickedEventEmit = new EventEmitter<void>();
+  clickedEventEmitChange = new EventEmitter<Post>();
+  @Output()
+  clickedEventEmitDelete = new EventEmitter<Post>();
 
-  private users:User[];
+  private users: User[];
   constructor(
-    private reactionService:ReactionService,
-    private router:Router,
+    private reactionService: ReactionService,
+    private router: Router,
     private formBuilder: FormBuilder,
-    private notifierService:NotifierService) { }
+    private notifierService: NotifierService,
+    private communityService: CommunityService,
+    private auth: AuthService) { }
 
- ngOnInit(): void {
-  this.reactionService.getKarmaForPost(this.post.id).subscribe(Data => {
-    this.karma = Data
-  })
-  this.form = this.formBuilder.group({
-    type: ['', Validators.compose([Validators.required])],
-    post: ['', Validators.compose([])]
-  });
- }
+  ngOnInit(): void {
+    this.loadKarma()
+    this.communityService.getPostCommunity(this.post.id).subscribe(data => {
+      this.community = data
+    })
+    this.form = this.formBuilder.group({
+      type: ['', Validators.compose([Validators.required])],
+      post: ['', Validators.compose([])]
+    });
+  }
 
- showCommentsMethod():void{
-   this.showComments = true;
- }
+  showCommentsMethod(): void {
+    this.showComments = true;
+  }
 
- showPost(){
-  this.router.navigate(
-    ['post',this.post.id]
+  showPost() {
+    this.router.navigate(
+      ['post', this.post.id]
     )
- }
+  }
 
- onSubmitUp() {
-  this.form.value.type = "UPVOTE"
-  this.form.value.post = this.post.id
-  console.log(this.form.value)
-  this.reactionService.sendReaction(this.form.value)
-    .subscribe(data => {
-      this.clickedEventEmit.emit();
-      console.log(data)
-    },
-      error => {
-        this.notifierService.showNotification("You are already up vote this post")
-        console.log(error)
-        console.log(error['status'])
-        console.log('Create reaction error');
-      });
-}
+  onSubmitUp() {
+    if (this.isLoggedIn()) {
+      this.form.value.type = "UPVOTE"
+      this.form.value.post = this.post.id
+      console.log(this.form.value)
+      this.reactionService.sendReaction(this.form.value)
+        .subscribe(data => {
+          this.loadKarma()
+          console.log(data)
+        },
+          error => {
+            this.notifierService.showNotification("You are already up vote this post")
+            console.log(error)
+            console.log(error['status'])
+            console.log('Create reaction error');
+          });
+    } else {
+      this.notifierService.showNotification("You need to login first")
+    }
 
-onSubmitDown() {
-  this.form.value.type = "DOWNVOTE"
-  this.form.value.post = this.post.id
-  console.log(this.form.value)
-  this.reactionService.sendReaction(this.form.value)
-    .subscribe(data => {
-      this.clickedEventEmit.emit();
-      console.log(data)
-    },
-      error => {
-        this.notifierService.showNotification("You are already down vote this post")
-        console.log(error)
-        console.log(error['status'])
-        console.log('Create reaction error');
-      });
-}
+  }
+
+  onSubmitDown() {
+    if (this.isLoggedIn()) {
+      this.form.value.type = "DOWNVOTE"
+      this.form.value.post = this.post.id
+      console.log(this.form.value)
+      this.reactionService.sendReaction(this.form.value)
+        .subscribe(data => {
+          this.loadKarma()
+          console.log(data)
+        },
+          error => {
+            this.notifierService.showNotification("You are already down vote this post")
+            console.log(error)
+            console.log(error['status'])
+            console.log('Create reaction error');
+          });
+    } else {
+      this.notifierService.showNotification("You need to login first")
+    }
+
+  }
+
+  isLoggedIn() {
+    return this.auth.getCurrentUser();
+  }
+
+  deletePost() {
+    console.log("delete community " + this.community.id + " post " + this.post.id)
+    this.communityService.deleteCommunityPost(this.community.id, this.post.id).subscribe(data => {
+      this.clickedEventEmitDelete.emit(this.post);
+    });
+  }
+
+  loadKarma(){
+    this.reactionService.getKarmaForPost(this.post.id).subscribe(Data => {
+      this.karma = Data
+    })
+  }
 
 }

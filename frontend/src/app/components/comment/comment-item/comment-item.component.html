@@ -3,13 +3,13 @@
     <mat-card-subtitle style="font-size: 18px;">{{comment.text}}</mat-card-subtitle>
     <mat-card-actions align="end">
         <form class="form">
-            <label style="visibility: hidden;" name="postId">{{comment.id}}</label>
-            <button mat-icon-button type="submit" class="btn pull-right" ><mat-icon style="color: white;">arrow_upwards</mat-icon></button>
+            <label style="visibility: hidden;" name="commentId">{{comment.id}}</label>
+            <button (click)="onSubmitUp()" mat-icon-button type="submit" class="btn pull-right" ><mat-icon style="color: white;">arrow_upwards</mat-icon></button>
           </form>
           <button class="rounded" mat-raised-button color="primary">{{karma}}</button>
           <form class="form">
-            <label style="visibility: hidden;" name="postId">{{comment.id}}</label>
-            <button mat-icon-button type="submit" class="btn pull-right" ><mat-icon style="color: white;">arrow_downward</mat-icon></button>
+            <label style="visibility: hidden;" name="commentId">{{comment.id}}</label>
+            <button (click)="onSubmitDown()" mat-icon-button type="submit" class="btn pull-right" ><mat-icon style="color: white;">arrow_downward</mat-icon></button>
           </form>
       <span class="spacer"></span>
       <button mat-button>Report</button>

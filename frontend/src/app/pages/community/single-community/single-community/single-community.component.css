@@ -11,6 +11,19 @@
     border-radius: 50%;
 }
 
+.postButton{
+    margin-top: 20px;
+    position: -webkit-sticky;
+    position: fixed;
+    margin-right: 20px;    
+    margin-left: auto;
+    display: block;
+    z-index: 1;
+    top: 85%;
+    right: 2%;
+    border: 2px solid #b71c1c;
+}
+
 .card-title{
     margin-top: auto;
     padding-top: 20%;

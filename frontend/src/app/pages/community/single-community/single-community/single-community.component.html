@@ -1,28 +1,38 @@
 <mat-card class="example-card">
-    <mat-card-header>
-      <div mat-card-avatar class="example-header-image"><img width="120%" class="rounded" src="../../../../../assets/images/redditClone_logo_mini.png" alt="logo"/></div>
-    </mat-card-header>
-    <mat-card-content style="margin-left: 7%;">
-        <b style="color: #b71c1c;">
-          {{community.name}}
-          <!-- <div *ngFor="let post of posts | async;"></div> -->
-        </b>
-        
-        <button mat-button (click)="changeCommunity()" style="margin-left: auto;">LIKE</button>
-        <button mat-button style="margin-right:10%;">SHARE</button>
-      </mat-card-content>
-  </mat-card>
-  
+  <mat-card-header>
+    <div mat-card-avatar class="example-header-image"><img width="120%" class="rounded"
+        src="../../../../../assets/images/redditClone_logo_mini.png" alt="logo" /></div>
+  </mat-card-header>
+  <mat-card-content style="margin-left: 7%;">
+    <b style="color: #b71c1c;">
+      {{community.name}}
+    </b>
+
+    <button mat-button (click)="showPostsClick()" style="margin-left: auto;color: white;">POSTS</button>
+    <button mat-button (click)="showEditClick()" style="margin-right:10%;color: white;">EDIT</button>
+  </mat-card-content>
+</mat-card>
+<button mat-fab *ngIf="loggedUser" (click)="createPost()" class="postButton">+</button>
+<div *ngIf="showPosts">
   <div style="display: flex;flex-direction: row;">
     <div style="flex: 1 1 100%;box-sizing: border-box;max-width: 40%;">
-      <app-card [title]="community.name" [text]="community.description" [button]="community.creationDate| date:'dd.MM.yyyy'"></app-card>
+      <app-card [title]="community.name" [text]="community.description"
+        [button]="community.creationDate| date:'dd.MM.yyyy'"></app-card>
       <app-community-list-atribute [title]="comRulesTitle" [listItems]="community.rules"></app-community-list-atribute>
       <app-community-list-flairs [title]="comFlairsTitle" [listItems]="community.flairs"></app-community-list-flairs>
-      <app-community-list-moderators [title]="comModeratorsTitle" [listItems]="community.moderators"></app-community-list-moderators>
+      <app-community-list-moderators [title]="comModeratorsTitle" [listItems]="community.moderators">
+      </app-community-list-moderators>
     </div>
     <div style="flex: 1 1 0%;box-sizing: border-box;">
-      
+
       <post-list [posts]="posts" (clickedEventEmit)="getChange($event)"></post-list>
-      <app-community-create-post [community]="community" (saveNewPost)="saveNewPost($event)"></app-community-create-post>
+      <!-- <button mat-fab *ngIf="loggedUser" (click)="createPost()" style="position: sticky;right:0;top:100px">+</button> -->
+      <!-- <button *ngIf="loggedUser" (click)="createPost()">New Post</button> -->
+      <!-- <app-community-create-post (saveNewPost)="saveNewPost($event)" *ngIf="loggedUser"></app-community-create-post> -->
+      <!-- <app-community-create-post [community]="community" (saveNewPost)="saveNewPost($event)"></app-community-create-post> -->
     </div>
   </div>
+</div>
+<div *ngIf="showEdit">
+  <app-community-edit></app-community-edit>
+</div>

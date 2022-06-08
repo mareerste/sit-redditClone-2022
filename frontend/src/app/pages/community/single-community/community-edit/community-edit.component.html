@@ -1,1 +1,26 @@
-<p>community-edit works!</p>
+<mat-grid-list cols="6"  rowHeight="60px" [style.border]="'1px solid #b71c1c'">
+    <mat-grid-tile (click)="showDescClick()">Description </mat-grid-tile>
+    <mat-grid-tile (click)="showMembersClick()">Members</mat-grid-tile>
+    <mat-grid-tile (click)="showFlairsClick()">Flairs</mat-grid-tile>
+    <mat-grid-tile (click)="showRulesClick()">Rules</mat-grid-tile>
+    <mat-grid-tile (click)="showPostsClick()">Posts</mat-grid-tile>
+    <mat-grid-tile (click)="showCommentsClick()">Comments</mat-grid-tile>
+    </mat-grid-list>
+    <div *ngIf="showDesc">
+        Description
+    </div>
+    <div *ngIf="showMembers">
+        Members
+    </div>
+    <div *ngIf="showFlairs">
+        Flairs
+    </div>
+    <div *ngIf="showRules">
+        Rules
+    </div>
+    <div *ngIf="showPosts">
+        Posts
+    </div>
+    <div *ngIf="showComments">
+        Comments
+    </div>

@@ -78,4 +78,8 @@ export class CommunityService {
     return this.apiService.get(`${this.config.community_url}/${id}/posts`);
   }
 
+  deleteCommunityPost(idCommunity, idPost) {
+    console.log(`${this.config.community_url}/${idCommunity}/posts/${idPost}`)
+    return this.apiService.delete(`${this.config.community_url}/${idCommunity}/posts/${idPost}`);
+  }
 }

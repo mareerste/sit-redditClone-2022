@@ -19,6 +19,15 @@
     border-radius: 50%;
   }
 
+  .xButton{
+    background-color: #b71c1c;
+    border-color: #b71c1c;
+    color: white;
+    border-width: 0;
+    border-radius: 50%;
+    margin-bottom: 5px;
+}
+
   .mat-input-element{
     width: 0;
   }

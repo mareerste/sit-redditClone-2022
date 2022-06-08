@@ -32,10 +32,10 @@ export class MainPageComponent implements OnInit {
     })
     // this.posts = this.refreshPosts.pipe(switchMap(_ => this.postService.getPosts()));
   }
-  getChange(){
-    this.postService.getPosts().subscribe(data=>{
-      this.posts= data
-    })
+  getChange(){//TODO remove from list
+    // this.postService.getPosts().subscribe(data=>{
+    //   this.posts= data
+    // })
   }
 
   filter(text:string){

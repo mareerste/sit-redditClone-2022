@@ -25,7 +25,7 @@ export class CommunityCreatePostComponent implements OnInit {
   title = 'Create post';
   form: FormGroup;
   submitted = false;
-  @Input()
+  // @Input()
   private community:Community;
   notification: DisplayMessage;
   returnUrl: string;
@@ -34,6 +34,8 @@ export class CommunityCreatePostComponent implements OnInit {
   @Output()
   saveNewPost = new EventEmitter<Post>();
   newPost;
+
+  communityId;
 
   titleRequired = false;
   textRequired = false;
@@ -58,6 +60,8 @@ export class CommunityCreatePostComponent implements OnInit {
       .subscribe((params: DisplayMessage) => {
         this.notification = params;
       });
+      this.communityId = this.route.snapshot.paramMap.get('id');
+      this.loadCommunity(this.communityId)
     // get return url from route parameters or default to '/'
     this.returnUrl = this.route.snapshot.queryParams['returnUrl'] || '/';
     this.form = this.formBuilder.group({
@@ -82,14 +86,13 @@ export class CommunityCreatePostComponent implements OnInit {
     
     this.form.value.flair = JSON.parse(this.form.value.flair);
     // this.communityService.savePostInCommunity(this.form.value,this.community.id)
+    // this.communityService.savePostInCommunity(this.form.value,this.community.id)
     this.communityService.savePostInCommunity(this.form.value,this.community.id)
       .subscribe(data => {
-        console.log("OVO SAM DOBIO")
-        console.log(data)
         this.saveNewPost.emit(data);
         this.submitted = false;
         this.form.reset();
-        
+        this.router.navigate(['/community/'+this.community.id+'/posts'])
         // window.location.reload()
       },
         error => {
@@ -109,5 +112,11 @@ export class CommunityCreatePostComponent implements OnInit {
         // console.log("new Posttt")
         // console.log(newPost)
   }
-
+  loadCommunity(id:number){
+    this.communityService.getCommunity(id).subscribe(data=>{
+      this.community = data;
+      console.log(this.community)
+      // this.creationDate = this.community.creationDate
+    })
+  }
 }
