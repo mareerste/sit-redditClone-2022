@@ -22,7 +22,8 @@ public class Comment {
 //    @ManyToOne(cascade = CascadeType.ALL,fetch = FetchType.EAGER)
 //    @JoinColumn(name = "parentCommentId", referencedColumnName = "id",nullable = true)
 //    private Comment parentComment;
-    @OneToMany(cascade = CascadeType.ALL)
+
+    @OneToMany(cascade = CascadeType.PERSIST)
     @JoinTable(name = "childComments", joinColumns = @JoinColumn(name = "comment_id",referencedColumnName = "id"),inverseJoinColumns = @JoinColumn(name = "child_id", referencedColumnName = "id"))
     private Set<Comment> childComments = new HashSet<>();
 //    @ManyToOne(cascade = CascadeType.ALL,fetch = FetchType.EAGER)

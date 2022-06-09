@@ -10,10 +10,12 @@
             <mat-form-field>
                 <label>Name: </label>
                 <input formControlName="name" matInput required>
+                <span *ngIf="nameRequired" class="field-error" style="color: red;">Required field.</span>
             </mat-form-field>
             <mat-form-field>
                 <label>Description: </label>
                 <input formControlName="description" matInput required>
+                <span *ngIf="descRequired" class="field-error" style="color: red;">Required field.</span>
             </mat-form-field>
             <mat-form-field>
                 <label>Rules: </label>

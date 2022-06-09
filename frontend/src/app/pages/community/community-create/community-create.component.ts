@@ -28,6 +28,10 @@ submitted=false;
 notification: DisplayMessage;
 returnUrl: string;
 communityFlairs:Flair[] = [];
+
+nameRequired = false;
+descRequired = false;
+
 private ngUnsubscribe: Subject<void> = new Subject<void>();
 
   constructor(
@@ -64,6 +68,8 @@ private ngUnsubscribe: Subject<void> = new Subject<void>();
 
   onSubmit() {
     this.notification = undefined;
+    this.nameRequired = false;
+    this.descRequired = false;
     if(this.form.valid){
     let promise = new Promise((resolve,reject)=>{
       this.saveFlairs()
@@ -76,7 +82,13 @@ private ngUnsubscribe: Subject<void> = new Subject<void>();
       console.log(message)
     })).then(() => this.saveCommunity())
   }else{
-    this.notification = { msgType: 'error', msgBody: "Input all fields" };
+    this.notification = { msgType: 'error', msgBody: "Please fill all fields" };
+
+    this.submitted = false;
+          if(this.form.value.name.length == 0)
+            this.nameRequired = true
+          if(this.form.value.description.length == 0)
+            this.descRequired = true
   }
   }
 

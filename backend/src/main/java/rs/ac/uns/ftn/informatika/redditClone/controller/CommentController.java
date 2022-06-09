@@ -7,12 +7,14 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import rs.ac.uns.ftn.informatika.redditClone.model.dto.CommentDTO;
 import rs.ac.uns.ftn.informatika.redditClone.model.entity.Comment;
+import rs.ac.uns.ftn.informatika.redditClone.model.entity.Post;
 import rs.ac.uns.ftn.informatika.redditClone.model.entity.User;
 import rs.ac.uns.ftn.informatika.redditClone.service.CommentService;
 import rs.ac.uns.ftn.informatika.redditClone.service.PostService;
 import rs.ac.uns.ftn.informatika.redditClone.service.UserService;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
@@ -124,6 +126,17 @@ public class CommentController {
     public ResponseEntity<Void>deleteComment(@PathVariable Integer id){
         Comment comment = commentService.findOne(id);
         if (comment != null) {
+            Set<Comment> comments = new HashSet<>();
+            comment.setChildComments(comments);
+            commentService.save(comment);
+            Comment parent = commentService.findParentComment(comment).get(0);
+            Set<Comment> newComments = new HashSet<>();
+            for (Comment c:parent.getChildComments()) {
+                if (c.getId() != comment.getId())
+                    newComments.add(c);
+            }
+            parent.setChildComments(newComments);
+            commentService.save(parent);
             commentService.delete(comment);
             return new ResponseEntity<>(HttpStatus.OK);
         } else {

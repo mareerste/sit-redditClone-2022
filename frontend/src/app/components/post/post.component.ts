@@ -104,15 +104,23 @@ export class PostComponent implements OnInit {
 
   }
 
-  isLoggedIn() {
+  isLoggedIn():User {
     return this.auth.getCurrentUser();
   }
-
   deletePost() {
-    console.log("delete community " + this.community.id + " post " + this.post.id)
-    this.communityService.deleteCommunityPost(this.community.id, this.post.id).subscribe(data => {
-      this.clickedEventEmitDelete.emit(this.post);
-    });
+    if(this.isLoggedIn() == null){
+      this.notifierService.showNotification("You need to login first")
+      return
+    }
+
+    if(this.isLoggedIn().username == this.post.user.username){
+      this.communityService.deleteCommunityPost(this.community.id, this.post.id).subscribe(data => {
+        this.clickedEventEmitDelete.emit(this.post);
+      });
+    }else{
+      this.notifierService.showNotification("You can delete only your posts")
+    }
+    
   }
 
   loadKarma(){

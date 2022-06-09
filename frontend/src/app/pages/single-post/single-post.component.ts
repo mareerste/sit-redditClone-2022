@@ -47,8 +47,12 @@ export class SinglePostComponent implements OnInit {
     });  
   }
 
-  getChange(){
-    window.location.reload()
+  getChange(post:Post){
+    // window.location.reload()
+  }
+
+  getDelete(post:Post){
+    this.router.navigate(['/'])
   }
 
   showPost(){

@@ -1,4 +1,5 @@
 import { Component, OnInit, Input } from '@angular/core';
+import { Comment } from 'src/app/model/comment';
 import { ReactionType } from 'src/app/model/enumerations/reaction-type.enum';
 import { AuthService } from 'src/app/service';
 
@@ -29,6 +30,13 @@ export class CommentListComponent implements OnInit {
       console.log("UPVOTE")
     }else if(type == ReactionType.DOWNVOTE){
       console.log("DOWNVOTE")
+    }
+  }
+
+  getDelete(comment: Comment) {
+    let index = this.comments.findIndex(c => c.id == comment.id);
+    if (index !== -1) {
+      this.comments.splice(index, 1);
     }
   }
 }

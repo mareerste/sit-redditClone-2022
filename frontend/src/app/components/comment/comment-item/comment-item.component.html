@@ -1,5 +1,9 @@
 <mat-card>
     <mat-card-title style="font-size: 14px;">Posted bt: {{comment.user.username}} - {{comment.timestamp| date:"dd.MM.yy"}}</mat-card-title>
+    <span class="spacer"></span>
+          <div align="end">
+            <input type="button" class="xButton" (click)="deleteComment()" value="X">
+          </div>
     <mat-card-subtitle style="font-size: 18px;">{{comment.text}}</mat-card-subtitle>
     <mat-card-actions align="end">
         <form class="form">
@@ -12,7 +16,7 @@
             <button (click)="onSubmitDown()" mat-icon-button type="submit" class="btn pull-right" ><mat-icon style="color: white;">arrow_downward</mat-icon></button>
           </form>
       <span class="spacer"></span>
-      <button mat-button>Report</button>
+      <button mat-button *ngIf="isLoggedIn()">Report</button>
       <button mat-button (click)="showComments = !showComments">Comments</button>
     </mat-card-actions>
     <app-comment-list *ngIf="showComments" [comments]="comment.childComments"></app-comment-list>

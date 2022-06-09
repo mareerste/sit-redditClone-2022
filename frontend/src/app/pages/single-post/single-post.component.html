@@ -2,7 +2,7 @@
 <hr class="space"/>
 <app-card [title]="community.name" [text]="community.description" [button]="button" (clickedEventEmit)="getCommunity($event)"></app-card>
 <hr class="space"/>
-<post-list-item [showComments]="true" (clickedEventEmit)="getChange($event)" [post]="post"></post-list-item>
+<post-list-item [showComments]="true" (clickedEventEmitChange)="getChange($event)" (clickedEventEmitDelete)="getDelete($event)" [post]="post"></post-list-item>
 
 <!-- <mat-toolbar>
     <mat-toolbar-row fxlayoutAlign="space-between">

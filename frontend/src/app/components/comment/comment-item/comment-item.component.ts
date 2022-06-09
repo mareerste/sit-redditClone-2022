@@ -5,6 +5,7 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { NotifierService } from 'src/app/service/notifier.service';
 import { AuthService } from 'src/app/service';
 import { ReactionType } from 'src/app/model/enumerations/reaction-type.enum';
+import { CommentService } from 'src/app/service/comment.service';
 
 @Component({
   selector: 'app-comment-item',
@@ -21,6 +22,8 @@ export class CommentItemComponent implements OnInit {
   form: FormGroup;
   @Output()
   clickedEventEmit = new EventEmitter<ReactionType>()
+  @Output()
+  clickedEventEmitDelete = new EventEmitter<Comment>();
   // @Output()
   // CommentEventEmit = new EventEmitter<Comment>()
 
@@ -29,6 +32,7 @@ export class CommentItemComponent implements OnInit {
     private formBuilder: FormBuilder,
     private notifierService: NotifierService,
     private auth:AuthService,
+    private commentService: CommentService,
     ) { }
 
   ngOnInit(): void {
@@ -87,6 +91,24 @@ export class CommentItemComponent implements OnInit {
   isLoggedIn() {
     return this.auth.getCurrentUser();
   }
+
+  deleteComment() {
+    if(this.isLoggedIn() == null){
+      this.notifierService.showNotification("You need to login first")
+      return
+    }
+
+    if(this.isLoggedIn().username == this.comment.user.username){
+      this.commentService.deleteComment(this.comment.id).subscribe(data => {
+        this.clickedEventEmitDelete.emit(this.comment);
+        console.log(this.comment)
+      });
+    }else{
+      this.notifierService.showNotification("You can delete only your comment")
+    }
+    
+  }
+
   loadKarma(){
     this.reactionService.getKarmaForComment(this.comment.id).subscribe(Data => {
       this.karma = Data

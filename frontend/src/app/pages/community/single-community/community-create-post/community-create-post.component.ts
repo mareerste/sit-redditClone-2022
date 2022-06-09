@@ -119,4 +119,10 @@ export class CommunityCreatePostComponent implements OnInit {
       // this.creationDate = this.community.creationDate
     })
   }
+
+  backButton(){
+    this.submitted = false;
+        this.form.reset();
+        this.router.navigate(['/community/'+this.community.id+'/posts'])
+  }
 }
