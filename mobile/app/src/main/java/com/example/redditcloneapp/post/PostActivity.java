@@ -65,8 +65,7 @@ public class PostActivity extends AppCompatActivity {
 //TODO fake community
         comName.setText(Mokap.getCommunities().get(0).getName());
         comDesc.setText(Mokap.getCommunities().get(0).getDescription());
-        comDate.setText(Mokap.getCommunities().get(0).getCreationDate().format(DateTimeFormatter
-                .ofLocalizedDate(FormatStyle.LONG)));
+        comDate.setText(Mokap.getCommunities().get(0).getCreationDate());
         Button btnComments = findViewById(R.id.post_single_comments_btn);
         btnComments.setOnClickListener(new View.OnClickListener() {
             @Override

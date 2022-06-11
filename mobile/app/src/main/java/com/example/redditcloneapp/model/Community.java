@@ -22,10 +22,10 @@ public class Community implements Serializable {
     @SerializedName("description")
     private String description;
     @SerializedName("creationDate")
-    private LocalDate creationDate;
+    private String creationDate;
     @SerializedName("rules")
     private ArrayList<String> rules = new ArrayList<>();
-    @SerializedName("isSuspended")
+    @SerializedName("suspended")
     private Boolean isSuspended;
     @SerializedName("suspendedReason")
     private String suspendedReason;
@@ -60,11 +60,11 @@ public class Community implements Serializable {
         this.description = description;
     }
 
-    public LocalDate getCreationDate() {
+    public String getCreationDate() {
         return creationDate;
     }
 
-    public void setCreationDate(LocalDate creationDate) {
+    public void setCreationDate(String creationDate) {
         this.creationDate = creationDate;
     }
 
@@ -115,7 +115,7 @@ public class Community implements Serializable {
     @RequiresApi(api = Build.VERSION_CODES.O)
     public Community(User user) {
         this.id = Mokap.getCommunities().size()+1;
-        this.creationDate = LocalDate.now();
+        this.creationDate = LocalDate.now().toString();
         this.isSuspended = false;
         this.suspendedReason = null;
         ArrayList<Moderator> moderators = new ArrayList<Moderator>();
@@ -124,7 +124,7 @@ public class Community implements Serializable {
         this.posts = new ArrayList<>();
     }
 
-    public Community(Integer id, String name, String description, LocalDate creationDate, ArrayList<String> rules, Boolean isSuspended, String suspendedReason, ArrayList<Flair> flairs, ArrayList<Moderator> moderators) {
+    public Community(Integer id, String name, String description, String creationDate, ArrayList<String> rules, Boolean isSuspended, String suspendedReason, ArrayList<Flair> flairs, ArrayList<Moderator> moderators) {
         this.id = id;
         this.name = name;
         this.description = description;
@@ -140,7 +140,7 @@ public class Community implements Serializable {
         this.id = id;
         this.name = name;
         this.description = description;
-        this.creationDate = LocalDate.now();
+        this.creationDate = LocalDate.now().toString();
         this.rules = rules;
         this.isSuspended = false;
         this.suspendedReason = null;

@@ -130,14 +130,15 @@ public class UserController {
         // Ukoliko je autentifikacija uspesna, ubaci korisnika u trenutni security
         // kontekst
         SecurityContextHolder.getContext().setAuthentication(authentication);
-
+        String role = authentication.getAuthorities().toString();
+        role = role.substring(1, role.length()-1);
         // Kreiraj token za tog korisnika
         UserDetails user = (UserDetails) authentication.getPrincipal();
         String jwt = tokenUtils.generateToken(user);
         int expiresIn = tokenUtils.getExpiredIn();
-
+//        String role = use
         // Vrati token kao odgovor na uspesnu autentifikaciju
-        return ResponseEntity.ok(new UserTokenState(jwt, expiresIn,user.getUsername()));
+        return ResponseEntity.ok(new UserTokenState(jwt, expiresIn,user.getUsername(),role));
     }
     @PreAuthorize("hasAnyRole('USER','MODERATOR', 'ADMIN')")
     @PutMapping(value = "/changePassword")

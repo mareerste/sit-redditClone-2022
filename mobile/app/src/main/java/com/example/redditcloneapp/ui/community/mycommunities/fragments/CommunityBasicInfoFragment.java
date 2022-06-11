@@ -49,8 +49,7 @@ public class CommunityBasicInfoFragment extends Fragment {
         EditText comNameEdit = getView().findViewById(R.id.my_community_name_edit);
         comNameEdit.setText(community.getName());
         TextView comDate = getView().findViewById(R.id.my_community_date);
-        comDate.setText(community.getCreationDate().format(DateTimeFormatter
-                .ofLocalizedDate(FormatStyle.LONG)));
+        comDate.setText(community.getCreationDate());
         TextView comSus = getView().findViewById(R.id.my_community_is_suspended);
         comSus.setText(community.getSuspended().toString());
         TextView comReas = getView().findViewById(R.id.my_community_sus_reason);

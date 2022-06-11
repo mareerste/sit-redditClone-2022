@@ -58,7 +58,7 @@ public class PostController {
         return new ResponseEntity<>(new PostDTO(post),HttpStatus.OK);
     }
     @GetMapping(value = "/{id}/community")
-    public ResponseEntity<CommunityDTO> getPostCommunity(@PathVariable Integer id){
+    public ResponseEntity<CommunityWithFlairsDTO> getPostCommunity(@PathVariable Integer id){
         Post post = postService.findOne(id);
         if(post == null) {
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
@@ -67,7 +67,7 @@ public class PostController {
         if(community == null) {
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
-        return new ResponseEntity<>(new CommunityDTO(community),HttpStatus.OK);
+        return new ResponseEntity<>(new CommunityWithFlairsDTO(community),HttpStatus.OK);
     }
 
 //    @GetMapping(value = "/{id}/comments")

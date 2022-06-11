@@ -25,6 +25,7 @@ import com.android.volley.toolbox.JsonArrayRequest;
 import com.example.redditcloneapp.MainActivity;
 import com.example.redditcloneapp.R;
 import com.example.redditcloneapp.adapters.PostAdapter;
+import com.example.redditcloneapp.model.Community;
 import com.example.redditcloneapp.model.Mokap;
 import com.example.redditcloneapp.model.Post;
 import com.example.redditcloneapp.model.User;
@@ -141,15 +142,7 @@ public class HomeFragment extends ListFragment {
             public void onFailure(Call<List<Post>> call, Throwable t) {
                 Log.e(TAG, t.toString());
             }
-
-//            @Override
-//            public void onResponse(Call<MovieList> call, Response<MovieList> response) {
-//                recyclerView.setAdapter(new MovieListAdapter(response.body().getMovies(), getApplicationContext()));
-//            }
-//            @Override
-//            public void onFailure(Call<MovieList> call, Throwable throwable) {
-//                Log.e(TAG, throwable.toString());
-//            }
         });
     }
+
 }

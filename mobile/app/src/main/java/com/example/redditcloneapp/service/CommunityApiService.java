@@ -10,11 +10,8 @@ import retrofit2.Call;
 import retrofit2.http.GET;
 import retrofit2.http.Path;
 
-public interface PostApiService {
-    @GET("post/all")
-    Call<List<Post>> getAllPosts();
+public interface CommunityApiService {
 
-    @GET("post/{id}/community")
-    Call<Community> getCommunityForPost(@Path("id") Integer id);
-
+    @GET("community/{id}/posts")
+    Call<List<Post>> getCommunityPosts(@Path("id") Integer id);
 }

@@ -11,10 +11,17 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.example.redditcloneapp.R;
+import com.example.redditcloneapp.model.Community;
 
 public class CommunityRulesFragment extends ListFragment {
 
-    public static CommunityRulesFragment newInstance(){return new CommunityRulesFragment();}
+    private Community community;
+
+    public CommunityRulesFragment(Community community) {
+        this.community = community;
+    }
+
+    public static CommunityRulesFragment newInstance(Community community){return new CommunityRulesFragment(community);}
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -26,7 +33,7 @@ public class CommunityRulesFragment extends ListFragment {
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-        CommunityRuleAdapter adapter = new CommunityRuleAdapter(getActivity(),((CommunityActivity)getActivity()).getCommunity());
+        CommunityRuleAdapter adapter = new CommunityRuleAdapter(getActivity(),community);
         setListAdapter(adapter);
     }
 }

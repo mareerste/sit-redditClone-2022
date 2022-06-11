@@ -4,17 +4,20 @@ public class UserTokenState {
     private String accessToken;
     private Long expiresIn;
     private String username;
+    private String role;
 
     public UserTokenState() {
         this.accessToken = null;
         this.expiresIn = null;
         this.username = null;
+        this.role = null;
     }
 
-    public UserTokenState(String accessToken, long expiresIn, String username) {
+    public UserTokenState(String accessToken, long expiresIn, String username, String role) {
         this.accessToken = accessToken;
         this.expiresIn = expiresIn;
         this.username = username;
+        this.role = role;
     }
 
     public String getUsername() {
@@ -23,6 +26,14 @@ public class UserTokenState {
 
     public void setUsername(String username) {
         this.username = username;
+    }
+
+    public String getRole() {
+        return role;
+    }
+
+    public void setRole(String role) {
+        this.role = role;
     }
 
     public String getAccessToken() {

@@ -11,10 +11,17 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.example.redditcloneapp.R;
+import com.example.redditcloneapp.model.Community;
 
 public class CommunityFlairsFragment extends ListFragment {
 
-    public static CommunityFlairsFragment newInstance(){return new CommunityFlairsFragment();}
+    private Community community;
+
+    public CommunityFlairsFragment(Community community) {
+        this.community = community;
+    }
+
+    public static CommunityFlairsFragment newInstance(Community community){return new CommunityFlairsFragment(community);}
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -25,7 +32,7 @@ public class CommunityFlairsFragment extends ListFragment {
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-        CommunityFlairsAdapter adapter = new CommunityFlairsAdapter(getActivity(), ((CommunityActivity)getActivity()).getCommunity());
+        CommunityFlairsAdapter adapter = new CommunityFlairsAdapter(getActivity(), community);
         setListAdapter(adapter);
     }
 }

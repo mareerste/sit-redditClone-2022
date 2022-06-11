@@ -3,6 +3,7 @@ package com.example.redditcloneapp.ui.access;
 import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.drawable.Drawable;
@@ -23,6 +24,7 @@ import com.example.redditcloneapp.service.PostApiService;
 import com.example.redditcloneapp.service.UserApiService;
 import com.example.redditcloneapp.service.client.ApiClient;
 import com.example.redditcloneapp.service.client.ApiClientService;
+import com.example.redditcloneapp.service.client.Role;
 import com.example.redditcloneapp.service.client.UserLogin;
 import com.example.redditcloneapp.service.client.TokenResponse;
 import com.google.gson.Gson;
@@ -44,6 +46,10 @@ public class SignInActivity extends AppCompatActivity {
     static Retrofit retrofitLogin = null;
     private SharedPreferences sharedPreferences;
     private boolean validation = false;
+
+    public static final String mypreference = "mypreference";
+    public static final String Username = "usernameKey";
+    public static final String Role = "roleKey";
 
 
     EditText usernameTW, passwordTW;
@@ -105,6 +111,18 @@ public class SignInActivity extends AppCompatActivity {
 
                     if(response.isSuccessful()){
                         Toast.makeText(SignInActivity.this, response.body().toString(), Toast.LENGTH_LONG).show();
+//                        if(role.equals(Role.USER.toString()))
+//                            System.out.println("USER LOGGED");
+//                        else if(role.equals(Role.MODERATOR.toString()))
+//                            System.out.println("MODERATOR LOGGED");
+//                        else if(role.equals(Role.ADMINISTRATOR.toString()))
+//                            System.out.println("ADMIN LOGGED");
+                        SharedPreferences sharedPreferences = getSharedPreferences(mypreference, Context.MODE_PRIVATE);
+                        SharedPreferences.Editor editor = sharedPreferences.edit();
+                            editor.putString(Username, response.body().getUsername())
+                                    .putString(Role,response.body().getRole())
+                                    .commit();
+
                         getUser(response.body());
                     }else{
                         Toast.makeText(getApplicationContext(), R.string.signInError, Toast.LENGTH_SHORT).show();

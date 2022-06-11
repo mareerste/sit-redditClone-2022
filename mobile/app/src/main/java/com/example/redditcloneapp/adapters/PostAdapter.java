@@ -5,6 +5,7 @@ import android.app.Dialog;
 import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
@@ -19,12 +20,14 @@ import androidx.annotation.RequiresApi;
 
 import com.example.redditcloneapp.MainActivity;
 import com.example.redditcloneapp.R;
+import com.example.redditcloneapp.model.Community;
 import com.example.redditcloneapp.model.Mokap;
 import com.example.redditcloneapp.model.Post;
 import com.example.redditcloneapp.model.Report;
 import com.example.redditcloneapp.model.User;
 import com.example.redditcloneapp.model.enums.ReportReason;
 import com.example.redditcloneapp.post.PostActivity;
+import com.example.redditcloneapp.service.PostApiService;
 import com.example.redditcloneapp.ui.access.SignInActivity;
 import com.example.redditcloneapp.ui.community.CommunityActivity;
 import com.example.redditcloneapp.ui.profile.ProfileActivity;
@@ -35,11 +38,20 @@ import java.time.format.FormatStyle;
 import java.util.ArrayList;
 import java.util.List;
 
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
+import retrofit2.Retrofit;
+import retrofit2.converter.gson.GsonConverterFactory;
+
 public class PostAdapter extends BaseAdapter {
 
     private Activity activity;
     private User user;
     private List<Post> posts;
+    private Community community;
+
+    static Retrofit retrofit = null;
 
     public PostAdapter(Activity activity, User user, List<Post> posts){this.activity = activity;this.user=user;this.posts = posts;}
 
@@ -61,6 +73,7 @@ public class PostAdapter extends BaseAdapter {
     public View getView(int position, View convertView, ViewGroup parent) {
         View vi = convertView;
         Post post = posts.get(position);
+//        community = getPostCommunity(post);
 
         if(convertView == null){
             vi = activity.getLayoutInflater().inflate(R.layout.post_item, null);}
@@ -71,13 +84,11 @@ public class PostAdapter extends BaseAdapter {
         TextView userText = vi.findViewById(R.id.post_user);
         TextView flair = vi.findViewById(R.id.post_flair);
         TextView date = vi.findViewById(R.id.post_date);
-        TextView community = vi.findViewById(R.id.post_community);
+        TextView communityTW = vi.findViewById(R.id.post_community);
         Button btnPost = vi.findViewById(R.id.btn_view_post);
         Button btnReport = vi.findViewById(R.id.btn_post_report);
         title.setText(post.getTitle());
-
         text.setText(post.getText());
-//        karma.setText(post.getReactions());
 
         btnReport.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -118,13 +129,14 @@ public class PostAdapter extends BaseAdapter {
             }
         });
         flair.setText(post.getFlair().getName());
-        community.setText(Mokap.getCommunities().get(0).getName());//TODO Fake comm
-        community.setOnClickListener(new View.OnClickListener() {
+        communityTW.setText("community");//TODO Fake comm
+        communityTW.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(activity, CommunityActivity.class);
                 intent.putExtra("user", user);
-//                intent.putExtra("community", post.getCommunity());//TODO comm
+                intent.putExtra("post", post);
+//                intent.putExtra("community", community);//TODO comm
                 activity.startActivity(intent);
 
             }
@@ -152,5 +164,34 @@ public class PostAdapter extends BaseAdapter {
         }
 
         return vi;
+    }
+
+    public Community getPostCommunity(Post post){
+        final Community[] returnCommunity = new Community[1];
+        if (retrofit == null) {
+            retrofit = new Retrofit.Builder()
+                    .baseUrl(MainActivity.BASE_URL)
+                    .addConverterFactory(GsonConverterFactory.create())
+                    .build();
+        }
+        PostApiService postApiService = retrofit.create(PostApiService.class);
+        Call<Community> call = postApiService.getCommunityForPost(post.getId());
+        call.enqueue(new Callback<Community>() {
+
+            @Override
+            public void onResponse(Call<Community> call, Response<Community> response) {
+                returnCommunity[0] = response.body();
+                System.out.println("RESPONSE: " + response.body().toString());
+                Toast.makeText(activity.getApplicationContext(), response.body().toString(),Toast.LENGTH_LONG).show();
+                community = response.body();
+            }
+
+            @Override
+            public void onFailure(Call<Community> call, Throwable t) {
+                System.out.println("RESPONSE: " + t.toString());
+                Log.e(MainActivity.TAG, t.toString());
+            }
+        });
+        return returnCommunity[0];
     }
 }

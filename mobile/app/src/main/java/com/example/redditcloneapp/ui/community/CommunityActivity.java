@@ -9,6 +9,7 @@ import android.content.Intent;
 import android.graphics.drawable.Drawable;
 import android.os.Build;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -22,6 +23,7 @@ import com.example.redditcloneapp.model.Community;
 import com.example.redditcloneapp.model.Post;
 import com.example.redditcloneapp.model.User;
 import com.example.redditcloneapp.post.PostCommentFragment;
+import com.example.redditcloneapp.service.PostApiService;
 import com.example.redditcloneapp.tools.FragmentTransition;
 import com.example.redditcloneapp.ui.community.mycommunities.MyCommunityActivity;
 import com.example.redditcloneapp.ui.community.mycommunities.fragments.CommunityBasicInfoFragment;
@@ -29,10 +31,22 @@ import com.example.redditcloneapp.ui.community.mycommunities.fragments.Community
 import java.time.format.DateTimeFormatter;
 import java.time.format.FormatStyle;
 
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
+import retrofit2.Retrofit;
+import retrofit2.converter.gson.GsonConverterFactory;
+
 public class CommunityActivity extends AppCompatActivity {
+
+    TextView commName;
+    TextView commDate;
+    TextView commDesc;
 
     private User user;
     private Community community;
+    static Retrofit retrofit = null;
+    private Post post;
         @RequiresApi(api = Build.VERSION_CODES.O)
         @Override
         protected void onCreate(Bundle savedInstanceState) {
@@ -40,18 +54,23 @@ public class CommunityActivity extends AppCompatActivity {
             setContentView(R.layout.activity_community);
 
             user = (User) getIntent().getSerializableExtra("user");
-            community = (Community) getIntent().getSerializableExtra("community");
+//            community = (Community) getIntent().getSerializableExtra("community");
+            post = (Post) getIntent().getSerializableExtra("post");
+            getPostCommunity(post);
 //            STRELICA KA NAZAD
 //            ActionBar actionBar = getSupportActionBar();
 //            if(actionBar != null){
 //                actionBar.setDisplayHomeAsUpEnabled(true);
 //            }
 
-            FragmentTransition.to(CommunityRulesFragment.newInstance(), this, false, R.id.comm_single_rules);
-            FragmentTransition.to(CommunityModeratorsFragment.newInstance(), this, false, R.id.comm_single_moderators);
-            FragmentTransition.to(CommunityFlairsFragment.newInstance(), this, false, R.id.comm_single_flairs);
-            FragmentTransition.to(CommunityPostsFragment.newInstance(),this,false,R.id.comm_single_posts);
+//            FragmentTransition.to(CommunityRulesFragment.newInstance(), this, false, R.id.comm_single_rules);
+//            FragmentTransition.to(CommunityModeratorsFragment.newInstance(), this, false, R.id.comm_single_moderators);
+//            FragmentTransition.to(CommunityFlairsFragment.newInstance(), this, false, R.id.comm_single_flairs);
+//            FragmentTransition.to(CommunityPostsFragment.newInstance(),this,false,R.id.comm_single_posts);
 
+            commName = findViewById(R.id.comm_single_name);
+            commDate = findViewById(R.id.comm_single_date);
+            commDesc = findViewById(R.id.comm_single_desc);
             View dropDown = findViewById(R.id.comm_drop_down_lay);
             Button buttonVisibilityDown = findViewById(R.id.comm_drop_down_lay_btn_down);
             Button buttonVisibilityUp = findViewById(R.id.comm_drop_down_lay_btn_up);
@@ -78,15 +97,15 @@ public class CommunityActivity extends AppCompatActivity {
                     buttonVisibilityUp.setVisibility(View.VISIBLE);
                 }
             });
-            TextView commName = findViewById(R.id.comm_single_name);
-            commName.setText(community.getName());
+//            TextView commName = findViewById(R.id.comm_single_name);
+//            commName.setText(community.getName());
 
-            TextView commDate = findViewById(R.id.comm_single_date);
-            commDate.setText(community.getCreationDate().format(DateTimeFormatter
-                    .ofLocalizedDate(FormatStyle.LONG)));
+//            TextView commDate = findViewById(R.id.comm_single_date);
+//            commDate.setText(community.getCreationDate().format(DateTimeFormatter
+//                    .ofLocalizedDate(FormatStyle.LONG)));
 
-            TextView commDesc = findViewById(R.id.comm_single_desc);
-            commDesc.setText(community.getDescription());
+//            TextView commDesc = findViewById(R.id.comm_single_desc);
+//            commDesc.setText(community.getDescription());
             buttonVisibilityUp.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
@@ -160,6 +179,44 @@ public class CommunityActivity extends AppCompatActivity {
 
     public User getUser() {
         return user;
+    }
+
+    public void getPostCommunity(Post post){
+
+        if (retrofit == null) {
+            retrofit = new Retrofit.Builder()
+                    .baseUrl(MainActivity.BASE_URL)
+                    .addConverterFactory(GsonConverterFactory.create())
+                    .build();
+        }
+        PostApiService postApiService = retrofit.create(PostApiService.class);
+        Call<Community> call = postApiService.getCommunityForPost(post.getId());
+        call.enqueue(new Callback<Community>() {
+
+            @Override
+            public void onResponse(Call<Community> call, Response<Community> response) {
+                commName.setText(response.body().getName());
+                commDate.setText(response.body().getCreationDate());
+                commDesc.setText(response.body().getDescription());
+                community = response.body();
+
+                FragmentTransition.to(CommunityRulesFragment.newInstance(response.body()), CommunityActivity.this, false, R.id.comm_single_rules);
+                FragmentTransition.to(CommunityModeratorsFragment.newInstance(response.body()), CommunityActivity.this, false, R.id.comm_single_moderators);
+                FragmentTransition.to(CommunityFlairsFragment.newInstance(response.body()), CommunityActivity.this, false, R.id.comm_single_flairs);
+                FragmentTransition.to(CommunityPostsFragment.newInstance(response.body()),CommunityActivity.this,false,R.id.comm_single_posts);
+
+                System.out.println("RESPONSE: " + response.body().toString());
+                Toast.makeText(getApplicationContext(), response.body().toString(),Toast.LENGTH_LONG).show();
+                community = response.body();
+            }
+
+            @Override
+            public void onFailure(Call<Community> call, Throwable t) {
+                System.out.println("RESPONSE: " + t.toString());
+                Log.e(MainActivity.TAG, t.toString());
+            }
+        });
+
     }
 
 

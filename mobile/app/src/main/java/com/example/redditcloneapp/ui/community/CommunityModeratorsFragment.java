@@ -18,12 +18,19 @@ import android.widget.ListView;
 import com.example.redditcloneapp.MainActivity;
 import com.example.redditcloneapp.R;
 import com.example.redditcloneapp.model.Administrator;
+import com.example.redditcloneapp.model.Community;
 import com.example.redditcloneapp.model.Mokap;
 import com.example.redditcloneapp.model.User;
 
 public class CommunityModeratorsFragment extends ListFragment {
 
-    public static CommunityModeratorsFragment newInstance(){return new CommunityModeratorsFragment();}
+    private Community community;
+
+    public CommunityModeratorsFragment(Community community) {
+        this.community = community;
+    }
+
+    public static CommunityModeratorsFragment newInstance(Community community){return new CommunityModeratorsFragment(community);}
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -36,7 +43,7 @@ public class CommunityModeratorsFragment extends ListFragment {
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-        CommunityModeratorsAdapter adapter = new CommunityModeratorsAdapter(getActivity(),((CommunityActivity)getActivity()).getCommunity(), ((CommunityActivity)getActivity()).getUser());
+        CommunityModeratorsAdapter adapter = new CommunityModeratorsAdapter(getActivity(),community, ((CommunityActivity)getActivity()).getUser());
         setListAdapter(adapter);
     }
 }

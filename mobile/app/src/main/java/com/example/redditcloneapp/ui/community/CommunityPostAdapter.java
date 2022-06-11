@@ -24,15 +24,16 @@ import com.example.redditcloneapp.ui.profile.ProfileActivity;
 import java.time.format.DateTimeFormatter;
 import java.time.format.FormatStyle;
 import java.util.ArrayList;
+import java.util.List;
 
 public class CommunityPostAdapter extends BaseAdapter {
     private Activity activity;
     private Community community;
-    private ArrayList<Post>posts;
+    private List<Post>posts;
     private User user;
 
-    @RequiresApi(api = Build.VERSION_CODES.O)
-    public CommunityPostAdapter (Activity activity,User user, Community community){this.activity = activity;this.user = user; this.community = community;this.posts = Mokap.getPostsForCommunity(community);}
+
+    public CommunityPostAdapter (Activity activity, User user, List<Post> posts){this.activity = activity;this.user = user;this.posts = posts;}
 
     @Override
     public int getCount() {
@@ -69,7 +70,7 @@ public class CommunityPostAdapter extends BaseAdapter {
         Button btnReport = vi.findViewById(R.id.btn_post_report);
         title.setText(post.getTitle());
         text.setText(post.getText());
-        karma.setText(post.getReactions());
+        karma.setText(post.getReactions().toString());
         userText.setText(post.getUser().getUsername());
         userText.setOnClickListener(new View.OnClickListener() {
             @Override
