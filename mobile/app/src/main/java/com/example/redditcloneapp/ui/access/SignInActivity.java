@@ -5,49 +5,123 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.graphics.drawable.Drawable;
 import android.os.Build;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.redditcloneapp.MainActivity;
 import com.example.redditcloneapp.R;
-import com.example.redditcloneapp.model.Mokap;
+import com.example.redditcloneapp.adapters.PostAdapter;
+import com.example.redditcloneapp.model.Post;
 import com.example.redditcloneapp.model.User;
+import com.example.redditcloneapp.service.PostApiService;
+import com.example.redditcloneapp.service.UserApiService;
+import com.example.redditcloneapp.service.client.ApiClient;
+import com.example.redditcloneapp.service.client.ApiClientService;
+import com.example.redditcloneapp.service.client.UserLogin;
+import com.example.redditcloneapp.service.client.TokenResponse;
+import com.google.gson.Gson;
 
-import java.io.Serializable;
+import java.io.IOException;
+import java.util.List;
+
+import okhttp3.ResponseBody;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
+import retrofit2.Retrofit;
+import retrofit2.converter.gson.GsonConverterFactory;
 
 public class SignInActivity extends AppCompatActivity {
+    static final String BASE_URL = "http://192.168.0.29:8080/RedditClone/";
+    static final String TAG = SignInActivity.class.getSimpleName();
+    static Retrofit retrofit = null;
+    static Retrofit retrofitLogin = null;
+    private SharedPreferences sharedPreferences;
+    private boolean validation = false;
 
+
+    EditText usernameTW, passwordTW;
+    Button buttonSignIn;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_sign_in);
-        Button button = findViewById(R.id.btn_sign_in);
-        button.setOnClickListener(new View.OnClickListener() {
+
+        usernameTW = findViewById(R.id.sign_in_username);
+        passwordTW = findViewById(R.id.sign_in_password);
+        buttonSignIn = findViewById(R.id.btn_sign_in);
+        buttonSignIn.setOnClickListener(new View.OnClickListener() {
             @RequiresApi(api = Build.VERSION_CODES.O)
             @Override
             public void onClick(View view) {
-                EditText usernameTW = findViewById(R.id.sign_in_username);
-                String usernameText = usernameTW.getText().toString();
-
-                EditText passwordTW = findViewById(R.id.sign_in_password);
-                String passwordText = passwordTW.getText().toString();
-                User user = Mokap.login(usernameText,passwordText);
-
-                if (user != null) {
-                    Intent intent = new Intent(SignInActivity.this, MainActivity.class);
-                    intent.putExtra("user", (Serializable) user);
-                    startActivity(intent);
-                }else{
-                    Toast msg = Toast.makeText(getApplicationContext(), R.string.signInError, Toast.LENGTH_SHORT);
-                    msg.show();
-                }
+                if(isValid())
+                    getLogin();
             }
         });
+    }
+
+    private boolean isValid(){
+        if(usernameTW.getText().toString().equals("")) {
+            Toast.makeText(SignInActivity.this, R.string.user_username_error, Toast.LENGTH_SHORT).show();
+            usernameTW.setBackgroundResource(R.drawable.textview_border);
+            return false;
+        }else{
+            usernameTW.setBackgroundResource(0);
+        }
+
+        if(passwordTW.getText().toString().equals("")) {
+            Toast.makeText(SignInActivity.this, R.string.user_password_error, Toast.LENGTH_SHORT).show();
+            passwordTW.setBackgroundResource(R.drawable.textview_border);
+            return false;
+        }
+        else{
+            passwordTW.setBackgroundResource(0);
+        }
+        return true;
+    }
+
+    private void getLogin(){
+        if (retrofit == null) {
+            retrofit = new Retrofit.Builder()
+                    .baseUrl(BASE_URL)
+                    .addConverterFactory(GsonConverterFactory.create())
+                    .build();
+        }
+        ApiClientService apiClientService = retrofit.create(ApiClientService.class);
+
+        String usernameText = usernameTW.getText().toString();
+        String passwordText = passwordTW.getText().toString();
+        UserLogin userLogin = new UserLogin(usernameText, passwordText);
+        Call<TokenResponse> call = apiClientService.getToken(userLogin);
+        call.enqueue(new Callback<TokenResponse>() {
+            @Override
+            public void onResponse(Call<TokenResponse> call, Response<TokenResponse> response) {
+
+                    if(response.isSuccessful()){
+                        Toast.makeText(SignInActivity.this, response.body().toString(), Toast.LENGTH_LONG).show();
+                        getUser(response.body());
+                    }else{
+                        Toast.makeText(getApplicationContext(), R.string.signInError, Toast.LENGTH_SHORT).show();
+                    }
+            }
+
+            @Override
+            public void onFailure(Call<TokenResponse> call, Throwable t) {
+                Toast.makeText(SignInActivity.this, "System error: "+ t.getMessage(), Toast.LENGTH_SHORT).show();
+            }
+        });
+    }
+
+    private void loadMain(User user){
+        Intent intent = new Intent(SignInActivity.this, MainActivity.class);
+        intent.putExtra("user", user);
+        startActivity(intent);
     }
 
     public void onClickCreate(View view) {
@@ -55,5 +129,39 @@ public class SignInActivity extends AppCompatActivity {
         toast.show();
         Intent intent = new Intent(SignInActivity.this,SignUpActivity.class);
         startActivity(intent);
+    }
+
+    private void getUser(TokenResponse tokenResponse){
+        if (retrofitLogin == null) {
+            retrofitLogin = new Retrofit.Builder()
+                    .baseUrl(BASE_URL)
+                    .addConverterFactory(GsonConverterFactory.create())
+                    .build();
+        }
+        UserApiService userApiService = retrofitLogin.create(UserApiService.class);
+
+
+        Call<User> call = userApiService.getUser(tokenResponse.getUsername());
+        call.enqueue(new Callback<User>() {
+            @Override
+            public void onResponse(Call<User> call, Response<User> response) {
+
+                if(response.isSuccessful()){
+                    Toast.makeText(SignInActivity.this, response.body().toString(), Toast.LENGTH_LONG).show();
+                    getSharedPreferences("loggedUser",MODE_PRIVATE)
+                            .edit()
+                            .putString("user",response.body().getUsername())
+                            .commit();
+                    loadMain(response.body());
+                }else{
+                    Toast.makeText(getApplicationContext(), R.string.signInError, Toast.LENGTH_SHORT).show();
+                }
+            }
+
+            @Override
+            public void onFailure(Call<User> call, Throwable t) {
+                Toast.makeText(SignInActivity.this, "System error: "+ t.getMessage(), Toast.LENGTH_SHORT).show();
+            }
+        });
     }
 }
