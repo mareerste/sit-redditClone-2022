@@ -14,6 +14,7 @@ import android.widget.TextView;
 
 import com.example.redditcloneapp.R;
 import com.example.redditcloneapp.adapters.PostAdapter;
+import com.example.redditcloneapp.model.Mokap;
 import com.example.redditcloneapp.model.Post;
 import com.example.redditcloneapp.model.User;
 import com.example.redditcloneapp.tools.FragmentTransition;
@@ -43,7 +44,7 @@ public class PostActivity extends AppCompatActivity {
         TextView flair = findViewById(R.id.post_single_flair);
         title.setText(post.getTitle());
         text.setText(post.getText());
-        karma.setText(post.getPostReaction());
+        karma.setText(post.getReactions());
         userText.setText(post.getUser().getUsername());
         userText.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -53,17 +54,18 @@ public class PostActivity extends AppCompatActivity {
                 startActivity(intent);
             }
         });
-        creationDate.setText(post.getCreationDate().format(DateTimeFormatter
-                .ofLocalizedDate(FormatStyle.LONG)));
+//        creationDate.setText(post.getCreationDate().format(DateTimeFormatter
+//                .ofLocalizedDate(FormatStyle.LONG)));
+        creationDate.setText(post.getCreationDate());
         flair.setText(post.getFlair().getName());
 
         TextView comName = findViewById(R.id.single_post_community_name);
         TextView comDesc = findViewById(R.id.single_post_community_desc);
         TextView comDate = findViewById(R.id.single_post_community_created);
-
-        comName.setText(post.getCommunity().getName());
-        comDesc.setText(post.getCommunity().getDescription());
-        comDate.setText(post.getCommunity().getCreationDate().format(DateTimeFormatter
+//TODO fake community
+        comName.setText(Mokap.getCommunities().get(0).getName());
+        comDesc.setText(Mokap.getCommunities().get(0).getDescription());
+        comDate.setText(Mokap.getCommunities().get(0).getCreationDate().format(DateTimeFormatter
                 .ofLocalizedDate(FormatStyle.LONG)));
         Button btnComments = findViewById(R.id.post_single_comments_btn);
         btnComments.setOnClickListener(new View.OnClickListener() {

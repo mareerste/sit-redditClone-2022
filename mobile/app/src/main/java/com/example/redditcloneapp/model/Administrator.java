@@ -8,7 +8,7 @@ import java.io.Serializable;
 import java.time.LocalDate;
 
 public class Administrator extends User implements Serializable {
-    public Administrator(String username, String password, String email, String avatar, LocalDate registrationDate, String description, Boolean deleted) {
+    public Administrator(String username, String password, String email, String avatar, String registrationDate, String description, Boolean deleted) {
         super(username, password, email, avatar, registrationDate, description, deleted);
     }
 

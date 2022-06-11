@@ -1,5 +1,6 @@
 package rs.ac.uns.ftn.informatika.redditClone.model.dto;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import rs.ac.uns.ftn.informatika.redditClone.model.entity.Comment;
 
 import java.io.Serializable;
@@ -11,6 +12,7 @@ public class CommentDTO implements Serializable {
 
     private Integer id;
     private String text;
+    @JsonFormat(pattern = "dd-MM-yyyy")
     private LocalDate timestamp;
     private Boolean isDeleted;
     private UserCreateDTO user;

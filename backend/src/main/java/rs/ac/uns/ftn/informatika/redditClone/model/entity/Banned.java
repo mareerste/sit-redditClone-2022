@@ -1,5 +1,6 @@
 package rs.ac.uns.ftn.informatika.redditClone.model.entity;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import javax.persistence.*;
@@ -11,6 +12,7 @@ public class Banned {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
     @Column(name = "date")
+    @JsonFormat(pattern = "dd-MM-yyyy")
     private LocalDate timestamp;
     @ManyToOne
     @JoinColumn(name = "moderator_id",referencedColumnName = "username", nullable = true)

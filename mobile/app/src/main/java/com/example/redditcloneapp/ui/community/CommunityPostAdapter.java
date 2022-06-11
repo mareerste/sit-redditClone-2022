@@ -69,7 +69,7 @@ public class CommunityPostAdapter extends BaseAdapter {
         Button btnReport = vi.findViewById(R.id.btn_post_report);
         title.setText(post.getTitle());
         text.setText(post.getText());
-        karma.setText(post.getPostReaction());
+        karma.setText(post.getReactions());
         userText.setText(post.getUser().getUsername());
         userText.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -80,21 +80,22 @@ public class CommunityPostAdapter extends BaseAdapter {
             }
         });
         flair.setText(post.getFlair().getName());
-        community.setText(post.getCommunity().getName());
+        community.setText(Mokap.getCommunities().get(0).getName());//TODO fake comm
         community.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Toast toast = Toast.makeText(view.getContext(), post.getCommunity().toString(),Toast.LENGTH_SHORT);
+                Toast toast = Toast.makeText(view.getContext(), Mokap.getCommunities().get(0).toString(),Toast.LENGTH_SHORT);//TODO fake
                 toast.show();
                 Intent intent = new Intent(activity, CommunityActivity.class);
                 intent.putExtra("user", user );
-                intent.putExtra("community", post.getCommunity());
+//                intent.putExtra("community", post.getCommunity());//TODO fake
                 activity.startActivity(intent);
 
             }
         });
-        date.setText(post.getCreationDate().format(DateTimeFormatter
-                .ofLocalizedDate(FormatStyle.LONG)));
+        date.setText(post.getCreationDate());
+//        date.setText(post.getCreationDate().format(DateTimeFormatter
+//                .ofLocalizedDate(FormatStyle.LONG)));
 
         btnPost.setOnClickListener(new View.OnClickListener() {
             @Override

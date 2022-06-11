@@ -4,15 +4,21 @@ import android.os.Build;
 
 import androidx.annotation.RequiresApi;
 
+import com.google.gson.annotations.SerializedName;
+
 import java.io.Serializable;
 import java.time.LocalDate;
 
 public class Banned implements Serializable {
-
+    @SerializedName("id")
     private Integer id;
+    @SerializedName("timestamp")
     private LocalDate timestamp;
+    @SerializedName("moderator")
     private User moderator;
+    @SerializedName("community")
     private Community community;
+    @SerializedName("user")
     private User user;
 
     public Integer getId() {

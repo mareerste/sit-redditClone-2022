@@ -1,5 +1,6 @@
 package rs.ac.uns.ftn.informatika.redditClone.model.dto;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import rs.ac.uns.ftn.informatika.redditClone.model.entity.Report;
 import rs.ac.uns.ftn.informatika.redditClone.model.enumerations.ReactionType;
 import rs.ac.uns.ftn.informatika.redditClone.model.enumerations.ReportReason;
@@ -11,6 +12,7 @@ public class ReportCommentDTO implements Serializable {
 
     private Integer id;
     private ReportReason reason;
+    @JsonFormat(pattern = "dd-MM-yyyy")
     private LocalDate timestamp;
     private UserCreateDTO user;
     private Boolean accepted;

@@ -6,16 +6,28 @@ import androidx.annotation.Nullable;
 import androidx.annotation.RequiresApi;
 import androidx.lifecycle.ViewModel;
 
+
+import com.google.gson.annotations.SerializedName;
+
 import java.io.Serializable;
 import java.time.LocalDate;
 
 public class User implements Serializable {
+    @SerializedName("username")
     protected String username;
+    @SerializedName("password")
     protected String password;
+    @SerializedName("email")
     protected String email;
+    @SerializedName("avatar")
     protected String avatar;
-    protected LocalDate registrationDate;
+    @SerializedName("registrationDate")
+    protected String registrationDate;
+    @SerializedName("description")
     protected String description;
+    @SerializedName("displayName")
+    private String displayName;
+    @SerializedName("deleted")
     protected Boolean deleted = false;
 
     public String getUsername() {
@@ -50,11 +62,11 @@ public class User implements Serializable {
         this.avatar = avatar;
     }
 
-    public LocalDate getRegistrationDate() {
+    public String getRegistrationDate() {
         return registrationDate;
     }
 
-    public void setRegistrationDate(LocalDate registrationDate) {
+    public void setRegistrationDate(String registrationDate) {
         this.registrationDate = registrationDate;
     }
 
@@ -74,7 +86,7 @@ public class User implements Serializable {
         this.deleted = deleted;
     }
 
-    public User(String username, String password, String email, String avatar, LocalDate registrationDate, String description, Boolean deleted) {
+    public User(String username, String password, String email, String avatar, String registrationDate, String description, Boolean deleted) {
         this.username = username;
         this.password = password;
         this.email = email;
@@ -89,7 +101,7 @@ public class User implements Serializable {
         this.username = username;
         this.password = password;
         this.email = email;
-        this.registrationDate = LocalDate.now();
+        this.registrationDate = LocalDate.now().toString();
         this.description = description;
         this.deleted = false;
     }

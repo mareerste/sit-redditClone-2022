@@ -32,8 +32,9 @@ public class CommunityMembersAdapter extends BaseAdapter {
     private ArrayList<User> users;
     private Community community;
     private User moderator;
-
-    public CommunityMembersAdapter(Activity activity, Community community, User moderator){this.activity = activity; this.users = community.getMembers();this.community = community;this.moderator = moderator;}
+//TODO fake users
+    @RequiresApi(api = Build.VERSION_CODES.O)
+    public CommunityMembersAdapter(Activity activity, Community community, User moderator){this.activity = activity; this.users = Mokap.getUsers();this.community = community;this.moderator = moderator;}
 
     @Override
     public int getCount() {

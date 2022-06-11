@@ -5,15 +5,24 @@ import android.os.Build;
 import androidx.annotation.RequiresApi;
 
 import com.example.redditcloneapp.model.enums.ReactionType;
+import com.google.gson.annotations.SerializedName;
 
 import java.io.Serializable;
 import java.time.LocalDate;
 
 public class Reaction implements Serializable {
+    @SerializedName("id")
     private Integer id;
+    @SerializedName("type")
     private ReactionType type;
+    @SerializedName("timestamp")
     private LocalDate timestamp;
+    @SerializedName("user")
     private User user;
+    @SerializedName("post")
+    private Post post;
+    @SerializedName("comment")
+    private Comment comment;
 
     public Integer getId() {
         return id;
@@ -46,6 +55,7 @@ public class Reaction implements Serializable {
     public void setUser(User user) {
         this.user = user;
     }
+
 
 
     @RequiresApi(api = Build.VERSION_CODES.O)

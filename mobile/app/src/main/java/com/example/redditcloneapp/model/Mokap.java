@@ -82,7 +82,7 @@ public class Mokap implements Serializable {
         rules.add("rule2");
         rules.add("rule3");
         rules.add("rule4");
-        communities.add(new Community(1, "Community1", "Prvi community. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Suspendisse a ornare mi. Sed ut mi eros. In hac habitasse platea dictumst. Mauris a pharetra urna. In posuere nisl in nulla sollicitudin viverra. Praesent congue, velit vitae condimentum porttitor, sapien elit fermentum felis, ac gravida metus arcu et lorem.", rules, getFlairs(), getModerators(), getUsers()));
+        communities.add(new Community(1, "Community1", "Prvi community. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Suspendisse a ornare mi. Sed ut mi eros. In hac habitasse platea dictumst. Mauris a pharetra urna. In posuere nisl in nulla sollicitudin viverra. Praesent congue, velit vitae condimentum porttitor, sapien elit fermentum felis, ac gravida metus arcu et lorem.", rules, getFlairs(), getModerators(), getPosts()));
         return communities;
     }
 
@@ -94,8 +94,8 @@ public class Mokap implements Serializable {
         postComments1.add(getComments().get(0));
         postComments1.add(getComments().get(1));
         postComments2.add(getComments().get(2));
-        posts.add(new Post(1, "Sivi soko", "Lorem Ipsum is simply dummy text of the printing and typesetting industry.", getUsers().get(0), getFlairs().get(0), postComments1, getReactions(), getCommunities().get(0)));
-        posts.add(new Post(2, "Orao pao", "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Fusce suscipit laoreet ante ut rhoncus. Sed id urna in sem hendrerit tristique. Ut et sollicitudin odio. Ut vel diam vehicula, viverra mi id, varius massa. Nulla eu lacus a sem varius tristique eu a orci. Proin ligula velit, ultrices vel nunc vitae, luctus sodales lectus. Phasellus suscipit, erat porttitor ultricies varius, justo arcu dapibus dolor, sit amet aliquet nulla arcu nec nisl. Aliquam eget nisi dignissim, mollis ipsum at, imperdiet neque. Pellentesque non gravida quam. Suspendisse fringilla feugiat odio et malesuada.", getUsers().get(1), getFlairs().get(1), postComments2, getReactions(), getCommunities().get(0)));
+        posts.add(new Post(1, "Sivi soko", "Lorem Ipsum is simply dummy text of the printing and typesetting industry.", getUsers().get(0), getFlairs().get(0), postComments1, 3));
+        posts.add(new Post(2, "Orao pao", "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Fusce suscipit laoreet ante ut rhoncus. Sed id urna in sem hendrerit tristique. Ut et sollicitudin odio. Ut vel diam vehicula, viverra mi id, varius massa. Nulla eu lacus a sem varius tristique eu a orci. Proin ligula velit, ultrices vel nunc vitae, luctus sodales lectus. Phasellus suscipit, erat porttitor ultricies varius, justo arcu dapibus dolor, sit amet aliquet nulla arcu nec nisl. Aliquam eget nisi dignissim, mollis ipsum at, imperdiet neque. Pellentesque non gravida quam. Suspendisse fringilla feugiat odio et malesuada.", getUsers().get(1), getFlairs().get(1), postComments2, 2));
         return posts;
     }
 
@@ -104,11 +104,11 @@ public class Mokap implements Serializable {
         ArrayList<Post> allPosts = getPosts();
         ArrayList<Post> posts = new ArrayList<>();
         for (Post p : allPosts) {
-            System.out.println(p.getCommunity().getId() == community.getId());
-            System.out.println(p.getCommunity().getId() + " " + community.getId());
+//            System.out.println(p.getCommunity().getId() == community.getId());
+//            System.out.println(p.getCommunity().getId() + " " + community.getId());
 
-            if (p.getCommunity().getId() == community.getId())
-                posts.add(p);
+//            if (p.getCommunity().getId() == community.getId())
+//                posts.add(p);
         }
         return posts;
     }

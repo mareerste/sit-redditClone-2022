@@ -1,5 +1,6 @@
 package rs.ac.uns.ftn.informatika.redditClone.model.dto;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import rs.ac.uns.ftn.informatika.redditClone.model.entity.Comment;
 import rs.ac.uns.ftn.informatika.redditClone.model.entity.Post;
 
@@ -12,6 +13,7 @@ public class PostDTO implements Serializable {
     private Integer id;
     private String title;
     private String text;
+    @JsonFormat(pattern = "dd-MM-yyyy", shape = JsonFormat.Shape.OBJECT)
     private LocalDate creationDate;
     private String imagePath;
     private Boolean isDeleted;

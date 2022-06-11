@@ -1,9 +1,13 @@
 package com.example.redditcloneapp.model;
 
+import com.google.gson.annotations.SerializedName;
+
 import java.io.Serializable;
 
 public class Flair implements Serializable {
+    @SerializedName("id")
     private Integer id;
+    @SerializedName("name")
     private String name;
 
     public Integer getId() {

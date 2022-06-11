@@ -32,22 +32,25 @@ import com.example.redditcloneapp.ui.profile.ProfileActivity;
 import java.io.Serializable;
 import java.time.format.DateTimeFormatter;
 import java.time.format.FormatStyle;
+import java.util.ArrayList;
+import java.util.List;
 
 public class PostAdapter extends BaseAdapter {
 
     private Activity activity;
     private User user;
+    private List<Post> posts;
 
-    public PostAdapter(Activity activity, User user){this.activity = activity;this.user=user;}
+    public PostAdapter(Activity activity, User user, List<Post> posts){this.activity = activity;this.user=user;this.posts = posts;}
 
     @RequiresApi(api = Build.VERSION_CODES.O)
     @Override
-    public int getCount() { return Mokap.getPosts().size();
+    public int getCount() { return posts.size();
     }
 
     @RequiresApi(api = Build.VERSION_CODES.O)
     @Override
-    public Object getItem(int i) {return Mokap.getPosts().get(i); }
+    public Object getItem(int i) {return posts.get(i); }
 
     @Override
     public long getItemId(int i) { return i;
@@ -57,13 +60,14 @@ public class PostAdapter extends BaseAdapter {
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
         View vi = convertView;
-        Post post = Mokap.getPosts().get(position);
+        Post post = posts.get(position);
 
         if(convertView == null){
             vi = activity.getLayoutInflater().inflate(R.layout.post_item, null);}
         TextView title = (TextView) vi.findViewById(R.id.post_title);
         TextView text = (TextView) vi.findViewById(R.id.post_text);
         TextView karma = (TextView) vi.findViewById(R.id.post_karma);
+        karma.setText(post.getReactions().toString());
         TextView userText = vi.findViewById(R.id.post_user);
         TextView flair = vi.findViewById(R.id.post_flair);
         TextView date = vi.findViewById(R.id.post_date);
@@ -71,8 +75,9 @@ public class PostAdapter extends BaseAdapter {
         Button btnPost = vi.findViewById(R.id.btn_view_post);
         Button btnReport = vi.findViewById(R.id.btn_post_report);
         title.setText(post.getTitle());
+
         text.setText(post.getText());
-        karma.setText(post.getPostReaction());
+//        karma.setText(post.getReactions());
 
         btnReport.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -113,19 +118,20 @@ public class PostAdapter extends BaseAdapter {
             }
         });
         flair.setText(post.getFlair().getName());
-        community.setText(post.getCommunity().getName());
+        community.setText(Mokap.getCommunities().get(0).getName());//TODO Fake comm
         community.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(activity, CommunityActivity.class);
                 intent.putExtra("user", user);
-                intent.putExtra("community", post.getCommunity());
+//                intent.putExtra("community", post.getCommunity());//TODO comm
                 activity.startActivity(intent);
 
             }
         });
-        date.setText(post.getCreationDate().format(DateTimeFormatter
-                .ofLocalizedDate(FormatStyle.LONG)));
+//        date.setText(post.getCreationDate().format(DateTimeFormatter
+//                .ofLocalizedDate(FormatStyle.LONG)));
+        date.setText(post.getCreationDate());
 
         btnPost.setOnClickListener(new View.OnClickListener() {
             @Override

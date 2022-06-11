@@ -5,23 +5,37 @@ import android.os.Build;
 import androidx.annotation.RequiresApi;
 
 import com.example.redditcloneapp.model.enums.ReactionType;
+import com.google.gson.Gson;
+import com.google.gson.annotations.SerializedName;
+
+import org.jetbrains.annotations.Contract;
 
 import java.io.Serializable;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 
 public class Post implements Serializable {
+    @SerializedName("id")
     private int id;
+    @SerializedName("title")
     private String title;
+    @SerializedName("text")
     private String text;
-    private LocalDate creationDate;
+    @SerializedName("creationDate")
+    private String creationDate;
+    @SerializedName("imagePath")
     private String imagePath;
-    private Boolean isDeleted;
+    @SerializedName("deleted")
+    private Boolean deleted;
+    @SerializedName("user")
     private User user;
+    @SerializedName("flair")
     private Flair flair;
+    @SerializedName("comments")
     private ArrayList<Comment> comments;
-    private ArrayList<Reaction> reactions;
-    private Community community;
+    @SerializedName("reactions")
+    private int reactions;
 
     public Integer getId() {
         return id;
@@ -47,11 +61,11 @@ public class Post implements Serializable {
         this.text = text;
     }
 
-    public LocalDate getCreationDate() {
+    public String getCreationDate() {
         return creationDate;
     }
 
-    public void setCreationDate(LocalDate creationDate) {
+    public void setCreationDate(String creationDate) {
         this.creationDate = creationDate;
     }
 
@@ -64,11 +78,11 @@ public class Post implements Serializable {
     }
 
     public Boolean getDeleted() {
-        return isDeleted;
+        return deleted;
     }
 
     public void setDeleted(Boolean deleted) {
-        isDeleted = deleted;
+        this.deleted = deleted;
     }
 
     public User getUser() {
@@ -95,55 +109,49 @@ public class Post implements Serializable {
         this.comments = comments;
     }
 
-    public ArrayList<Reaction> getReactions() {
+    public Integer getReactions() {
         return reactions;
     }
 
-    public void setReactions(ArrayList<Reaction> reactions) {
+    public void setReactions(Integer reactions) {
         this.reactions = reactions;
     }
 
-    public Community getCommunity() {
-        return community;
-    }
-
-    public void setCommunity(Community community) {
-        this.community = community;
-    }
-
-    public Post(Integer id, String title, String text, LocalDate creationDate, String imagePath, Boolean isDeleted, User user, Flair flair) {
+    public Post(Integer id, String title, String text, String creationDate, String imagePath, Boolean isDeleted, User user, Flair flair) {
         this.id = id;
         this.title = title;
         this.text = text;
         this.creationDate = creationDate;
         this.imagePath = imagePath;
-        this.isDeleted = isDeleted;
+        this.deleted = isDeleted;
         this.user = user;
         this.flair = flair;
     }
     @RequiresApi(api = Build.VERSION_CODES.O)
-    public Post(Integer id, String title, String text, User user, Flair flair, ArrayList<Comment> comments, ArrayList<Reaction> reactions, Community community) {
+    public Post(Integer id, String title, String text, User user, Flair flair, ArrayList<Comment> comments, Integer reactions) {
         this.id = id;
         this.title = title;
         this.text = text;
-        this.creationDate = LocalDate.now();
-        this.isDeleted = false;
+        this.creationDate = LocalDate.now().toString();
+        this.deleted = false;
         this.user = user;
         this.flair = flair;
         this.comments = comments;
         this.reactions = reactions;
-        this.community = community;
     }
 
-    public String getPostReaction(){
-        int vote = 0;
-        for (Reaction r:this.reactions) {
-            if(r.getType() == ReactionType.UPVOTE)
-                vote++;
-            else
-                vote--;
-        }
-        return String.valueOf(vote);
+//    public String getPostReaction(){
+//        int vote = 0;
+//        for (Reaction r:this.reactions) {
+//            if(r.getType() == ReactionType.UPVOTE)
+//                vote++;
+//            else
+//                vote--;
+//        }
+//        return String.valueOf(vote);
+//    }
+
+    public Post() {
     }
 
     @Override
@@ -154,7 +162,7 @@ public class Post implements Serializable {
                 ", text='" + text + '\'' +
                 ", creationDate=" + creationDate +
                 ", imagePath='" + imagePath + '\'' +
-                ", isDeleted=" + isDeleted +
+                ", isDeleted=" + deleted +
                 ", user=" + user +
                 ", flair=" + flair +
                 '}';

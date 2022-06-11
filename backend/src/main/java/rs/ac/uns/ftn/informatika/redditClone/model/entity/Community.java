@@ -1,5 +1,7 @@
 package rs.ac.uns.ftn.informatika.redditClone.model.entity;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
+
 import javax.persistence.*;
 import java.time.LocalDate;
 import java.util.HashSet;
@@ -15,6 +17,7 @@ public class Community {
     @Column(name = "description", nullable = true)
     private String description;
     @Column(name = "creationDate")
+    @JsonFormat(pattern = "dd-MM-yyyy")
     private LocalDate creationDate;
     @ElementCollection
     private Set<String> rules = new HashSet<>();

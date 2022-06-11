@@ -5,6 +5,7 @@ import android.os.Build;
 import androidx.annotation.RequiresApi;
 
 import com.example.redditcloneapp.model.enums.ReactionType;
+import com.google.gson.annotations.SerializedName;
 
 import java.io.Serializable;
 import java.time.LocalDate;
@@ -13,12 +14,19 @@ import java.util.List;
 import java.util.Set;
 
 public class Comment implements Serializable {
+    @SerializedName("id")
     private Integer id;
+    @SerializedName("text")
     private String text;
-    private LocalDate timestamp;
+    @SerializedName("timestamp")
+    private String timestamp;
+    @SerializedName("isDeleted")
     private Boolean isDeleted;
+    @SerializedName("user")
     private User user;
+    @SerializedName("childComments")
     private List<Comment> childComments = new ArrayList<>();
+    @SerializedName("reactions")
     private List<Reaction> reactions = new ArrayList<>();
 
     public Integer getId() {
@@ -37,11 +45,11 @@ public class Comment implements Serializable {
         this.text = text;
     }
 
-    public LocalDate getTimestamp() {
+    public String getTimestamp() {
         return timestamp;
     }
 
-    public void setTimestamp(LocalDate timestamp) {
+    public void setTimestamp(String timestamp) {
         this.timestamp = timestamp;
     }
 
@@ -77,7 +85,7 @@ public class Comment implements Serializable {
         this.childComments = childComments;
     }
 
-    public Comment(Integer id, String text, LocalDate timestamp, Boolean isDeleted, User user, List<Comment> childComments, List<Reaction> reactions) {
+    public Comment(Integer id, String text, String timestamp, Boolean isDeleted, User user, List<Comment> childComments, List<Reaction> reactions) {
         this.id = id;
         this.text = text;
         this.timestamp = timestamp;
@@ -90,7 +98,7 @@ public class Comment implements Serializable {
     public Comment(Integer id, String text, User user, List<Comment> childComments, List<Reaction> reactions) {
         this.id = id;
         this.text = text;
-        this.timestamp = LocalDate.now();
+        this.timestamp = LocalDate.now().toString();
         this.isDeleted = false;
         this.user = user;
         this.childComments = childComments;

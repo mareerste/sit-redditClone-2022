@@ -66,8 +66,9 @@ public class MyPostsAdapter extends BaseAdapter {
             }
         });
         TextView postDate = vi.findViewById(R.id.my_post_date);
-        postDate.setText(post.getCreationDate().format(DateTimeFormatter
-                .ofLocalizedDate(FormatStyle.LONG)));
+//        postDate.setText(post.getCreationDate().format(DateTimeFormatter
+//                .ofLocalizedDate(FormatStyle.LONG)));
+        postDate.setText(post.getCreationDate());
         Button editBtn = vi.findViewById(R.id.my_post_edit_btn);
         editBtn.setOnClickListener(new View.OnClickListener() {
             @Override

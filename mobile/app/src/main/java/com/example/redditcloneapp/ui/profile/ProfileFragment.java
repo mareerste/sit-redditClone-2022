@@ -75,16 +75,18 @@ public class ProfileFragment extends Fragment {
             usernameShow.setText(user.getUsername());
             passwordShow.setText(user.getPassword());
             mailShow.setText(user.getEmail());
-            dateShow.setText(user.getRegistrationDate().format(DateTimeFormatter
-                    .ofLocalizedDate(FormatStyle.LONG)));
+//            dateShow.setText(user.getRegistrationDate().format(DateTimeFormatter
+//                    .ofLocalizedDate(FormatStyle.LONG)));
+            dateShow.setText(user.getRegistrationDate());
             descShow.setText(user.getDescription());
             editLayout.setVisibility(View.VISIBLE);
 
             usernameEdit.setText(user.getUsername());
             passwordEdit.setText(user.getPassword());
             mailEdit.setText(user.getEmail());
-            dateEdit.setText(user.getRegistrationDate().format(DateTimeFormatter
-                    .ofLocalizedDate(FormatStyle.LONG)));
+//            dateEdit.setText(user.getRegistrationDate().format(DateTimeFormatter
+//                    .ofLocalizedDate(FormatStyle.LONG)));
+            dateEdit.setText(user.getRegistrationDate());
             descEdit.setText(user.getDescription());
 
 

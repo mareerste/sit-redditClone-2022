@@ -1,5 +1,7 @@
 package rs.ac.uns.ftn.informatika.redditClone.model.entity;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
+
 import javax.persistence.*;
 import java.time.LocalDate;
 import java.util.HashSet;
@@ -22,6 +24,7 @@ public class User {
     @Column(name = "avatar", nullable = true)
     protected String avatar;
     @Column(name = "registrationDate", nullable = false)
+    @JsonFormat(pattern = "dd-MM-yyyy", shape = JsonFormat.Shape.OBJECT)
     protected LocalDate registrationDate;
     @Column(name = "description", nullable = false)
     protected String description;

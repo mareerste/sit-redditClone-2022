@@ -1,5 +1,6 @@
 package rs.ac.uns.ftn.informatika.redditClone.model.dto;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import rs.ac.uns.ftn.informatika.redditClone.model.entity.Comment;
 import rs.ac.uns.ftn.informatika.redditClone.model.entity.Community;
 import rs.ac.uns.ftn.informatika.redditClone.model.entity.Moderator;
@@ -15,6 +16,7 @@ public class CommunityDTO implements Serializable {
     private Integer id;
     private String name;
     private String description;
+    @JsonFormat(pattern = "dd-MM-yyyy")
     private LocalDate creationDate;
     private Set<String> rules = new HashSet<>();
     private Boolean isSuspended;

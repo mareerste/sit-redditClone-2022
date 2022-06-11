@@ -1,5 +1,7 @@
 package rs.ac.uns.ftn.informatika.redditClone.model.entity;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
+
 import javax.persistence.*;
 import java.time.LocalDate;
 import java.util.HashSet;
@@ -15,6 +17,7 @@ public class Post {
     @Column(name = "text",nullable = false)
     private String text;
     @Column(name = "date",nullable = false)
+    @JsonFormat(pattern = "dd-MM-yyyy")
     private LocalDate creationDate;
     @Column(name = "image",nullable = true)
     private String imagePath;

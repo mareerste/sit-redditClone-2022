@@ -1,5 +1,6 @@
 package rs.ac.uns.ftn.informatika.redditClone.model.dto;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import rs.ac.uns.ftn.informatika.redditClone.model.entity.Reaction;
 import rs.ac.uns.ftn.informatika.redditClone.model.enumerations.ReactionType;
 
@@ -9,6 +10,7 @@ import java.time.LocalDate;
 public class ReactionCommentCreateDTO implements Serializable {
     private Integer id;
     private ReactionType type;
+    @JsonFormat(pattern = "dd-MM-yyyy")
     private LocalDate timestamp;
     private UserCreateDTO user;
     private CommentDTO comment;

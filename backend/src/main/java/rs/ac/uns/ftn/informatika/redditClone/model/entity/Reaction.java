@@ -1,5 +1,6 @@
 package rs.ac.uns.ftn.informatika.redditClone.model.entity;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import rs.ac.uns.ftn.informatika.redditClone.model.enumerations.ReactionType;
 
 import javax.persistence.*;
@@ -13,6 +14,7 @@ public class Reaction {
     @Column(name = "type",nullable = false)
     private ReactionType type;
     @Column(name = "date",nullable = false)
+    @JsonFormat(pattern = "dd-MM-yyyy")
     private LocalDate timestamp;
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "user_id")

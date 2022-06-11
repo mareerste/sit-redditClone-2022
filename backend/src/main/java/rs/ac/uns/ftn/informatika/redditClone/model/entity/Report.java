@@ -1,5 +1,6 @@
 package rs.ac.uns.ftn.informatika.redditClone.model.entity;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import rs.ac.uns.ftn.informatika.redditClone.model.enumerations.ReactionType;
 import rs.ac.uns.ftn.informatika.redditClone.model.enumerations.ReportReason;
 
@@ -14,6 +15,7 @@ public class Report {
     @Column(name = "reason",nullable = false)
     private ReportReason reason;
     @Column(name = "date",nullable = false)
+    @JsonFormat(pattern = "dd-MM-yyyy")
     private LocalDate timestamp;
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "user_id",nullable = false)

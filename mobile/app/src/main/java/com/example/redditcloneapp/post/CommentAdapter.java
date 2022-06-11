@@ -76,8 +76,9 @@ public class CommentAdapter extends BaseAdapter {
             }
         });
         TextView date = vi.findViewById(R.id.post_comment_date);
-        date.setText(comment.getTimestamp().format(DateTimeFormatter
-                .ofLocalizedDate(FormatStyle.LONG)));
+//        date.setText(comment.getTimestamp().format(DateTimeFormatter
+//                .ofLocalizedDate(FormatStyle.LONG)));
+        date.setText(comment.getTimestamp());
         TextView text = vi.findViewById(R.id.post_comment_text);
         text.setText(comment.getText());
         TextView karma = vi.findViewById(R.id.post_comment_karma);

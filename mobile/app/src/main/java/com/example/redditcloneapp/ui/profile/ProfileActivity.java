@@ -39,8 +39,9 @@ public class ProfileActivity extends Activity {
         TextView textMail = findViewById(R.id.profile_email_activity);
         textMail.setText(user.getEmail());
         TextView textDate = findViewById(R.id.profile_reg_date_activity);
-        textDate.setText(user.getRegistrationDate().format(DateTimeFormatter
-                .ofLocalizedDate(FormatStyle.LONG)));
+//        textDate.setText(user.getRegistrationDate().format(DateTimeFormatter
+//                .ofLocalizedDate(FormatStyle.LONG)));
+        textDate.setText(user.getRegistrationDate());
         TextView textDescr = findViewById(R.id.profile_description_activity);
         textDescr.setText(user.getDescription());
     }

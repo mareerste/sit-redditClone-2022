@@ -1,6 +1,7 @@
 package rs.ac.uns.ftn.informatika.redditClone;
 
 
+import com.google.gson.GsonBuilder;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.web.servlet.support.SpringBootServletInitializer;
@@ -23,6 +24,12 @@ public class RedditCloneApplication {
         public void addCorsMappings(CorsRegistry registry) {
             registry.addMapping("/**").allowedMethods("*");
         }
+    }
+    @Bean
+    GsonBuilder gsonBuilder(){
+        GsonBuilder gsonBuilder=new GsonBuilder();
+        gsonBuilder.setDateFormat("MM.dd.yyyy");
+        return gsonBuilder;
     }
 
 }

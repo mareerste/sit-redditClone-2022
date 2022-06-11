@@ -1,5 +1,7 @@
 package rs.ac.uns.ftn.informatika.redditClone.model.entity;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
+
 import javax.persistence.*;
 import java.time.LocalDate;
 import java.util.HashSet;
@@ -13,6 +15,7 @@ public class Comment {
     @Column(name = "text", nullable = false)
     private String text;
     @Column(name = "timestamp", nullable = false)
+    @JsonFormat(pattern = "dd-MM-yyyy", shape = JsonFormat.Shape.OBJECT)
     private LocalDate timestamp;
     @Column(name = "deleted", nullable = false)
     private Boolean isDeleted;

@@ -6,18 +6,25 @@ import androidx.annotation.RequiresApi;
 
 import com.example.redditcloneapp.model.enums.ReactionType;
 import com.example.redditcloneapp.model.enums.ReportReason;
+import com.google.gson.annotations.SerializedName;
 
 import java.io.Serializable;
 import java.time.LocalDate;
 
 public class Report implements Serializable {
-
+    @SerializedName("id")
     private Integer id;
+    @SerializedName("reason")
     private ReportReason reason;
+    @SerializedName("timestamp")
     private LocalDate timestamp;
+    @SerializedName("user")
     private User user;
+    @SerializedName("accepted")
     private Boolean accepted;
+    @SerializedName("post")
     private Post post;
+    @SerializedName("comment")
     private Comment comment;
 
     public Integer getId() {

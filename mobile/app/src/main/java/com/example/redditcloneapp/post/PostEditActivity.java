@@ -1,7 +1,9 @@
 package com.example.redditcloneapp.post;
 
+import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.os.Build;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.AdapterView;
@@ -13,12 +15,14 @@ import android.widget.Toast;
 
 import com.example.redditcloneapp.R;
 import com.example.redditcloneapp.model.Flair;
+import com.example.redditcloneapp.model.Mokap;
 import com.example.redditcloneapp.model.Post;
 import com.example.redditcloneapp.model.enums.ReportReason;
 
 public class PostEditActivity extends AppCompatActivity {
 
     private Post post;
+    @RequiresApi(api = Build.VERSION_CODES.O)
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -39,7 +43,7 @@ public class PostEditActivity extends AppCompatActivity {
 
         Spinner mySpinner = (Spinner) findViewById(R.id.my_post_flair_edit);
 //        mySpinner.setAdapter(new ArrayAdapter<ReportReason>(this, android.R.layout.simple_spinner_item, post.getCommunity().getFlairs()));
-        ArrayAdapter<Flair> adapter = new ArrayAdapter<Flair>(getApplicationContext(),android.R.layout.simple_spinner_dropdown_item, post.getCommunity().getFlairs());
+        ArrayAdapter<Flair> adapter = new ArrayAdapter<Flair>(getApplicationContext(),android.R.layout.simple_spinner_dropdown_item, Mokap.getCommunities().get(0).getFlairs());//TODO fake comm
         mySpinner.setAdapter(adapter);
 
         Button saveBtn = findViewById(R.id.my_post_save_btn);
