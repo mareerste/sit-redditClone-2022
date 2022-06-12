@@ -17,7 +17,7 @@ import java.util.ArrayList;
 
 public class Post implements Serializable {
     @SerializedName("id")
-    private int id;
+    private Integer id;
     @SerializedName("title")
     private String title;
     @SerializedName("text")
@@ -35,7 +35,7 @@ public class Post implements Serializable {
     @SerializedName("comments")
     private ArrayList<Comment> comments;
     @SerializedName("reactions")
-    private int reactions;
+    private Integer reactions;
 
     public Integer getId() {
         return id;
@@ -140,7 +140,13 @@ public class Post implements Serializable {
         this.reactions = reactions;
     }
 
-//    public String getPostReaction(){
+    public Post(String title, String text, Flair flair) {
+        this.title = title;
+        this.text = text;
+        this.flair = flair;
+    }
+
+    //    public String getPostReaction(){
 //        int vote = 0;
 //        for (Reaction r:this.reactions) {
 //            if(r.getType() == ReactionType.UPVOTE)

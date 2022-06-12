@@ -80,6 +80,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
                 .antMatchers(HttpMethod.GET, "/post/{id}/comments").permitAll()
                 .antMatchers(HttpMethod.GET, "/community/{id}").permitAll()
                 .antMatchers(HttpMethod.GET, "/community/{id}/posts").permitAll()
+//                .antMatchers(HttpMethod.POST, "/community/{id}/posts").permitAll()//obrisati
                 .antMatchers(HttpMethod.GET, "/reaction/post/{id}").permitAll()
                 .antMatchers(HttpMethod.GET, "/reaction/post/{id}/karma").permitAll()
                 .antMatchers(HttpMethod.GET, "/reaction/comment/{id}").permitAll()

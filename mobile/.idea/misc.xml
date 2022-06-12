@@ -3,6 +3,7 @@
   <component name="DesignSurface">
     <option name="filePathToZoomLevelMap">
       <map>
+        <entry key="..\:/Users/HP/AppData/Local/Android/Sdk/platforms/android-32/data/res/layout/simple_spinner_item.xml" value="0.3723958333333333" />
         <entry key="..\:/Users/HP/Documents/Predavanja/Semestar 4/Project_RedditClone_2022/mobile/app/src/main/res/drawable-v24/ic_launcher_foreground.xml" value="0.203" />
         <entry key="..\:/Users/HP/Documents/Predavanja/Semestar 4/Project_RedditClone_2022/mobile/app/src/main/res/drawable/circle_color.xml" value="0.188" />
         <entry key="..\:/Users/HP/Documents/Predavanja/Semestar 4/Project_RedditClone_2022/mobile/app/src/main/res/drawable/ic_arrow_up.xml" value="0.188" />
@@ -66,6 +67,7 @@
         <entry key="..\:/Users/HP/Documents/Predavanja/Semestar 4/Project_RedditClone_2022/mobile/app/src/main/res/layout/report_item.xml" value="0.259375" />
         <entry key="..\:/Users/HP/Documents/Predavanja/Semestar 4/Project_RedditClone_2022/mobile/app/src/main/res/layout/rule_edit_item.xml" value="0.16" />
         <entry key="..\:/Users/HP/Documents/Predavanja/Semestar 4/Project_RedditClone_2022/mobile/app/src/main/res/layout/rule_item.xml" value="0.536" />
+        <entry key="..\:/Users/HP/Documents/Predavanja/Semestar 4/Project_RedditClone_2022/mobile/app/src/main/res/layout/spinner_item.xml" value="0.3723958333333333" />
         <entry key="..\:/Users/HP/Documents/Predavanja/Semestar 4/Project_RedditClone_2022/mobile/app/src/main/res/menu/activity_main_drawer.xml" value="0.4" />
         <entry key="..\:/Users/HP/Documents/Predavanja/Semestar 4/Project_RedditClone_2022/mobile/app/src/main/res/menu/main.xml" value="0.264" />
         <entry key="..\:/Users/HP/Documents/Predavanja/Semestar 4/Project_RedditClone_2022/mobile/app/src/main/res/mipmap-anydpi-v26/ic_launcher.xml" value="0.127" />

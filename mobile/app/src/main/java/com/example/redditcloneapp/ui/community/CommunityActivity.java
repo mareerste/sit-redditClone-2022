@@ -3,16 +3,21 @@ package com.example.redditcloneapp.ui.community;
 import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.annotation.SuppressLint;
 import android.app.ActionBar;
 import android.app.Dialog;
 import android.content.Intent;
+import android.graphics.Color;
 import android.graphics.drawable.Drawable;
 import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -20,17 +25,24 @@ import com.example.redditcloneapp.MainActivity;
 import com.example.redditcloneapp.R;
 import com.example.redditcloneapp.model.Administrator;
 import com.example.redditcloneapp.model.Community;
+import com.example.redditcloneapp.model.Flair;
 import com.example.redditcloneapp.model.Post;
 import com.example.redditcloneapp.model.User;
 import com.example.redditcloneapp.post.PostCommentFragment;
+import com.example.redditcloneapp.service.CommunityApiService;
 import com.example.redditcloneapp.service.PostApiService;
+import com.example.redditcloneapp.service.UserApiService;
+import com.example.redditcloneapp.service.client.MyServiceInterceptor;
 import com.example.redditcloneapp.tools.FragmentTransition;
+import com.example.redditcloneapp.ui.access.SignInActivity;
+import com.example.redditcloneapp.ui.access.SignUpActivity;
 import com.example.redditcloneapp.ui.community.mycommunities.MyCommunityActivity;
 import com.example.redditcloneapp.ui.community.mycommunities.fragments.CommunityBasicInfoFragment;
 
 import java.time.format.DateTimeFormatter;
 import java.time.format.FormatStyle;
 
+import okhttp3.OkHttpClient;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -39,13 +51,17 @@ import retrofit2.converter.gson.GsonConverterFactory;
 
 public class CommunityActivity extends AppCompatActivity {
 
-    TextView commName;
-    TextView commDate;
-    TextView commDesc;
+    TextView commName,commDate,commDesc;
+    EditText postTitle, postText;
+    Spinner commFlairs;
+    Button btnSavePost, newPostLayBtn;
+    View newPostView;
+    private Flair selectedFlair = null;
 
     private User user;
     private Community community;
     static Retrofit retrofit = null;
+    static Retrofit retrofitPost = null;
     private Post post;
         @RequiresApi(api = Build.VERSION_CODES.O)
         @Override
@@ -63,14 +79,14 @@ public class CommunityActivity extends AppCompatActivity {
 //                actionBar.setDisplayHomeAsUpEnabled(true);
 //            }
 
-//            FragmentTransition.to(CommunityRulesFragment.newInstance(), this, false, R.id.comm_single_rules);
-//            FragmentTransition.to(CommunityModeratorsFragment.newInstance(), this, false, R.id.comm_single_moderators);
-//            FragmentTransition.to(CommunityFlairsFragment.newInstance(), this, false, R.id.comm_single_flairs);
-//            FragmentTransition.to(CommunityPostsFragment.newInstance(),this,false,R.id.comm_single_posts);
+            postTitle = findViewById(R.id.comm_new_post_title);
+            postText = findViewById(R.id.comm_new_post_text);
+            btnSavePost = findViewById(R.id.comm_new_post_btn_save);
 
             commName = findViewById(R.id.comm_single_name);
             commDate = findViewById(R.id.comm_single_date);
             commDesc = findViewById(R.id.comm_single_desc);
+            commFlairs = findViewById(R.id.comm_new_post_spinner);
             View dropDown = findViewById(R.id.comm_drop_down_lay);
             Button buttonVisibilityDown = findViewById(R.id.comm_drop_down_lay_btn_down);
             Button buttonVisibilityUp = findViewById(R.id.comm_drop_down_lay_btn_up);
@@ -97,15 +113,7 @@ public class CommunityActivity extends AppCompatActivity {
                     buttonVisibilityUp.setVisibility(View.VISIBLE);
                 }
             });
-//            TextView commName = findViewById(R.id.comm_single_name);
-//            commName.setText(community.getName());
 
-//            TextView commDate = findViewById(R.id.comm_single_date);
-//            commDate.setText(community.getCreationDate().format(DateTimeFormatter
-//                    .ofLocalizedDate(FormatStyle.LONG)));
-
-//            TextView commDesc = findViewById(R.id.comm_single_desc);
-//            commDesc.setText(community.getDescription());
             buttonVisibilityUp.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
@@ -115,18 +123,24 @@ public class CommunityActivity extends AppCompatActivity {
                 }
             });
 
-            View newPostView = findViewById(R.id.comm_new_post_layout);
-            Button newPostLayBtn = findViewById(R.id.comm_new_post_btn_layout);
+            btnSavePost.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    if(isValid())
+                        savePost();
+                }
+            });
+
+            newPostView = findViewById(R.id.comm_new_post_layout);
+            newPostLayBtn = findViewById(R.id.comm_new_post_btn_layout);
             newPostLayBtn.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
                     if(newPostView.getVisibility() == View.VISIBLE) {
-                        newPostView.setVisibility(View.GONE);
-                        newPostLayBtn.setText(R.string.create_a_new_post);
+                        closeNewPostLayout();
                     }
                     else {
-                        newPostView.setVisibility(View.VISIBLE);
-                        newPostLayBtn.setText(R.string.cancel);
+                        openNewPostLayout();
                     }
                 }
             });
@@ -173,6 +187,30 @@ public class CommunityActivity extends AppCompatActivity {
 
         }
 
+    private boolean isValid() {
+        postTitle.setBackgroundResource(0);
+        postText.setBackgroundResource(0);
+        boolean value = true;
+        String msg = "";
+        if(postTitle.getText().toString().equals("")) {
+            msg += getResources().getString(R.string.post_title_error);
+//            Toast.makeText(this, R.string.post_title_error, Toast.LENGTH_SHORT).show();
+            postTitle.setBackgroundResource(R.drawable.rounded_corners_bg);
+            value = false;
+        }
+        if (postText.getText().toString().equals("")){
+            if(!msg.equals(""))
+                msg += "\n";
+            msg += getResources().getString(R.string.post_text_error);
+//            Toast.makeText(this, R.string.post_text_error, Toast.LENGTH_SHORT).show();
+            postText.setBackgroundResource(R.drawable.rounded_corners_bg);
+            value = false;
+        }
+        if(value == false)
+            Toast.makeText(this, msg, Toast.LENGTH_SHORT).show();
+        return value;
+    }
+
     public Community getCommunity() {
         return community;
     }
@@ -200,13 +238,29 @@ public class CommunityActivity extends AppCompatActivity {
                 commDesc.setText(response.body().getDescription());
                 community = response.body();
 
+                ArrayAdapter<Flair> adapter = new ArrayAdapter<>(getApplicationContext(), android.R.layout.simple_spinner_item, response.body().getFlairs());
+                adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+                commFlairs.setAdapter(adapter);
+                commFlairs.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+                    @Override
+                    public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
+                        ((TextView) commFlairs.getChildAt(0)).setTextColor(Color.GRAY);
+                        ((TextView) commFlairs.getChildAt(0)).setTextSize(20);
+                        ((TextView) commFlairs.getChildAt(0)).setBackgroundResource(R.drawable.rounded_corners_bg);
+
+                        selectedFlair = (Flair) commFlairs.getSelectedItem();
+                    }
+
+                    @Override
+                    public void onNothingSelected(AdapterView<?> adapterView) {
+                        Toast.makeText(getApplicationContext(), "You have to select an Flair first", Toast.LENGTH_LONG).show();
+                    }
+                });
+
                 FragmentTransition.to(CommunityRulesFragment.newInstance(response.body()), CommunityActivity.this, false, R.id.comm_single_rules);
                 FragmentTransition.to(CommunityModeratorsFragment.newInstance(response.body()), CommunityActivity.this, false, R.id.comm_single_moderators);
                 FragmentTransition.to(CommunityFlairsFragment.newInstance(response.body()), CommunityActivity.this, false, R.id.comm_single_flairs);
                 FragmentTransition.to(CommunityPostsFragment.newInstance(response.body()),CommunityActivity.this,false,R.id.comm_single_posts);
-
-                System.out.println("RESPONSE: " + response.body().toString());
-                Toast.makeText(getApplicationContext(), response.body().toString(),Toast.LENGTH_LONG).show();
                 community = response.body();
             }
 
@@ -217,6 +271,60 @@ public class CommunityActivity extends AppCompatActivity {
             }
         });
 
+    }
+
+    private void savePost() {
+        String string = getSharedPreferences(SignInActivity.mypreference, MODE_PRIVATE).getString(SignInActivity.TOKEN, "");
+        MyServiceInterceptor interceptor = new MyServiceInterceptor(getSharedPreferences(SignInActivity.mypreference, MODE_PRIVATE).getString(SignInActivity.TOKEN, ""));
+
+        OkHttpClient client = new OkHttpClient.Builder()
+                .addInterceptor(interceptor)
+                .build();
+
+        if (retrofitPost == null) {
+            retrofitPost = new Retrofit.Builder()
+                    .client(client)
+                    .baseUrl(MainActivity.BASE_URL)
+                    .addConverterFactory(GsonConverterFactory.create())
+                    .build();
+        }
+        CommunityApiService communityApiService = retrofitPost.create(CommunityApiService.class);
+        System.out.println("COMM ID"+community.getId());
+        Post post = new Post(postTitle.getText().toString(), postText.getText().toString(), selectedFlair);
+
+        Call<Post> call = communityApiService.savePost(community.getId(),post);
+        call.enqueue(new Callback<Post>() {
+            @Override
+            public void onResponse(Call<Post> call, Response<Post> response) {
+                if(response.isSuccessful()){
+                    FragmentTransition.to(CommunityPostsFragment.newInstance(community),CommunityActivity.this,false,R.id.comm_single_posts);
+                    closeNewPostLayout();
+                    clearForm();
+                }else{
+                    Toast.makeText(CommunityActivity.this, response.toString(), Toast.LENGTH_LONG).show();
+                }
+            }
+
+            @Override
+            public void onFailure(Call<Post> call, Throwable t) {
+                Toast.makeText(CommunityActivity.this, "System error: "+ t.getMessage(), Toast.LENGTH_SHORT).show();
+            }
+        });
+    }
+
+    private void clearForm() {
+            postTitle.setText("");
+            postText.setText("");
+    }
+
+    private void openNewPostLayout() {
+        newPostView.setVisibility(View.VISIBLE);
+        newPostLayBtn.setText(R.string.cancel);
+    }
+
+    private void closeNewPostLayout() {
+        newPostView.setVisibility(View.GONE);
+        newPostLayBtn.setText(R.string.create_a_new_post);
     }
 
 

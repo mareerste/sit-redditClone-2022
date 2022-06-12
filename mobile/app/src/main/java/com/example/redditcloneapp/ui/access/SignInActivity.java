@@ -50,6 +50,7 @@ public class SignInActivity extends AppCompatActivity {
     public static final String mypreference = "mypreference";
     public static final String Username = "usernameKey";
     public static final String Role = "roleKey";
+    public static final String TOKEN = "tokenKey";
 
 
     EditText usernameTW, passwordTW;
@@ -110,7 +111,6 @@ public class SignInActivity extends AppCompatActivity {
             public void onResponse(Call<TokenResponse> call, Response<TokenResponse> response) {
 
                     if(response.isSuccessful()){
-                        Toast.makeText(SignInActivity.this, response.body().toString(), Toast.LENGTH_LONG).show();
 //                        if(role.equals(Role.USER.toString()))
 //                            System.out.println("USER LOGGED");
 //                        else if(role.equals(Role.MODERATOR.toString()))
@@ -121,6 +121,7 @@ public class SignInActivity extends AppCompatActivity {
                         SharedPreferences.Editor editor = sharedPreferences.edit();
                             editor.putString(Username, response.body().getUsername())
                                     .putString(Role,response.body().getRole())
+                                    .putString(TOKEN,response.body().getAccess_token())
                                     .commit();
 
                         getUser(response.body());
@@ -165,7 +166,6 @@ public class SignInActivity extends AppCompatActivity {
             public void onResponse(Call<User> call, Response<User> response) {
 
                 if(response.isSuccessful()){
-                    Toast.makeText(SignInActivity.this, response.body().toString(), Toast.LENGTH_LONG).show();
                     getSharedPreferences("loggedUser",MODE_PRIVATE)
                             .edit()
                             .putString("user",response.body().getUsername())
