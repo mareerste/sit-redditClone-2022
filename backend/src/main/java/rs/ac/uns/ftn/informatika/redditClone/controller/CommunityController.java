@@ -145,7 +145,7 @@ public class CommunityController {
     public ResponseEntity<PostDTO> createPost(@PathVariable Integer id, @RequestBody PostCreateDTO postDTO, Authentication authentication) {
 
         Community community = communityService.findOne(id);
-        if (community == null) {it 
+        if (community == null) {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
         if(postDTO.getTitle().equals("")||postDTO.getTitle() == null || postDTO.getText().equals("")||postDTO.getText() == null)

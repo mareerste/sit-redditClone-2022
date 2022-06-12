@@ -101,9 +101,9 @@ public class User implements Serializable {
         this.username = username;
         this.password = password;
         this.email = email;
-        this.registrationDate = LocalDate.now().toString();
+//        this.registrationDate = LocalDate.now().toString();
         this.description = description;
-        this.deleted = false;
+//        this.deleted = false;
     }
 
     @Override

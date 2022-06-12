@@ -30,6 +30,7 @@
     <string name="upload_avatar">Upload image</string>
     <string name="create_new_acc">Create a new account?</string>
     <string name="signInError">Username or password is wrong, try again..</string>
+    <string name="signUpError">This username is already in use, try another..</string>
     <string name="profile_reg_date">Registration date</string>
     <string name="edit">Edit</string>
     <string name="save">Save</string>
