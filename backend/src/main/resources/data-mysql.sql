@@ -79,3 +79,5 @@ insert into reaction (date, type, comment_id,user_id) values ('2022-04-05',0,1,'
 insert into reaction (date, type, post_id,user_id) values ('2022-04-05',0,1,'marko123');
 insert into reaction (date, type, post_id,user_id) values ('2022-04-05',0,1,'mirko123');
 insert into reaction (date, type, post_id,user_id) values ('2022-04-05',1,1,'pera123');
+
+insert into banned (date,community_id, moderator_id, user_id) values ('2022-05-12',1,'mirko123','kosta123');

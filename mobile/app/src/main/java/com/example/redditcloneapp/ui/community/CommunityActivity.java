@@ -274,7 +274,7 @@ public class CommunityActivity extends AppCompatActivity {
     }
 
     private void savePost() {
-        String string = getSharedPreferences(SignInActivity.mypreference, MODE_PRIVATE).getString(SignInActivity.TOKEN, "");
+
         MyServiceInterceptor interceptor = new MyServiceInterceptor(getSharedPreferences(SignInActivity.mypreference, MODE_PRIVATE).getString(SignInActivity.TOKEN, ""));
 
         OkHttpClient client = new OkHttpClient.Builder()

@@ -40,7 +40,7 @@ import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
 public class SignInActivity extends AppCompatActivity {
-    static final String BASE_URL = "http://192.168.0.29:8080/RedditClone/";
+//    static final String BASE_URL = "http://192.168.0.29:8080/RedditClone/";
     static final String TAG = SignInActivity.class.getSimpleName();
     static Retrofit retrofit = null;
     static Retrofit retrofitLogin = null;
@@ -96,7 +96,7 @@ public class SignInActivity extends AppCompatActivity {
     private void getLogin(){
         if (retrofit == null) {
             retrofit = new Retrofit.Builder()
-                    .baseUrl(BASE_URL)
+                    .baseUrl(MainActivity.BASE_URL)
                     .addConverterFactory(GsonConverterFactory.create())
                     .build();
         }
@@ -153,7 +153,7 @@ public class SignInActivity extends AppCompatActivity {
     private void getUser(TokenResponse tokenResponse){
         if (retrofitLogin == null) {
             retrofitLogin = new Retrofit.Builder()
-                    .baseUrl(BASE_URL)
+                    .baseUrl(MainActivity.BASE_URL)
                     .addConverterFactory(GsonConverterFactory.create())
                     .build();
         }

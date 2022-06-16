@@ -17,7 +17,7 @@ public class BannedServiceImpl implements BannedService {
     private BannedRepository bannedRepository;
     @Override
     public Banned findOne(Integer id) {
-        return bannedRepository.findById(id).orElseGet(null);
+        return bannedRepository.findById(id).orElse(null);
     }
     @Override
     public List<Banned> findAll() {

@@ -19,7 +19,7 @@ public class UserServiceImpl implements UserService {
     @Autowired
     private PasswordEncoder passwordEncoder;
     @Override
-    public User findOne(String username){return userRepository.findById(username).orElseGet(null);}
+    public User findOne(String username){return userRepository.findById(username).orElse(null);}
     @Override
     public List<User> findAll(){return userRepository.findAll();}
 

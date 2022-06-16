@@ -1,4 +1,10 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { Banned } from 'src/app/model/banned';
+import { Community } from 'src/app/model/community';
+import { User } from 'src/app/model/user';
+import { UserService } from 'src/app/service';
+import { BanService } from 'src/app/service/ban.service';
 
 @Component({
   selector: 'app-community-edit',
@@ -7,44 +13,66 @@ import { Component, OnInit } from '@angular/core';
 })
 export class CommunityEditComponent implements OnInit {
 
-  showDesc:boolean = false;
-  showMembers:boolean = false;
-  showFlairs:boolean = false;
-  showRules:boolean = false;
-  showPosts:boolean = false;
-  showComments:boolean = false;
-  showArray=[this.showDesc,this.showMembers,this.showFlairs,this.showRules, this.showPosts, this.showComments]
+  showDesc: boolean = false;
+  showMembers: boolean = false;
+  showFlairs: boolean = false;
+  showRules: boolean = false;
+  showPosts: boolean = false;
+  showComments: boolean = false;
+  // showArray=[this.showDesc,this.showMembers,this.showFlairs,this.showRules, this.showPosts, this.showComments]
 
-  constructor() { }
+  @Output()
+  clickedEventEmitChange = new EventEmitter<Community>();
+  @Input()
+  community: Community;
+  formDesc: FormGroup;
+  descRequired = false;
+  formName: FormGroup;
+  nameRequired = false;
+
+  bannedList:Banned[] = [];
+  users:User[] = [];
+
+  constructor(
+    private formBuilder: FormBuilder,
+    private banService: BanService,
+    private userService: UserService,
+  ) { }
 
   ngOnInit() {
+    this.formDesc = this.formBuilder.group({
+      name: ['', Validators.compose([Validators.required, Validators.minLength(3), Validators.maxLength(64)])],
+      description: ['', Validators.compose([Validators.required, Validators.minLength(5), Validators.maxLength(32)])],
+    });
+    // this.loadBannedList()
+    // this.loadUsers()
   }
 
-  showDescClick(){
+  showDescClick() {
     this.clearShow()
     this.showDesc = true;
   }
-  showMembersClick(){
+  showMembersClick() {
     this.clearShow()
     this.showMembers = true;
   }
-  showFlairsClick(){
+  showFlairsClick() {
     this.clearShow()
     this.showFlairs = true;
   }
-  showRulesClick(){
+  showRulesClick() {
     this.clearShow()
     this.showRules = true;
   }
-  showPostsClick(){
+  showPostsClick() {
     this.clearShow()
     this.showPosts = true;
   }
-  showCommentsClick(){
+  showCommentsClick() {
     this.clearShow()
     this.showComments = true;
   }
-  clearShow(){
+  clearShow() {
     this.showDesc = false;
     this.showMembers = false;
     this.showFlairs = false;
@@ -52,5 +80,43 @@ export class CommunityEditComponent implements OnInit {
     this.showPosts = false;
     this.showComments = false;
   }
+
+  changeDescription() {
+    this.descRequired = false;
+    this.nameRequired = false;
+    if (this.formDesc.value.name.length == 0){
+      this.nameRequired = true
+    }else if (this.formDesc.value.description.length == 0){
+      this.descRequired = true;
+    }else{
+      this.community.name = this.formDesc.value.name;
+      this.community.description = this.formDesc.value.description;
+      this.clickedEventEmitChange.emit(this.community);
+    }
+  }
+
+  changeName() {
+    this.nameRequired = false;
+    if (this.formName.valid) {
+      this.community.name = this.formDesc.value.name;
+    } else {
+      this.descRequired = true;
+    }
+  }
+
+  // loadBannedList(){
+  //   this.banService.getBanForUserInCommunity(this.community.id).subscribe(data =>{
+  //     this.bannedList = data;
+  //     console.log(data);
+  //   })
+  // }
+
+  // loadUsers(){
+  //   this.userService.getUsers().subscribe(data=>{
+  //     this.users = data;
+  //     console.log(data);
+  //   })
+  // }
+
 
 }

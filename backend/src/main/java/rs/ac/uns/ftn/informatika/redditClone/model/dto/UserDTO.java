@@ -1,5 +1,6 @@
 package rs.ac.uns.ftn.informatika.redditClone.model.dto;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import rs.ac.uns.ftn.informatika.redditClone.model.entity.User;
 
 import java.io.Serializable;
@@ -10,6 +11,8 @@ public class UserDTO implements Serializable {
     protected String email;
     protected String avatar;
     protected String description;
+    @JsonFormat(pattern = "dd-MM-yyyy", shape = JsonFormat.Shape.OBJECT)
+    protected LocalDate registrationDate;
 
     public String getUsername() {
         return username;
@@ -43,17 +46,26 @@ public class UserDTO implements Serializable {
         this.description = description;
     }
 
+    public LocalDate getRegistrationDate() {
+        return registrationDate;
+    }
+
+    public void setRegistrationDate(LocalDate registrationDate) {
+        this.registrationDate = registrationDate;
+    }
+
     public UserDTO() {
     }
 
-    public UserDTO(String username, String email, String avatar, String description) {
+    public UserDTO(String username, String email, String avatar, String description, LocalDate registrationDate) {
         this.username = username;
         this.email = email;
         this.avatar = avatar;
         this.description = description;
+        this.registrationDate = registrationDate;
     }
 
     public UserDTO(User user){
-        this(user.getUsername(), user.getEmail(), user.getAvatar(), user.getDescription());
+        this(user.getUsername(), user.getEmail(), user.getAvatar(), user.getDescription(), user.getRegistrationDate());
     }
 }

@@ -4,22 +4,16 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="4c9ec0fb-919f-4c45-9c14-356f68dcf3d1" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/mobile/app/src/main/java/com/example/redditcloneapp/post/PostEditActivity.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/mobile/app/src/main/java/com/example/redditcloneapp/ui/profile/CommentsActivity.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/mobile/app/src/main/java/com/example/redditcloneapp/ui/profile/MyPostsAdapter.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/mobile/app/src/main/java/com/example/redditcloneapp/ui/profile/PostsActivity.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/mobile/app/src/main/res/layout/activity_comments.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/mobile/app/src/main/res/layout/activity_post_edit.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/mobile/app/src/main/res/layout/activity_posts.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/mobile/app/src/main/res/layout/my_post_item.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/mobile/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/mobile/.idea/misc.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/mobile/app/src/main/AndroidManifest.xml" beforeDir="false" afterPath="$PROJECT_DIR$/mobile/app/src/main/AndroidManifest.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/mobile/app/src/main/java/com/example/redditcloneapp/model/Mokap.java" beforeDir="false" afterPath="$PROJECT_DIR$/mobile/app/src/main/java/com/example/redditcloneapp/model/Mokap.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/mobile/app/src/main/java/com/example/redditcloneapp/ui/community/CommunityPostAdapter.java" beforeDir="false" afterPath="$PROJECT_DIR$/mobile/app/src/main/java/com/example/redditcloneapp/ui/community/CommunityPostAdapter.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/mobile/app/src/main/java/com/example/redditcloneapp/ui/profile/ProfileFragment.java" beforeDir="false" afterPath="$PROJECT_DIR$/mobile/app/src/main/java/com/example/redditcloneapp/ui/profile/ProfileFragment.java" afterDir="false" />
+    <list default="true" id="4c9ec0fb-919f-4c45-9c14-356f68dcf3d1" name="Changes" comment="Changes">
+      <change beforePath="$PROJECT_DIR$/.idea/runConfigurations.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/src/main/java/rs/ac/uns/ftn/informatika/redditClone/model/dto/UserDTO.java" beforeDir="false" afterPath="$PROJECT_DIR$/backend/src/main/java/rs/ac/uns/ftn/informatika/redditClone/model/dto/UserDTO.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/mobile/app/src/main/java/com/example/redditcloneapp/MainActivity.java" beforeDir="false" afterPath="$PROJECT_DIR$/mobile/app/src/main/java/com/example/redditcloneapp/MainActivity.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/mobile/app/src/main/java/com/example/redditcloneapp/service/client/ApiClient.java" beforeDir="false" afterPath="$PROJECT_DIR$/mobile/app/src/main/java/com/example/redditcloneapp/service/client/ApiClient.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/mobile/app/src/main/java/com/example/redditcloneapp/ui/access/SignInActivity.java" beforeDir="false" afterPath="$PROJECT_DIR$/mobile/app/src/main/java/com/example/redditcloneapp/ui/access/SignInActivity.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/mobile/app/src/main/java/com/example/redditcloneapp/ui/access/SignUpActivity.java" beforeDir="false" afterPath="$PROJECT_DIR$/mobile/app/src/main/java/com/example/redditcloneapp/ui/access/SignUpActivity.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/mobile/app/src/main/java/com/example/redditcloneapp/ui/community/CommunityActivity.java" beforeDir="false" afterPath="$PROJECT_DIR$/mobile/app/src/main/java/com/example/redditcloneapp/ui/community/CommunityActivity.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/mobile/app/src/main/java/com/example/redditcloneapp/ui/home/HomeFragment.java" beforeDir="false" afterPath="$PROJECT_DIR$/mobile/app/src/main/java/com/example/redditcloneapp/ui/home/HomeFragment.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/mobile/app/src/main/res/layout/fragment_profile.xml" beforeDir="false" afterPath="$PROJECT_DIR$/mobile/app/src/main/res/layout/fragment_profile.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/mobile/app/src/main/res/values/strings.xml" beforeDir="false" afterPath="$PROJECT_DIR$/mobile/app/src/main/res/values/strings.xml" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -55,7 +49,9 @@
   <component name="PropertiesComponent">
     <property name="RunOnceActivity.OpenProjectViewOnStart" value="true" />
     <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
-    <property name="last_opened_file_path" value="$PROJECT_DIR$/backend" />
+    <property name="RunOnceActivity.cidr.known.project.marker" value="true" />
+    <property name="cidr.known.project.marker" value="true" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$" />
     <property name="project.structure.last.edited" value="Modules" />
     <property name="project.structure.proportion" value="0.15" />
     <property name="project.structure.side.proportion" value="0.2" />

@@ -97,7 +97,6 @@ public class SignUpActivity extends AppCompatActivity {
             @Override
             public void onResponse(Call<User> call, Response<User> response) {
                 if(response.isSuccessful()) {
-                    Toast.makeText(SignUpActivity.this, response.body().toString(), Toast.LENGTH_LONG).show();
                     Intent intent = new Intent(SignUpActivity.this, SignInActivity.class);
                     startActivity(intent);
                 }else{

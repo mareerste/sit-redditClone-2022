@@ -44,8 +44,7 @@ import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
 public class HomeFragment extends ListFragment {
-    static final String ALL_POSTS_URL = "http://192.168.0.29:8080/RedditClone/post/all";
-    static final String BASE_URL = "http://192.168.0.29:8080/RedditClone/";
+//    static final String ALL_POSTS_URL = "http://192.168.0.29:8080/RedditClone/post/all";
     static final String TAG = MainActivity.class.getSimpleName();
     private SwipeRefreshLayout refresh;
     private ArrayList<Post> posts = new ArrayList<>();
@@ -125,7 +124,7 @@ public class HomeFragment extends ListFragment {
     private void getPosts(){
         if (retrofit == null) {
             retrofit = new Retrofit.Builder()
-                    .baseUrl(BASE_URL)
+                    .baseUrl(MainActivity.BASE_URL)
                     .addConverterFactory(GsonConverterFactory.create())
                     .build();
         }

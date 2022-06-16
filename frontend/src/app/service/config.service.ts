@@ -69,4 +69,13 @@ export class ConfigService {
     return this._reaction_url;
   }
 
+  private _ban_url = this._api_url + '/banned';
+  get ban_url(): string {
+    return this._ban_url;
+  }
+
+  private _ban_community_url = this._api_url + '/banned/community';
+  get ban_community_url(): string {
+    return this._ban_community_url;
+  }
 }

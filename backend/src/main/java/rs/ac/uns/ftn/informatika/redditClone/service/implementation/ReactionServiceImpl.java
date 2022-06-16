@@ -17,7 +17,7 @@ public class ReactionServiceImpl implements ReactionService {
     private ReactionRepository reactionRepository;
 
     @Override
-    public Reaction findOne(Integer id){return reactionRepository.findById(id).orElseGet(null);}
+    public Reaction findOne(Integer id){return reactionRepository.findById(id).orElse(null);}
     @Override
     public List<Reaction> findAll(){return reactionRepository.findAll();}
     @Override

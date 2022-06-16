@@ -18,7 +18,7 @@ public class CommunityServiceImpl implements CommunityService {
     @Autowired
     private PostService postService;
     @Override
-    public Community findOne(Integer id){return communityRepository.findById(id).orElseGet(null);}
+    public Community findOne(Integer id){return communityRepository.findById(id).orElse(null);}
     @Override
     public List<Community> findAll(){return communityRepository.findAll();}
 

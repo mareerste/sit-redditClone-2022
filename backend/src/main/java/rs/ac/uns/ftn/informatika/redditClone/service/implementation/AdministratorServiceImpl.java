@@ -13,7 +13,7 @@ public class AdministratorServiceImpl implements AdministratorService {
     @Autowired
     private AdministratorRepository administratorRepository;
     @Override
-    public Administrator findOne(String username){return administratorRepository.findById(username).orElseGet(null);}
+    public Administrator findOne(String username){return administratorRepository.findById(username).orElse(null);}
     @Override
     public List<Administrator>findAll(){return  administratorRepository.findAll();}
 

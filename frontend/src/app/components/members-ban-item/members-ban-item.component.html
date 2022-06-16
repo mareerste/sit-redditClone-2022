@@ -1,0 +1,11 @@
+<mat-card>
+    <mat-card-content>
+        <mat-card-title> {{user.username}}</mat-card-title>
+        <span class="spacer"></span>
+    
+        <span class="spacer"></span>
+
+        <button *ngIf="!banned && !showBtn" mat-raised-button color="primary" (click)="saveBan()">BAN</button>
+        <button *ngIf="banned && !showBtn" mat-raised-button color="primary" (click)="deleteBan()">UNBAN</button>
+    </mat-card-content>
+</mat-card>

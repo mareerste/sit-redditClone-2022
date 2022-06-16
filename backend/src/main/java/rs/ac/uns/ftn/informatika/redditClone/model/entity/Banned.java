@@ -12,11 +12,11 @@ public class Banned {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
     @Column(name = "date")
-    @JsonFormat(pattern = "dd-MM-yyyy")
+    @JsonFormat(pattern = "dd-MM-yyyy", shape = JsonFormat.Shape.OBJECT)
     private LocalDate timestamp;
     @ManyToOne
     @JoinColumn(name = "moderator_id",referencedColumnName = "username", nullable = true)
-    private Moderator moderator;
+    private User moderator;
     @ManyToOne
     @JoinColumn(name = "community_id",referencedColumnName = "id", nullable = true)
     private Community community;
@@ -36,10 +36,10 @@ public class Banned {
     public void setTimestamp(LocalDate timestamp) {
         this.timestamp = timestamp;
     }
-    public Moderator getModerator() {
+    public User getModerator() {
         return moderator;
     }
-    public void setModerator(Moderator moderator) {
+    public void setModerator(User moderator) {
         this.moderator = moderator;
     }
     public Community getCommunity() {
@@ -57,7 +57,7 @@ public class Banned {
     public Banned(){
     }
     //create
-    public Banned(Moderator moderator, Community community, User user) {
+    public Banned(User moderator, Community community, User user) {
         this.timestamp = LocalDate.now();
         this.moderator = moderator;
         this.community = community;

@@ -14,7 +14,7 @@ public class FlairServiceImpl implements FlairService {
     private FlairRepository flairRepository;
 
     @Override
-    public Flair findOne(Integer id){return flairRepository.findById(id).orElseGet(null);}
+    public Flair findOne(Integer id){return flairRepository.findById(id).orElse(null);}
     @Override
     public List<Flair> findAll(){return flairRepository.findAll();}
     @Override

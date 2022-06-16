@@ -47,6 +47,8 @@ import { CommunityListFlairsComponent } from './pages/community/single-community
 import { CommunityListModeratorsComponent } from './pages/community/single-community/community-list-moderators/community-list-moderators.component';
 import { CommunityCreatePostComponent } from './pages/community/single-community/community-create-post/community-create-post.component';
 import { CommunityCreateComponent } from './pages/community/community-create/community-create.component';
+import { MembersBanListComponent } from './components/members-ban-list/members-ban-list.component';
+import { MembersBanItemComponent } from './components/members-ban-item/members-ban-item.component';
 
 @NgModule({
   declarations: [
@@ -71,6 +73,8 @@ import { CommunityCreateComponent } from './pages/community/community-create/com
     CommunityListModeratorsComponent,
     CommunityCreatePostComponent,
     CommunityCreateComponent,
+    MembersBanListComponent,
+    MembersBanItemComponent,
   ],
   imports: [
     BrowserModule,

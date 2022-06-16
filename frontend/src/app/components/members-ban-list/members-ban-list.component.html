@@ -1,0 +1,5 @@
+<h1 style="color: #b71c1c;text-align: center;margin: 30px;font-size: 40px;">Community Members</h1>
+
+<div *ngFor="let user of users;">
+    <app-members-ban-item [user]="user" [community]="community" [banned]="isBanned(user)"></app-members-ban-item>
+</div>

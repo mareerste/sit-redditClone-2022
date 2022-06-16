@@ -25,7 +25,7 @@ public class PostServiceImpl implements PostService {
     @Autowired
     private FlairService flairService;
     @Override
-    public Post findOne(Integer id){return postRepository.findById(id).orElseGet(null);}
+    public Post findOne(Integer id){return postRepository.findById(id).orElse(null);}
     @Override
     public List<Post> findAll(){return postRepository.findAll();}
     @Override

@@ -17,7 +17,7 @@ public class CommentServiceImpl implements CommentService {
     @Autowired
     private CommentRepository commentRepository;
     @Override
-    public Comment findOne(Integer id){return commentRepository.findById(id).orElseGet(null);}
+    public Comment findOne(Integer id){return commentRepository.findById(id).orElse(null);}
     @Override
     public List<Comment>findAll(){return commentRepository.findAll();}
 

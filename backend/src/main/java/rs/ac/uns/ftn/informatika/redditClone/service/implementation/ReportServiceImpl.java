@@ -15,7 +15,7 @@ public class ReportServiceImpl implements ReportService {
     @Autowired
     private ReportRepository reportRepository;
     @Override
-    public Report findOne(Integer id){return reportRepository.findById(id).orElseGet(null);}
+    public Report findOne(Integer id){return reportRepository.findById(id).orElse(null);}
     @Override
     public List<Report> findAll(){return reportRepository.findAll();}
     @Override

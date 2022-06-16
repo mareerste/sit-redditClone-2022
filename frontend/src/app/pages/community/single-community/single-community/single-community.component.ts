@@ -64,6 +64,15 @@ export class SingleCommunityComponent implements OnInit {
     });
   }
 
+  getCommunityChange(community: Community){
+    this.community = community;
+    this.communityService.updateCommunity(community).subscribe(data=>{
+      console.log("UPDATED")
+      console.log(data)
+    })
+    //TODO sacuvati taj community preko servicea
+  }
+
   loadCommunity(id:number){
     this.communityService.getCommunity(id).subscribe(data=>{
       this.community = data;

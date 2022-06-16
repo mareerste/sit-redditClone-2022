@@ -1,26 +1,64 @@
-<mat-grid-list cols="6"  rowHeight="60px" [style.border]="'1px solid #b71c1c'">
+<mat-grid-list cols="6" rowHeight="60px" [style.border]="'1px solid #b71c1c'">
     <mat-grid-tile (click)="showDescClick()">Description </mat-grid-tile>
     <mat-grid-tile (click)="showMembersClick()">Members</mat-grid-tile>
     <mat-grid-tile (click)="showFlairsClick()">Flairs</mat-grid-tile>
     <mat-grid-tile (click)="showRulesClick()">Rules</mat-grid-tile>
     <mat-grid-tile (click)="showPostsClick()">Posts</mat-grid-tile>
     <mat-grid-tile (click)="showCommentsClick()">Comments</mat-grid-tile>
-    </mat-grid-list>
-    <div *ngIf="showDesc">
-        Description
+</mat-grid-list>
+<div *ngIf="showDesc">
+    Description {{community.description}}
+    <div>
+        <div style="display: flex;flex-direction: row;">
+            <div style="flex: 1 1 100%;box-sizing: border-box;max-width: 40%;">
+                <app-card [title]="community.name" [text]="community.description"
+                    [button]="community.creationDate| date:'dd.MM.yyyy'"></app-card>
+                
+            </div>
+            <div style="flex: 1 1 0%;box-sizing: border-box;">
+                Description {{community.description}}
+                
+<mat-card elevation="5" fxFlex class="content" >
+    <mat-card-title>
+        <h3>Change Description</h3>
+    </mat-card-title>
+    
+    <mat-card-content>
+        
+        <form (ngSubmit)="changeDescription()" [formGroup]="formDesc">
+            <mat-form-field style="width: 80%;">
+                <label>Name: </label>
+                <input formControlName="name" matInput required style="height: 25px;font-size: 20px; margin: 5pxs;" [value]="community.name">
+                <span *ngIf="nameRequired" class="field-error" style="color: red;">Required field.</span>
+            </mat-form-field>
+            <mat-form-field style="width: 80%;">
+                <label>Description: </label>
+                <input formControlName="description" matInput required style="height: 25px;font-size: 20px; margin: 5pxs;" [value]="community.description">
+                <span *ngIf="descRequired" class="field-error" style="color: red;">Required field.</span>
+            </mat-form-field>
+            <br>
+            <button color="primary" mat-raised-button type="submit">Save</button>
+            <br>
+        </form>
+    </mat-card-content>
+</mat-card>
+            </div>
+        </div>
     </div>
-    <div *ngIf="showMembers">
-        Members
-    </div>
-    <div *ngIf="showFlairs">
-        Flairs
-    </div>
-    <div *ngIf="showRules">
-        Rules
-    </div>
-    <div *ngIf="showPosts">
-        Posts
-    </div>
-    <div *ngIf="showComments">
-        Comments
-    </div>
+</div>
+<div *ngIf="showMembers">
+    Members {{community.name}}
+    <app-members-ban-list [community]="community"></app-members-ban-list>
+</div>
+<div *ngIf="showFlairs">
+    Flairs {{community.flairs}}
+</div>
+<div *ngIf="showRules">
+    Rules {{community.rules}}
+</div>
+<div *ngIf="showPosts">
+    Posts 
+</div>
+<div *ngIf="showComments">
+    Comments 
+</div>
