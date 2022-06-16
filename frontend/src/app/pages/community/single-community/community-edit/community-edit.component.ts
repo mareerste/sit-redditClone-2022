@@ -2,6 +2,7 @@ import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Banned } from 'src/app/model/banned';
 import { Community } from 'src/app/model/community';
+import { Flair } from 'src/app/model/flair';
 import { User } from 'src/app/model/user';
 import { UserService } from 'src/app/service';
 import { BanService } from 'src/app/service/ban.service';
@@ -95,14 +96,28 @@ export class CommunityEditComponent implements OnInit {
     }
   }
 
-  changeName() {
-    this.nameRequired = false;
-    if (this.formName.valid) {
-      this.community.name = this.formDesc.value.name;
-    } else {
-      this.descRequired = true;
+  newFlairAded(data:Flair){
+    var flairs:Flair [] = []
+    flairs = this.community.flairs;
+    flairs.push(data);
+    this.community.flairs = flairs;
+    this.clickedEventEmitChange.emit(this.community);
+  }
+
+  deleteFlair(flair:Flair){
+    var flairs:Flair[]
+    flairs = this.community.flairs;
+    let index = flairs.findIndex(f => f.id == flair.id);
+    if (index !== -1) {
+      this.community.flairs.splice(index, 1);
+      this.clickedEventEmitChange.emit(this.community);
     }
   }
+
+
+  // newFlairAdded(flair:Flair){
+  //   this.community.flairs.push(flair);
+  // }
 
   // loadBannedList(){
   //   this.banService.getBanForUserInCommunity(this.community.id).subscribe(data =>{

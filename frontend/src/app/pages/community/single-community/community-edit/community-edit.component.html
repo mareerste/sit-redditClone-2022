@@ -7,7 +7,7 @@
     <mat-grid-tile (click)="showCommentsClick()">Comments</mat-grid-tile>
 </mat-grid-list>
 <div *ngIf="showDesc">
-    Description {{community.description}}
+    <br/>
     <div>
         <div style="display: flex;flex-direction: row;">
             <div style="flex: 1 1 100%;box-sizing: border-box;max-width: 40%;">
@@ -16,7 +16,6 @@
                 
             </div>
             <div style="flex: 1 1 0%;box-sizing: border-box;">
-                Description {{community.description}}
                 
 <mat-card elevation="5" fxFlex class="content" >
     <mat-card-title>
@@ -47,11 +46,12 @@
     </div>
 </div>
 <div *ngIf="showMembers">
-    Members {{community.name}}
+    <br/>
     <app-members-ban-list [community]="community"></app-members-ban-list>
 </div>
 <div *ngIf="showFlairs">
-    Flairs {{community.flairs}}
+    <app-community-flair-form (saveNewFlair)="newFlairAded($event)"></app-community-flair-form>
+    <app-community-flair-list [flairs]="community.flairs" (deleteFlairEmmiter)="deleteFlair($event)"></app-community-flair-list>
 </div>
 <div *ngIf="showRules">
     Rules {{community.rules}}

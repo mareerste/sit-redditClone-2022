@@ -18,8 +18,6 @@ export class PostListComponent implements OnInit {
   @Output()
   clickedEventEmit = new EventEmitter<void>();
   constructor(
-    private router: Router,
-    private reactionService: ReactionService,
   ) { }
 
   ngOnInit(): void {

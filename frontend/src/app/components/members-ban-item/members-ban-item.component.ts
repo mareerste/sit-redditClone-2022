@@ -44,7 +44,9 @@ export class MembersBanItemComponent implements OnInit {
   }
 
   isModerator(user:User):boolean{
-    let index = this.community.moderators.findIndex(m => m.username == user.username);
+    var moderators : User[] 
+    moderators = this.community.moderators;
+    let index = moderators.findIndex(m => m.username == user.username);
       if (index !== -1) {
         return true
       }else

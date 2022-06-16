@@ -49,6 +49,9 @@ import { CommunityCreatePostComponent } from './pages/community/single-community
 import { CommunityCreateComponent } from './pages/community/community-create/community-create.component';
 import { MembersBanListComponent } from './components/members-ban-list/members-ban-list.component';
 import { MembersBanItemComponent } from './components/members-ban-item/members-ban-item.component';
+import { CommunityFlairListComponent } from './components/community-flair-list/community-flair-list.component';
+import { CommunityFlairItemComponent } from './components/community-flair-item/community-flair-item.component';
+import { CommunityFlairFormComponent } from './components/community-flair-form/community-flair-form.component';
 
 @NgModule({
   declarations: [
@@ -75,6 +78,9 @@ import { MembersBanItemComponent } from './components/members-ban-item/members-b
     CommunityCreateComponent,
     MembersBanListComponent,
     MembersBanItemComponent,
+    CommunityFlairListComponent,
+    CommunityFlairItemComponent,
+    CommunityFlairFormComponent,
   ],
   imports: [
     BrowserModule,

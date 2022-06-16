@@ -1,0 +1,19 @@
+<mat-card elevation="5" fxFlex class="content">
+    <mat-card-title>
+        <h4>New Flair</h4>
+    </mat-card-title>
+    
+    <mat-card-content>
+        <form (ngSubmit)="onSubmit()" *ngIf="!submitted" [formGroup]="form">
+            <mat-form-field>
+                <label>Flair name: </label>
+                <input formControlName="flair" matInput required>
+                <span *ngIf="flairRequired" class="field-error" style="color: red;">Required field.</span>
+            </mat-form-field>
+            
+            <button [disabled]="!form.valid" color="primary" mat-raised-button type="submit">ADD</button>
+            
+        </form>
+        
+    </mat-card-content>
+</mat-card>

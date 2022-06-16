@@ -1,0 +1,5 @@
+<h1 style="color: #b71c1c;text-align: center;margin: 30px;font-size: 40px;">Community Flairs</h1>
+
+<div *ngFor="let flair of flairs;">
+    <app-community-flair-item [flair]="flair" (deleteFlairEmmiter)="deleteFlair($event)"></app-community-flair-item>
+</div>
