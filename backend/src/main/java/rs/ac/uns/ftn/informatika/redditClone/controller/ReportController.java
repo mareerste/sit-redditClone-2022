@@ -9,11 +9,9 @@ import rs.ac.uns.ftn.informatika.redditClone.model.dto.ReportCommentDTO;
 import rs.ac.uns.ftn.informatika.redditClone.model.dto.ReportDTO;
 import rs.ac.uns.ftn.informatika.redditClone.model.dto.ReportPostDTO;
 import rs.ac.uns.ftn.informatika.redditClone.model.entity.Community;
+import rs.ac.uns.ftn.informatika.redditClone.model.entity.Post;
 import rs.ac.uns.ftn.informatika.redditClone.model.entity.Report;
-import rs.ac.uns.ftn.informatika.redditClone.service.CommentService;
-import rs.ac.uns.ftn.informatika.redditClone.service.PostService;
-import rs.ac.uns.ftn.informatika.redditClone.service.ReportService;
-import rs.ac.uns.ftn.informatika.redditClone.service.UserService;
+import rs.ac.uns.ftn.informatika.redditClone.service.*;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -27,15 +25,44 @@ public class ReportController {
     @Autowired
     private UserService userService;
     @Autowired
+    private CommunityService communityService;
+    @Autowired
     private CommentService commentService;
     @Autowired
     private PostService postService;
+    @PreAuthorize("hasAnyRole('MODERATOR', 'ADMIN')")
     @GetMapping
     public ResponseEntity<List<ReportDTO>>getReports(){
         List<Report> reports = reportService.findAll();
         List<ReportDTO> reportDTOList = new ArrayList<>();
         for (Report r:reports){
             reportDTOList.add(new ReportDTO(r));
+        }
+        return new ResponseEntity<>(reportDTOList, HttpStatus.OK);
+    }
+    @PreAuthorize("hasAnyRole('MODERATOR', 'ADMIN')")
+    @GetMapping(value = "/community/{id}/posts")
+    public ResponseEntity<List<ReportPostDTO>>getReportedPostsForCommunity(@PathVariable Integer id){
+        Community community = communityService.findOne(id);
+        if (community == null) {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+
+        List<Report> reports = reportService.findReportedCommunityPosts(community);
+        List<ReportPostDTO> reportDTOList = new ArrayList<>();
+        for (Report r:reports){
+            reportDTOList.add(new ReportPostDTO(r));
+        }
+        return new ResponseEntity<>(reportDTOList, HttpStatus.OK);
+    }
+    @PreAuthorize("hasAnyRole('MODERATOR', 'ADMIN')")
+    @GetMapping(value = "/comments")
+    public ResponseEntity<List<ReportCommentDTO>>getReportedCommentsForCommunity(){
+
+        List<Report> reports = reportService.findReportedCommunityComments();
+        List<ReportCommentDTO> reportDTOList = new ArrayList<>();
+        for (Report r:reports){
+            reportDTOList.add(new ReportCommentDTO(r));
         }
         return new ResponseEntity<>(reportDTOList, HttpStatus.OK);
     }
@@ -102,6 +129,34 @@ public class ReportController {
         return new ResponseEntity<>(new ReportCommentDTO(report),HttpStatus.OK);
     }
     @PreAuthorize("hasAnyRole('USER','MODERATOR', 'ADMIN')")
+    @PutMapping(consumes = "application/json", value = "/accept")
+    public ResponseEntity<ReportPostDTO> acceptReportPost(@RequestBody ReportPostDTO reportDTO){
+        Report report = reportService.findOne(reportDTO.getId());
+        if(report == null)
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        report.setAccepted(true);
+        report = reportService.save(report);
+
+        List<Report> otherReports = reportService.findAllByPost(report.getPost());
+        for (Report r:otherReports) {
+            r = acceptReport(r);
+            reportService.save(r);
+        }
+        return new ResponseEntity<>(new ReportPostDTO(report),HttpStatus.OK);
+    }
+
+    @PreAuthorize("hasAnyRole('USER','MODERATOR', 'ADMIN')")
+    @PutMapping(consumes = "application/json", value = "/decline")
+    public ResponseEntity<ReportPostDTO> declineReportPost(@RequestBody ReportPostDTO reportDTO){
+        Report report = reportService.findOne(reportDTO.getId());
+        if(report == null)
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        report.setAccepted(false);
+        report = reportService.save(report);
+        return new ResponseEntity<>(new ReportPostDTO(report),HttpStatus.OK);
+    }
+
+    @PreAuthorize("hasAnyRole('USER','MODERATOR', 'ADMIN')")
     @DeleteMapping(value = "/{id}")
     public ResponseEntity<Void> deleteReport(@PathVariable Integer id) {
 
@@ -112,5 +167,10 @@ public class ReportController {
         } else {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
+    }
+
+    private Report acceptReport(Report report){
+        report.setAccepted(true);
+        return report;
     }
 }

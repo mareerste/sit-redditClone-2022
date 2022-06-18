@@ -101,5 +101,14 @@ export class SingleCommunityComponent implements OnInit {
     this.showEdit = true;
   }
 
+  getDeleted(post:Post){
+    console.log("Uspesno")
+    console.log(post)
+    let index = this.posts.findIndex(p => p.id == post.id);
+    if (index !== -1) {
+      this.posts.splice(index, 1);
+    }
+  }
+
 
 }

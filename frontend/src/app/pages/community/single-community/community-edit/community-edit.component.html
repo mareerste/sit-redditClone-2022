@@ -7,58 +7,76 @@
     <mat-grid-tile (click)="showCommentsClick()">Comments</mat-grid-tile>
 </mat-grid-list>
 <div *ngIf="showDesc">
-    <br/>
+    <br />
     <div>
         <div style="display: flex;flex-direction: row;">
             <div style="flex: 1 1 100%;box-sizing: border-box;max-width: 40%;">
                 <app-card [title]="community.name" [text]="community.description"
                     [button]="community.creationDate| date:'dd.MM.yyyy'"></app-card>
-                
+
             </div>
             <div style="flex: 1 1 0%;box-sizing: border-box;">
-                
-<mat-card elevation="5" fxFlex class="content" >
-    <mat-card-title>
-        <h3>Change Description</h3>
-    </mat-card-title>
-    
-    <mat-card-content>
-        
-        <form (ngSubmit)="changeDescription()" [formGroup]="formDesc">
-            <mat-form-field style="width: 80%;">
-                <label>Name: </label>
-                <input formControlName="name" matInput required style="height: 25px;font-size: 20px; margin: 5pxs;" [value]="community.name">
-                <span *ngIf="nameRequired" class="field-error" style="color: red;">Required field.</span>
-            </mat-form-field>
-            <mat-form-field style="width: 80%;">
-                <label>Description: </label>
-                <input formControlName="description" matInput required style="height: 25px;font-size: 20px; margin: 5pxs;" [value]="community.description">
-                <span *ngIf="descRequired" class="field-error" style="color: red;">Required field.</span>
-            </mat-form-field>
-            <br>
-            <button color="primary" mat-raised-button type="submit">Save</button>
-            <br>
-        </form>
-    </mat-card-content>
-</mat-card>
+
+                <mat-card elevation="5" fxFlex class="content">
+                    <mat-card-title>
+                        <h3>Change Description</h3>
+                    </mat-card-title>
+
+                    <mat-card-content>
+
+                        <form (ngSubmit)="changeDescription()" [formGroup]="formDesc">
+                            <mat-form-field style="width: 80%;">
+                                <label>Name: </label>
+                                <input formControlName="name" matInput required
+                                    style="height: 25px;font-size: 20px; margin: 5pxs;" [value]="community.name">
+                                <span *ngIf="nameRequired" class="field-error" style="color: red;">Required
+                                    field.</span>
+                            </mat-form-field>
+                            <mat-form-field style="width: 80%;">
+                                <label>Description: </label>
+                                <input formControlName="description" matInput required
+                                    style="height: 25px;font-size: 20px; margin: 5pxs;" [value]="community.description">
+                                <span *ngIf="descRequired" class="field-error" style="color: red;">Required
+                                    field.</span>
+                            </mat-form-field>
+                            <br>
+                            <button color="primary" mat-raised-button type="submit">Save</button>
+                            <br>
+                        </form>
+                    </mat-card-content>
+                </mat-card>
             </div>
         </div>
     </div>
 </div>
 <div *ngIf="showMembers">
-    <br/>
+    <br />
     <app-members-ban-list [community]="community"></app-members-ban-list>
 </div>
 <div *ngIf="showFlairs">
-    <app-community-flair-form (saveNewFlair)="newFlairAded($event)"></app-community-flair-form>
-    <app-community-flair-list [flairs]="community.flairs" (deleteFlairEmmiter)="deleteFlair($event)"></app-community-flair-list>
+    <app-community-flair-form (saveNewFlair)="newFlairAdded($event)"></app-community-flair-form>
+    <app-community-flair-list [flairs]="community.flairs" (deleteFlairEmmiter)="deleteFlair($event)">
+    </app-community-flair-list>
 </div>
 <div *ngIf="showRules">
     Rules {{community.rules}}
+    <app-community-rule-form (saveNewRule)="newRuleAdded($event)"></app-community-rule-form>
+    <app-community-rule-list [rules]="community.rules" (deleteRuleEmmiter)="deleteRule($event)">
+    </app-community-rule-list>
 </div>
 <div *ngIf="showPosts">
-    Posts 
+    <!-- <h2 style="color: #b71c1c;text-align: center;margin: 30px;font-size: 40px;">Community Reported Posts</h2>
+    <div style="display: flex;flex-direction: row;">
+        <div style="flex: 1 1 100%;box-sizing: border-box;max-width: 50%;">
+            <app-reported-posts-list [community]="community"></app-reported-posts-list>
+        </div>
+        <div style="flex: 1 1 0%;box-sizing: border-box;">
+            <post-list-item></post-list-item>
+        </div>
+    </div> -->
+    <app-reported-posts [community]="community" (acceptEventEmitter)="deletePost($event)"></app-reported-posts>
 </div>
 <div *ngIf="showComments">
-    Comments 
+    Comments
+    <app-reported-comments-list></app-reported-comments-list>
 </div>

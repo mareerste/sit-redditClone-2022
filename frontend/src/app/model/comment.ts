@@ -3,7 +3,7 @@ export class Comment {
     id:number;
     text:string;
     timestamp:Date;
-    isDeleted:boolean;
+    deleted:boolean;
     user:User;
     childComments?: Comment[];
 }

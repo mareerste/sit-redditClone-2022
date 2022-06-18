@@ -34,5 +34,6 @@
   </div>
 </div>
 <div *ngIf="showEdit">
-  <app-community-edit [community]='community' (clickedEventEmitChange)="getCommunityChange($event)"></app-community-edit>
+  <app-community-edit [community]='community' (clickedEventEmitChange)="getCommunityChange($event)" (clickedEventEmitDeletePost)="getDeleted($event)">
+  </app-community-edit>
 </div>

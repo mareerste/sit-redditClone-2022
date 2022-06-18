@@ -1,0 +1,47 @@
+.example-card {
+    /* max-width: 400px; */
+    border-style: solid;
+    border-color: #b71c1c;
+    border-width: 5px;
+    background-color: transparent;
+    border-radius: 20px;
+    width: 90%;
+    /* max-width: 55%; */
+    margin: auto;
+    margin-bottom: 10px;
+    margin-top: 10px;
+  }
+  .rounded{
+    border-color: #b71c1c;
+    border-style: solid;
+    border-width: 2px;
+    background-color: transparent;
+    border-radius: 50%;
+  }
+
+  .xButton{
+    background-color: #b71c1c;
+    border-color: #b71c1c;
+    color: white;
+    border-width: 0;
+    border-radius: 50%;
+    margin-bottom: 5px;
+}
+
+  .mat-input-element{
+    width: 0;
+  }
+  .example-card p{
+      color: white;
+      margin: auto;
+  }
+
+  .white{
+      color: white;
+      text-align: center;
+      width: 100%;
+  }
+
+  .spacer{
+    flex: 1 1 auto;
+  }

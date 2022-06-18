@@ -52,6 +52,15 @@ import { MembersBanItemComponent } from './components/members-ban-item/members-b
 import { CommunityFlairListComponent } from './components/community-flair-list/community-flair-list.component';
 import { CommunityFlairItemComponent } from './components/community-flair-item/community-flair-item.component';
 import { CommunityFlairFormComponent } from './components/community-flair-form/community-flair-form.component';
+import { CommunityRuleItemComponent } from './components/community-rule-item/community-rule-item.component';
+import { CommunityRuleListComponent } from './components/community-rule-list/community-rule-list.component';
+import { CommunityRuleFormComponent } from './components/community-rule-form/community-rule-form.component';
+import { ReportedPostsListComponent } from './components/reported-posts-list/reported-posts-list.component';
+import { ReportedPostsItemComponent } from './components/reported-posts-item/reported-posts-item.component';
+import { ReportedCommentsItemComponent } from './components/reported-comments-item/reported-comments-item.component';
+import { ReportedCommentsListComponent } from './components/reported-comments-list/reported-comments-list.component';
+import { ReportedPostsComponent } from './components/reported-posts/reported-posts.component';
+import { ReportedPostsDetailsComponent } from './components/reported-posts-details/reported-posts-details.component';
 
 @NgModule({
   declarations: [
@@ -81,6 +90,15 @@ import { CommunityFlairFormComponent } from './components/community-flair-form/c
     CommunityFlairListComponent,
     CommunityFlairItemComponent,
     CommunityFlairFormComponent,
+    CommunityRuleItemComponent,
+    CommunityRuleListComponent,
+    CommunityRuleFormComponent,
+    ReportedPostsListComponent,
+    ReportedPostsItemComponent,
+    ReportedCommentsItemComponent,
+    ReportedCommentsListComponent,
+    ReportedPostsComponent,
+    ReportedPostsDetailsComponent,
   ],
   imports: [
     BrowserModule,

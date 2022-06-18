@@ -1,0 +1,4 @@
+<div *ngFor="let report of reports;">
+    <!-- <app-reported-posts-item [report]="report" (deleteFlairEmmiter)="deleteFlair($event)"></app-community-flair-item> -->
+    <app-reported-posts-item [report]="report" (showPostEmmiter)="showPost($event)"></app-reported-posts-item>
+</div>

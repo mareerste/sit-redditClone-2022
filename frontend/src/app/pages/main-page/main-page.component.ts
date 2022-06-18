@@ -26,16 +26,11 @@ export class MainPageComponent implements OnInit {
     private auth:AuthService) { }
 
   ngOnInit(): void {
-    // this.posts = this.postService.getPosts();
     this.postService.getPosts().subscribe(data=>{
       this.posts= data
     })
-    // this.posts = this.refreshPosts.pipe(switchMap(_ => this.postService.getPosts()));
   }
-  getChange(){//TODO remove from list
-    // this.postService.getPosts().subscribe(data=>{
-    //   this.posts= data
-    // })
+  getChange(){
   }
 
   filter(text:string){

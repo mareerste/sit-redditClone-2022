@@ -3,6 +3,7 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Banned } from 'src/app/model/banned';
 import { Community } from 'src/app/model/community';
 import { Flair } from 'src/app/model/flair';
+import { Post } from 'src/app/model/post';
 import { User } from 'src/app/model/user';
 import { UserService } from 'src/app/service';
 import { BanService } from 'src/app/service/ban.service';
@@ -30,6 +31,8 @@ export class CommunityEditComponent implements OnInit {
   descRequired = false;
   formName: FormGroup;
   nameRequired = false;
+  @Output()
+  clickedEventEmitDeletePost = new EventEmitter<Post>();
 
   bannedList:Banned[] = [];
   users:User[] = [];
@@ -96,11 +99,19 @@ export class CommunityEditComponent implements OnInit {
     }
   }
 
-  newFlairAded(data:Flair){
+  newFlairAdded(data:Flair){
     var flairs:Flair [] = []
     flairs = this.community.flairs;
     flairs.push(data);
     this.community.flairs = flairs;
+    this.clickedEventEmitChange.emit(this.community);
+  }
+
+  newRuleAdded(data:string){
+    var rules:string [] = []
+    rules = this.community.rules;
+    rules.push(data);
+    this.community.rules = rules;
     this.clickedEventEmitChange.emit(this.community);
   }
 
@@ -114,6 +125,19 @@ export class CommunityEditComponent implements OnInit {
     }
   }
 
+  deleteRule(rule:string){
+    var rules:string[]
+    rules = this.community.rules;
+    let index = rules.findIndex(r => r == rule);
+    if (index !== -1) {
+      this.community.rules.splice(index, 1);
+      this.clickedEventEmitChange.emit(this.community);
+    }
+  }
+
+  deletePost(post:Post){
+    this.clickedEventEmitDeletePost.emit(post)
+  }
 
   // newFlairAdded(flair:Flair){
   //   this.community.flairs.push(flair);

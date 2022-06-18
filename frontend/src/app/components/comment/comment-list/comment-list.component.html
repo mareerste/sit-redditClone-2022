@@ -7,8 +7,6 @@
           <button mat-icon-button type="submit" class="btn btn-primary pull-right" style="background-color: white;" value="submit"><mat-icon >reply</mat-icon></button>
     </form>
     <li *ngFor="let comment of comments">
-      <app-comment-item [comment]="comment" (clickedEventEmit)="getChange($event)" (clickedEventEmitDelete)="getDelete($event)"></app-comment-item>
-      <!-- <button *ngIf="isLoggedIn()" class="btn btn-default" (click)="details(blogEntry)">details</button>
-      <button *ngIf="isLoggedIn()" class="btn btn-danger" (click)="delete(blogEntry._id)">delete</button> -->
+      <app-comment-item [comment]="comment" *ngIf="!comment.deleted" (clickedEventEmit)="getChange($event)" (clickedEventEmitDelete)="getDelete($event)"></app-comment-item>
     </li>
   </ul>

@@ -1,5 +1,5 @@
 <h1 style="color: #b71c1c;text-align: center;margin: 30px;font-size: 40px;">Reddit posts</h1>
 <button (click)="sortByPopularity()">SORT</button>
 <div *ngFor="let post of posts;">
-    <post-list-item [showComments]="false" (clickedEventEmitChange)="getChange($event)" (clickedEventEmitDelete)="getDelete($event)" [post]="post"></post-list-item>
+    <post-list-item *ngIf="!post.deleted" [showComments]="false" (clickedEventEmitChange)="getChange($event)" (clickedEventEmitDelete)="getDelete($event)" [post]="post"></post-list-item>
 </div>

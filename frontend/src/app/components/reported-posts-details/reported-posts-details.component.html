@@ -1,0 +1,39 @@
+<div class="card-wrapper">
+
+    <mat-card class="example-card">
+      <mat-card-header>
+        <img *ngIf="report.post.imagePath"
+          src="https://www.freakyjolly.com/wp-content/uploads/2021/07/cropped-cropped-fj-logo-192-removebg-preview-e1625997712615-1.png"
+          mat-card-avatar />
+          <span class="spacer"></span>
+        <mat-card-title (click)="showPost()" class="white" style="text-align: center;">{{report.post.title}}</mat-card-title>
+        <mat-card-subtitle style="text-align: center;" class="white">
+          {{report.post.creationDate| date:"dd.MM.yy"}}  {{report.post.flair.name}}
+        </mat-card-subtitle>
+      </mat-card-header>
+        <img mat-card-image style="width: 150px;" src="https://angular.io/assets/images/logos/angularjs/AngularJS-Shield.svg" alt="Angular Logo" *ngIf="report.post.imagePath">
+      <mat-card-content>
+        <p style="text-align: center;font-size: 18px;">
+          {{report.post.text}}
+        </p>
+        <p style="margin-top: 10px; text-align: end;">
+            Posted by: {{report.post.user.username}}
+          </p>
+      </mat-card-content>
+  
+      <mat-card-actions align="end">
+        <!-- <form class="form" (ngSubmit)="onSubmitUp()" [formGroup]="form"> -->
+          <!-- <label style="visibility: hidden;" name="postId">{{post.id}}</label> -->
+          <!-- <input formControlName="type" style="visibility: hidden;" value="UPVOTE" matInput required>
+          <input formControlName="post" style="visibility: hidden;" [value]="post.id" matInput required>
+          <button mat-icon-button type="submit" class="btn pull-right" style="background-color: #b71c1c;" value="search"><mat-icon color="white">arrow_upwards</mat-icon></button>
+        </form>
+        <button class="rounded" mat-raised-button color="primary">{{karma}}</button>
+        <form class="form">
+          <label style="visibility: hidden;" name="postId">{{post.id}}</label>
+          <button (click)="onSubmitDown()" mat-icon-button type="submit" class="btn pull-right" style="background-color: #b71c1c;" value="search"><mat-icon color="white">arrow_downward</mat-icon></button>
+        </form> -->
+      </mat-card-actions>
+    </mat-card>
+  
+  </div>

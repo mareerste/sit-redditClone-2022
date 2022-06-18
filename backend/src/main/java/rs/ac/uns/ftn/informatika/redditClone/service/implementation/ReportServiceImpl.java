@@ -3,6 +3,7 @@ package rs.ac.uns.ftn.informatika.redditClone.service.implementation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import rs.ac.uns.ftn.informatika.redditClone.model.entity.Comment;
+import rs.ac.uns.ftn.informatika.redditClone.model.entity.Community;
 import rs.ac.uns.ftn.informatika.redditClone.model.entity.Post;
 import rs.ac.uns.ftn.informatika.redditClone.model.entity.Report;
 import rs.ac.uns.ftn.informatika.redditClone.repository.ReportRepository;
@@ -25,6 +26,15 @@ public class ReportServiceImpl implements ReportService {
 
     @Override
     public List<Report> findAllByPost(Post post){return reportRepository.findAllByPost(post);}
+
+    @Override
+    public List<Report> findReportedCommunityPosts(Community community) {
+        return reportRepository.findCommunityReportedPosts(community.getId());
+    }
+    @Override
+    public List<Report> findReportedCommunityComments() {
+        return reportRepository.findCommunityReportedComments();
+    }
 
     @Override
     public List<Report> findAllByPostToAnswer(Post post){return reportRepository.findAllByPostAndAccepted(post, null);}

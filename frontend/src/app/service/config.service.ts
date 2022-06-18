@@ -74,6 +74,26 @@ export class ConfigService {
     return this._ban_url;
   }
 
+  private _report_url = this._api_url + '/report';
+  get report_url(): string {
+    return this._report_url;
+  }
+
+  private _report_community_url = this._api_url + '/report/community';
+  get report_community_url(): string {
+    return this._report_community_url;
+  }
+
+  private _report_accept_url = this._api_url + '/report/accept';
+  get report_accept_url(): string {
+    return this._report_accept_url;
+  }
+
+  private _report_decline_url = this._api_url + '/report/decline';
+  get report_decline_url(): string {
+    return this._report_decline_url;
+  }
+
   private _ban_community_url = this._api_url + '/banned/community';
   get ban_community_url(): string {
     return this._ban_community_url;

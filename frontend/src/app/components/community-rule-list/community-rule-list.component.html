@@ -1,0 +1,5 @@
+<h1 style="color: #b71c1c;text-align: center;margin: 30px;font-size: 40px;">Community Rules</h1>
+
+<div *ngFor="let rule of rules;">
+    <app-community-rule-item [rule]="rule" (deleteRuleEmmiter)="deleteRule($event)"></app-community-rule-item>
+</div>

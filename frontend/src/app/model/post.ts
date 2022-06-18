@@ -9,7 +9,7 @@ export class Post {
     text:string;
     creationDate:string;
     imagePath:string;
-    isDeleted:boolean;
+    deleted:boolean;
     user: User;
     flair: Flair;
     comments?:Comment[] | [];

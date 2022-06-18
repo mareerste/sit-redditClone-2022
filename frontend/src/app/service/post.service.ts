@@ -28,7 +28,8 @@ export class PostService {
   }
 
   deletePost(id){
-    return this.apiService.delete(this.config.post_url,id);
+    console.log(id)
+    return this.http.delete(`${this.config.post_url}/${id}`);
   }
 
   filter(entryText:string):Observable<Post[]>{

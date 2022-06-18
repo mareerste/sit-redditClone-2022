@@ -1,6 +1,7 @@
 package rs.ac.uns.ftn.informatika.redditClone.service;
 
 import rs.ac.uns.ftn.informatika.redditClone.model.entity.Comment;
+import rs.ac.uns.ftn.informatika.redditClone.model.entity.Community;
 import rs.ac.uns.ftn.informatika.redditClone.model.entity.Post;
 import rs.ac.uns.ftn.informatika.redditClone.model.entity.Report;
 
@@ -12,6 +13,9 @@ public interface ReportService {
     List<Report> findAllByComment(Comment comment);
     List<Report> findAllByCommentToAnswer(Comment comment);
     List<Report> findAllByPost(Post post);
+
+    List<Report> findReportedCommunityPosts(Community community);
+    List<Report> findReportedCommunityComments();
 
     List<Report> findAllByPostToAnswer(Post post);
     Report save(Report report);

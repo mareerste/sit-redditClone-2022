@@ -80,4 +80,13 @@ insert into reaction (date, type, post_id,user_id) values ('2022-04-05',0,1,'mar
 insert into reaction (date, type, post_id,user_id) values ('2022-04-05',0,1,'mirko123');
 insert into reaction (date, type, post_id,user_id) values ('2022-04-05',1,1,'pera123');
 
+insert into report (reason,date,post_id,user_id) values (3,'2022-05-15',1,'marko123');
+insert into report (reason,date,post_id,user_id) values (4,'2022-04-17',1,'pera123');
+insert into report (reason,date,post_id,user_id) values (5,'2022-05-22',1,'kosta123');
+insert into report (reason,date,post_id,user_id) values (5,'2022-05-28',2,'kosta123');
+insert into report (reason,date,post_id,user_id) values (5,'2022-06-09',4,'kosta123');
+insert into report (reason,date,post_id,user_id) values (5,'2022-06-08',3,'kosta123');
+insert into report (reason,date,comment_id,user_id) values (0,'2022-06-11',1,'marko123');
+insert into report (reason,date,comment_id,user_id) values (1,'2022-06-13',2,'marko123');
+
 insert into banned (date,community_id, moderator_id, user_id) values ('2022-05-12',1,'mirko123','kosta123');
