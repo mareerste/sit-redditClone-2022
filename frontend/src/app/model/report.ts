@@ -1,3 +1,4 @@
+import { Comment } from "./comment";
 import { ReportReason } from "./enumerations/report-reason.enum";
 import { Post } from "./post";
 import { User } from "./user";

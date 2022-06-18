@@ -40,7 +40,6 @@ export class CommunityFlairFormComponent implements OnInit {
       var flair = new Flair();
       flair.name = this.form.value.flair;
       this.flairService.saveFlair(flair).subscribe(data=>{
-        console.log(data)
         this.saveNewFlair.emit(data);
         
       },error => {

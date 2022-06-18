@@ -1,0 +1,21 @@
+<div class="card-wrapper">
+
+    <mat-card class="example-card">
+      <mat-card-header>
+        <mat-card-title  class="white" style="text-align: center;">Comment ID: {{report.comment.id}}</mat-card-title>
+        <mat-card-subtitle style="text-align: center;" class="white">
+          {{report.comment.timestamp| date:"dd.MM.yy"}} 
+        </mat-card-subtitle>
+      </mat-card-header>
+
+      <mat-card-content>
+        <p style="text-align: center;font-size: 18px;">
+          {{report.comment.text}}
+        </p>
+        <p style="margin-top: 10px; text-align: end;">
+            Posted by: {{report.comment.user.username}}
+          </p>
+      </mat-card-content>
+    </mat-card>
+  
+  </div>

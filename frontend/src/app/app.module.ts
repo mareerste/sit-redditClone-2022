@@ -61,6 +61,8 @@ import { ReportedCommentsItemComponent } from './components/reported-comments-it
 import { ReportedCommentsListComponent } from './components/reported-comments-list/reported-comments-list.component';
 import { ReportedPostsComponent } from './components/reported-posts/reported-posts.component';
 import { ReportedPostsDetailsComponent } from './components/reported-posts-details/reported-posts-details.component';
+import { ReportedCommentsDetailsComponent } from './components/reported-comments-details/reported-comments-details.component';
+import { ReportedCommentsComponent } from './components/reported-comments/reported-comments.component';
 
 @NgModule({
   declarations: [
@@ -99,6 +101,8 @@ import { ReportedPostsDetailsComponent } from './components/reported-posts-detai
     ReportedCommentsListComponent,
     ReportedPostsComponent,
     ReportedPostsDetailsComponent,
+    ReportedCommentsDetailsComponent,
+    ReportedCommentsComponent,
   ],
   imports: [
     BrowserModule,

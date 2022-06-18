@@ -20,7 +20,6 @@ export class Reaction {
     toJsonString(): string {
         const data = {};
         Reaction.keys.forEach(key => data[key] = this[key]);
-        console.log(data)
         return JSON.stringify(data);
     }
 }

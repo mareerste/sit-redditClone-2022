@@ -28,7 +28,6 @@ export class PostService {
   }
 
   deletePost(id){
-    console.log(id)
     return this.http.delete(`${this.config.post_url}/${id}`);
   }
 

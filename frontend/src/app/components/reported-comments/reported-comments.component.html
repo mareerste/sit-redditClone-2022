@@ -1,0 +1,13 @@
+<h2 style="color: #b71c1c;text-align: center;margin: 30px;font-size: 40px;">Community Reported Comments</h2>
+    <div style="display: flex;flex-direction: row;">
+        <div style="flex: 1 1 100%;box-sizing: border-box;max-width: 50%;">
+            <app-reported-comments-list  [comments]="reports" (showCommentEmmiter)="showComment($event)"></app-reported-comments-list>
+        </div>
+        <div style="flex: 1 1 0%;box-sizing: border-box;">
+            <app-reported-comments-details [report]="presentComment" *ngIf="presentComment"></app-reported-comments-details>
+            <div style="display: flex;" *ngIf="presentComment">
+                <button mat-raised-button color="primary" style="margin: auto;" (click)="acceptReport()">Accept</button>
+                <button mat-raised-button color="primary" style="margin: auto;" (click)="declineReport()">Decline</button>
+            </div>
+        </div>
+    </div>

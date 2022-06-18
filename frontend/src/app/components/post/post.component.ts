@@ -64,11 +64,9 @@ export class PostComponent implements OnInit {
     if (this.isLoggedIn()) {
       this.form.value.type = "UPVOTE"
       this.form.value.post = this.post.id
-      console.log(this.form.value)
       this.reactionService.sendReaction(this.form.value)
         .subscribe(data => {
           this.loadKarma()
-          console.log(data)
         },
           error => {
             this.notifierService.showNotification("You are already up vote this post")
@@ -86,11 +84,9 @@ export class PostComponent implements OnInit {
     if (this.isLoggedIn()) {
       this.form.value.type = "DOWNVOTE"
       this.form.value.post = this.post.id
-      console.log(this.form.value)
       this.reactionService.sendReaction(this.form.value)
         .subscribe(data => {
           this.loadKarma()
-          console.log(data)
         },
           error => {
             this.notifierService.showNotification("You are already down vote this post")

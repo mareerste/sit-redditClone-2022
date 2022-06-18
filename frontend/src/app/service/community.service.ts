@@ -66,8 +66,7 @@ export class CommunityService {
         });
         let options = {headers: headers}
         // data.flair = this.community.flairs[0]
-        console.log("ovde")
-        console.log(data)
+
         return this.http.put<Community>(`${this.config.community_url}`, data, options)
   }
   getCommunity(id):Observable<Community>{
@@ -79,7 +78,6 @@ export class CommunityService {
   }
 
   deleteCommunityPost(idCommunity, idPost) {
-    console.log(`${this.config.community_url}/${idCommunity}/posts/${idPost}`)
     return this.apiService.delete(`${this.config.community_url}/${idCommunity}/posts/${idPost}`);
   }
 }

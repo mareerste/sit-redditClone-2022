@@ -22,12 +22,7 @@ export class FlairService {
           'Content-Type': 'application/json'
         });
         let options = {headers: headers}
-        // data.flair = this.community.flairs[0]
-        console.log("ovde")
-        console.log(data)
+
         return this.http.post<Flair>(`${this.config.flair_url}`, data, options)
-            // .pipe(map(() => {
-            //   console.log('Post created successfully');
-            // }));
   }
 }

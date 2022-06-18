@@ -34,21 +34,18 @@ export class MembersBanListComponent implements OnInit {
   loadBannedList(){
     this.banService.getCommunityBans(this.community.id).subscribe(data =>{
       this.bannedList = data;
-      console.log(data);
     })
   }
 
   loadUsers(){
     this.userService.getUsers().subscribe(data=>{
       this.users = data;
-      console.log(data);
     })
   }
 
   loadBannedUsers(){
     this.banService.getCommunityBannedUsers(this.community.id).subscribe(data =>{
       this.banedUsers = data;
-      console.log(data);
     })
   }
 

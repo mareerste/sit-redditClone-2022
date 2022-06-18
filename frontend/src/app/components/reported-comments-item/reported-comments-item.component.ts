@@ -1,4 +1,5 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { Report } from 'src/app/model/report';
 
 @Component({
   selector: 'app-reported-comments-item',
@@ -7,9 +8,17 @@ import { Component, OnInit } from '@angular/core';
 })
 export class ReportedCommentsItemComponent implements OnInit {
 
+  @Input()
+  report:Report;
+  @Output()
+  showCommentEmmiter = new EventEmitter<Report>();
   constructor() { }
 
   ngOnInit() {
+  }
+
+  showComment(){
+    this.showCommentEmmiter.emit(this.report);
   }
 
 }

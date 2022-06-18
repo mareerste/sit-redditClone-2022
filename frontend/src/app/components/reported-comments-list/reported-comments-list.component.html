@@ -1,1 +1,3 @@
-<p>reported-comments-list works!</p>
+<div *ngFor="let report of comments;">
+    <app-reported-comments-item [report]="report" (showCommentEmmiter)="showComment($event)"></app-reported-comments-item>
+</div>

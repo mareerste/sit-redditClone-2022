@@ -109,14 +109,10 @@ export class CommunityCreatePostComponent implements OnInit {
           console.log('Create post error');
           this.notification = { msgType: 'error', msgBody: 'Please fill all fields' };
         });
-        // console.log("new Posttt")
-        // console.log(newPost)
   }
   loadCommunity(id:number){
     this.communityService.getCommunity(id).subscribe(data=>{
       this.community = data;
-      console.log(this.community)
-      // this.creationDate = this.community.creationDate
     })
   }
 

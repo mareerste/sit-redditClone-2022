@@ -87,6 +87,7 @@ insert into report (reason,date,post_id,user_id) values (5,'2022-05-28',2,'kosta
 insert into report (reason,date,post_id,user_id) values (5,'2022-06-09',4,'kosta123');
 insert into report (reason,date,post_id,user_id) values (5,'2022-06-08',3,'kosta123');
 insert into report (reason,date,comment_id,user_id) values (0,'2022-06-11',1,'marko123');
+insert into report (reason,date,comment_id,user_id) values (7,'2022-05-22',1,'mirko123');
 insert into report (reason,date,comment_id,user_id) values (1,'2022-06-13',2,'marko123');
 
 insert into banned (date,community_id, moderator_id, user_id) values ('2022-05-12',1,'mirko123','kosta123');

@@ -139,23 +139,5 @@ export class CommunityEditComponent implements OnInit {
     this.clickedEventEmitDeletePost.emit(post)
   }
 
-  // newFlairAdded(flair:Flair){
-  //   this.community.flairs.push(flair);
-  // }
-
-  // loadBannedList(){
-  //   this.banService.getBanForUserInCommunity(this.community.id).subscribe(data =>{
-  //     this.bannedList = data;
-  //     console.log(data);
-  //   })
-  // }
-
-  // loadUsers(){
-  //   this.userService.getUsers().subscribe(data=>{
-  //     this.users = data;
-  //     console.log(data);
-  //   })
-  // }
-
 
 }

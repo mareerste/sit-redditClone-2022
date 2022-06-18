@@ -18,4 +18,8 @@ export class CommentService {
     return this.apiService.delete(`${this.config.comment_url}/${id}`);
   }
 
+  deleteLogicComment(id){
+    return this.apiService.delete(`${this.config.comment_delete_url}/${id}`);
+  }
+
 }

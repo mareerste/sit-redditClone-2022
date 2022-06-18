@@ -21,7 +21,6 @@ export class CommentListComponent implements OnInit {
 
   ngOnInit(): void {
     this.loggedUser = this.auth.getCurrentUser();
-    console.log(this.loggedUser);
   }
 
   getChange(type:ReactionType){

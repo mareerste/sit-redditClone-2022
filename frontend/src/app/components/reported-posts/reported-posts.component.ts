@@ -47,13 +47,13 @@ export class ReportedPostsComponent implements OnInit {
       this.deleteOthersReports(this.report)
       this.acceptEventEmitter.emit(this.report.post)
       this.postService.deletePost(this.report.post.id).subscribe(data=>{
+        this.report = null
       })
     })
   }
 
   declineReport(){
     this.reportService.declineReport(this.report).subscribe(data=>{
-      console.log(data);
       this.deleteReport()
     })
   }

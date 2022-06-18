@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, EventEmitter, Output, Input } from '@angular/core';
 import { Report } from 'src/app/model/report';
 import { ReportService } from 'src/app/service/report.service';
 
@@ -8,17 +8,21 @@ import { ReportService } from 'src/app/service/report.service';
   styleUrls: ['./reported-comments-list.component.css']
 })
 export class ReportedCommentsListComponent implements OnInit {
-
+  @Input()
   comments:Report[] = []
+  @Output()
+  showCommentEmmiter = new EventEmitter<Report>();
+
   constructor(
     private reportService:ReportService,
   ) { }
 
   ngOnInit() {
-    this.reportService.getCommunityReportedComments().subscribe(data=>{
-      this.comments = data;
-      console.log(data)
-    })
   }
+
+  showComment(comment:Report){
+    this.showCommentEmmiter.emit(comment);
+  }
+
 
 }

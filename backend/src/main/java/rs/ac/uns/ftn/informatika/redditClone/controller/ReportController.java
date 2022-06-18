@@ -130,30 +130,35 @@ public class ReportController {
     }
     @PreAuthorize("hasAnyRole('USER','MODERATOR', 'ADMIN')")
     @PutMapping(consumes = "application/json", value = "/accept")
-    public ResponseEntity<ReportPostDTO> acceptReportPost(@RequestBody ReportPostDTO reportDTO){
+    public ResponseEntity<ReportDTO> acceptReportPost(@RequestBody ReportDTO reportDTO){
         Report report = reportService.findOne(reportDTO.getId());
         if(report == null)
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         report.setAccepted(true);
         report = reportService.save(report);
 
-        List<Report> otherReports = reportService.findAllByPost(report.getPost());
+        List<Report> otherReports = new ArrayList<>();
+        if(report.getPost() != null)
+            otherReports = reportService.findAllByPost(report.getPost());
+        if(report.getComment() != null)
+            otherReports = reportService.findAllByComment(report.getComment());
+
         for (Report r:otherReports) {
             r = acceptReport(r);
             reportService.save(r);
         }
-        return new ResponseEntity<>(new ReportPostDTO(report),HttpStatus.OK);
+        return new ResponseEntity<>(new ReportDTO(report),HttpStatus.OK);
     }
 
     @PreAuthorize("hasAnyRole('USER','MODERATOR', 'ADMIN')")
     @PutMapping(consumes = "application/json", value = "/decline")
-    public ResponseEntity<ReportPostDTO> declineReportPost(@RequestBody ReportPostDTO reportDTO){
+    public ResponseEntity<ReportDTO> declineReportPost(@RequestBody ReportDTO reportDTO){
         Report report = reportService.findOne(reportDTO.getId());
         if(report == null)
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         report.setAccepted(false);
         report = reportService.save(report);
-        return new ResponseEntity<>(new ReportPostDTO(report),HttpStatus.OK);
+        return new ResponseEntity<>(new ReportDTO(report),HttpStatus.OK);
     }
 
     @PreAuthorize("hasAnyRole('USER','MODERATOR', 'ADMIN')")

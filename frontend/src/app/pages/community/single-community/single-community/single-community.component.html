@@ -9,7 +9,7 @@
     </b>
 
     <button mat-button (click)="showPostsClick()" style="margin-left: auto;color: white;">POSTS</button>
-    <button mat-button (click)="showEditClick()" style="margin-right:10%;color: white;">EDIT</button>
+    <button mat-button (click)="showEditClick()" *ngIf="isModerator" style="margin-right:10%;color: white;">EDIT</button>
   </mat-card-content>
 </mat-card>
 <button mat-fab *ngIf="loggedUser && showPosts" (click)="createPost()" class="postButton">+</button>

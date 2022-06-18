@@ -23,14 +23,9 @@ export class ReportedPostsListComponent implements OnInit {
   ) { }
 
   ngOnInit() {
-    // this.reportService.getCommunityReportedPosts(this.community).subscribe(data =>{
-    //   this.reports = data;
-    //   console.log(data);
-    // })
   }
 
   showPost(report:Report){
-    console.log("emit 2")
     this.showPostEmmiter.emit(report);
   }
 

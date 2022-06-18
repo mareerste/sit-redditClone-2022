@@ -43,6 +43,11 @@ export class ConfigService {
     return this._comment_url;
   }
 
+  private _comment_delete_url = this._api_url + '/comment/delete';
+  get comment_delete_url(): string {
+    return this._comment_delete_url;
+  }
+
   private _flair_url = this._api_url + '/flair';
   get flair_url(): string {
     return this._flair_url;

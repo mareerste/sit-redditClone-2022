@@ -1,1 +1,7 @@
-<p>reported-comments-item works!</p>
+<mat-card>
+    <mat-card-content>
+        <mat-card-content>{{report.comment.id}} - {{report.comment.user.username}} <br/> {{report.reason}}</mat-card-content>
+        <span class="spacer"></span>
+        <button mat-raised-button color="primary" (click)="showComment()">SHOW</button>
+    </mat-card-content>
+</mat-card>

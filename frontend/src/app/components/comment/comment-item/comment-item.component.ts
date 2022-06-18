@@ -47,12 +47,10 @@ export class CommentItemComponent implements OnInit {
     if (this.isLoggedIn()) {
       this.form.value.type = "UPVOTE"
       this.form.value.comment = this.comment.id
-      console.log(this.form.value)
+    
       this.reactionService.sendReaction(this.form.value)
         .subscribe(data => {
-          // this.clickedEventEmit.emit(ReactionType.UPVOTE);
           this.loadKarma()
-          console.log(data)
         },
           error => {
             this.notifierService.showNotification("You are already up vote this comment")
@@ -69,10 +67,8 @@ export class CommentItemComponent implements OnInit {
     if (this.isLoggedIn()) {
       this.form.value.type = "DOWNVOTE"
       this.form.value.comment = this.comment.id
-      console.log(this.form.value)
       this.reactionService.sendReaction(this.form.value)
         .subscribe(data => {
-          // this.clickedEventEmit.emit(ReactionType.DOWNVOTE);
           this.loadKarma()
           console.log(data)
         },
@@ -101,7 +97,6 @@ export class CommentItemComponent implements OnInit {
     if(this.isLoggedIn().username == this.comment.user.username){
       this.commentService.deleteComment(this.comment.id).subscribe(data => {
         this.clickedEventEmitDelete.emit(this.comment);
-        console.log(this.comment)
       });
     }else{
       this.notifierService.showNotification("You can delete only your comment")

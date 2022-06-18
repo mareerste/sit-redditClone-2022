@@ -143,4 +143,16 @@ public class CommentController {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
     }
+
+    @PreAuthorize("hasAnyRole('USER','MODERATOR', 'ADMIN')")
+    @DeleteMapping(value = "/delete/{id}")
+    public ResponseEntity<Void>deleteLogicComment(@PathVariable Integer id){
+        Comment comment = commentService.findOne(id);
+        if(comment == null)
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+
+        comment.setDeleted(true);
+        comment = commentService.save(comment);
+        return new ResponseEntity<>(HttpStatus.OK);
+    }
 }

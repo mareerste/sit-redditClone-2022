@@ -39,7 +39,6 @@ export class ReactionService {
           'Accept': 'application/json',
           'Content-Type': 'application/json'
         });
-        console.log(data)
         return this.apiService.post(`${this.config.reaction_url}`, data, createPostHeaders)
             .pipe(map(() => {
               console.log('Reaction created successfully');

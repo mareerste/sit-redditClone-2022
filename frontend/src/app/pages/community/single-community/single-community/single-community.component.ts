@@ -1,3 +1,4 @@
+import { User } from 'src/app/model/user';
 import { async } from '@angular/core/testing';
 import { filter } from 'rxjs/operators';
 import { Observable } from 'rxjs/Observable';
@@ -18,9 +19,10 @@ export class SingleCommunityComponent implements OnInit {
 
   posts:Post[];
   postsClone:Post[];
-  community:Community = null;
+  community:Community;
   communityId;
-  // creationDate;
+
+  isModerator:boolean = false;
   comRulesTitle = "Community Rules"
   comFlairsTitle = "Community Flairs"
   comModeratorsTitle = "Community Moderators"
@@ -28,7 +30,8 @@ export class SingleCommunityComponent implements OnInit {
   showPosts:boolean;
   showEdit:boolean;
 
-  loggedUser;
+  loggedUser:User;
+  moderators: User[];
   
   constructor(
     private auth:AuthService,
@@ -41,6 +44,7 @@ export class SingleCommunityComponent implements OnInit {
   ngOnInit() {
     this.loggedUser = this.auth.getCurrentUser();
     console.log(this.loggedUser);
+    
     this.communityId = this.route.snapshot.paramMap.get('id');
     this.loadCommunity(this.communityId)
     this.communityService.getCommunityPosts(this.communityId).subscribe(data=>{
@@ -48,17 +52,13 @@ export class SingleCommunityComponent implements OnInit {
     });
     this.showPosts = true;
     
-
-    // this.creationDate = this.community.creationDate
   }
 
   saveNewPost(post:Post){
-    // this.posts = this.communityService.getCommunityPosts(this.communityId);
     this.posts.push(post)
   }
 
   getChange(){
-    // this.posts = this.communityService.getCommunityPosts(this.communityId);
     this.communityService.getCommunityPosts(this.communityId).subscribe(data=>{
       this.posts = data;
     });
@@ -67,28 +67,19 @@ export class SingleCommunityComponent implements OnInit {
   getCommunityChange(community: Community){
     this.community = community;
     this.communityService.updateCommunity(community).subscribe(data=>{
-      console.log("UPDATED")
-      console.log(data)
     })
-    //TODO sacuvati taj community preko servicea
   }
 
   loadCommunity(id:number){
     this.communityService.getCommunity(id).subscribe(data=>{
       this.community = data;
-      console.log(this.community)
-      // this.creationDate = this.community.creationDate
+      this.moderators = data.moderators;
+      this.checkForModerator()
     })
   }
 
   createPost(){
     this.router.navigate(['/community/'+this.community.id+'/create'])
-  }
-
-  changeCommunity(){
-    console.log("clicked")
-    this.community.name = "Promenjeno ime"
-    console.log(this.community)
   }
 
   showPostsClick(){
@@ -102,11 +93,16 @@ export class SingleCommunityComponent implements OnInit {
   }
 
   getDeleted(post:Post){
-    console.log("Uspesno")
-    console.log(post)
     let index = this.posts.findIndex(p => p.id == post.id);
     if (index !== -1) {
       this.posts.splice(index, 1);
+    }
+  }
+
+  checkForModerator(){
+    let index = this.moderators.findIndex(m => m.username == this.loggedUser.username);
+    if (index !== -1) {
+      this.isModerator = true;
     }
   }
 
