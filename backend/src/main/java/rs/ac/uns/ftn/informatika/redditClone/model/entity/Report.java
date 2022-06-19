@@ -86,6 +86,8 @@ public class Report {
     }
 
     public Report() {
+        this.timestamp = LocalDate.now();
+        this.accepted = null;
     }
 
     public Report(ReportReason reason, User user, Post post) {

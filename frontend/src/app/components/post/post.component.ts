@@ -1,3 +1,5 @@
+import { ReportDialogComponent } from './../report-dialog/report-dialog.component';
+
 import { Reaction } from './../../model/reaction';
 import { User } from './../../model/user';
 import { Post } from './../../model/post';
@@ -10,6 +12,8 @@ import { NotifierService } from 'src/app/service/notifier.service';
 import { CommunityService } from 'src/app/service/community.service';
 import { Community } from 'src/app/model/community';
 import { AuthService } from 'src/app/service';
+import { Report } from 'src/app/model/report';
+import { MatDialog } from '@angular/material';
 
 @Component({
   selector: 'post-list-item',
@@ -30,6 +34,8 @@ export class PostComponent implements OnInit {
   @Output()
   clickedEventEmitDelete = new EventEmitter<Post>();
 
+  report:Report;
+
   private users: User[];
   constructor(
     private reactionService: ReactionService,
@@ -37,7 +43,8 @@ export class PostComponent implements OnInit {
     private formBuilder: FormBuilder,
     private notifierService: NotifierService,
     private communityService: CommunityService,
-    private auth: AuthService) { }
+    private auth: AuthService,
+    public dialog: MatDialog) { }
 
   ngOnInit(): void {
     this.loadKarma()
@@ -48,6 +55,10 @@ export class PostComponent implements OnInit {
       type: ['', Validators.compose([Validators.required])],
       post: ['', Validators.compose([])]
     });
+  }
+
+  openReportDialog(): void {
+    this.dialog.open(ReportDialogComponent,{data:{post:this.post}})    
   }
 
   showCommentsMethod(): void {
@@ -124,5 +135,14 @@ export class PostComponent implements OnInit {
       this.karma = Data
     })
   }
+
+  onNoClick(){
+
+  }
+
+  onSubmitReport(){
+    
+  }
+
 
 }

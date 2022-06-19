@@ -17,6 +17,15 @@ export class ReportService {
     private http:HttpClient
   ) { }
 
+  saveReport(data:Report):Observable<Report>{
+    const headers = new HttpHeaders({
+          'Accept': 'application/json',
+          'Content-Type': 'application/json'
+        });
+        let options = {headers: headers}
+        return this.http.post<Report>(`${this.config.report_url}`, data, options)
+  }
+
   getCommunityReportedPosts(community:Community):Observable<Report[]>{
     return this.http.get<Report[]>(`${this.config.report_community_url}/${community.id}/posts`);
   }

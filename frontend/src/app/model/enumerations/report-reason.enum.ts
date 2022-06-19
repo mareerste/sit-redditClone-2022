@@ -9,4 +9,18 @@ export enum ReportReason {
     SPAM = 7,
     SELF_HARM_OR_SUICIDE = 8,
     OTHER = 9
+    
 }
+
+export const ReasonMapping: Record<ReportReason, string> = {
+    [ReportReason.BREAKS_RULES]: "Breaks rules",
+    [ReportReason.HARASSMENT]: "Harassment",
+    [ReportReason.HATE]: "Hate",
+    [ReportReason.SHARING_PERSONAL_INFORMATION]: "Sharing personal info",
+    [ReportReason.IMPERSONATION]: "Impersonation",
+    [ReportReason.COPYRIGHT_VIOLATION]: "Copyright violation",
+    [ReportReason.TRADEMARK_VIOLATION]: "Trademark violation",
+    [ReportReason.SPAM]: "Spam",
+    [ReportReason.SELF_HARM_OR_SUICIDE]: "Self harm or suicide",
+    [ReportReason.OTHER]: "Other..",
+};

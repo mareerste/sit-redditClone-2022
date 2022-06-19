@@ -2,10 +2,7 @@ package rs.ac.uns.ftn.informatika.redditClone.service.implementation;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import rs.ac.uns.ftn.informatika.redditClone.model.entity.Comment;
-import rs.ac.uns.ftn.informatika.redditClone.model.entity.Community;
-import rs.ac.uns.ftn.informatika.redditClone.model.entity.Post;
-import rs.ac.uns.ftn.informatika.redditClone.model.entity.Report;
+import rs.ac.uns.ftn.informatika.redditClone.model.entity.*;
 import rs.ac.uns.ftn.informatika.redditClone.repository.ReportRepository;
 import rs.ac.uns.ftn.informatika.redditClone.service.ReportService;
 
@@ -22,8 +19,7 @@ public class ReportServiceImpl implements ReportService {
     @Override
     public List<Report> findAllByComment(Comment comment){return reportRepository.findAllByComment(comment);}
     @Override
-    public List<Report> findAllByCommentToAnswer(Comment comment){return reportRepository.findAllByCommentAndAccepted(comment, null);}
-
+    public List<Report> findAllByCommentToAnswer(Comment comment, User user){return reportRepository.findAllByCommentAndAcceptedAndUser(comment, null, user);}
     @Override
     public List<Report> findAllByPost(Post post){return reportRepository.findAllByPost(post);}
 
@@ -37,7 +33,7 @@ public class ReportServiceImpl implements ReportService {
     }
 
     @Override
-    public List<Report> findAllByPostToAnswer(Post post){return reportRepository.findAllByPostAndAccepted(post, null);}
+    public List<Report> findAllByPostToAnswer(Post post, User user){return reportRepository.findAllByPostAndAcceptedAndUser(post, null,user);}
 
     @Override
     public Report save(Report report){return reportRepository.save(report);}

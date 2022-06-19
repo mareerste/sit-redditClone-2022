@@ -4,6 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 import rs.ac.uns.ftn.informatika.redditClone.model.dto.ReportCommentDTO;
 import rs.ac.uns.ftn.informatika.redditClone.model.dto.ReportDTO;
@@ -74,6 +75,39 @@ public class ReportController {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         return new ResponseEntity<>(new ReportDTO(report), HttpStatus.OK);
     }
+
+    @PreAuthorize("hasAnyRole('USER','MODERATOR', 'ADMIN')")
+    @PostMapping(consumes = "application/json")
+    public ResponseEntity<ReportDTO> saveReport(@RequestBody ReportDTO reportDTO, Authentication authentication){
+        if (reportDTO.getReason().equals("") || reportDTO.getReason() == null)
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        if(reportDTO.getPost() == null && reportDTO.getComment() == null)
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+
+        List<Report> checkreport;
+        if(reportDTO.getPost() != null) {
+            checkreport = reportService.findAllByPostToAnswer(postService.findOne(reportDTO.getPost().getId()),userService.findOne(authentication.getName()));
+            if(!checkreport.isEmpty())
+                return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        }
+
+        if(reportDTO.getComment() != null) {
+            checkreport = reportService.findAllByCommentToAnswer(commentService.findOne(reportDTO.getComment().getId()), userService.findOne(authentication.getName()));
+            if(!checkreport.isEmpty())
+                return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        }
+
+        Report report = new Report();
+        report.setReason(reportDTO.getReason());
+        report.setUser(userService.findOne(authentication.getName()));
+        if(reportDTO.getPost() != null)
+            report.setPost(postService.findOne(reportDTO.getPost().getId()));
+        if(reportDTO.getComment() != null)
+            report.setComment(commentService.findOne(reportDTO.getComment().getId()));
+        report = reportService.save(report);
+        return new ResponseEntity<>(new ReportDTO(report),HttpStatus.CREATED);
+    }
+
     @PreAuthorize("hasAnyRole('USER','MODERATOR', 'ADMIN')")
     @PostMapping(consumes = "application/json", value = "/post")
     public ResponseEntity<ReportPostDTO> saveReportPost(@RequestBody ReportPostDTO reportDTO){

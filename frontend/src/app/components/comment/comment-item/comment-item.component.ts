@@ -1,3 +1,4 @@
+import { MatDialog } from '@angular/material';
 import { ReactionService } from './../../../service/reaction.service';
 import { Comment } from './../../../model/comment';
 import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
@@ -6,6 +7,7 @@ import { NotifierService } from 'src/app/service/notifier.service';
 import { AuthService } from 'src/app/service';
 import { ReactionType } from 'src/app/model/enumerations/reaction-type.enum';
 import { CommentService } from 'src/app/service/comment.service';
+import { ReportDialogComponent } from '../../report-dialog/report-dialog.component';
 
 @Component({
   selector: 'app-comment-item',
@@ -33,6 +35,7 @@ export class CommentItemComponent implements OnInit {
     private notifierService: NotifierService,
     private auth:AuthService,
     private commentService: CommentService,
+    private dialog:MatDialog,
     ) { }
 
   ngOnInit(): void {
@@ -61,6 +64,10 @@ export class CommentItemComponent implements OnInit {
     } else {
       this.notifierService.showNotification("You need to login first")
     }
+  }
+
+  openReportDialog(): void {
+    this.dialog.open(ReportDialogComponent,{data:{comment:this.comment}})    
   }
 
   onSubmitDown() {

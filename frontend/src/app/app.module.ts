@@ -63,6 +63,7 @@ import { ReportedPostsComponent } from './components/reported-posts/reported-pos
 import { ReportedPostsDetailsComponent } from './components/reported-posts-details/reported-posts-details.component';
 import { ReportedCommentsDetailsComponent } from './components/reported-comments-details/reported-comments-details.component';
 import { ReportedCommentsComponent } from './components/reported-comments/reported-comments.component';
+import { ReportDialogComponent } from './components/report-dialog/report-dialog.component';
 
 @NgModule({
   declarations: [
@@ -103,6 +104,10 @@ import { ReportedCommentsComponent } from './components/reported-comments/report
     ReportedPostsDetailsComponent,
     ReportedCommentsDetailsComponent,
     ReportedCommentsComponent,
+    ReportDialogComponent,
+  ],
+  entryComponents:[
+    ReportDialogComponent,
   ],
   imports: [
     BrowserModule,

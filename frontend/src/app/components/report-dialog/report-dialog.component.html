@@ -1,0 +1,18 @@
+<mat-card>
+<h2 mat-dialog-title>Report Dialog</h2>
+  <div mat-dialog-content>
+    <p>Are you sure you want to report this post?</p>
+    <mat-form-field appearance="fill">
+        <mat-label style="color: white;">Choose an reason:</mat-label>
+        <br/>
+        <mat-select placeholder="Select reason" style="color: white;background: white;"  (selectionChange)="select($event.value)">
+            <mat-option *ngFor="let name of enumKeys"  [value]="reasons[name]">{{ReasonMapping[name]}}</mat-option>
+        </mat-select>
+      </mat-form-field>
+      <span *ngIf="reasonRequired" class="field-error" style="color: red;">Please select report reason.</span>
+  </div>
+  <div mat-dialog-actions>
+    <button mat-button mat-dialog-close (click)="onSubmitReport()" cdkFocusInitial>Submit</button>
+    <button mat-button mat-dialog-close>Cancel</button>
+  </div>
+</mat-card>

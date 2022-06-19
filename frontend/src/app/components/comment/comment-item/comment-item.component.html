@@ -16,7 +16,7 @@
             <button (click)="onSubmitDown()" mat-icon-button type="submit" class="btn pull-right" ><mat-icon style="color: white;">arrow_downward</mat-icon></button>
           </form>
       <span class="spacer"></span>
-      <button mat-button *ngIf="isLoggedIn()">Report</button>
+      <button mat-button *ngIf="isLoggedIn()" (click)="openReportDialog()">Report</button>
       <button mat-button (click)="showComments = !showComments">Comments</button>
     </mat-card-actions>
     <app-comment-list *ngIf="showComments" [comments]="comment.childComments" [parentComment]="comment"></app-comment-list>
