@@ -22,8 +22,13 @@ public class CommentServiceImpl implements CommentService {
     public List<Comment>findAll(){return commentRepository.findAll();}
 
     @Override
-    public List<Comment> findParentComment(Comment comment) {
+    public Comment findParentComment(Comment comment) {
         return commentRepository.findParentComment(comment.getId());
+    }
+
+    @Override
+    public void deletePostComment(Comment comment) {
+        commentRepository.deletePostComment(comment.getId().toString());
     }
 
     //    @Override

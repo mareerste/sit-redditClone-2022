@@ -1,5 +1,5 @@
 <mat-card>
-    <mat-card-title style="font-size: 14px;">Posted bt: {{comment.user.username}} - {{comment.timestamp| date:"dd.MM.yy"}}</mat-card-title>
+    <mat-card-title style="font-size: 14px;">Posted bt: {{comment.user.username}} - {{comment.timestamp}}</mat-card-title>
     <span class="spacer"></span>
           <div align="end">
             <input type="button" class="xButton" (click)="deleteComment()" value="X">
@@ -19,5 +19,5 @@
       <button mat-button *ngIf="isLoggedIn()">Report</button>
       <button mat-button (click)="showComments = !showComments">Comments</button>
     </mat-card-actions>
-    <app-comment-list *ngIf="showComments" [comments]="comment.childComments"></app-comment-list>
+    <app-comment-list *ngIf="showComments" [comments]="comment.childComments" [parentComment]="comment"></app-comment-list>
   </mat-card>

@@ -12,7 +12,7 @@ public class CommentDTO implements Serializable {
 
     private Integer id;
     private String text;
-    @JsonFormat(pattern = "dd-MM-yyyy")
+    @JsonFormat(pattern = "dd-MM-yyyy", shape = JsonFormat.Shape.OBJECT)
     private LocalDate timestamp;
     private Boolean isDeleted;
     private UserCreateDTO user;

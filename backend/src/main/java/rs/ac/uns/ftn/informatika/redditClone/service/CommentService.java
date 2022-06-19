@@ -9,7 +9,8 @@ public interface CommentService {
     public Comment findOne(Integer id);
     public List<Comment>findAll();
 //    public List<Comment>findByPost(Post post);
-    public List<Comment> findParentComment(Comment comment);
+    public Comment findParentComment(Comment comment);
+    public void deletePostComment(Comment comment);
     public Comment save(Comment comment);
     public void delete(Comment comment);
 }

@@ -4,15 +4,19 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 import rs.ac.uns.ftn.informatika.redditClone.model.dto.CommentDTO;
 import rs.ac.uns.ftn.informatika.redditClone.model.entity.Comment;
 import rs.ac.uns.ftn.informatika.redditClone.model.entity.Post;
+import rs.ac.uns.ftn.informatika.redditClone.model.entity.Reaction;
 import rs.ac.uns.ftn.informatika.redditClone.model.entity.User;
 import rs.ac.uns.ftn.informatika.redditClone.service.CommentService;
 import rs.ac.uns.ftn.informatika.redditClone.service.PostService;
+import rs.ac.uns.ftn.informatika.redditClone.service.ReactionService;
 import rs.ac.uns.ftn.informatika.redditClone.service.UserService;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
@@ -29,6 +33,8 @@ public class CommentController {
     private UserService userService;
     @Autowired
     private PostService postService;
+    @Autowired
+    private ReactionService reactionService;
 
     @PreAuthorize("hasAnyRole('USER','MODERATOR', 'ADMIN')")
     @GetMapping
@@ -63,19 +69,16 @@ public class CommentController {
 //    }
     @PreAuthorize("hasAnyRole('USER','MODERATOR', 'ADMIN')")
     @PostMapping(consumes = "application/json")
-    public ResponseEntity<CommentDTO>saveComment(@RequestBody CommentDTO commentDTO){
+    public ResponseEntity<CommentDTO>saveComment(@RequestBody CommentDTO commentDTO, Authentication authentication){
         if (commentDTO.getText() == null || commentDTO.getText() == "")
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         Comment comment = new Comment();
         comment.setText(commentDTO.getText());
-        comment.setTimestamp(commentDTO.getTimestamp());
-        comment.setDeleted(commentDTO.getDeleted());
-        comment.setChildComments(commentDTO.getChildComments());
-        User user = userService.findOne(commentDTO.getUser().getUsername());
-        comment.setUser(user);
-//        if (commentDTO.getPost() != null)
-//            comment.setPost(postService.findOne(commentDTO.getPost().getId()));
+        comment.setUser(userService.findOne(authentication.getName()));
         comment = commentService.save(comment);
+
+        Reaction reaction = new Reaction(userService.findOne(authentication.getName()),comment);
+        reactionService.save(reaction);
         return new ResponseEntity<>(new CommentDTO(comment), HttpStatus.CREATED);
     }
     @PreAuthorize("hasAnyRole('USER','MODERATOR', 'ADMIN')")
@@ -129,14 +132,18 @@ public class CommentController {
             Set<Comment> comments = new HashSet<>();
             comment.setChildComments(comments);
             commentService.save(comment);
-            Comment parent = commentService.findParentComment(comment).get(0);
-            Set<Comment> newComments = new HashSet<>();
-            for (Comment c:parent.getChildComments()) {
-                if (c.getId() != comment.getId())
-                    newComments.add(c);
+            Comment parent = commentService.findParentComment(comment);
+            if(parent != null){
+                Set<Comment> newComments = new HashSet<>();
+                for (Comment c:parent.getChildComments()) {
+                    if (c.getId() != comment.getId())
+                        newComments.add(c);
+                }
+                parent.setChildComments(newComments);
+                commentService.save(parent);
             }
-            parent.setChildComments(newComments);
-            commentService.save(parent);
+
+            commentService.deletePostComment(comment);
             commentService.delete(comment);
             return new ResponseEntity<>(HttpStatus.OK);
         } else {

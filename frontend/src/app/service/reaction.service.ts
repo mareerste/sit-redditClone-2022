@@ -41,7 +41,7 @@ export class ReactionService {
         });
         return this.apiService.post(`${this.config.reaction_url}`, data, createPostHeaders)
             .pipe(map(() => {
-              console.log('Reaction created successfully');
+
             }));
   }
 }

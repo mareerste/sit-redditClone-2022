@@ -1,4 +1,4 @@
-import { HttpClient, HttpParams } from '@angular/common/http';
+import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { Post } from './../model/post';
 import {Injectable} from '@angular/core';
@@ -24,7 +24,14 @@ export class PostService {
   }
 
   updatePost(post:Post){
-    return this.apiService.put(this.config.post_url,post);
+    const headers = new HttpHeaders({
+      'Accept': 'application/json',
+      'Content-Type': 'application/json'
+    });
+    let options = {headers: headers}
+    console.log("update service post")
+    console.log(post)
+    return this.http.put(`${this.config.post_url}`,post,options);
   }
 
   deletePost(id){
