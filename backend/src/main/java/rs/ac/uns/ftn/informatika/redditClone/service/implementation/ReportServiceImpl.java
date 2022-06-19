@@ -36,6 +36,16 @@ public class ReportServiceImpl implements ReportService {
     public List<Report> findAllByPostToAnswer(Post post, User user){return reportRepository.findAllByPostAndAcceptedAndUser(post, null,user);}
 
     @Override
+    public void deleteAllByPost(Post post) {
+        reportRepository.deleteAllByPost(post);
+    }
+
+    @Override
+    public void deleteAllByComment(Comment comment) {
+        reportRepository.deleteAllByComment(comment);
+    }
+
+    @Override
     public Report save(Report report){return reportRepository.save(report);}
     @Override
     public void delete(Report report){reportRepository.delete(report);}

@@ -1,3 +1,4 @@
+import { LoggedInAuthGuardGuard } from './guards/logged-in-auth-guard.guard';
 import { CommunityCreatePostComponent } from './pages/community/single-community/community-create-post/community-create-post.component';
 import { CommunityCreateComponent } from './pages/community/community-create/community-create.component';
 import { SingleCommunityComponent } from './pages/community/single-community/single-community/single-community.component';
@@ -33,11 +34,13 @@ const routes: Routes = [
   },
   {
     path:'community/:id/create',
-    component:CommunityCreatePostComponent
+    component:CommunityCreatePostComponent,
+    canActivate: [LoggedInAuthGuardGuard]
   },
   {
     path:'community/create',
-    component:CommunityCreateComponent
+    component:CommunityCreateComponent,
+    canActivate: [LoggedInAuthGuardGuard]
   }
 ];
 

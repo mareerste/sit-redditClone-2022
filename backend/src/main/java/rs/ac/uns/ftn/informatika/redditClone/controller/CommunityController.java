@@ -24,6 +24,8 @@ public class CommunityController {
     @Autowired
     private UserService userService;
     @Autowired
+    private ReportService reportService;
+    @Autowired
     private ModeratorService moderatorService;
     @Autowired
     private ReactionService reactionService;
@@ -186,6 +188,7 @@ public class CommunityController {
             }
             community.setPosts(newPosts);
             communityService.save(community);
+            reportService.deleteAllByPost(post);
             postService.delete(post);
             return new ResponseEntity<>(HttpStatus.OK);
         }

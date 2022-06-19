@@ -11,10 +11,7 @@ import rs.ac.uns.ftn.informatika.redditClone.model.entity.Comment;
 import rs.ac.uns.ftn.informatika.redditClone.model.entity.Post;
 import rs.ac.uns.ftn.informatika.redditClone.model.entity.Reaction;
 import rs.ac.uns.ftn.informatika.redditClone.model.entity.User;
-import rs.ac.uns.ftn.informatika.redditClone.service.CommentService;
-import rs.ac.uns.ftn.informatika.redditClone.service.PostService;
-import rs.ac.uns.ftn.informatika.redditClone.service.ReactionService;
-import rs.ac.uns.ftn.informatika.redditClone.service.UserService;
+import rs.ac.uns.ftn.informatika.redditClone.service.*;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
@@ -35,6 +32,8 @@ public class CommentController {
     private PostService postService;
     @Autowired
     private ReactionService reactionService;
+    @Autowired
+    private ReportService reportService;
 
     @PreAuthorize("hasAnyRole('USER','MODERATOR', 'ADMIN')")
     @GetMapping
@@ -142,7 +141,7 @@ public class CommentController {
                 parent.setChildComments(newComments);
                 commentService.save(parent);
             }
-
+            reportService.deleteAllByComment(comment);
             commentService.deletePostComment(comment);
             commentService.delete(comment);
             return new ResponseEntity<>(HttpStatus.OK);

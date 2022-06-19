@@ -35,7 +35,6 @@ export class CommentListComponent implements OnInit {
 
   ngOnInit(): void {
     this.loggedUser = this.auth.getCurrentUser();
-    console.log(this.comments)
     this.form = this.formBuilder.group({
       text: ['', Validators.compose([Validators.required, Validators.minLength(3), Validators.maxLength(64)])],
     });
