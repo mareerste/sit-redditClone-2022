@@ -33,7 +33,7 @@ public class UserDetailsServiceImpl implements UserDetailsService {
             List<GrantedAuthority> grantedAuthorities = new ArrayList<>();
             String role = "ROLE_";
             if(user instanceof Administrator){
-                role+="ADMINISTRATOR";
+                role+="ADMIN";
             }else if (user instanceof Moderator){
                 role+="MODERATOR";
             }else if(user instanceof User){

@@ -38,7 +38,6 @@ export class ReportDialogComponent implements OnInit {
     
   }
   onSubmitReport(){
-    console.log(this.selectedReason)
     this.reasonRequired = false;
     if(this.selectedReason != null){
       var newReport = new Report()

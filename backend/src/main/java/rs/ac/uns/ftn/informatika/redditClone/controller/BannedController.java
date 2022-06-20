@@ -53,17 +53,17 @@ public class BannedController {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         return new ResponseEntity<>(new BannedDTO(banned),HttpStatus.OK);
     }
-    @PreAuthorize("hasAnyRole('MODERATOR', 'ADMIN')")
+    @PreAuthorize("hasAnyRole('USER','MODERATOR', 'ADMIN')")
     @GetMapping(value = "/community/{idCommunity}/user/{idUser}")
-    public ResponseEntity<BannedDTO>getBannedForJoin(@PathVariable Integer idCommunity, @PathVariable String idUser){
+    public ResponseEntity<Boolean>getBannedForJoin(@PathVariable Integer idCommunity, @PathVariable String idUser){
         User user = userService.findOne(idUser);
         Community community = communityService.findOne(idCommunity);
         if(user == null || community == null)
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         Banned banned = bannedService.findByUserAndCommunity(user, community);
         if (banned == null)
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-        return new ResponseEntity<>(new BannedDTO(banned),HttpStatus.OK);
+            return new ResponseEntity<>(false,HttpStatus.OK);
+        return new ResponseEntity<>(true,HttpStatus.OK);
     }
     @PreAuthorize("hasAnyRole('MODERATOR', 'ADMIN')")
     @DeleteMapping(value = "/community/{idCommunity}/user/{idUser}")

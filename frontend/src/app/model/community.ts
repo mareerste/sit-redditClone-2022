@@ -7,7 +7,7 @@ export class Community {
     description:string;
     creationDate?:Date;
     rules?:string[];
-    isSuspended?:boolean;
+    suspended?:boolean;
     suspendedReason?:string;
     flairs:Flair[]|[];
     moderators?:User[]|[];

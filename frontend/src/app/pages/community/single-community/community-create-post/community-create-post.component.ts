@@ -9,6 +9,7 @@ import { HttpHeaders } from '@angular/common/http';
 import { Community } from 'src/app/model/community';
 import { Flair } from 'src/app/model/flair';
 import { Post } from 'src/app/model/post';
+import { MatInputModule } from '@angular/material/input';
 
 interface DisplayMessage {
   msgType: string;

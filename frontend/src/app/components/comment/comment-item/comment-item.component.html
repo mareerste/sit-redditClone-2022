@@ -6,18 +6,18 @@
           </div>
     <mat-card-subtitle style="font-size: 18px;">{{comment.text}}</mat-card-subtitle>
     <mat-card-actions align="end">
-        <form class="form">
+        <form class="form" *ngIf="!isBanned">
             <label style="visibility: hidden;" name="commentId">{{comment.id}}</label>
             <button (click)="onSubmitUp()" mat-icon-button type="submit" class="btn pull-right" ><mat-icon style="color: white;">arrow_upwards</mat-icon></button>
           </form>
           <button class="rounded" mat-raised-button color="primary">{{karma}}</button>
-          <form class="form">
+          <form class="form" *ngIf="!isBanned">
             <label style="visibility: hidden;" name="commentId">{{comment.id}}</label>
             <button (click)="onSubmitDown()" mat-icon-button type="submit" class="btn pull-right" ><mat-icon style="color: white;">arrow_downward</mat-icon></button>
           </form>
       <span class="spacer"></span>
-      <button mat-button *ngIf="isLoggedIn()" (click)="openReportDialog()">Report</button>
+      <button mat-button *ngIf="isLoggedIn() && !isBanned" (click)="openReportDialog()">Report</button>
       <button mat-button (click)="showComments = !showComments">Comments</button>
     </mat-card-actions>
-    <app-comment-list *ngIf="showComments" [comments]="comment.childComments" [parentComment]="comment"></app-comment-list>
+    <app-comment-list *ngIf="showComments" [isBanned]="isBanned" [comments]="comment.childComments" [parentComment]="comment"></app-comment-list>
   </mat-card>

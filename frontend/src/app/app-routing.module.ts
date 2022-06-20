@@ -1,3 +1,4 @@
+import { SuspendedCommunityGuardGuard } from './guards/suspended-community-guard.guard';
 import { LoggedInAuthGuardGuard } from './guards/logged-in-auth-guard.guard';
 import { CommunityCreatePostComponent } from './pages/community/single-community/community-create-post/community-create-post.component';
 import { CommunityCreateComponent } from './pages/community/community-create/community-create.component';
@@ -9,6 +10,7 @@ import { Routes, RouterModule } from '@angular/router';
 
 import { LoginComponent } from './login/login.component';
 import { SignUpComponent } from './sign-up/sign-up.component';
+import { CommunityUpdatePostComponent } from './pages/community/single-community/community-update-post/community-update-post.component';
 
 const routes: Routes = [
   {
@@ -26,21 +28,29 @@ const routes: Routes = [
   },
   {
     path:'post/:id',
-    component:SinglePostComponent
+    component:SinglePostComponent,
   },
   {
     path:'community/:id/posts',
-    component:SingleCommunityComponent
+    component:SingleCommunityComponent,
+    canActivate:[SuspendedCommunityGuardGuard]
   },
   {
     path:'community/:id/create',
     component:CommunityCreatePostComponent,
-    canActivate: [LoggedInAuthGuardGuard]
+    canActivate: [
+      LoggedInAuthGuardGuard,
+      SuspendedCommunityGuardGuard
+    ]
   },
   {
     path:'community/create',
     component:CommunityCreateComponent,
     canActivate: [LoggedInAuthGuardGuard]
+  },
+  {
+    path:'post/:id/edit',
+    component:CommunityUpdatePostComponent,
   }
 ];
 

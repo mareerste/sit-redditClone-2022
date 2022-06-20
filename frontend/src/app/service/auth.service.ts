@@ -78,6 +78,13 @@ export class AuthService {
     return token ? token : "";
   }
 
+  getRole(): String {
+    var currentUser = JSON.parse(localStorage.getItem('currentUser'));
+    var roles = currentUser && currentUser.roles;
+    var role = roles[0].authority
+    return role ? role : "";
+  }
+
   logout(): void {
     localStorage.removeItem('currentUser');
     localStorage.removeItem('jwt');

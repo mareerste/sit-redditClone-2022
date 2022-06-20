@@ -1,4 +1,4 @@
-<div class="card-wrapper">
+<div *ngIf="!communitySuspended" class="card-wrapper">
 
   <mat-card class="example-card">
     <mat-card-header>
@@ -7,6 +7,9 @@
         mat-card-avatar />
       <span class="spacer"></span>
       <div align="end">
+        <button mat-icon-button (click)="editPost()">
+          <mat-icon>edit</mat-icon>
+        </button>
         <input type="button" class="xButton" (click)="deletePost()" value="X">
       </div>
       <mat-card-title (click)="showPost()" class="white" style="text-align: center;">{{post.title}}</mat-card-title>
@@ -28,7 +31,7 @@
     </mat-card-content>
 
     <mat-card-actions align="end">
-      <form class="form" (ngSubmit)="onSubmitUp()" [formGroup]="form">
+      <form class="form" (ngSubmit)="onSubmitUp()" *ngIf="!isBanned" [formGroup]="form">
         <!-- <label style="visibility: hidden;" name="postId">{{post.id}}</label> -->
         <input formControlName="type" style="visibility: hidden;" value="UPVOTE" matInput required>
         <input formControlName="post" style="visibility: hidden;" [value]="post.id" matInput required>
@@ -37,7 +40,7 @@
         </button>
       </form>
       <button class="rounded" mat-raised-button color="primary">{{karma}}</button>
-      <form class="form">
+      <form class="form" *ngIf="!isBanned">
         <label style="visibility: hidden;" name="postId">{{post.id}}</label>
         <button (click)="onSubmitDown()" mat-icon-button type="submit" class="btn pull-right"
           style="background-color: #b71c1c;" value="search">
@@ -45,11 +48,11 @@
         </button>
       </form>
       <span class="spacer"></span>
-      <button mat-raised-button color="primary" *ngIf="isLoggedIn()" (click)="openReportDialog()">Report</button>
+      <button mat-raised-button color="primary" *ngIf="isLoggedIn() && !isBanned"  (click)="openReportDialog()">Report</button>
       <button mat-raised-button color="primary" (click)="showComments = !showComments">Comments</button>
     </mat-card-actions>
     <div>
-      <app-comment-list *ngIf="showComments" [comments]="post.comments" [parentPost]="post"></app-comment-list>
+      <app-comment-list *ngIf="showComments" [isBanned]="isBanned" [comments]="post.comments" [parentPost]="post"></app-comment-list>
     </div>
   </mat-card>
 

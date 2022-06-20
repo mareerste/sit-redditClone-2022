@@ -10,9 +10,10 @@
 
     <button mat-button (click)="showPostsClick()" style="margin-left: auto;color: white;">POSTS</button>
     <button mat-button (click)="showEditClick()" *ngIf="isModerator" style="margin-right:10%;color: white;">EDIT</button>
+    <button mat-button (click)="openSuspendDialog()" *ngIf="isAdministrator" style="margin-right:10%;color: white;">SUSPEND</button>
   </mat-card-content>
 </mat-card>
-<button mat-fab *ngIf="loggedUser && showPosts" (click)="createPost()" class="postButton">+</button>
+<button mat-fab *ngIf="loggedUser && showPosts && !isBanned" (click)="createPost()" class="postButton">+</button>
 <div *ngIf="showPosts">
   <div style="display: flex;flex-direction: row;">
     <div style="flex: 1 1 100%;box-sizing: border-box;max-width: 40%;">

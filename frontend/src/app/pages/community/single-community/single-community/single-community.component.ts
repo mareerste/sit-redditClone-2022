@@ -1,3 +1,5 @@
+import { MatDialog } from '@angular/material';
+import { BanService } from 'src/app/service/ban.service';
 import { User } from 'src/app/model/user';
 import { async } from '@angular/core/testing';
 import { filter } from 'rxjs/operators';
@@ -9,6 +11,7 @@ import { AuthService, PostService } from 'src/app/service';
 import { CommunityService } from 'src/app/service/community.service';
 import { Community } from 'src/app/model/community';
 import { DatePipe } from '@angular/common';
+import { SuspendCommunityDialogComponent } from 'src/app/components/suspend-community-dialog/suspend-community-dialog.component';
 
 @Component({
   selector: 'app-single-community',
@@ -29,7 +32,8 @@ export class SingleCommunityComponent implements OnInit {
 
   showPosts:boolean;
   showEdit:boolean;
-
+  isBanned:boolean;
+  isAdministrator:boolean = false;
   loggedUser:User;
   moderators: User[];
   
@@ -37,6 +41,8 @@ export class SingleCommunityComponent implements OnInit {
     private auth:AuthService,
     private route:ActivatedRoute,
     private postService:PostService,
+    private banService:BanService,
+    private dialog:MatDialog,
     private communityService:CommunityService,
     private router:Router,
   ) { }
@@ -51,7 +57,7 @@ export class SingleCommunityComponent implements OnInit {
       this.posts = data;
     });
     this.showPosts = true;
-    
+    this.isAdmin()
   }
 
   saveNewPost(post:Post){
@@ -73,9 +79,15 @@ export class SingleCommunityComponent implements OnInit {
   loadCommunity(id:number){
     this.communityService.getCommunity(id).subscribe(data=>{
       this.community = data;
+      this.checkIfBanned()
       this.moderators = data.moderators;
       this.checkForModerator()
     })
+  }
+
+  isAdmin(){
+    if(this.auth.getRole() == 'ROLE_ADMIN')
+      this.isAdministrator = true
   }
 
   createPost(){
@@ -104,6 +116,17 @@ export class SingleCommunityComponent implements OnInit {
     if (index !== -1) {
       this.isModerator = true;
     }
+  }
+
+  checkIfBanned(){
+    var user:User = this.auth.getCurrentUser()
+    this.banService.getBanForUserInCommunity(this.community.id,user.username).subscribe(data=>{
+      this.isBanned = data
+    })
+  }
+
+  openSuspendDialog(){
+    this.dialog.open(SuspendCommunityDialogComponent,{data:{community:this.community}})  
   }
 
 

@@ -37,8 +37,8 @@ insert into community_flairs(community_id, flair_id) values (2,4);
 
 insert into post (date,deleted, text,title,user_id,flair_id) values ('2022-06-19',false,'Tekst prvog posta','Random stvar','marko123',1);
 insert into post (date,deleted, text,title,user_id,flair_id) values ('2022-04-03',false,'Tekst drugog posta','Random stvar part 2','marko123',1);
-insert into post (date,deleted, text,title,user_id,flair_id) values ('2022-04-03',false,'Tekst treceg posta','Random stvar za drugi Community','marko123',2);
-insert into post (date,deleted, text,title,user_id,flair_id) values ('2022-04-03',false,'Tekst cetvrtog posta za kostu','Random stvar za drugi Community','kosta123',2);
+insert into post (date,deleted, text,title,user_id,flair_id) values ('2022-04-03',false,'Tekst treceg posta','Random title za drugi Community','marko123',2);
+insert into post (date,deleted, text,title,user_id,flair_id) values ('2022-04-03',false,'Tekst cetvrtog posta za kostu','Random title za drugi Community 2','kosta123',2);
 
 insert into community_posts (community_id,post_id) values (1,1);
 insert into community_posts (community_id,post_id) values (1,2);

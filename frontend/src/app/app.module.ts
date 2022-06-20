@@ -64,6 +64,8 @@ import { ReportedPostsDetailsComponent } from './components/reported-posts-detai
 import { ReportedCommentsDetailsComponent } from './components/reported-comments-details/reported-comments-details.component';
 import { ReportedCommentsComponent } from './components/reported-comments/reported-comments.component';
 import { ReportDialogComponent } from './components/report-dialog/report-dialog.component';
+import { SuspendCommunityDialogComponent } from './components/suspend-community-dialog/suspend-community-dialog.component';
+import { CommunityUpdatePostComponent } from './pages/community/single-community/community-update-post/community-update-post.component';
 
 @NgModule({
   declarations: [
@@ -105,9 +107,12 @@ import { ReportDialogComponent } from './components/report-dialog/report-dialog.
     ReportedCommentsDetailsComponent,
     ReportedCommentsComponent,
     ReportDialogComponent,
+    SuspendCommunityDialogComponent,
+    CommunityUpdatePostComponent,
   ],
   entryComponents:[
     ReportDialogComponent,
+    SuspendCommunityDialogComponent
   ],
   imports: [
     BrowserModule,

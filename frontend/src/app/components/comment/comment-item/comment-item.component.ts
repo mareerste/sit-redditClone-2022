@@ -20,6 +20,8 @@ export class CommentItemComponent implements OnInit {
   comment:Comment;
   @Input()
   showComments:boolean;
+  @Input()
+  isBanned:boolean;
   karma:number = 0;
   form: FormGroup;
   @Output()

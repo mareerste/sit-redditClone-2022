@@ -1,0 +1,48 @@
+<mat-card elevation="5" fxFlex class="content">
+
+    <mat-card-content>
+        <p *ngIf="notification" [class]="notification.msgType">{{notification.msgBody}}</p>
+        <!-- <form #postForm="ngForm" (ngSubmit)="onSubmit(postForm.value)" *ngIf="!submitted" [formGroup]="form"> -->
+        <form (ngSubmit)="onSubmit()" [formGroup]="form">
+            <mat-form-field>
+                <label>Title: </label>
+                <input formControlName="name" matInput required [value]="post.title"  type="text" readonly>
+                <span *ngIf="titleRequired" class="field-error" style="color: red;">Required field.</span>
+            </mat-form-field>
+            <mat-form-field>
+                <label>Text: </label>
+                <input formControlName="text" matInput required [value]="post.text" type="text">
+                <span *ngIf="textRequired" class="field-error" style="color: red;">Required field.</span>
+            </mat-form-field>
+            <br/>
+            <mat-form-field>
+                <label>Flair</label>
+                <select id="flairId" formControlName="flair"  matInput>
+                    <option *ngFor="let flair of community.flairs" [value]="flair | json">{{flair.name}}</option>
+                </select>
+                <span *ngIf="flairRequired" class="field-error" style="color: red;">Required field.</span>
+            </mat-form-field>
+            <mat-form-field>
+                <label class="image-upload-container ">
+                    <span>Select Image</span>
+                    <input #imageInput
+                           type="file"
+                           accept="image/*"
+                           style="width: 100%;
+                           border:0;color: red;">
+                           <!-- (change)="processFile(imageInput)"> -->
+                  </label>
+            </mat-form-field>
+            
+            <button [disabled]="!form.valid" color="primary" mat-raised-button type="submit">Post</button>
+            
+        </form>
+        <br>
+        <button style="background: transparent;color:white;border: 2px solid red;" mat-raised-button (click)="backButton()">Back</button>
+        <br>
+        <!-- <mat-spinner *ngIf="submitted" mode="indeterminate"></mat-spinner> -->
+        <br>
+        <hr>
+    </mat-card-content>
+    
+</mat-card>

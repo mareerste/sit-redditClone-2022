@@ -20,6 +20,8 @@ export class CommentListComponent implements OnInit {
   parentPost:Post;
   @Input()
   parentComment:Comment;
+  @Input()
+  isBanned:boolean;
   @Output()
   newCommentEmitter = new EventEmitter<Comment>();
 

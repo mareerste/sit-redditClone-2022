@@ -39,8 +39,8 @@ export class BanService {
   }
 
   // /{idCommunity}/user/{idUser}
-  getBanForUserInCommunity(id: number, username: String): Observable<Banned> {
-    return this.http.get<Banned>(`${this.config.ban_community_url}/${id}/user/${username}`);
+  getBanForUserInCommunity(id: number, username: String): Observable<boolean> {
+    return this.http.get<boolean>(`${this.config.ban_community_url}/${id}/user/${username}`);
   }
 
   deleteBanForUserInCommunity(id: number, username: String){

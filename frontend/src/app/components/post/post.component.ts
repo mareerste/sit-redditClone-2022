@@ -14,6 +14,7 @@ import { Community } from 'src/app/model/community';
 import { AuthService } from 'src/app/service';
 import { Report } from 'src/app/model/report';
 import { MatDialog } from '@angular/material';
+import { BanService } from 'src/app/service/ban.service';
 
 @Component({
   selector: 'post-list-item',
@@ -27,18 +28,20 @@ export class PostComponent implements OnInit {
   @Input()
   showComments: boolean;
   karma: number = 0;
+  communitySuspended = false;
   form: FormGroup;
   community: Community
   @Output()
   clickedEventEmitChange = new EventEmitter<Post>();
   @Output()
   clickedEventEmitDelete = new EventEmitter<Post>();
-
-  report:Report;
+  isBanned = false;
+  report: Report;
 
   private users: User[];
   constructor(
     private reactionService: ReactionService,
+    private banService: BanService,
     private router: Router,
     private formBuilder: FormBuilder,
     private notifierService: NotifierService,
@@ -50,15 +53,20 @@ export class PostComponent implements OnInit {
     this.loadKarma()
     this.communityService.getPostCommunity(this.post.id).subscribe(data => {
       this.community = data
+      if (data.suspended)
+        this.communitySuspended = true;
+      this.checkIfBanned()
     })
+
     this.form = this.formBuilder.group({
       type: ['', Validators.compose([Validators.required])],
       post: ['', Validators.compose([])]
     });
+
   }
 
   openReportDialog(): void {
-    this.dialog.open(ReportDialogComponent,{data:{post:this.post}})    
+    this.dialog.open(ReportDialogComponent, { data: { post: this.post } })
   }
 
   showCommentsMethod(): void {
@@ -71,12 +79,19 @@ export class PostComponent implements OnInit {
     )
   }
 
+  editPost() {
+    console.log("EDIT")
+    this.router.navigate(['/post/' + this.post.id + '/edit'])
+
+  }
+
   onSubmitUp() {
     if (this.isLoggedIn()) {
       this.form.value.type = "UPVOTE"
       this.form.value.post = this.post.id
       this.reactionService.sendReaction(this.form.value)
         .subscribe(data => {
+          this.post.reactions++;
           this.loadKarma()
         },
           error => {
@@ -97,6 +112,7 @@ export class PostComponent implements OnInit {
       this.form.value.post = this.post.id
       this.reactionService.sendReaction(this.form.value)
         .subscribe(data => {
+          this.post.reactions++;
           this.loadKarma()
         },
           error => {
@@ -111,37 +127,36 @@ export class PostComponent implements OnInit {
 
   }
 
-  isLoggedIn():User {
+  isLoggedIn(): User {
     return this.auth.getCurrentUser();
   }
   deletePost() {
-    if(this.isLoggedIn() == null){
+    if (this.isLoggedIn() == null) {
       this.notifierService.showNotification("You need to login first")
       return
     }
 
-    if(this.isLoggedIn().username == this.post.user.username){
+    if (this.isLoggedIn().username == this.post.user.username) {
       this.communityService.deleteCommunityPost(this.community.id, this.post.id).subscribe(data => {
         this.clickedEventEmitDelete.emit(this.post);
       });
-    }else{
+    } else {
       this.notifierService.showNotification("You can delete only your posts")
     }
-    
+
   }
 
-  loadKarma(){
+  loadKarma() {
     this.reactionService.getKarmaForPost(this.post.id).subscribe(Data => {
       this.karma = Data
     })
   }
 
-  onNoClick(){
-
-  }
-
-  onSubmitReport(){
-    
+  checkIfBanned() {
+    var user: User = this.auth.getCurrentUser()
+    this.banService.getBanForUserInCommunity(this.community.id, user.username).subscribe(data => {
+      this.isBanned = data
+    })
   }
 
 
