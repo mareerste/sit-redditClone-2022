@@ -8,6 +8,7 @@ import java.time.LocalDate;
 
 public class UserDTO implements Serializable {
     protected String username;
+    protected String displayName;
     protected String email;
     protected String avatar;
     protected String description;
@@ -38,6 +39,10 @@ public class UserDTO implements Serializable {
         this.avatar = avatar;
     }
 
+    public String getDisplayName() {
+        return displayName;
+    }
+
     public String getDescription() {
         return description;
     }
@@ -57,15 +62,16 @@ public class UserDTO implements Serializable {
     public UserDTO() {
     }
 
-    public UserDTO(String username, String email, String avatar, String description, LocalDate registrationDate) {
+    public UserDTO(String username, String email, String avatar, String description, LocalDate registrationDate, String displayName) {
         this.username = username;
         this.email = email;
         this.avatar = avatar;
         this.description = description;
         this.registrationDate = registrationDate;
+        this.displayName = displayName;
     }
 
     public UserDTO(User user){
-        this(user.getUsername(), user.getEmail(), user.getAvatar(), user.getDescription(), user.getRegistrationDate());
+        this(user.getUsername(), user.getEmail(), user.getAvatar(), user.getDescription(), user.getRegistrationDate(), user.getDisplayName());
     }
 }

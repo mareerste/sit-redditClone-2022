@@ -2,12 +2,15 @@
     margin-left: auto;
     margin-right: auto;
     margin-top: 10px;
-    width: 50%;
+    width: 80%;
     padding: 10px;
     border-color: #b71c1c;
     border-style: solid;
     border-width: 2px;
     border-radius: 3%;
+  }
+  mat-card-subtitle{
+    display: flex;
   }
   
   mat-card {
@@ -19,9 +22,26 @@
     -webkit-animation: fadein 1s; /* Safari and Chrome */
   
   }
+
+  .editBtn{
+    width: fit-content;
+    margin-right: 10px;
+}
   
   mat-input-container {
     display: block;
+  }
+
+  .spacer{
+    flex: 1 1 auto;
+  }
+
+  .editCard{
+    display: flex;
+    border: 2px solid #b71c1c;
+    margin: 5px;
+    color: white;
+    background-color: gray;
   }
   
   mat-spinner {

@@ -11,6 +11,7 @@ import { Routes, RouterModule } from '@angular/router';
 import { LoginComponent } from './login/login.component';
 import { SignUpComponent } from './sign-up/sign-up.component';
 import { CommunityUpdatePostComponent } from './pages/community/single-community/community-update-post/community-update-post.component';
+import { UserProfileComponent } from './pages/user-profile/user-profile.component';
 
 const routes: Routes = [
   {
@@ -51,6 +52,11 @@ const routes: Routes = [
   {
     path:'post/:id/edit',
     component:CommunityUpdatePostComponent,
+  },
+  {
+    path:'user/:username',
+    component:UserProfileComponent,
+    canActivate: [LoggedInAuthGuardGuard]
   }
 ];
 

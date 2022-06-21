@@ -26,7 +26,7 @@
         <a routerLink="/signup">Sign Up</a>
       </mat-nav-list>
       <mat-nav-list *ngIf="isLoggedIn()">
-        <a href="#">Profile</a>
+        <a (click)="showProfile()">Profile</a>
         <a type="button" [matMenuTriggerFor]="userMenu">Community</a>
         <a href="/" (click)="logout()">Sign Out</a>
 

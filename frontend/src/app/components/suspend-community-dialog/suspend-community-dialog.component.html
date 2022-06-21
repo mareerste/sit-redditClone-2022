@@ -1,6 +1,6 @@
 <mat-card>
     <h2 mat-dialog-title>Suspend Community Dialog</h2>
-      <div mat-dialog-content>
+      <div mat-dialog-content *ngIf="!isSuspended">
         <p>Are you sure you want to suspend this commuity?</p>
 
         <form (ngSubmit)="onSubmitSuspend()" [formGroup]="form">
@@ -12,6 +12,7 @@
             <button [disabled]="!form.valid" color="primary" mat-raised-button type="submit">SUSPEND</button>
         </form>
       </div>
+      <span *ngIf="isSuspended" class="field-error" style="color: green;">Community suspended!</span>
       <div mat-dialog-actions>
         <button mat-raised-button mat-dialog-close>CLOSE</button>
       </div>

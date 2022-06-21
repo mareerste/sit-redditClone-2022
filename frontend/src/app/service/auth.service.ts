@@ -41,6 +41,7 @@ export class AuthService {
         localStorage.setItem("jwt", res.accessToken)
         localStorage.setItem('currentUser', JSON.stringify({
           username: user.username,
+          password: user.password,
           roles: this.jwtUtilsService.getRoles(res.accessToken),
           token: res.accessToken
         }));
@@ -76,6 +77,14 @@ export class AuthService {
     var currentUser = JSON.parse(localStorage.getItem('currentUser'));
     var token = currentUser && currentUser.token;
     return token ? token : "";
+  }
+
+  isMyPassword(checkPassword:string): boolean {
+    var currentUser = JSON.parse(localStorage.getItem('currentUser'));
+    var password = currentUser && currentUser.password;
+    if(checkPassword == password)
+      return true
+    else return false;
   }
 
   getRole(): String {

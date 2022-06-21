@@ -16,7 +16,6 @@ export class SuspendedCommunityGuardGuard implements CanActivate {
   canActivate(
     next: ActivatedRouteSnapshot,
     state: RouterStateSnapshot): Observable<boolean | UrlTree> | Promise<boolean | UrlTree> | boolean | UrlTree {
-      console.log("PARAMETAR", next.params.id)
       this.communityService.getCommunity(next.params.id).subscribe(data=>{
         if(data.suspended){
           this.router.navigate([''])

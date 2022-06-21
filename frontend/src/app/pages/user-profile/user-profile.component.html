@@ -1,0 +1,93 @@
+<mat-card elevation="5" fxFlex class="content" *ngIf="showProfil">
+
+    <mat-card-title>
+        <h3>Show {{user.username}} profile</h3>
+    </mat-card-title>
+    <mat-card-subtitle align="end" *ngIf="myProfile">
+        <span class="spacer"></span>
+        <button mat-icon-button class="editBtn" (click)="switchLayout()">
+            <mat-icon>mode_edit</mat-icon>
+        </button>
+
+    </mat-card-subtitle>
+
+    <mat-card-content>
+
+        <mat-card class="editCard">
+            Username:
+            <span class="spacer"></span> {{user.username}}
+        </mat-card>
+        <mat-card class="editCard">
+            Display name:
+            <span class="spacer"></span> {{user.displayName}}
+        </mat-card>
+        <mat-card class="editCard">
+            Eail:
+            <span class="spacer"></span>{{user.email}}
+        </mat-card>
+        <mat-card class="editCard">
+            Description:
+            <span class="spacer"></span>
+            {{user.description}}
+        </mat-card>
+        <mat-card class="editCard">
+            User since:
+            <span class="spacer"></span>
+            {{user.registrationDate}}
+        </mat-card>
+    </mat-card-content>
+
+</mat-card>
+
+<mat-card elevation="5" fxFlex class="content" *ngIf="editProfile">
+
+    <mat-card-title>
+        <h2>Edit profile</h2>
+    </mat-card-title>
+
+    <mat-card-content>
+        <p *ngIf="notification" [class]="notification.msgType">{{notification.msgBody}}</p>
+        <form (ngSubmit)="onSubmit()" [formGroup]="form" autocomplete="off">
+            <mat-form-field>
+                <label>Username: </label>
+                <input readonly formControlName="username" [value]="user.username" matInput>
+            </mat-form-field>
+            <mat-form-field>
+                <label>Display name: </label>
+                <input formControlName="displayName" [value]="user.displayName" matInput>
+            </mat-form-field>
+            
+            <div *ngIf="changePassword">
+                <mat-form-field>
+                    <label>New password: </label>
+                    <input formControlName="newPassword" matInput type="password">
+                </mat-form-field>
+                <mat-form-field>
+                    <label>Repeat new password: </label>
+                    <input formControlName="repNewPassword" matInput type="password">
+                </mat-form-field>
+            </div>
+            <mat-form-field>
+                <label>Email: </label>
+
+                <input formControlName="email" [value]="user.email" matInput>
+            </mat-form-field>
+            <mat-form-field>
+                <label>Description: </label>
+                <input formControlName="description" [value]="user.description" matInput>
+            </mat-form-field>
+            <input type="button" mat-raised-button value="change password" (click)="changePassword = !changePassword" style="display: block;margin: auto;">
+            <br>
+            <mat-form-field style="width: 90%;">
+                <label>Please enter your old password to confirm changes: </label>
+                <input formControlName="password" (placeholder)="'password'" matInput type="password">
+            </mat-form-field>
+            <br>
+            <button [disabled]="!form.valid" color="primary" mat-raised-button type="submit">Save</button>
+            <br>
+            <button color="primary" mat-raised-button (click)="switchLayout()">Go Back</button>
+        </form>
+
+    </mat-card-content>
+
+</mat-card>

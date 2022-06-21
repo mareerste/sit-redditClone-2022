@@ -4,7 +4,7 @@ import {ConfigService} from './config.service';
 import {map} from 'rxjs/operators';
 import { Observable } from 'rxjs-compat/Observable';
 import { User } from '../model/user';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 
 @Injectable({
   providedIn: 'root'
@@ -18,6 +18,20 @@ export class UserService {
     private http:HttpClient,
     private config: ConfigService
   ) {
+  }
+
+  getUser(username:String):Observable<User>{
+    return this.http.get<User>(`${this.config.user_url}/${username}`)
+  }
+
+  updateUser(user:User){
+    const headers = new HttpHeaders({
+      'Accept': 'application/json',
+      'Content-Type': 'application/json'
+    });
+    let options = {headers: headers}
+    console.log("update service user")
+    return this.http.put(`${this.config.user_url}`,user,options);
   }
 
   getMyInfo() {

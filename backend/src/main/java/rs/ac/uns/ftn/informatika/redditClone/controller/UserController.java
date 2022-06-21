@@ -78,7 +78,8 @@ public class UserController {
         User user = userService.findOne(userCreateDTO.getUsername());
         if(user == null)
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
-        user.setPassword(userCreateDTO.getPassword());
+//        
+        user.setPassword(passwordEncoder.encode(userCreateDTO.getPassword()));
         user.setEmail(userCreateDTO.getEmail());
         user.setAvatar(userCreateDTO.getAvatar());
         user.setRegistrationDate(userCreateDTO.getRegistrationDate());

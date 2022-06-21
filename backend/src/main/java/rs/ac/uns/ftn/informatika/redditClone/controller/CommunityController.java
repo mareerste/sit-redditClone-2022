@@ -110,6 +110,8 @@ public class CommunityController {
         community.setFlairs(communityDTO.getFlairs());
         community.setSuspended(communityDTO.getSuspended());
         community.setSuspendedReason(communityDTO.getSuspendedReason());
+        if(community.getSuspended() == true)
+            community.setModerators(null);
 
         community = communityService.save(community);
         return new ResponseEntity<>(new CommunityWithFlairsDTO(community), HttpStatus.OK);
