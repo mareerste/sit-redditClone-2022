@@ -18,4 +18,7 @@ public interface ReactionService {
     List<Reaction> findAllForComments();
     List<Reaction> findByCommentAndUser(Comment comment, User user);
     List<Reaction> findByPostAndUser(Post post, User user);
+
+    Long getUsersUpvotes(User user);
+    Long getUsersDownvotes(User user);
 }

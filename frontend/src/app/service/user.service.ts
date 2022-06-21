@@ -24,6 +24,10 @@ export class UserService {
     return this.http.get<User>(`${this.config.user_url}/${username}`)
   }
 
+  getUsersKarma(username:String):Observable<number>{
+    return this.http.get<number>(`${this.config.user_url}/${username}/karma`)
+  }
+
   updateUser(user:User){
     const headers = new HttpHeaders({
       'Accept': 'application/json',

@@ -35,6 +35,11 @@
             <span class="spacer"></span>
             {{user.registrationDate}}
         </mat-card>
+        <mat-card class="editCard">
+            Users karma:
+            <span class="spacer"></span>
+            {{usersKarma}}
+        </mat-card>
     </mat-card-content>
 
 </mat-card>
@@ -56,17 +61,6 @@
                 <label>Display name: </label>
                 <input formControlName="displayName" [value]="user.displayName" matInput>
             </mat-form-field>
-            
-            <div *ngIf="changePassword">
-                <mat-form-field>
-                    <label>New password: </label>
-                    <input formControlName="newPassword" matInput type="password">
-                </mat-form-field>
-                <mat-form-field>
-                    <label>Repeat new password: </label>
-                    <input formControlName="repNewPassword" matInput type="password">
-                </mat-form-field>
-            </div>
             <mat-form-field>
                 <label>Email: </label>
 
@@ -77,6 +71,16 @@
                 <input formControlName="description" [value]="user.description" matInput>
             </mat-form-field>
             <input type="button" mat-raised-button value="change password" (click)="changePassword = !changePassword" style="display: block;margin: auto;">
+            <div *ngIf="changePassword">
+                <mat-form-field>
+                    <label>New password: </label>
+                    <input formControlName="newPassword" matInput type="password">
+                </mat-form-field>
+                <mat-form-field>
+                    <label>Repeat new password: </label>
+                    <input formControlName="repNewPassword" matInput type="password">
+                </mat-form-field>
+            </div>
             <br>
             <mat-form-field style="width: 90%;">
                 <label>Please enter your old password to confirm changes: </label>

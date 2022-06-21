@@ -17,6 +17,7 @@ import rs.ac.uns.ftn.informatika.redditClone.model.entity.Community;
 import rs.ac.uns.ftn.informatika.redditClone.model.entity.User;
 import rs.ac.uns.ftn.informatika.redditClone.security.TokenUtils;
 import rs.ac.uns.ftn.informatika.redditClone.service.CommunityService;
+import rs.ac.uns.ftn.informatika.redditClone.service.ReactionService;
 import rs.ac.uns.ftn.informatika.redditClone.service.UserService;
 
 import javax.servlet.http.HttpServletResponse;
@@ -35,7 +36,8 @@ public class UserController {
     private UserDetailsService userDetailsService;
     @Autowired
     private CommunityService communityService;
-
+    @Autowired
+    private ReactionService reactionService;
     @Autowired
     AuthenticationManager authenticationManager;
     @Autowired
@@ -60,6 +62,20 @@ public class UserController {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         return new ResponseEntity<>(new UserDTO(user), HttpStatus.OK);
     }
+
+    @PreAuthorize("hasAnyRole('USER','MODERATOR', 'ADMIN')")
+    @GetMapping(value = "/{username}/karma")
+    public ResponseEntity<Long> getUsersKarm(@PathVariable String username){
+        User user = userService.findOne(username);
+        if (user == null)
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        Long karma = 0L;
+        Long upvotes = reactionService.getUsersUpvotes(user);
+        Long downvotes = reactionService.getUsersDownvotes(user);
+        karma = upvotes - downvotes;
+        return new ResponseEntity<>(karma, HttpStatus.OK);
+    }
+
     @PostMapping(consumes = "application/json")
     public ResponseEntity<UserDTO> saveUser(@RequestBody UserCreateDTO newUserDTO){
         if(newUserDTO.getUsername().equals("")||newUserDTO.getUsername() == null || newUserDTO.getPassword().equals("")||newUserDTO.getPassword() == null)
@@ -73,13 +89,14 @@ public class UserController {
     @PreAuthorize("hasAnyRole('USER','MODERATOR', 'ADMIN')")
     @PutMapping(consumes = "application/json")
     public ResponseEntity<UserDTO> updateUser(@RequestBody UserCreateDTO userCreateDTO){
-        if(userCreateDTO.getUsername().equals("")||userCreateDTO.getUsername() == null || userCreateDTO.getPassword().equals("")||userCreateDTO.getPassword() == null)
+        if(userCreateDTO.getUsername().equals("")||userCreateDTO.getUsername() == null)
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         User user = userService.findOne(userCreateDTO.getUsername());
         if(user == null)
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
-//        
-        user.setPassword(passwordEncoder.encode(userCreateDTO.getPassword()));
+//
+        if(userCreateDTO.getPassword() != null)
+            user.setPassword(passwordEncoder.encode(userCreateDTO.getPassword()));
         user.setEmail(userCreateDTO.getEmail());
         user.setAvatar(userCreateDTO.getAvatar());
         user.setRegistrationDate(userCreateDTO.getRegistrationDate());

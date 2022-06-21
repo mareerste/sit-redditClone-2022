@@ -36,7 +36,7 @@ insert into community_flairs(community_id, flair_id) values (2,3);
 insert into community_flairs(community_id, flair_id) values (2,4);
 
 insert into post (date,deleted, text,title,user_id,flair_id) values ('2022-06-19',false,'Tekst prvog posta','Random stvar','marko123',1);
-insert into post (date,deleted, text,title,user_id,flair_id) values ('2022-04-03',false,'Tekst drugog posta','Random stvar part 2','marko123',1);
+insert into post (date,deleted, text,title,user_id,flair_id) values ('2022-04-03',false,'Tekst drugog posta','Random stvar part 2','mirko123',1);
 insert into post (date,deleted, text,title,user_id,flair_id) values ('2022-04-03',false,'Tekst treceg posta','Random title za drugi Community','marko123',2);
 insert into post (date,deleted, text,title,user_id,flair_id) values ('2022-04-03',false,'Tekst cetvrtog posta za kostu','Random title za drugi Community 2','kosta123',2);
 
@@ -79,6 +79,11 @@ insert into reaction (date, type, comment_id,user_id) values ('2022-04-05',0,1,'
 insert into reaction (date, type, post_id,user_id) values ('2022-04-05',0,1,'marko123');
 insert into reaction (date, type, post_id,user_id) values ('2022-04-05',0,1,'mirko123');
 insert into reaction (date, type, post_id,user_id) values ('2022-04-05',1,1,'pera123');
+insert into reaction (date, type, post_id,user_id) values ('2022-04-05',0,3,'marko123');
+insert into reaction (date, type, post_id,user_id) values ('2022-04-05',0,3,'mirko123');
+insert into reaction (date, type, post_id,user_id) values ('2022-04-05',0,3,'kosta123');
+insert into reaction (date, type, post_id,user_id) values ('2022-04-05',0,2,'mirko123');
+insert into reaction (date, type, post_id,user_id) values ('2022-04-05',0,2,'kosta123');
 
 insert into report (reason,date,post_id,user_id) values (3,'2022-05-15',1,'marko123');
 insert into report (reason,date,post_id,user_id) values (4,'2022-04-17',1,'pera123');

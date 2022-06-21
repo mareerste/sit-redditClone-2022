@@ -28,7 +28,10 @@
       <p style="text-align: center;font-size: 18px;">
         {{post.text}}
       </p>
-      <p style="margin-top: 10px; text-align: end;">
+      <p *ngIf="post.user.displayName" style="margin-top: 10px; text-align: end;">
+        Posted by: {{post.user.displayName}}
+      </p>
+      <p *ngIf="!post.user.displayName" style="margin-top: 10px; text-align: end;">
         Posted by: {{post.user.username}}
       </p>
     </mat-card-content>

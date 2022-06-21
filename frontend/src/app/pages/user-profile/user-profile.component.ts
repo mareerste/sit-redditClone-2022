@@ -22,6 +22,7 @@ export class UserProfileComponent implements OnInit {
   myProfile: boolean = false;
   changePassword: false;
   validate = true;
+  usersKarma = 0;
 
   constructor(
     private userService: UserService,
@@ -33,6 +34,7 @@ export class UserProfileComponent implements OnInit {
   ngOnInit() {
     this.userService.getUser(this.route.snapshot.paramMap.get('username')).subscribe(data => {
       this.user = data
+      this.loadUsersKarma()
       this.isThatMe()
     })
     this.form = this.formBuilder.group({
@@ -77,6 +79,12 @@ export class UserProfileComponent implements OnInit {
     } else {
       this.notification = { msgType: 'error', msgBody: "Wrong password" };
     }
+  }
+
+  loadUsersKarma(){
+    this.userService.getUsersKarma(this.user.username).subscribe(data=>{
+      this.usersKarma = data
+    })
   }
 
   isThatMe() {

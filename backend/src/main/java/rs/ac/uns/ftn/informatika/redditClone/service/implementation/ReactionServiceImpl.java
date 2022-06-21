@@ -48,4 +48,14 @@ public class ReactionServiceImpl implements ReactionService {
     public List<Reaction> findByPostAndUser(Post post, User user) {
         return reactionRepository.findByPostAndUser(post,user);
     }
+
+    @Override
+    public Long getUsersUpvotes(User user) {
+        return reactionRepository.getUsersUpvotes(user.getUsername());
+    }
+
+    @Override
+    public Long getUsersDownvotes(User user) {
+        return reactionRepository.getUsersDownvotes(user.getUsername());
+    }
 }

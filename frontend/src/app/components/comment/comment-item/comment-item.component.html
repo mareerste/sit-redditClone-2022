@@ -1,5 +1,6 @@
 <mat-card *ngIf="showComment">
-    <mat-card-title style="font-size: 14px;">Posted bt: {{comment.user.username}} - {{comment.timestamp}}</mat-card-title>
+  <mat-card-title *ngIf="comment.user.displayName" style="font-size: 14px;">Posted by: {{comment.user.displayName}} - {{comment.timestamp}}</mat-card-title>
+  <mat-card-title *ngIf="!comment.user.displayName" style="font-size: 14px;">Posted by: {{comment.user.username}} - {{comment.timestamp}}</mat-card-title>
     <span class="spacer"></span>
           <div align="end" *ngIf="!isBanned">
             <!-- <input type="button" class="xButton" (click)="deleteComment()" value="X"> -->
@@ -30,7 +31,8 @@
   </mat-card>
 
   <mat-card *ngIf="editComment">
-    <mat-card-title style="font-size: 14px;">Posted bt: {{comment.user.username}} - {{comment.timestamp}}</mat-card-title>
+    <mat-card-title *ngIf="comment.user.displayName" style="font-size: 14px;">Posted by: {{comment.user.displayName}} - {{comment.timestamp}}</mat-card-title>
+    <mat-card-title *ngIf="!comment.user.displayName" style="font-size: 14px;">Posted by: {{comment.user.username}} - {{comment.timestamp}}</mat-card-title>
     <span class="spacer"></span>
     <mat-card-content>
       <form  (ngSubmit)="onSubmit()" [formGroup]="formEditComment">
