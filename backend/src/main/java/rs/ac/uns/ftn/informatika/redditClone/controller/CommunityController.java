@@ -170,13 +170,16 @@ public class CommunityController {
     }
     @PreAuthorize("hasAnyRole('USER','MODERATOR', 'ADMIN')")
     @DeleteMapping(value = "/{id}/posts/{postId}")
-    public ResponseEntity<Void> deletePost(@PathVariable Integer id,@PathVariable Integer postId) {
+    public ResponseEntity<Void> deletePost(@PathVariable Integer id,@PathVariable Integer postId, Authentication authentication) {
 
         Community community = communityService.findOne(id);
         if (community == null) {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
         Post post = postService.findOne(postId);
+        String name = authentication.getName();
+        if(!authentication.getName().equals( post.getUser().getUsername()))
+            return new ResponseEntity<>(HttpStatus.FORBIDDEN);
         if (post == null) {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         } else {

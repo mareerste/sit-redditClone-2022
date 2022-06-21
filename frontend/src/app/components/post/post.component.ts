@@ -79,9 +79,22 @@ export class PostComponent implements OnInit {
     )
   }
 
+  isMyPost() {
+    if (this.auth.isLoggedIn()) {
+      if (this.auth.getCurrentUser().username == this.post.user.username)
+        return true;
+      else false;
+    } else {
+      return false
+    }
+  }
+
   editPost() {
-    console.log("EDIT")
-    this.router.navigate(['/post/' + this.post.id + '/edit'])
+    if (this.auth.getCurrentUser().username == this.post.user.username)
+      this.router.navigate(['/post/' + this.post.id + '/edit'])
+    else {
+      this.notifierService.showNotification("You can edit only your posts..")
+    }
 
   }
 
@@ -153,10 +166,13 @@ export class PostComponent implements OnInit {
   }
 
   checkIfBanned() {
-    var user: User = this.auth.getCurrentUser()
-    this.banService.getBanForUserInCommunity(this.community.id, user.username).subscribe(data => {
-      this.isBanned = data
-    })
+    if (this.auth.isLoggedIn()) {
+      var user: User = this.auth.getCurrentUser()
+      this.banService.getBanForUserInCommunity(this.community.id, user.username).subscribe(data => {
+        this.isBanned = data
+      })
+    }else return false
+
   }
 
 

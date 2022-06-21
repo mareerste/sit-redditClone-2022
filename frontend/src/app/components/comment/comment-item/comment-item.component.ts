@@ -20,10 +20,14 @@ export class CommentItemComponent implements OnInit {
   comment:Comment;
   @Input()
   showComments:boolean;
+  showComment:boolean = true;
+  editComment:boolean = false;
+  textRequired= false;
   @Input()
   isBanned:boolean;
   karma:number = 0;
   form: FormGroup;
+  formEditComment: FormGroup;
   @Output()
   clickedEventEmit = new EventEmitter<ReactionType>()
   @Output()
@@ -45,6 +49,10 @@ export class CommentItemComponent implements OnInit {
     this.form = this.formBuilder.group({
       type: ['', Validators.compose([Validators.required])],
       comment: ['', Validators.compose([])]
+    });
+
+    this.formEditComment = this.formBuilder.group({
+      text: ['', Validators.compose([Validators.required])],
     });
   }
 
@@ -97,6 +105,18 @@ export class CommentItemComponent implements OnInit {
     return this.auth.getCurrentUser();
   }
 
+  onSubmit(){
+    if(this.formEditComment.valid){
+      this.comment.text = this.formEditComment.value.text
+      this.commentService.updateComment(this.comment).subscribe(() =>
+      {
+        this.editCommentShow()
+      })
+    }
+    
+
+  }
+
   deleteComment() {
     if(this.isLoggedIn() == null){
       this.notifierService.showNotification("You need to login first")
@@ -113,10 +133,25 @@ export class CommentItemComponent implements OnInit {
     
   }
 
+  isMyComment(){
+    if(this.auth.isLoggedIn()){
+    if(this.auth.getCurrentUser().username == this.comment.user.username)
+      return true;
+    else false;
+    }else{
+      return false
+    }
+  }
+
   loadKarma(){
     this.reactionService.getKarmaForComment(this.comment.id).subscribe(Data => {
       this.karma = Data
     })
+  }
+
+  editCommentShow(){
+    this.showComment = !this.showComment;
+    this.editComment = !this.editComment;
   }
 
 

@@ -6,6 +6,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 import rs.ac.uns.ftn.informatika.redditClone.model.dto.*;
 import rs.ac.uns.ftn.informatika.redditClone.model.entity.*;
@@ -96,10 +97,11 @@ public class PostController {
     }
     @PreAuthorize("hasAnyRole('USER','MODERATOR', 'ADMIN')")
     @PutMapping(consumes = "application/json")
-    public ResponseEntity<PostDTO> updatePost(@RequestBody PostDTO postDTO){
+    public ResponseEntity<PostDTO> updatePost(@RequestBody PostDTO postDTO, Authentication authentication){
         Post post = postService.findOne(postDTO.getId());
         if (post == null)
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+
         post.setTitle(postDTO.getTitle());
         post.setText(postDTO.getText());
         post.setImagePath(postDTO.getImagePath());
@@ -116,8 +118,9 @@ public class PostController {
 
     @PreAuthorize("hasAnyRole('USER','MODERATOR', 'ADMIN')")
     @DeleteMapping(value = "/{id}")
-    public ResponseEntity<Void> deletePost(@PathVariable Integer id) {
+    public ResponseEntity<Void> deletePost(@PathVariable Integer id, Authentication authentication) {
         Post post = postService.findOne(id);
+
         if (post != null) {
             post.setDeleted(true);
             postService.save(post);

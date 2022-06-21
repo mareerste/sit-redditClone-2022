@@ -7,10 +7,13 @@
         mat-card-avatar />
       <span class="spacer"></span>
       <div align="end">
-        <button mat-icon-button (click)="editPost()">
+        <button class="xButton" mat-icon-button *ngIf="isMyPost()" (click)="editPost()">
           <mat-icon>edit</mat-icon>
         </button>
-        <input type="button" class="xButton" (click)="deletePost()" value="X">
+        <!-- <input type="button" class="xButton" *ngIf="isMyPost()" (click)="deletePost()" value="X"> -->
+        <button class="xButton" mat-icon-button *ngIf="isMyPost()" (click)="deletePost()">
+          <mat-icon>delete</mat-icon>
+        </button>
       </div>
       <mat-card-title (click)="showPost()" class="white" style="text-align: center;">{{post.title}}</mat-card-title>
       <mat-card-subtitle style="text-align: center;" class="white">

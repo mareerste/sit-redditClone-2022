@@ -1,8 +1,15 @@
-<mat-card>
+<mat-card *ngIf="showComment">
     <mat-card-title style="font-size: 14px;">Posted bt: {{comment.user.username}} - {{comment.timestamp}}</mat-card-title>
     <span class="spacer"></span>
-          <div align="end">
-            <input type="button" class="xButton" (click)="deleteComment()" value="X">
+          <div align="end" *ngIf="!isBanned">
+            <!-- <input type="button" class="xButton" (click)="deleteComment()" value="X"> -->
+            <button class="xButton" mat-icon-button *ngIf="isMyComment()" (click)="editCommentShow()">
+              <mat-icon>edit</mat-icon>
+            </button>
+            <!-- <input type="button" class="xButton" *ngIf="isMyPost()" (click)="deletePost()" value="X"> -->
+            <button class="xButton" mat-icon-button *ngIf="isMyComment()" (click)="deleteComment()">
+              <mat-icon>delete</mat-icon>
+            </button>
           </div>
     <mat-card-subtitle style="font-size: 18px;">{{comment.text}}</mat-card-subtitle>
     <mat-card-actions align="end">
@@ -20,4 +27,29 @@
       <button mat-button (click)="showComments = !showComments">Comments</button>
     </mat-card-actions>
     <app-comment-list *ngIf="showComments" [isBanned]="isBanned" [comments]="comment.childComments" [parentComment]="comment"></app-comment-list>
+  </mat-card>
+
+  <mat-card *ngIf="editComment">
+    <mat-card-title style="font-size: 14px;">Posted bt: {{comment.user.username}} - {{comment.timestamp}}</mat-card-title>
+    <span class="spacer"></span>
+    <mat-card-content>
+      <form  (ngSubmit)="onSubmit()" [formGroup]="formEditComment">
+        <mat-form-field class="example-full-width" appearance="fill" style="width: 100%;">
+            <mat-label style="font-size: 16px; color: white;">Edit comment: </mat-label>
+            <textarea formControlName="text" required matInput style="font-size: 16px;" style="color: white;font-size: 20px;" [placeholder]="comment.text"></textarea>
+            <span *ngIf="textRequired" class="field-error" style="color: red;">Comment text can not be empty.</span>
+          </mat-form-field>
+          <mat-card-actions align="end">
+            <button [disabled]="!formEditComment.valid" color="primary" mat-icon-button type="submit" class="btn btn-primary pull-right" style="background-color: white;" value="submit" >Save</button>
+            <button mat-button (click)="editCommentShow()">Back</button>
+            </mat-card-actions>
+          <!-- <button [disabled]="!form.valid" color="primary" mat-icon-button type="submit" class="btn btn-primary pull-right" style="background-color: white;" value="submit"><mat-icon >reply</mat-icon></button> -->
+    </form>
+    </mat-card-content>
+
+    <!-- <mat-card-actions align="end">
+    <button mat-button *ngIf="isLoggedIn() && !isBanned" (click)="openReportDialog()">Save</button>
+    <button mat-button (click)="editCommentShow()">Back</button> -->
+  <!-- </mat-card-actions> -->
+
   </mat-card>
