@@ -35,10 +35,11 @@ insert into community_flairs(community_id, flair_id) values (2,2);
 insert into community_flairs(community_id, flair_id) values (2,3);
 insert into community_flairs(community_id, flair_id) values (2,4);
 
-insert into post (date,deleted, text,title,user_id,flair_id) values ('2022-06-19',false,'Tekst prvog posta','Random stvar','marko123',1);
-insert into post (date,deleted, text,title,user_id,flair_id) values ('2022-04-03',false,'Tekst drugog posta','Random stvar part 2','mirko123',1);
-insert into post (date,deleted, text,title,user_id,flair_id) values ('2022-04-03',false,'Tekst treceg posta','Random title za drugi Community','marko123',2);
-insert into post (date,deleted, text,title,user_id,flair_id) values ('2022-04-03',false,'Tekst cetvrtog posta za kostu','Random title za drugi Community 2','kosta123',2);
+insert into post (date,deleted, text,title,user_id,flair_id) values ('2022-05-20',false,'Tekst prvog posta','Random stvar','marko123',1);
+insert into post (date,deleted, text,title,user_id,flair_id) values ('2022-06-21',false,'Tekst drugog posta','Random stvar part 2','mirko123',1);
+insert into post (date,deleted, text,title,user_id,flair_id) values ('2022-06-18',false,'Tekst treceg posta','Random title za drugi Community','marko123',2);
+insert into post (date,deleted, text,title,user_id,flair_id) values ('2022-06-19',false,'Tekst cetvrtog posta za kostu','Random title za drugi Community 2','kosta123',2);
+insert into post (date,deleted, text,title,user_id,flair_id) values ('2022-06-19',false,'Tekst prvog posta 2','Neki tamo text','marko123',1);
 
 insert into community_posts (community_id,post_id) values (1,1);
 insert into community_posts (community_id,post_id) values (1,2);
@@ -46,9 +47,9 @@ insert into community_posts (community_id,post_id) values (2,3);
 insert into community_posts (community_id,post_id) values (2,4);
 
 -- insert into comment (deleted,text,timestamp,post_id,user_id) values (false,'dobar post!','2022-04-04',1,"marko123");
-insert into comment (deleted,text,timestamp,user_id) values (false,'dobar post!','2022-04-04',"marko123");
+insert into comment (deleted,text,timestamp,user_id) values (false,'dobar post!','2022-04-05',"marko123");
 -- insert into comment (deleted,text,timestamp,user_id,parent_comment_id) values (false,'Pa i nije nestoo','2022-04-04','mirko123',1);
-insert into comment (deleted,text,timestamp,user_id) values (false,'Pa i nije nestoo','2022-04-04','mirko123');
+insert into comment (deleted,text,timestamp,user_id) values (false,'Pa i nije nestoo','2022-04-06','mirko123');
 -- insert into comment (deleted,text,timestamp,user_id,parent_comment_id) values (false,'Zasto?','2022-04-04','marko123',2);
 insert into comment (deleted,text,timestamp,user_id) values (false,'Zasto?','2022-04-04','marko123');
 -- insert into comment (deleted,text,timestamp,user_id,parent_comment_id) values (false,'Bukvalno nema veze sa zivotom?','2022-04-05','pera123',1);

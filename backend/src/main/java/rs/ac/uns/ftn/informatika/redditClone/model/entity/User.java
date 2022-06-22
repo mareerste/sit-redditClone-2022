@@ -24,7 +24,7 @@ public class User {
     @Column(name = "avatar", nullable = true)
     protected String avatar;
     @Column(name = "registrationDate", nullable = false)
-    @JsonFormat(pattern = "dd-MM-yyyy", shape = JsonFormat.Shape.OBJECT)
+    @JsonFormat(pattern = "MM/dd/yyyy", shape = JsonFormat.Shape.OBJECT)
     protected LocalDate registrationDate;
     @Column(name = "description", nullable = false)
     protected String description;

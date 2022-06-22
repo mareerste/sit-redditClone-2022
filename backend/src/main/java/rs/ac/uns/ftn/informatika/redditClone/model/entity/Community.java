@@ -17,7 +17,7 @@ public class Community {
     @Column(name = "description", nullable = true)
     private String description;
     @Column(name = "creationDate")
-    @JsonFormat(pattern = "dd-MM-yyyy")
+    @JsonFormat(pattern = "MM/dd/yyyy")
     private LocalDate creationDate;
     @ElementCollection
     private Set<String> rules = new HashSet<>();

@@ -13,13 +13,13 @@ public class PostCreateDTO implements Serializable {
     private Integer id;
     private String title;
     private String text;
-    @JsonFormat(pattern = "dd-MM-yyyy", shape = JsonFormat.Shape.OBJECT)
+    @JsonFormat(pattern = "MM/dd/yyyy", shape = JsonFormat.Shape.OBJECT)
     private LocalDate creationDate;
     private String imagePath;
     private Boolean isDeleted;
     private UserCreateDTO user;
     private FlairCreateDTO flair;
-    private Set<Comment> comments = new HashSet<>();
+    private Set<CommentDTO> comments = new HashSet<>();
     private Integer reactions;
 
     public Integer getId() {
@@ -77,10 +77,10 @@ public class PostCreateDTO implements Serializable {
         this.reactions = reactions;
     }
 
-    public Set<Comment> getComments() {
+    public Set<CommentDTO> getComments() {
         return comments;
     }
-    public void setComments(Set<Comment> comments) {
+    public void setComments(Set<CommentDTO> comments) {
         this.comments = comments;
     }
 
@@ -95,8 +95,15 @@ public class PostCreateDTO implements Serializable {
         this.isDeleted = false;
         this.user = user;
         this.flair = flair;
-        this.comments = comments;
+        this.comments = loadComments(comments);
         this.reactions = reactions;
+    }
+    private Set<CommentDTO> loadComments(Set<Comment>comments){
+        Set<CommentDTO> newComments = new HashSet<>();
+        for (Comment c: comments) {
+            newComments.add(new CommentDTO(c));
+        }
+        return newComments;
     }
     public PostCreateDTO(Post post){this(post.getId(), post.getTitle(), post.getText(), post.getImagePath(), new UserCreateDTO(post.getUser()),new FlairCreateDTO(post.getFlair()), post.getComments(), post.getReactions().size());}
 

@@ -6,4 +6,5 @@ export class Comment {
     deleted?:boolean;
     user?:User;
     childComments?: Comment[];
+    reactions:number;
 }

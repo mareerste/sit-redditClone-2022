@@ -13,6 +13,7 @@ import { take } from 'rxjs/operators';
 })
 export class PostListComponent implements OnInit {
 
+  sortBy
   @Input()
   posts: Post[];
   @Output()
@@ -27,10 +28,35 @@ export class PostListComponent implements OnInit {
 
   sortByPopularity() {
     this.posts.sort((first, second) => second.reactions - first.reactions)
-    console.log(this.posts)
   }
 
-  getChange(post:Post) {
+  sortByDate() {
+    this.posts.sort(function (a, b) {
+      return new Date(b.creationDate).valueOf() - new Date(a.creationDate).valueOf();
+    });
+  }
+
+  sortByDateAndReactions() {
+
+    this.posts.sort(function (a, b) {
+      if (new Date(b.creationDate).valueOf() > new Date(a.creationDate).valueOf()) {
+        return 1
+      }
+      else if (new Date(b.creationDate).valueOf() < new Date(a.creationDate).valueOf()) {
+        return -1
+      }
+      else {
+        if (a.reactions < b.reactions)
+          return 1
+        else if (a.reactions > b.reactions)
+          return -1
+        else
+          return 0
+      }
+    })
+  }
+
+  getChange(post: Post) {
     let index = this.posts.findIndex(p => p.id == post.id);
     this.posts[index] = post;
   }

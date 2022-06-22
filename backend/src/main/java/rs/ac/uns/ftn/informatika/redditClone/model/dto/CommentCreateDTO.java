@@ -3,12 +3,11 @@ package rs.ac.uns.ftn.informatika.redditClone.model.dto;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import rs.ac.uns.ftn.informatika.redditClone.model.entity.Comment;
 
-import java.io.Serializable;
 import java.time.LocalDate;
 import java.util.HashSet;
 import java.util.Set;
 
-public class CommentDTO implements Serializable {
+public class CommentCreateDTO {
 
     private Integer id;
     private String text;
@@ -16,9 +15,9 @@ public class CommentDTO implements Serializable {
     private LocalDate timestamp;
     private Boolean isDeleted;
     private UserCreateDTO user;
-//    private CommentDTO parentComment;
+    //    private CommentDTO parentComment;
 //    private PostDTO post;
-    private Set<CommentDTO> childComments = new HashSet<>();
+    private Set<Comment> childComments = new HashSet<>();
     private Integer reactions;
 
     public Integer getId() {
@@ -66,44 +65,36 @@ public class CommentDTO implements Serializable {
     public void setUser(UserCreateDTO user) {
         this.user = user;
     }
-//    public CommentDTO getParentComment() {
+    //    public CommentDTO getParentComment() {
 //        return parentComment;
 //    }
 //    public void setParentComment(CommentDTO parentComment) {
 //        this.parentComment = parentComment;
 //    }
-    public Set<CommentDTO> getChildComments() {
+    public Set<Comment> getChildComments() {
         return childComments;
     }
-    public void setChildComments(Set<CommentDTO> childComments) {
+    public void setChildComments(Set<Comment> childComments) {
         this.childComments = childComments;
     }
 
-    public CommentDTO() {
+    public CommentCreateDTO() {
     }
 
-    public CommentDTO(Integer id, String text, LocalDate timestamp, Boolean isDeleted, UserCreateDTO user, Set<Comment> childComments, Integer reactions) {
+    public CommentCreateDTO(Integer id, String text, LocalDate timestamp, Boolean isDeleted, UserCreateDTO user, Set<Comment> childComments, Integer reactions) {
         this.id = id;
         this.text = text;
         this.timestamp = timestamp;
         this.isDeleted = isDeleted;
         this.user = user;
-        this.childComments = loadComments(childComments);
+        this.childComments = childComments;
         this.reactions = reactions;
-    }
-
-    private Set<CommentDTO> loadComments(Set<Comment>comments){
-        Set<CommentDTO> newComments = new HashSet<>();
-        for (Comment c: comments) {
-            newComments.add(new CommentDTO(c));
-        }
-        return newComments;
     }
 
 //    public CommentDTO(Comment comment){this(comment.getId(), comment.getText(), comment.getTimestamp(),comment.getDeleted(), new UserCreateDTO(comment.getUser()),(comment.getParentComment() != null && comment.getParentComment().getId() != null) ? new CommentDTO(comment.getParentComment()) : new CommentDTO(),new PostDTO(comment.getPost()));}
 //    public CommentDTO(Comment comment){this(comment.getId(), comment.getText(), comment.getTimestamp(),comment.getDeleted(), new UserCreateDTO(comment.getUser()),(comment.getParentComment() != null && comment.getParentComment().getId() != null) ? new CommentDTO(comment.getParentComment()) : null,(comment.getPost() != null && comment.getPost().getId() != null) ? new PostDTO(comment.getPost()) : null);}
 
-    public  CommentDTO(Comment comment){this(comment.getId(), comment.getText(), comment.getTimestamp(),comment.getDeleted(),new UserCreateDTO(comment.getUser()),comment.getChildComments(),comment.getReactions().size());}
+    public  CommentCreateDTO(Comment comment){this(comment.getId(), comment.getText(), comment.getTimestamp(),comment.getDeleted(),new UserCreateDTO(comment.getUser()),comment.getChildComments(),comment.getReactions().size());}
 
     @Override
     public String toString() {

@@ -15,7 +15,7 @@ public class Report {
     @Column(name = "reason",nullable = false)
     private ReportReason reason;
     @Column(name = "date",nullable = false)
-    @JsonFormat(pattern = "dd-MM-yyyy")
+    @JsonFormat(pattern = "MM/dd/yyyy")
     private LocalDate timestamp;
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "user_id",nullable = false)

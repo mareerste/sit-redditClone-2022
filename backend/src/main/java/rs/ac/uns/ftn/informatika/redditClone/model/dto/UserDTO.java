@@ -12,7 +12,7 @@ public class UserDTO implements Serializable {
     protected String email;
     protected String avatar;
     protected String description;
-    @JsonFormat(pattern = "dd-MM-yyyy", shape = JsonFormat.Shape.OBJECT)
+    @JsonFormat(pattern = "MM/dd/yyyy", shape = JsonFormat.Shape.OBJECT)
     protected LocalDate registrationDate;
 
     public String getUsername() {

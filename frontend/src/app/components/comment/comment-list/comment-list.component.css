@@ -18,3 +18,10 @@
     width: 80%;
     
   }
+
+  .sort{
+    color: white;
+    background-color: transparent;
+    border: 2px solid #b71c1c;
+    border-radius: 20px;
+  }

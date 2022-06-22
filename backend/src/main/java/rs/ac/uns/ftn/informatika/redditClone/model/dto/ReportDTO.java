@@ -14,7 +14,7 @@ import java.time.LocalDate;
 public class ReportDTO implements Serializable {
     private Integer id;
     private ReportReason reason;
-    @JsonFormat(pattern = "dd-MM-yyyy", shape = JsonFormat.Shape.OBJECT)
+    @JsonFormat(pattern = "MM/dd/yyyy", shape = JsonFormat.Shape.OBJECT)
     private LocalDate timestamp;
     private UserDTO user;
     private Boolean accepted;

@@ -1,5 +1,11 @@
 <h1 style="color: #b71c1c;text-align: center;margin: 30px;font-size: 40px;">Reddit posts</h1>
-<button (click)="sortByPopularity()">SORT</button>
+<div class="buttons" align="end">
+    <button mat-raised-button color="primary" (click)="sortByPopularity()">TOP <mat-icon>star</mat-icon></button>
+    <button mat-raised-button color="primary" (click)="sortByDate()">NEW <mat-icon >loupe</mat-icon></button>
+    <button mat-raised-button color="primary" (click)="sortByDateAndReactions()">HOT <mat-icon>whatshot</mat-icon></button>
+</div>
+
 <div *ngFor="let post of posts;">
-    <post-list-item *ngIf="!post.deleted" [showComments]="false" (clickedEventEmitChange)="getChange($event)" (clickedEventEmitDelete)="getDelete($event)" [post]="post"></post-list-item>
+    <post-list-item *ngIf="!post.deleted" [showComments]="false" (clickedEventEmitChange)="getChange($event)"
+        (clickedEventEmitDelete)="getDelete($event)" [post]="post"></post-list-item>
 </div>

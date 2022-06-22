@@ -13,7 +13,9 @@ import rs.ac.uns.ftn.informatika.redditClone.model.entity.*;
 import rs.ac.uns.ftn.informatika.redditClone.service.*;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 @CrossOrigin(origins = "http://localhost:4200")
 @RestController
@@ -97,7 +99,7 @@ public class PostController {
     }
     @PreAuthorize("hasAnyRole('USER','MODERATOR', 'ADMIN')")
     @PutMapping(consumes = "application/json")
-    public ResponseEntity<PostDTO> updatePost(@RequestBody PostDTO postDTO, Authentication authentication){
+    public ResponseEntity<PostDTO> updatePost(@RequestBody PostCreateDTO postDTO, Authentication authentication){
         Post post = postService.findOne(postDTO.getId());
         if (post == null)
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
@@ -106,7 +108,13 @@ public class PostController {
         post.setText(postDTO.getText());
         post.setImagePath(postDTO.getImagePath());
         post.setDeleted(postDTO.getDeleted());
-        post.setComments(postDTO.getComments());
+//        post.setComments(postDTO.getComments());
+        Set<Comment> comments = new HashSet<>();
+        for (CommentDTO c:
+             postDTO.getComments()) {
+            comments.add(commentService.findOne(c.getId()));
+        }
+        post.setComments(comments);
         User user = userService.findOne(postDTO.getUser().getUsername());
         post.setUser(user);
         Flair flair = flairService.findOne(postDTO.getFlair().getId());

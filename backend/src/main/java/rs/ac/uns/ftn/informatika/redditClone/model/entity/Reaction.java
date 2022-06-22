@@ -14,7 +14,7 @@ public class Reaction {
     @Column(name = "type",nullable = false)
     private ReactionType type;
     @Column(name = "date",nullable = false)
-    @JsonFormat(pattern = "dd-MM-yyyy")
+    @JsonFormat(pattern = "MM/dd/yyyy")
     private LocalDate timestamp;
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "user_id")

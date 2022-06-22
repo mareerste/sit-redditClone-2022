@@ -15,7 +15,7 @@ public class Comment {
     @Column(name = "text", nullable = false)
     private String text;
     @Column(name = "timestamp", nullable = false)
-    @JsonFormat(pattern = "dd-MM-yyyy")
+    @JsonFormat(pattern = "MM/dd/yyyy")
     private LocalDate timestamp;
     @Column(name = "deleted", nullable = false)
     private Boolean isDeleted;
@@ -31,8 +31,9 @@ public class Comment {
     private Set<Comment> childComments = new HashSet<>();
 //    @ManyToOne(fetch = FetchType.EAGER)
 //    private Post post;
-    @OneToMany(mappedBy = "comment",fetch = FetchType.LAZY,cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "comment",cascade = CascadeType.ALL,fetch = FetchType.LAZY)
     Set<Reaction> reactions = new HashSet<>();
+
 //    @OneToMany(mappedBy = "comment",fetch = FetchType.LAZY,cascade = CascadeType.ALL)
 //    Set<Report> reports = new HashSet<>();
 
@@ -70,6 +71,14 @@ public class Comment {
 
     public Set<Comment> getChildComments() {
         return childComments;
+    }
+
+    public Set<Reaction> getReactions() {
+        return reactions;
+    }
+
+    public void setReactions(Set<Reaction> reactions) {
+        this.reactions = reactions;
     }
 
     public void setChildComments(Set<Comment> childComments) {

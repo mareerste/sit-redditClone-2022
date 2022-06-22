@@ -10,7 +10,7 @@ import java.time.LocalDate;
 public class BannedDTO implements Serializable {
 
     private Integer id;
-    @JsonFormat(pattern = "dd-MM-yyyy", shape = JsonFormat.Shape.OBJECT)
+    @JsonFormat(pattern = "MM/dd/yyyy", shape = JsonFormat.Shape.OBJECT)
     private LocalDate timestamp;
     private UserDTO moderator;
     private CommunityDTO community;

@@ -12,7 +12,7 @@ public class Banned {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
     @Column(name = "date")
-    @JsonFormat(pattern = "dd-MM-yyyy", shape = JsonFormat.Shape.OBJECT)
+    @JsonFormat(pattern = "MM/dd/yyyy", shape = JsonFormat.Shape.OBJECT)
     private LocalDate timestamp;
     @ManyToOne
     @JoinColumn(name = "moderator_id",referencedColumnName = "username", nullable = true)

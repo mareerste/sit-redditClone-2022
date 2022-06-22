@@ -15,7 +15,7 @@ public class CommunityWithFlairsDTO implements Serializable {
     private Integer id;
     private String name;
     private String description;
-    @JsonFormat(pattern = "dd-MM-yyyy")
+    @JsonFormat(pattern = "MM/dd/yyyy")
     private LocalDate creationDate;
     private Set<String> rules = new HashSet<>();
     private Boolean isSuspended;

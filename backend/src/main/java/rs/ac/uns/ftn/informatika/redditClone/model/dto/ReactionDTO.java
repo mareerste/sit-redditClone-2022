@@ -11,7 +11,7 @@ import java.time.LocalDate;
 public class ReactionDTO implements Serializable {
     private Integer id;
     private ReactionType type;
-    @JsonFormat(pattern = "dd-MM-yyyy")
+    @JsonFormat(pattern = "MM/dd/yyyy")
     private LocalDate timestamp;
     private UserCreateDTO user;
     private Integer post;

@@ -95,4 +95,25 @@ export class CommentListComponent implements OnInit {
     this.parentComment.childComments.push(comment)
     this.commentService.updateComment(this.parentComment).subscribe()
   }
+
+  sortByReactions(){
+    this.comments.sort((first, second) => second.reactions - first.reactions)
+    console.log("1")
+    console.log(this.comments)
+  }
+
+  sortByDateNew(){
+    this.comments.sort(function (a, b) {
+      return new Date(b.timestamp).valueOf() - new Date(a.timestamp).valueOf();
+    });
+    console.log("2")
+    console.log(this.comments)
+  }
+  sortByDateOld(){
+    this.comments.sort(function (a, b) {
+      return new Date(a.timestamp).valueOf() - new Date(b.timestamp).valueOf();
+    });
+    console.log("3")
+    console.log(this.comments)
+  }
 }

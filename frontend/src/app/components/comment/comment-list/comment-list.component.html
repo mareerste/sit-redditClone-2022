@@ -7,6 +7,16 @@
           </mat-form-field>
           <button [disabled]="!form.valid" color="primary" mat-icon-button type="submit" class="btn btn-primary pull-right" style="background-color: white;" value="submit"><mat-icon >reply</mat-icon></button>
     </form>
+
+<mat-form-field appearance="fill" class="sort">
+  <mat-label color="primary" style="font-size: 16px; color: white;">Sort comments</mat-label>
+  <mat-select>
+    <mat-option (click)="sortByReactions()">TOP</mat-option>
+    <mat-option (click)="sortByDateNew()">DATE UP NEW</mat-option>
+    <mat-option (click)="sortByDateOld()">DATE DOWN OLD</mat-option>
+  </mat-select>
+</mat-form-field>
+
     <li *ngFor="let comment of comments">
       <app-comment-item [isBanned]="isBanned" [comment]="comment" *ngIf="!comment.deleted" (clickedEventEmit)="getChange($event)" (clickedEventEmitDelete)="getDelete($event)"></app-comment-item>
     </li>

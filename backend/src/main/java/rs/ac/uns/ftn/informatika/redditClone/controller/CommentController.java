@@ -6,6 +6,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
+import rs.ac.uns.ftn.informatika.redditClone.model.dto.CommentCreateDTO;
 import rs.ac.uns.ftn.informatika.redditClone.model.dto.CommentDTO;
 import rs.ac.uns.ftn.informatika.redditClone.model.entity.Comment;
 import rs.ac.uns.ftn.informatika.redditClone.model.entity.Post;
@@ -68,7 +69,7 @@ public class CommentController {
 //    }
     @PreAuthorize("hasAnyRole('USER','MODERATOR', 'ADMIN')")
     @PostMapping(consumes = "application/json")
-    public ResponseEntity<CommentDTO>saveComment(@RequestBody CommentDTO commentDTO, Authentication authentication){
+    public ResponseEntity<CommentDTO>saveComment(@RequestBody CommentCreateDTO commentDTO, Authentication authentication){
         if (commentDTO.getText() == null || commentDTO.getText() == "")
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         Comment comment = new Comment();
@@ -82,7 +83,7 @@ public class CommentController {
     }
     @PreAuthorize("hasAnyRole('USER','MODERATOR', 'ADMIN')")
     @PostMapping(value = "/{id}",consumes = "application/json")
-    public ResponseEntity<CommentDTO>saveCommentWithParent(@PathVariable Integer id ,@RequestBody CommentDTO commentDTO){
+    public ResponseEntity<CommentDTO>saveCommentWithParent(@PathVariable Integer id ,@RequestBody CommentCreateDTO commentDTO){
         if (commentDTO.getText() == null || commentDTO.getText() == "")
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         Comment parentComment = commentService.findOne(id);
@@ -105,7 +106,7 @@ public class CommentController {
     }
     @PreAuthorize("hasAnyRole('USER','MODERATOR', 'ADMIN')")
     @PutMapping(consumes = "application/json")
-    public ResponseEntity<CommentDTO>updateComment(@RequestBody CommentDTO commentDTO){
+    public ResponseEntity<CommentDTO>updateComment(@RequestBody CommentCreateDTO commentDTO){
         Comment comment = commentService.findOne(commentDTO.getId());
         if(comment == null)
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);

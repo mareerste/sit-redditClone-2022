@@ -17,7 +17,7 @@ public class Post {
     @Column(name = "text",nullable = false)
     private String text;
     @Column(name = "date",nullable = false)
-    @JsonFormat(pattern = "dd-MM-yyyy")
+    @JsonFormat(pattern = "MM/dd/yyyy")
     private LocalDate creationDate;
     @Column(name = "image",nullable = true)
     private String imagePath;
@@ -26,7 +26,7 @@ public class Post {
 
 //    @OneToMany(mappedBy = "post",fetch = FetchType.LAZY,cascade = CascadeType.ALL)
 //    private Set<Comment> comments = new HashSet<>();
-    @OneToMany(mappedBy = "post",cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "post",cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private Set<Reaction> reactions = new HashSet<>();
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "user_id", nullable = true)

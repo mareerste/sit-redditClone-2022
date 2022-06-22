@@ -13,13 +13,13 @@ public class PostDTO implements Serializable {
     private Integer id;
     private String title;
     private String text;
-    @JsonFormat(pattern = "dd-MM-yyyy", shape = JsonFormat.Shape.OBJECT)
+    @JsonFormat(pattern = "MM/dd/yyyy", shape = JsonFormat.Shape.OBJECT)
     private LocalDate creationDate;
     private String imagePath;
     private Boolean isDeleted;
     private UserCreateDTO user;
     private FlairDTO flair;
-    private Set<Comment> comments = new HashSet<>();
+    private Set<CommentDTO> comments = new HashSet<>();
     private Integer reactions;
 
     public Integer getId() {
@@ -71,10 +71,10 @@ public class PostDTO implements Serializable {
         isDeleted = deleted;
     }
     public void setFlair(FlairDTO flair) {this.flair = flair;}
-    public Set<Comment> getComments() {
+    public Set<CommentDTO> getComments() {
         return comments;
     }
-    public void setComments(Set<Comment> comments) {
+    public void setComments(Set<CommentDTO> comments) {
         this.comments = comments;
     }
 
@@ -97,11 +97,17 @@ public class PostDTO implements Serializable {
         this.isDeleted = isDeleted;
         this.user = user;
         this.flair = flair;
-        this.comments = comments;
+        this.comments = loadComments(comments);
         this.reactions = reactions;
     }
     public PostDTO(Post post){this(post.getId(), post.getTitle(), post.getText(), post.getCreationDate(), post.getImagePath(), post.getDeleted(), new UserCreateDTO(post.getUser()),new FlairDTO(post.getFlair()), post.getComments(), post.getReactions().size());}
-
+    private Set<CommentDTO> loadComments(Set<Comment>comments){
+            Set<CommentDTO> newComments = new HashSet<>();
+        for (Comment c: comments) {
+            newComments.add(new CommentDTO(c));
+        }
+        return newComments;
+    }
     @Override
     public String toString() {
         return "Post{" +
