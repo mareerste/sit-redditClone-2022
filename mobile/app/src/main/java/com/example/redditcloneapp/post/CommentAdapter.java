@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.app.Dialog;
 import android.content.Intent;
 import android.os.Build;
+import android.text.Layout;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
@@ -17,6 +18,7 @@ import android.widget.Toast;
 
 import androidx.annotation.RequiresApi;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentActivity;
 
 import com.example.redditcloneapp.MainActivity;
 import com.example.redditcloneapp.R;
@@ -26,6 +28,7 @@ import com.example.redditcloneapp.model.Post;
 import com.example.redditcloneapp.model.Report;
 import com.example.redditcloneapp.model.User;
 import com.example.redditcloneapp.model.enums.ReportReason;
+import com.example.redditcloneapp.tools.FragmentTransition;
 import com.example.redditcloneapp.ui.profile.ProfileActivity;
 
 import java.time.format.DateTimeFormatter;
@@ -39,7 +42,7 @@ public class CommentAdapter extends BaseAdapter {
     private User user;
 
     public CommentAdapter (Activity activity, Post post, User user){this.activity = activity;this.post = post;this.comments=post.getComments();this.user = user;}
-    public CommentAdapter (Activity activity, Comment comment){this.activity = activity ;this.comments=comment.getChildComments();}
+    public CommentAdapter (Activity activity, Comment comment,User user, Post post){this.activity = activity ;this.comments=comment.getChildComments();this.user = user;this.post = post;}
 
     @Override
     public int getCount() {
@@ -82,7 +85,7 @@ public class CommentAdapter extends BaseAdapter {
         TextView text = vi.findViewById(R.id.post_comment_text);
         text.setText(comment.getText());
         TextView karma = vi.findViewById(R.id.post_comment_karma);
-        karma.setText(comment.getCommentReaction());
+        karma.setText(comment.getReactions().toString());
         Button reportBtn = vi.findViewById(R.id.post_comment_report);
         reportBtn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -119,6 +122,33 @@ public class CommentAdapter extends BaseAdapter {
             vi.findViewById(R.id.post_comment_reply_report_layout).setVisibility(View.GONE);
             userText.setClickable(false);
         }
+
+
+
+            Button childCommentsBtn = vi.findViewById(R.id.comment_comments_btn);
+            childCommentsBtn.setOnClickListener(new View.OnClickListener() {
+
+                @Override
+                public void onClick(View view) {
+                    if(comment.getChildComments().size() != 0) {
+
+                        FragmentTransition.to(CommentCommentsFragment.newInstance(comment, user, post), (FragmentActivity) view.getContext(), false, R.id.post_single_comments_fragment);
+                    }else{
+                        Toast.makeText(view.getContext(), view.getContext().getResources().getString(R.string.no_sub_comments),Toast.LENGTH_LONG).show();
+                    }
+                }
+            });
+
+
+            Button childCommentsBackBtn = vi.findViewById(R.id.comment_comments_back_btn);
+            childCommentsBackBtn.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    FragmentTransition.to(PostCommentFragment.newInstance(post, (PostActivity) activity), (FragmentActivity) view.getContext(), false, R.id.post_single_comments_fragment);
+//                    FragmentTransition.to(PostCommentFragment.newInstance(post, this), this, false, R.id.post_single_comments_fragment);
+                }
+            });
+
 
         return vi;
     }

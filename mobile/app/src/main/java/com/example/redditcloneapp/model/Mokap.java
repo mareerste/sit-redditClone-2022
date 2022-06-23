@@ -59,14 +59,14 @@ public class Mokap implements Serializable {
     @RequiresApi(api = Build.VERSION_CODES.O)
     public static ArrayList<Comment> getComments() {
         ArrayList<Comment> comments = new ArrayList<>();
-        Comment comment1 = new Comment(1, "Komentar 1", getUsers().get(1), null, new ArrayList<>());
-        Comment comment2 = new Comment(2, "Komentar 2", getUsers().get(0), null, new ArrayList<>());
+        Comment comment1 = new Comment(1, "Komentar 1", getUsers().get(1), null, 0);
+        Comment comment2 = new Comment(2, "Komentar 2", getUsers().get(0), null, 0);
         ArrayList<Comment> subComments = new ArrayList<>();
         subComments.add(comment1);
         subComments.add(comment2);
-        Comment comment3 = new Comment(3, "Komentar 3", getUsers().get(1), subComments, getReactions());
-        Comment comment4 = new Comment(4, "Komentar 4", getUsers().get(1), null, new ArrayList<>());
-        Comment comment5 = new Comment(5, "Komentar 5", getUsers().get(1), null, new ArrayList<>());
+        Comment comment3 = new Comment(3, "Komentar 3", getUsers().get(1), subComments, 0);
+        Comment comment4 = new Comment(4, "Komentar 4", getUsers().get(1), null, 0);
+        Comment comment5 = new Comment(5, "Komentar 5", getUsers().get(1), null, 0);
 
         comments.add(comment3);
         comments.add(comment4);

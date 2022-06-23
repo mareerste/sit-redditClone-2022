@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical">
@@ -40,15 +40,39 @@
                 android:layout_toRightOf="@id/post_comment_user" />
 
         </RelativeLayout>
+
         <TextView
             android:id="@+id/post_comment_text"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_margin="10dp" />
+            android:layout_marginStart="10dp"
+            android:layout_marginTop="10dp"
+            android:layout_marginEnd="10dp"
+            android:layout_marginBottom="10dp" />
+
+        <LinearLayout
+            android:id="@+id/post_comment_reply_report_form"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="end"
+            android:orientation="horizontal">
+            <Button
+                android:id="@+id/post_comment_report"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:layout_marginLeft="10dp"
+                android:background="@drawable/ic_baseline_report_24_red"/>
+            <Button
+                android:id="@+id/comment_comments_back_btn"
+                android:layout_width="wrap_content"
+                android:text="@string/back"
+                android:layout_height="40dp"/>
+        </LinearLayout>
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
+
 
             <LinearLayout
                 android:id="@+id/post_comment_vote_layout"
@@ -89,18 +113,23 @@
                     android:layout_height="40dp"
                     android:text="@string/reply" />
                 <Button
-                    android:id="@+id/post_comment_report"
-                    android:layout_width="40dp"
+                    android:id="@+id/comment_comments_btn"
+                    android:layout_width="wrap_content"
                     android:layout_height="40dp"
-                    android:layout_marginLeft="10dp"
-                    android:background="@drawable/ic_baseline_report_24_red"/>
+                    android:text="@string/comments" />
+<!--                <Button-->
+<!--                    android:id="@+id/post_comment_report"-->
+<!--                    android:layout_width="40dp"-->
+<!--                    android:layout_height="40dp"-->
+<!--                    android:layout_marginLeft="10dp"-->
+<!--                    android:background="@drawable/ic_baseline_report_24_red"/>-->
             </LinearLayout>
         </LinearLayout>
 <!--        TODO: Import liste pod komentara - moguci problem zbog vise istih layouta sa istim idom-->
         <RelativeLayout
-            android:id="@+id/post_comment_comments"
+            android:id="@+id/comment_comments_layout"
             android:layout_width="match_parent"
             android:layout_height="match_parent" />
     </LinearLayout>
 
-</LinearLayout>
+</RelativeLayout>

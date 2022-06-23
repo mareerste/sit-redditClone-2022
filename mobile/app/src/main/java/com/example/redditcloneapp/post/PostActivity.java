@@ -44,7 +44,7 @@ public class PostActivity extends AppCompatActivity {
         TextView flair = findViewById(R.id.post_single_flair);
         title.setText(post.getTitle());
         text.setText(post.getText());
-        karma.setText(post.getReactions());
+        karma.setText(post.getReactions().toString());
         userText.setText(post.getUser().getUsername());
         userText.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -90,7 +90,7 @@ public class PostActivity extends AppCompatActivity {
             commentLayout.setVisibility(View.GONE);
             userText.setClickable(false);
         }
-        FragmentTransition.to(PostCommentFragment.newInstance(), this, false, R.id.post_single_comments_fragment);
+        FragmentTransition.to(PostCommentFragment.newInstance(post, this), this, false, R.id.post_single_comments_fragment);
 
     }
     public Post getPost(){

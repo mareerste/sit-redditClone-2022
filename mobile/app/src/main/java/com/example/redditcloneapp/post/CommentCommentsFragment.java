@@ -12,10 +12,18 @@ import android.view.ViewGroup;
 
 import com.example.redditcloneapp.R;
 import com.example.redditcloneapp.model.Comment;
+import com.example.redditcloneapp.model.Post;
+import com.example.redditcloneapp.model.User;
 
 public class CommentCommentsFragment extends ListFragment {
 
-    public static CommentCommentsFragment newInstance(){return new CommentCommentsFragment();}
+    private Comment comment;
+    private User user;
+    private Post post;
+
+    public CommentCommentsFragment(Comment comment, User user, Post post){this.comment = comment; this.user = user;this.post = post;}
+
+    public static CommentCommentsFragment newInstance(Comment comment, User user, Post post){return new CommentCommentsFragment(comment, user, post);}
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -26,8 +34,8 @@ public class CommentCommentsFragment extends ListFragment {
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-//        TODO: Adapter za komentare
-//        TODO - layut za report dugmad
+        CommentAdapter adapter = new CommentAdapter(getActivity(),comment, user, post);
+        setListAdapter(adapter);
 
     }
 }

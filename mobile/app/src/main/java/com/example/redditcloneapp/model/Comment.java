@@ -27,7 +27,7 @@ public class Comment implements Serializable {
     @SerializedName("childComments")
     private List<Comment> childComments = new ArrayList<>();
     @SerializedName("reactions")
-    private List<Reaction> reactions = new ArrayList<>();
+    private Integer reactions = 0;
 
     public Integer getId() {
         return id;
@@ -73,11 +73,11 @@ public class Comment implements Serializable {
         return childComments;
     }
 
-    public List<Reaction> getReactions() {
+    public Integer getReactions() {
         return reactions;
     }
 
-    public void setReactions(List<Reaction> reactions) {
+    public void setReactions(Integer reactions) {
         this.reactions = reactions;
     }
 
@@ -85,7 +85,7 @@ public class Comment implements Serializable {
         this.childComments = childComments;
     }
 
-    public Comment(Integer id, String text, String timestamp, Boolean isDeleted, User user, List<Comment> childComments, List<Reaction> reactions) {
+    public Comment(Integer id, String text, String timestamp, Boolean isDeleted, User user, List<Comment> childComments, Integer reactions) {
         this.id = id;
         this.text = text;
         this.timestamp = timestamp;
@@ -95,7 +95,7 @@ public class Comment implements Serializable {
         this.reactions = reactions;
     }
     @RequiresApi(api = Build.VERSION_CODES.O)
-    public Comment(Integer id, String text, User user, List<Comment> childComments, List<Reaction> reactions) {
+    public Comment(Integer id, String text, User user, List<Comment> childComments, Integer reactions) {
         this.id = id;
         this.text = text;
         this.timestamp = LocalDate.now().toString();
@@ -103,17 +103,6 @@ public class Comment implements Serializable {
         this.user = user;
         this.childComments = childComments;
         this.reactions = reactions;
-    }
-
-    public String getCommentReaction(){
-        int vote = 0;
-        for (Reaction r:this.reactions) {
-            if(r.getType() == ReactionType.UPVOTE)
-                vote++;
-            else
-                vote--;
-        }
-        return String.valueOf(vote);
     }
 
     @Override

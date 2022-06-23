@@ -97,5 +97,6 @@
     <string name="my_posts">My posts</string>
     <string name="my_comments">My comments</string>
     <string name="flair">Flair</string>
+    <string name="no_sub_comments">No sub comments</string>
 
 </resources>
