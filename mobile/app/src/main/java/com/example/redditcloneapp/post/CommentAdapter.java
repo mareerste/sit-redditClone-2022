@@ -2,6 +2,7 @@ package com.example.redditcloneapp.post;
 
 import android.app.Activity;
 import android.app.Dialog;
+import android.content.Context;
 import android.content.Intent;
 import android.os.Build;
 import android.text.Layout;
@@ -28,18 +29,31 @@ import com.example.redditcloneapp.model.Post;
 import com.example.redditcloneapp.model.Report;
 import com.example.redditcloneapp.model.User;
 import com.example.redditcloneapp.model.enums.ReportReason;
+import com.example.redditcloneapp.service.CommentApiService;
+import com.example.redditcloneapp.service.client.MyServiceInterceptor;
 import com.example.redditcloneapp.tools.FragmentTransition;
+import com.example.redditcloneapp.ui.access.SignInActivity;
 import com.example.redditcloneapp.ui.profile.ProfileActivity;
 
 import java.time.format.DateTimeFormatter;
 import java.time.format.FormatStyle;
+import java.util.ArrayList;
 import java.util.List;
+
+import okhttp3.OkHttpClient;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
+import retrofit2.Retrofit;
+import retrofit2.converter.gson.GsonConverterFactory;
 
 public class CommentAdapter extends BaseAdapter {
     private Activity activity;
     private Post post;
     private List<Comment> comments;
     private User user;
+
+    static Retrofit retrofitComment = null;
 
     public CommentAdapter (Activity activity, Post post, User user){this.activity = activity;this.post = post;this.comments=post.getComments();this.user = user;}
     public CommentAdapter (Activity activity, Comment comment,User user, Post post){this.activity = activity ;this.comments=comment.getChildComments();this.user = user;this.post = post;}
@@ -86,7 +100,7 @@ public class CommentAdapter extends BaseAdapter {
         text.setText(comment.getText());
         TextView karma = vi.findViewById(R.id.post_comment_karma);
         karma.setText(comment.getReactions().toString());
-        Button reportBtn = vi.findViewById(R.id.post_comment_report);
+        Button reportBtn = vi.findViewById(R.id.comment_report_btn);
         reportBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -118,12 +132,35 @@ public class CommentAdapter extends BaseAdapter {
         });
 
         if(user == null){
-            vi.findViewById(R.id.post_comment_vote_layout).setVisibility(View.GONE);
-            vi.findViewById(R.id.post_comment_reply_report_layout).setVisibility(View.GONE);
+            vi.findViewById(R.id.comment_vote_up_btn).setVisibility(View.GONE);
+            vi.findViewById(R.id.comment_vote_down_btn).setVisibility(View.GONE);
+            vi.findViewById(R.id.comment_replay_btn).setVisibility(View.GONE);
+            vi.findViewById(R.id.comment_report_btn).setVisibility(View.GONE);
             userText.setClickable(false);
         }
 
-
+            Button replyBtn = vi.findViewById(R.id.comment_replay_btn);
+            replyBtn.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    Dialog dialog = new Dialog(activity);
+                    dialog.setContentView(R.layout.reply_on_comment);
+                    TextView text = dialog.findViewById(R.id.reply_comment_text);
+                    Button save = dialog.findViewById(R.id.reply_comment_btn);
+                    save.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View view) {
+                            if(text.getText().toString() != ""){
+                                Comment newComment = new Comment(text.getText().toString());
+                                saveComment(newComment, comment);
+                            }else{
+                                Toast.makeText(view.getContext(),view.getContext().getResources().getString(R.string.no_sub_comments),Toast.LENGTH_SHORT).show();
+                            }
+                        }
+                    });
+                    dialog.show();
+                }
+            });
 
             Button childCommentsBtn = vi.findViewById(R.id.comment_comments_btn);
             childCommentsBtn.setOnClickListener(new View.OnClickListener() {
@@ -151,5 +188,82 @@ public class CommentAdapter extends BaseAdapter {
 
 
         return vi;
+    }
+
+    private void saveComment(Comment newComment, Comment oldComment) {
+
+        MyServiceInterceptor interceptor = new MyServiceInterceptor(activity.getSharedPreferences(SignInActivity.mypreference, Context.MODE_PRIVATE).getString(SignInActivity.TOKEN, ""));
+
+        OkHttpClient client = new OkHttpClient.Builder()
+                .addInterceptor(interceptor)
+                .build();
+
+        if (retrofitComment == null) {
+            retrofitComment = new Retrofit.Builder()
+                    .client(client)
+                    .baseUrl(MainActivity.BASE_URL)
+                    .addConverterFactory(GsonConverterFactory.create())
+                    .build();
+        }
+        CommentApiService commentApiService = retrofitComment.create(CommentApiService.class);
+        Call<Comment> call = commentApiService.saveComment(newComment);
+        call.enqueue(new Callback<Comment>() {
+            @Override
+            public void onResponse(Call<Comment> call, Response<Comment> response) {
+                if(response.isSuccessful()){
+                    ArrayList<Comment> comments = oldComment.getChildComments();
+                    comments.add(response.body());
+                    System.out.println("OLD COMMEND BEFORE"+oldComment.toString());
+                    oldComment.setChildComments(comments);
+                    System.out.println("OLD COMMEND "+oldComment.toString());
+                    System.out.println("RESPONSE "+response.body().toString());
+                    Toast.makeText(activity, oldComment.toString(), Toast.LENGTH_LONG).show();
+                    updateComment(oldComment);
+                }else{
+                    Toast.makeText(activity, response.toString(), Toast.LENGTH_LONG).show();
+                }
+            }
+
+            @Override
+            public void onFailure(Call<Comment> call, Throwable t) {
+                Toast.makeText(activity, "System error: "+ t.getMessage(), Toast.LENGTH_SHORT).show();
+            }
+        });
+    }
+
+    private void updateComment(Comment comment) {
+
+        MyServiceInterceptor interceptor = new MyServiceInterceptor(activity.getSharedPreferences(SignInActivity.mypreference, Context.MODE_PRIVATE).getString(SignInActivity.TOKEN, ""));
+
+        OkHttpClient client = new OkHttpClient.Builder()
+                .addInterceptor(interceptor)
+                .build();
+
+        if (retrofitComment == null) {
+            retrofitComment = new Retrofit.Builder()
+                    .client(client)
+                    .baseUrl(MainActivity.BASE_URL)
+                    .addConverterFactory(GsonConverterFactory.create())
+                    .build();
+        }
+        CommentApiService commentApiService = retrofitComment.create(CommentApiService.class);
+        Call<Comment> call = commentApiService.updateComment(comment);
+        call.enqueue(new Callback<Comment>() {
+            @Override
+            public void onResponse(Call<Comment> call, Response<Comment> response) {
+                if(response.isSuccessful()){
+                    Intent intent = activity.getIntent();
+                    activity.finish();
+                    activity.startActivity(intent);
+                }else{
+                    Toast.makeText(activity, response.toString(), Toast.LENGTH_LONG).show();
+                }
+            }
+
+            @Override
+            public void onFailure(Call<Comment> call, Throwable t) {
+                Toast.makeText(activity, "System error: "+ t.getMessage(), Toast.LENGTH_SHORT).show();
+            }
+        });
     }
 }

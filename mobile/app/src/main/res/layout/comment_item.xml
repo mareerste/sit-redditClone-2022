@@ -57,7 +57,7 @@
             android:gravity="end"
             android:orientation="horizontal">
             <Button
-                android:id="@+id/post_comment_report"
+                android:id="@+id/comment_report_btn"
                 android:layout_width="40dp"
                 android:layout_height="40dp"
                 android:layout_marginLeft="10dp"
@@ -75,7 +75,7 @@
 
 
             <LinearLayout
-                android:id="@+id/post_comment_vote_layout"
+                android:id="@+id/comment_comment_vote_layout"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="50"
@@ -83,6 +83,7 @@
                 android:padding="5dp">
 
                 <Button
+                    android:id="@+id/comment_vote_up_btn"
                     android:layout_width="30dp"
                     android:layout_height="30dp"
                     android:background="@drawable/ic_arrow_up" />
@@ -94,9 +95,12 @@
                     android:layout_gravity="center"
                     android:layout_marginLeft="10dp"
                     android:layout_marginRight="10dp"
+                    android:background="@drawable/rounded_corners_bg"
+                    android:padding="10px"
                     android:text="0" />
 
                 <Button
+                    android:id="@+id/comment_vote_down_btn"
                     android:layout_width="30dp"
                     android:layout_height="30dp"
                     android:background="@drawable/ic_arrow_down" />
@@ -109,6 +113,7 @@
                 android:layout_weight="50"
                 android:gravity="center">
                 <Button
+                    android:id="@+id/comment_replay_btn"
                     android:layout_width="wrap_content"
                     android:layout_height="40dp"
                     android:text="@string/reply" />

@@ -24,4 +24,6 @@ public interface CommunityApiService {
             "Content-Type: application/json",
     })
     Call<Post> savePost(@Path("id") Integer id,@Body Post post);
+
+
 }

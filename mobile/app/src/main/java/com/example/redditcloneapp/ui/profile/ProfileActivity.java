@@ -4,13 +4,21 @@ import android.app.Activity;
 import android.os.Build;
 import android.os.Bundle;
 
+import com.example.redditcloneapp.MainActivity;
+import com.example.redditcloneapp.adapters.PostAdapter;
 import com.example.redditcloneapp.databinding.ActivityProfileBinding;
+import com.example.redditcloneapp.model.Post;
 import com.example.redditcloneapp.model.User;
+import com.example.redditcloneapp.service.PostApiService;
+import com.example.redditcloneapp.service.UserApiService;
+import com.example.redditcloneapp.service.client.MyServiceInterceptor;
+import com.example.redditcloneapp.ui.access.SignInActivity;
 import com.google.android.material.snackbar.Snackbar;
 
 import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.util.Log;
 import android.view.View;
 import android.widget.TextView;
 
@@ -23,6 +31,13 @@ import com.example.redditcloneapp.R;
 
 import java.time.format.DateTimeFormatter;
 import java.time.format.FormatStyle;
+import java.util.List;
+
+import okhttp3.OkHttpClient;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Retrofit;
+import retrofit2.converter.gson.GsonConverterFactory;
 
 public class ProfileActivity extends Activity {
 
@@ -45,5 +60,6 @@ public class ProfileActivity extends Activity {
         TextView textDescr = findViewById(R.id.profile_description_activity);
         textDescr.setText(user.getDescription());
     }
+
 
 }

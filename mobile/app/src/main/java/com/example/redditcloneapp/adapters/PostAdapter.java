@@ -194,4 +194,5 @@ public class PostAdapter extends BaseAdapter {
         });
         return returnCommunity[0];
     }
+
 }

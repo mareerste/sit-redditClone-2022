@@ -14,9 +14,11 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 import rs.ac.uns.ftn.informatika.redditClone.model.dto.*;
 import rs.ac.uns.ftn.informatika.redditClone.model.entity.Community;
+import rs.ac.uns.ftn.informatika.redditClone.model.entity.Post;
 import rs.ac.uns.ftn.informatika.redditClone.model.entity.User;
 import rs.ac.uns.ftn.informatika.redditClone.security.TokenUtils;
 import rs.ac.uns.ftn.informatika.redditClone.service.CommunityService;
+import rs.ac.uns.ftn.informatika.redditClone.service.PostService;
 import rs.ac.uns.ftn.informatika.redditClone.service.ReactionService;
 import rs.ac.uns.ftn.informatika.redditClone.service.UserService;
 
@@ -43,6 +45,8 @@ public class UserController {
     @Autowired
     private PasswordEncoder passwordEncoder;
     @Autowired
+    private PostService postService;
+    @Autowired
     TokenUtils tokenUtils;
 
     @GetMapping
@@ -61,6 +65,19 @@ public class UserController {
         if (user == null)
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         return new ResponseEntity<>(new UserDTO(user), HttpStatus.OK);
+    }
+    @PreAuthorize("hasAnyRole('USER','MODERATOR', 'ADMIN')")
+    @GetMapping(value = "/{username}/posts")
+    public ResponseEntity<List<PostDTO>> getUserPosts(@PathVariable String username){
+        User user = userService.findOne(username);
+        if (user == null)
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        List<Post> posts = postService.findAllByUser(user);
+        List<PostDTO> usersPosts = new ArrayList<>();
+        for (Post p: posts) {
+            usersPosts.add(new PostDTO(p));
+        }
+        return new ResponseEntity<>(usersPosts, HttpStatus.OK);
     }
 
     @PreAuthorize("hasAnyRole('USER','MODERATOR', 'ADMIN')")

@@ -106,7 +106,7 @@ public class CommentController {
     }
     @PreAuthorize("hasAnyRole('USER','MODERATOR', 'ADMIN')")
     @PutMapping(consumes = "application/json")
-    public ResponseEntity<CommentDTO>updateComment(@RequestBody CommentCreateDTO commentDTO){
+    public ResponseEntity<CommentDTO>updateComment(@RequestBody CommentDTO commentDTO){
         Comment comment = commentService.findOne(commentDTO.getId());
         if(comment == null)
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
@@ -114,7 +114,12 @@ public class CommentController {
         comment.setText(commentDTO.getText());
         comment.setTimestamp(commentDTO.getTimestamp());
         comment.setDeleted(commentDTO.getDeleted());
-        comment.setChildComments(commentDTO.getChildComments());
+//        comment.setChildComments(commentDTO.getChildComments());
+        Set<Comment> newComments = new HashSet<>();
+        for (CommentDTO c: commentDTO.getChildComments()) {
+            newComments.add(commentService.findOne(c.getId()));
+        }
+        comment.setChildComments(newComments);
         User user = userService.findOne(commentDTO.getUser().getUsername());
         comment.setUser(user);
 

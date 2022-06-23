@@ -20,14 +20,18 @@ public class Comment implements Serializable {
     private String text;
     @SerializedName("timestamp")
     private String timestamp;
-    @SerializedName("isDeleted")
+    @SerializedName("deleted")
     private Boolean isDeleted;
     @SerializedName("user")
     private User user;
     @SerializedName("childComments")
-    private List<Comment> childComments = new ArrayList<>();
+    private ArrayList<Comment> childComments = new ArrayList<>();
     @SerializedName("reactions")
     private Integer reactions = 0;
+
+    public Comment(String text) {
+        this.text = text;
+    }
 
     public Integer getId() {
         return id;
@@ -69,7 +73,7 @@ public class Comment implements Serializable {
         this.user = user;
     }
 
-    public List<Comment> getChildComments() {
+    public ArrayList<Comment> getChildComments() {
         return childComments;
     }
 
@@ -81,11 +85,11 @@ public class Comment implements Serializable {
         this.reactions = reactions;
     }
 
-    public void setChildComments(List<Comment> childComments) {
+    public void setChildComments(ArrayList<Comment> childComments) {
         this.childComments = childComments;
     }
 
-    public Comment(Integer id, String text, String timestamp, Boolean isDeleted, User user, List<Comment> childComments, Integer reactions) {
+    public Comment(Integer id, String text, String timestamp, Boolean isDeleted, User user, ArrayList<Comment> childComments, Integer reactions) {
         this.id = id;
         this.text = text;
         this.timestamp = timestamp;
@@ -95,7 +99,7 @@ public class Comment implements Serializable {
         this.reactions = reactions;
     }
     @RequiresApi(api = Build.VERSION_CODES.O)
-    public Comment(Integer id, String text, User user, List<Comment> childComments, Integer reactions) {
+    public Comment(Integer id, String text, User user, ArrayList<Comment> childComments, Integer reactions) {
         this.id = id;
         this.text = text;
         this.timestamp = LocalDate.now().toString();

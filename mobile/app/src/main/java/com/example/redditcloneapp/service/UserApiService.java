@@ -18,6 +18,9 @@ public interface UserApiService {
     @GET("user/{username}")
     Call<User> getUser(@Path("username") String username);
 
+    @GET("user/{username}/posts")
+    Call<List<Post>> getUserPosts(@Path("username") String username);
+
     @POST("user")
     @Headers({
             "Accept: application/json",

@@ -1,6 +1,7 @@
 package com.example.redditcloneapp.ui.profile;
 
 import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
 import android.os.Build;
 import android.view.View;
@@ -8,6 +9,7 @@ import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.Button;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.RequiresApi;
 
@@ -18,18 +20,33 @@ import com.example.redditcloneapp.model.Post;
 import com.example.redditcloneapp.model.User;
 import com.example.redditcloneapp.post.PostActivity;
 import com.example.redditcloneapp.post.PostEditActivity;
+import com.example.redditcloneapp.service.CommunityApiService;
+import com.example.redditcloneapp.service.client.MyServiceInterceptor;
+import com.example.redditcloneapp.tools.FragmentTransition;
+import com.example.redditcloneapp.ui.access.SignInActivity;
+import com.example.redditcloneapp.ui.community.CommunityActivity;
+import com.example.redditcloneapp.ui.community.CommunityPostsFragment;
 
 import java.time.format.DateTimeFormatter;
 import java.time.format.FormatStyle;
 import java.util.ArrayList;
+import java.util.List;
+
+import okhttp3.OkHttpClient;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
+import retrofit2.Retrofit;
+import retrofit2.converter.gson.GsonConverterFactory;
 
 public class MyPostsAdapter extends BaseAdapter {
 
     private Activity activity;
-    private ArrayList<Post> posts;
+    private List<Post> posts;
+    private User user;
 
     @RequiresApi(api = Build.VERSION_CODES.O)
-    public MyPostsAdapter(Activity activity, User user){this.activity = activity; this.posts = Mokap.findUserPosts(user);
+    public MyPostsAdapter(Activity activity, User user, List<Post> posts){this.activity = activity;this.user = user ;this.posts = posts;
     }
 
     @Override
@@ -65,10 +82,10 @@ public class MyPostsAdapter extends BaseAdapter {
                 activity.startActivity(intent);
             }
         });
-        TextView postDate = vi.findViewById(R.id.my_post_date);
+
 //        postDate.setText(post.getCreationDate().format(DateTimeFormatter
 //                .ofLocalizedDate(FormatStyle.LONG)));
-        postDate.setText(post.getCreationDate());
+
         Button editBtn = vi.findViewById(R.id.my_post_edit_btn);
         editBtn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -81,4 +98,6 @@ public class MyPostsAdapter extends BaseAdapter {
 
         return vi;
     }
+
+
 }
