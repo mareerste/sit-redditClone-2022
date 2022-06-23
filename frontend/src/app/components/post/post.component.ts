@@ -1,3 +1,5 @@
+import { HttpClient, HttpParams } from '@angular/common/http';
+import { ImageService } from 'src/app/service/image.service';
 import { ReportDialogComponent } from './../report-dialog/report-dialog.component';
 
 import { Reaction } from './../../model/reaction';
@@ -23,8 +25,13 @@ import { BanService } from 'src/app/service/ban.service';
 })
 export class PostComponent implements OnInit {
 
+  imageDirectoryPath: any = 'C:/Users/HP/Documents/Predavanja/Semestar 4/Project_RedditClone_2022/image/';
+  imageNape: any = 'malibot.jpg';
+  // \HP\Documents\Predavanja\Semestar 4\Project_RedditClone_2022\image\malibot.jpg
   @Input()
   post: Post;
+  path;
+  image;
   @Input()
   showComments: boolean;
   karma: number = 0;
@@ -43,13 +50,33 @@ export class PostComponent implements OnInit {
     private reactionService: ReactionService,
     private banService: BanService,
     private router: Router,
+    private httpClient: HttpClient,
     private formBuilder: FormBuilder,
     private notifierService: NotifierService,
     private communityService: CommunityService,
+    private imageService: ImageService,
     private auth: AuthService,
     public dialog: MatDialog) { }
 
   ngOnInit(): void {
+
+    if (this.post.imagePath != null) {
+      console.log("poziv slike")
+      
+      this.imageService.getImage3(this.post.imagePath).subscribe(data => {
+        console.log("SLIKA")
+        console.log(data)
+
+        const reader = new FileReader();
+        reader.onload = (e) => {
+          this.image = reader.result
+          console.log("dosao do e" + e)};
+        
+        reader.readAsDataURL(new Blob([data]));
+
+      })
+
+    }
     this.loadKarma()
     this.communityService.getPostCommunity(this.post.id).subscribe(data => {
       this.community = data
@@ -171,9 +198,8 @@ export class PostComponent implements OnInit {
       this.banService.getBanForUserInCommunity(this.community.id, user.username).subscribe(data => {
         this.isBanned = data
       })
-    }else return false
+    } else return false
 
   }
-
 
 }

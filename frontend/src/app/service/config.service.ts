@@ -17,6 +17,11 @@ export class ConfigService {
     return this._user_url;
   }
 
+  private _image_url = this._api_url + '/image';
+  get image_url(): string {
+    return this._image_url;
+  }
+
   private _login_url = this._api_url + '/user/login';
   get login_url(): string {
     return this._login_url;

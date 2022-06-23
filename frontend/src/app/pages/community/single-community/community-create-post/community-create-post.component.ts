@@ -5,11 +5,12 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Subject } from 'rxjs';
 import { ApiService, AuthService, ConfigService, UserService } from 'src/app/service';
-import { HttpHeaders } from '@angular/common/http';
+import { HttpHeaders, HttpClient } from '@angular/common/http';
 import { Community } from 'src/app/model/community';
 import { Flair } from 'src/app/model/flair';
 import { Post } from 'src/app/model/post';
 import { MatInputModule } from '@angular/material/input';
+import { ImageService } from 'src/app/service/image.service';
 
 interface DisplayMessage {
   msgType: string;
@@ -26,7 +27,7 @@ export class CommunityCreatePostComponent implements OnInit {
   title = 'Create post';
   form: FormGroup;
   submitted = false;
-  // @Input()
+  imagePath;
   private community:Community;
   notification: DisplayMessage;
   returnUrl: string;
@@ -35,7 +36,7 @@ export class CommunityCreatePostComponent implements OnInit {
   @Output()
   saveNewPost = new EventEmitter<Post>();
   newPost;
-
+  selectedFile:File;
   communityId;
 
   titleRequired = false;
@@ -50,10 +51,37 @@ export class CommunityCreatePostComponent implements OnInit {
     private route: ActivatedRoute,
     private formBuilder: FormBuilder,
     private apiService:ApiService,
-    private config:ConfigService
+    private config:ConfigService,
+    private imageService:ImageService,
+    private httpClient:HttpClient
   ) {
 
   }
+  onFileChanged(event){
+    this.selectedFile = event.target.files[0];
+  }
+
+  onUpload() {
+    console.log(this.selectedFile);
+    
+    //FormData API provides methods and properties to allow us easily prepare form data to be sent with POST HTTP requests.
+    const uploadImageData = new FormData();
+    uploadImageData.append('imageFile', this.selectedFile, this.selectedFile.name);
+  
+    //Make a call to the Spring Boot Application to save the image
+    // this.httpClient.post('http://localhost:8080/RedditClone/image', uploadImageData)
+    //   .subscribe( data => {
+    //     console.log(data)
+    //   }
+    //   );
+    this.imageService.saveImage(uploadImageData).subscribe(res=>{
+      console.log(res.path)
+      this.imagePath = res.path;
+    })
+
+
+  }
+
 
   ngOnInit() {
     this.route.params
@@ -68,7 +96,8 @@ export class CommunityCreatePostComponent implements OnInit {
     this.form = this.formBuilder.group({
       title: ['', Validators.compose([Validators.required, Validators.minLength(3), Validators.maxLength(64)])],
       text: ['', Validators.compose([Validators.required, Validators.minLength(3), Validators.maxLength(32)])],
-      flair: []
+      flair: [],
+      imagePath: []
     });
   }
 
@@ -88,6 +117,10 @@ export class CommunityCreatePostComponent implements OnInit {
     this.form.value.flair = JSON.parse(this.form.value.flair);
     // this.communityService.savePostInCommunity(this.form.value,this.community.id)
     // this.communityService.savePostInCommunity(this.form.value,this.community.id)
+    if(this.imagePath != undefined)
+      this.form.value.imagePath = this.imagePath;
+    console.log(this.imagePath)
+    console.log(this.form.value)
     this.communityService.savePostInCommunity(this.form.value,this.community.id)
       .subscribe(data => {
         this.saveNewPost.emit(data);
