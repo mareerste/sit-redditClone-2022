@@ -91,7 +91,7 @@ public class HomeFragment extends ListFragment {
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
                 String selected = mySpinner.getSelectedItem().toString();
-                String spinner_item;
+
                 if (!selected.equals("Sort")) {
                     sortType = selected;
                     getPosts();
@@ -109,41 +109,7 @@ public class HomeFragment extends ListFragment {
     @Override
     public void onResume() {
         super.onResume();
-//        getData();
     }
-
-//    private void getData(){
-//        arrayRequest = new JsonArrayRequest(ALL_POSTS_URL, new Response.Listener<JSONArray>() {
-//            @Override
-//            public void onResponse(JSONArray response) {
-//                System.out.println("RESPONSE: " + response);
-//                JSONObject jsonObject = null;
-//                for (int i = 0; i < response.length(); i++) {
-//                    try {
-//                        jsonObject = response.getJSONObject(i);
-//
-//                        Post post = new Post();
-//                        post.setId(jsonObject.getInt("id"));
-//                        post.setTitle(jsonObject.getString("title"));
-//                        post.setText(jsonObject.getString("text"));
-//                        post.setDeleted(jsonObject.getBoolean("deleted"));
-//
-//                        posts.add(post);
-//                    } catch (JSONException e) {
-//                        e.printStackTrace();
-//                    }
-//                }
-////                adapter
-//                PostAdapter adapter = new PostAdapter(getActivity(), ((MainActivity)getActivity()).getUser(),posts);
-//                setListAdapter(adapter);
-//            }
-//        }, new Response.ErrorListener() {
-//            @Override
-//            public void onErrorResponse(VolleyError error) {
-//
-//            }
-//        });
-//    }
 
     private void loadData(List<Post> posts){
         System.out.println("SORT TYPE" + sortType);

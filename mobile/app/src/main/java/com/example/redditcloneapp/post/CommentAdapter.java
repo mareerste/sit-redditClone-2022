@@ -58,9 +58,10 @@ public class CommentAdapter extends BaseAdapter {
 
     static Retrofit retrofitComment = null;
 
-    public CommentAdapter (Activity activity, Post post, User user){this.activity = activity;this.post = post;this.comments=post.getComments();this.user = user;}
-    public CommentAdapter (Activity activity, Comment comment,User user, Post post){this.activity = activity ;this.comments=comment.getChildComments();this.user = user;this.post = post;}
-
+//    public CommentAdapter (Activity activity, Post post, User user){this.activity = activity;this.post = post;this.comments=post.getComments();this.user = user;}
+//    public CommentAdapter (Activity activity, Post post, User user){this.activity = activity;this.post = post;this.comments=post.getComments();this.user = user;}
+//    public CommentAdapter (Activity activity, Comment comment,User user, Post post){this.activity = activity ;this.comments=comment.getChildComments();this.user = user;this.post = post;}
+    public CommentAdapter (Activity activity, List<Comment> comments,User user, Post post){this.activity = activity ;this.comments=comments;this.user = user;this.post = post;}
     @Override
     public int getCount() {
         return comments.size();
