@@ -49,6 +49,7 @@ public class SignInActivity extends AppCompatActivity {
 
     public static final String mypreference = "mypreference";
     public static final String Username = "usernameKey";
+    public static final String Password = "passwordKey";
     public static final String Role = "roleKey";
     public static final String TOKEN = "tokenKey";
 
@@ -120,6 +121,7 @@ public class SignInActivity extends AppCompatActivity {
                         SharedPreferences sharedPreferences = getSharedPreferences(mypreference, Context.MODE_PRIVATE);
                         SharedPreferences.Editor editor = sharedPreferences.edit();
                             editor.putString(Username, response.body().getUsername())
+                                    .putString(Password, passwordTW.getText().toString())
                                     .putString(Role,response.body().getRole())
                                     .putString(TOKEN,response.body().getAccess_token())
                                     .commit();

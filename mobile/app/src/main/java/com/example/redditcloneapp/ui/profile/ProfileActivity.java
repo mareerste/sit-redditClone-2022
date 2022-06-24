@@ -21,6 +21,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
@@ -42,6 +43,8 @@ import retrofit2.converter.gson.GsonConverterFactory;
 public class ProfileActivity extends Activity {
 
     private User user;
+    static Retrofit retrofit = null;
+    static final String TAG = ProfileActivity.class.getSimpleName();
 
     @RequiresApi(api = Build.VERSION_CODES.O)
     @Override
@@ -59,6 +62,33 @@ public class ProfileActivity extends Activity {
         textDate.setText(user.getRegistrationDate());
         TextView textDescr = findViewById(R.id.profile_description_activity);
         textDescr.setText(user.getDescription());
+        getUser();
+    }
+
+    private void getUser(){
+
+        String username = getSharedPreferences(SignInActivity.mypreference, MODE_PRIVATE).getString(SignInActivity.Username, "");
+        System.out.println("USERNAME"+username);
+
+        retrofit = new Retrofit.Builder()
+                .baseUrl(MainActivity.BASE_URL)
+                .addConverterFactory(GsonConverterFactory.create())
+                .build();
+
+        UserApiService userApiService = retrofit.create(UserApiService.class);
+        Call<User> call = userApiService.getUser(username);
+        call.enqueue(new Callback<User>() {
+            @RequiresApi(api = Build.VERSION_CODES.O)
+            @Override
+            public void onResponse(Call<User> call, retrofit2.Response<User> response) {
+                Toast.makeText(getApplicationContext(), response.body().toString(), Toast.LENGTH_LONG).show();
+            }
+
+            @Override
+            public void onFailure(Call<User> call, Throwable t) {
+                Log.e(TAG, t.toString());
+            }
+        });
     }
 
 

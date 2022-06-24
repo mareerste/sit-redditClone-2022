@@ -70,6 +70,14 @@ public class User implements Serializable {
         this.registrationDate = registrationDate;
     }
 
+    public String getDisplayName() {
+        return displayName;
+    }
+
+    public void setDisplayName(String displayName) {
+        this.displayName = displayName;
+    }
+
     public String getDescription() {
         return description;
     }
@@ -113,8 +121,9 @@ public class User implements Serializable {
                 ", password='" + password + '\'' +
                 ", email='" + email + '\'' +
                 ", avatar='" + avatar + '\'' +
-                ", registrationDate=" + registrationDate +
+                ", registrationDate='" + registrationDate + '\'' +
                 ", description='" + description + '\'' +
+                ", displayName='" + displayName + '\'' +
                 ", deleted=" + deleted +
                 '}';
     }

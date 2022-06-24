@@ -102,5 +102,9 @@
     <string name="down_vote_error_msg_post">You are already down vote this post</string>
     <string name="up_vote_error_msg_comment">You are already up vote this comment</string>
     <string name="down_vote_error_msg_comment">You are already down vote this comment</string>
+    <string name="display_name">Display name</string>
+    <string name="change_pw_error_msg_dont_match">New password and confirm password do not match</string>
+    <string name="change_pw_error_msg_dont_match_old">Incorrect old password</string>
+    <string name="change_pw_error_msg_empty_fields">All fields are required</string>
 
 </resources>

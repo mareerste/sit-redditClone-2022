@@ -12,6 +12,7 @@ import retrofit2.http.Body;
 import retrofit2.http.GET;
 import retrofit2.http.Headers;
 import retrofit2.http.POST;
+import retrofit2.http.PUT;
 import retrofit2.http.Path;
 
 public interface UserApiService {
@@ -27,4 +28,11 @@ public interface UserApiService {
             "Content-Type: application/json",
     })
     Call<User> saveUser(@Body User user);
+
+    @PUT("user")
+    @Headers({
+            "Accept: application/json",
+            "Content-Type: application/json",
+    })
+    Call<User> updateUser(@Body User user);
 }
