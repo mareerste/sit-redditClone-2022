@@ -126,6 +126,8 @@
                 android:id="@+id/post_karma"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:background="@drawable/rounded_corners_bg"
+                android:padding="10px"
                 android:layout_gravity="center"
                 ></TextView>
             <Button

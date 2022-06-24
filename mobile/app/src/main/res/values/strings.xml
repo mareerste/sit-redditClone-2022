@@ -98,7 +98,9 @@
     <string name="my_comments">My comments</string>
     <string name="flair">Flair</string>
     <string name="no_sub_comments">No sub comments</string>
-    <string name="up_vote_error_msg">You are already up vote this comment</string>
-    <string name="down_vote_error_msg">You are already down vote this comment</string>
+    <string name="up_vote_error_msg_post">You are already up vote this post</string>
+    <string name="down_vote_error_msg_post">You are already down vote this post</string>
+    <string name="up_vote_error_msg_comment">You are already up vote this comment</string>
+    <string name="down_vote_error_msg_comment">You are already down vote this comment</string>
 
 </resources>

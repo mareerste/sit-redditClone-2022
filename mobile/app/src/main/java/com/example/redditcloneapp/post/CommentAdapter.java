@@ -26,10 +26,13 @@ import com.example.redditcloneapp.R;
 import com.example.redditcloneapp.model.Comment;
 import com.example.redditcloneapp.model.Mokap;
 import com.example.redditcloneapp.model.Post;
+import com.example.redditcloneapp.model.Reaction;
 import com.example.redditcloneapp.model.Report;
 import com.example.redditcloneapp.model.User;
+import com.example.redditcloneapp.model.enums.ReactionType;
 import com.example.redditcloneapp.model.enums.ReportReason;
 import com.example.redditcloneapp.service.CommentApiService;
+import com.example.redditcloneapp.service.ReactionApiService;
 import com.example.redditcloneapp.service.client.MyServiceInterceptor;
 import com.example.redditcloneapp.tools.FragmentTransition;
 import com.example.redditcloneapp.ui.access.SignInActivity;
@@ -99,7 +102,8 @@ public class CommentAdapter extends BaseAdapter {
         TextView text = vi.findViewById(R.id.post_comment_text);
         text.setText(comment.getText());
         TextView karma = vi.findViewById(R.id.post_comment_karma);
-        karma.setText(comment.getReactions().toString());
+        getCommentKarma(comment,karma);
+//        karma.setText(comment.getReactions().toString());
         Button reportBtn = vi.findViewById(R.id.comment_report_btn);
         reportBtn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -128,6 +132,22 @@ public class CommentAdapter extends BaseAdapter {
                     }
                 });
                 dialog.show();
+            }
+        });
+
+        Button voteUp = vi.findViewById(R.id.comment_vote_up_btn);
+        voteUp.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                voteUpComment(comment,karma);
+            }
+        });
+
+        Button voteDown = vi.findViewById(R.id.comment_vote_down_btn);
+        voteDown.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                voteDownComment(comment,karma);
             }
         });
 
@@ -263,6 +283,119 @@ public class CommentAdapter extends BaseAdapter {
             @Override
             public void onFailure(Call<Comment> call, Throwable t) {
                 Toast.makeText(activity, "System error: "+ t.getMessage(), Toast.LENGTH_SHORT).show();
+            }
+        });
+    }
+
+    private void getCommentKarma(Comment comment, TextView karma) {
+
+        MyServiceInterceptor interceptor = new MyServiceInterceptor(activity.getSharedPreferences(SignInActivity.mypreference, Context.MODE_PRIVATE).getString(SignInActivity.TOKEN, ""));
+
+        OkHttpClient client = new OkHttpClient.Builder()
+                .addInterceptor(interceptor)
+                .build();
+
+
+        retrofitComment = new Retrofit.Builder()
+                .client(client)
+                .baseUrl(MainActivity.BASE_URL)
+                .addConverterFactory(GsonConverterFactory.create())
+                .build();
+
+        ReactionApiService reactionApiService = retrofitComment.create(ReactionApiService.class);
+
+        Call<Integer> call = reactionApiService.getCommentKarma(comment.getId());
+        call.enqueue(new Callback<Integer>() {
+            @Override
+            public void onResponse(Call<Integer> call, Response<Integer> response) {
+                if(response.isSuccessful()){
+//                    karma.setText(post.getReactions().toString());
+                    karma.setText(response.body().toString());
+                }else{
+                    Toast.makeText(activity, response.toString(), Toast.LENGTH_LONG).show();
+                    System.out.println("Not succ" + response.body().toString());
+                }
+            }
+
+            @Override
+            public void onFailure(Call<Integer> call, Throwable t) {
+                Toast.makeText(activity, "System error: "+ t.getMessage(), Toast.LENGTH_SHORT).show();
+                System.out.println("GRESKA" + t.getMessage());
+            }
+        });
+    }
+
+    private void voteUpComment(Comment comment, TextView karma){
+        MyServiceInterceptor interceptor = new MyServiceInterceptor(activity.getSharedPreferences(SignInActivity.mypreference, Context.MODE_PRIVATE).getString(SignInActivity.TOKEN, ""));
+
+        OkHttpClient client = new OkHttpClient.Builder()
+                .addInterceptor(interceptor)
+                .build();
+
+
+        retrofitComment = new Retrofit.Builder()
+                .client(client)
+                .baseUrl(MainActivity.BASE_URL)
+                .addConverterFactory(GsonConverterFactory.create())
+                .build();
+
+
+        ReactionApiService reactionApiService = retrofitComment.create(ReactionApiService.class);
+        Reaction reaction = new Reaction(ReactionType.UPVOTE,null, comment.getId());
+
+        Call<Reaction> call = reactionApiService.saveReaction(reaction);
+        call.enqueue(new Callback<Reaction>() {
+            @Override
+            public void onResponse(Call<Reaction> call, Response<Reaction> response) {
+                if(response.isSuccessful()){
+//                    TextView karma = view.findViewById(R.id.post_karma);
+                    getCommentKarma(comment,karma);
+                }else {
+                    Toast.makeText(activity, activity.getResources().getString(R.string.up_vote_error_msg_comment), Toast.LENGTH_SHORT).show();
+                }
+            }
+
+            @Override
+            public void onFailure(Call<Reaction> call, Throwable t) {
+                Toast.makeText(activity, "System error: "+ t.getMessage(), Toast.LENGTH_SHORT).show();
+            }
+        });
+
+    }
+
+    private void voteDownComment(Comment comment, TextView karma) {
+        MyServiceInterceptor interceptor = new MyServiceInterceptor(activity.getSharedPreferences(SignInActivity.mypreference, Context.MODE_PRIVATE).getString(SignInActivity.TOKEN, ""));
+
+        OkHttpClient client = new OkHttpClient.Builder()
+                .addInterceptor(interceptor)
+                .build();
+
+
+        retrofitComment = new Retrofit.Builder()
+                .client(client)
+                .baseUrl(MainActivity.BASE_URL)
+                .addConverterFactory(GsonConverterFactory.create())
+                .build();
+
+
+        ReactionApiService reactionApiService = retrofitComment.create(ReactionApiService.class);
+        Reaction reaction = new Reaction(ReactionType.DOWNVOTE, null, comment.getId());
+
+        Call<Reaction> call = reactionApiService.saveReaction(reaction);
+        call.enqueue(new Callback<Reaction>() {
+            @Override
+            public void onResponse(Call<Reaction> call, Response<Reaction> response) {
+                if (response.isSuccessful()) {
+//                    TextView karma = view.findViewById(R.id.post_karma);
+                    getCommentKarma(comment,karma);
+                } else {
+                    Toast.makeText(activity, activity.getResources().getString(R.string.up_vote_error_msg_comment), Toast.LENGTH_SHORT).show();
+                }
+            }
+
+            @Override
+            public void onFailure(Call<Reaction> call, Throwable t) {
+                Toast.makeText(activity, "System error: " + t.getMessage(), Toast.LENGTH_SHORT).show();
             }
         });
     }

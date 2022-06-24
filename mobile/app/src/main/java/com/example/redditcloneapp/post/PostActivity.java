@@ -203,7 +203,7 @@ public class PostActivity extends AppCompatActivity {
                 if(response.isSuccessful()){
                     getPostKarma(post);
                 }else {
-                    Toast.makeText(PostActivity.this, getResources().getString(R.string.down_vote_error_msg), Toast.LENGTH_SHORT).show();
+                    Toast.makeText(PostActivity.this, getResources().getString(R.string.down_vote_error_msg_post), Toast.LENGTH_SHORT).show();
                 }
             }
 
@@ -237,7 +237,7 @@ public class PostActivity extends AppCompatActivity {
                 if(response.isSuccessful()){
                     getPostKarma(post);
                 }else {
-                    Toast.makeText(PostActivity.this, getResources().getString(R.string.up_vote_error_msg), Toast.LENGTH_SHORT).show();
+                    Toast.makeText(PostActivity.this, getResources().getString(R.string.up_vote_error_msg_post), Toast.LENGTH_SHORT).show();
                 }
             }
 

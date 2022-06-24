@@ -87,8 +87,7 @@ public class PostAdapter extends BaseAdapter {
         TextView text = (TextView) vi.findViewById(R.id.post_text);
         TextView karma = (TextView) vi.findViewById(R.id.post_karma);
         getPostKarma(post, karma);
-//        TextView karma = (TextView) vi.findViewById(R.id.post_karma);
-//        karma.setText(post.getReactions().toString());
+
         TextView userText = vi.findViewById(R.id.post_user);
         TextView flair = vi.findViewById(R.id.post_flair);
         TextView date = vi.findViewById(R.id.post_date);
@@ -102,22 +101,22 @@ public class PostAdapter extends BaseAdapter {
         voteUp.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                voteUpPost(post,view);
-                System.out.println("vote up called");
+                voteUpPost(post,karma);
             }
         });
 
         Button voteDown = vi.findViewById(R.id.post_arrow_down);
-        voteUp.setOnClickListener(new View.OnClickListener() {
+        voteDown.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-//                voteDownPost(post,karma);
+                voteDownPost(post,karma);
             }
         });
 
         btnReport.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                Toast.makeText(view.getContext(),"CLICK NA REPORT",Toast.LENGTH_SHORT).show();
                 Dialog dialog = new Dialog(activity);
                 dialog.setContentView(R.layout.dialog_report);
                 TextView text = dialog.findViewById(R.id.dialog_report_text);
@@ -182,7 +181,8 @@ public class PostAdapter extends BaseAdapter {
             }
         });
         if(user == null){
-            vi.findViewById(R.id.post_vote_layout).setVisibility(View.GONE);
+            vi.findViewById(R.id.post_arrow_up).setVisibility(View.GONE);
+            vi.findViewById(R.id.post_arrow_down).setVisibility(View.GONE);
             btnReport.setVisibility(View.GONE);
             userText.setClickable(false);
         }
@@ -241,7 +241,6 @@ public class PostAdapter extends BaseAdapter {
             @Override
             public void onResponse(Call<Integer> call, Response<Integer> response) {
                 if(response.isSuccessful()){
-//                    TextView karma = (TextView) activity.findViewById(R.id.post_karma);
 //                    karma.setText(post.getReactions().toString());
                     karma.setText(response.body().toString());
                 }else{
@@ -258,7 +257,7 @@ public class PostAdapter extends BaseAdapter {
         });
     }
 
-    private void voteUpPost(Post post, View view){
+    private void voteUpPost(Post post, TextView karma){
         MyServiceInterceptor interceptor = new MyServiceInterceptor(activity.getSharedPreferences(SignInActivity.mypreference, Context.MODE_PRIVATE).getString(SignInActivity.TOKEN, ""));
 
         OkHttpClient client = new OkHttpClient.Builder()
@@ -281,10 +280,10 @@ public class PostAdapter extends BaseAdapter {
             @Override
             public void onResponse(Call<Reaction> call, Response<Reaction> response) {
                 if(response.isSuccessful()){
-                    TextView karma = view.findViewById(R.id.post_karma);
+//                    TextView karma = view.findViewById(R.id.post_karma);
                     getPostKarma(post,karma);
                 }else {
-                    Toast.makeText(activity, activity.getResources().getString(R.string.up_vote_error_msg), Toast.LENGTH_SHORT).show();
+                    Toast.makeText(activity, activity.getResources().getString(R.string.up_vote_error_msg_post), Toast.LENGTH_SHORT).show();
                 }
             }
 
@@ -293,9 +292,10 @@ public class PostAdapter extends BaseAdapter {
                 Toast.makeText(activity, "System error: "+ t.getMessage(), Toast.LENGTH_SHORT).show();
             }
         });
+
     }
 
-    private void voteDownPost(Post post, TextView karma){
+    private void voteDownPost(Post post, TextView karma) {
         MyServiceInterceptor interceptor = new MyServiceInterceptor(activity.getSharedPreferences(SignInActivity.mypreference, Context.MODE_PRIVATE).getString(SignInActivity.TOKEN, ""));
 
         OkHttpClient client = new OkHttpClient.Builder()
@@ -311,22 +311,23 @@ public class PostAdapter extends BaseAdapter {
 
 
         ReactionApiService reactionApiService = retrofit.create(ReactionApiService.class);
-        Reaction reaction = new Reaction(ReactionType.DOWNVOTE,post.getId(), null);
+        Reaction reaction = new Reaction(ReactionType.DOWNVOTE, post.getId(), null);
 
         Call<Reaction> call = reactionApiService.saveReaction(reaction);
         call.enqueue(new Callback<Reaction>() {
             @Override
             public void onResponse(Call<Reaction> call, Response<Reaction> response) {
-                if(response.isSuccessful()){
-                    getPostKarma(post,karma);
-                }else {
-                    Toast.makeText(activity, activity.getResources().getString(R.string.up_vote_error_msg), Toast.LENGTH_SHORT).show();
+                if (response.isSuccessful()) {
+//                    TextView karma = view.findViewById(R.id.post_karma);
+                    getPostKarma(post, karma);
+                } else {
+                    Toast.makeText(activity, activity.getResources().getString(R.string.up_vote_error_msg_post), Toast.LENGTH_SHORT).show();
                 }
             }
 
             @Override
             public void onFailure(Call<Reaction> call, Throwable t) {
-                Toast.makeText(activity, "System error: "+ t.getMessage(), Toast.LENGTH_SHORT).show();
+                Toast.makeText(activity, "System error: " + t.getMessage(), Toast.LENGTH_SHORT).show();
             }
         });
     }

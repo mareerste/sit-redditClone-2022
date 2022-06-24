@@ -22,7 +22,9 @@ public interface ReactionApiService {
     })
     Call<Reaction> saveReaction(@Body Reaction reaction);
 
-//    return this.http.get<number>(`${this.config.reaction_url}/post/${id}/karma`);
     @GET("reaction/post/{id}/karma")
     Call<Integer> getPostsKarma(@Path("id") Integer id);
+
+    @GET("reaction/comment/{id}/karma")
+    Call<Integer> getCommentKarma(@Path("id") Integer id);
 }
