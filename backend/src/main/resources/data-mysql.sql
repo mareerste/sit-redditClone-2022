@@ -45,6 +45,7 @@ insert into community_posts (community_id,post_id) values (1,1);
 insert into community_posts (community_id,post_id) values (1,2);
 insert into community_posts (community_id,post_id) values (2,3);
 insert into community_posts (community_id,post_id) values (2,4);
+insert into community_posts (community_id,post_id) values (2,5);
 
 -- insert into comment (deleted,text,timestamp,post_id,user_id) values (false,'dobar post!','2022-04-04',1,"marko123");
 insert into comment (deleted,text,timestamp,user_id) values (false,'dobar post!','2022-04-05',"marko123");

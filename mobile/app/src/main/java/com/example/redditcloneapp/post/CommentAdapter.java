@@ -198,13 +198,13 @@ public class CommentAdapter extends BaseAdapter {
                 .addInterceptor(interceptor)
                 .build();
 
-        if (retrofitComment == null) {
+
             retrofitComment = new Retrofit.Builder()
                     .client(client)
                     .baseUrl(MainActivity.BASE_URL)
                     .addConverterFactory(GsonConverterFactory.create())
                     .build();
-        }
+
         CommentApiService commentApiService = retrofitComment.create(CommentApiService.class);
         Call<Comment> call = commentApiService.saveComment(newComment);
         call.enqueue(new Callback<Comment>() {
@@ -239,13 +239,13 @@ public class CommentAdapter extends BaseAdapter {
                 .addInterceptor(interceptor)
                 .build();
 
-        if (retrofitComment == null) {
+
             retrofitComment = new Retrofit.Builder()
                     .client(client)
                     .baseUrl(MainActivity.BASE_URL)
                     .addConverterFactory(GsonConverterFactory.create())
                     .build();
-        }
+
         CommentApiService commentApiService = retrofitComment.create(CommentApiService.class);
         Call<Comment> call = commentApiService.updateComment(comment);
         call.enqueue(new Callback<Comment>() {

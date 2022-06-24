@@ -36,6 +36,7 @@ public class Post implements Serializable {
     private ArrayList<Comment> comments;
     @SerializedName("reactions")
     private Integer reactions;
+    private Integer karma = 0;
 
     public Integer getId() {
         return id;
@@ -87,6 +88,14 @@ public class Post implements Serializable {
 
     public User getUser() {
         return user;
+    }
+
+    public Integer getKarma() {
+        return karma;
+    }
+
+    public void setKarma(Integer karma) {
+        this.karma = karma;
     }
 
     public void setUser(User user) {

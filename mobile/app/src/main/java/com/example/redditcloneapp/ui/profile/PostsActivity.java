@@ -46,13 +46,13 @@ public class PostsActivity extends ListActivity {
                 .addInterceptor(interceptor)
                 .build();
 
-        if (retrofit == null) {
+
             retrofit = new Retrofit.Builder()
                     .client(client)
                     .baseUrl(MainActivity.BASE_URL)
                     .addConverterFactory(GsonConverterFactory.create())
                     .build();
-        }
+
         UserApiService userApiService = retrofit.create(UserApiService.class);
         Call<List<Post>> call = userApiService.getUserPosts(user.getUsername());
         call.enqueue(new Callback<List<Post>>() {

@@ -104,13 +104,13 @@ public class PostEditActivity extends AppCompatActivity {
                 .addInterceptor(interceptor)
                 .build();
 
-        if (retrofitPost == null) {
+
             retrofitPost = new Retrofit.Builder()
                     .client(client)
                     .baseUrl(MainActivity.BASE_URL)
                     .addConverterFactory(GsonConverterFactory.create())
                     .build();
-        }
+
         PostApiService postApiService = retrofitPost.create(PostApiService.class);
 
         Call<Post> call = postApiService.updatePost(post);

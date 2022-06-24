@@ -16,13 +16,13 @@ public class Reaction implements Serializable {
     @SerializedName("type")
     private ReactionType type;
     @SerializedName("timestamp")
-    private LocalDate timestamp;
+    private String timestamp;
     @SerializedName("user")
     private User user;
     @SerializedName("post")
-    private Post post;
+    private Integer post;
     @SerializedName("comment")
-    private Comment comment;
+    private Integer comment;
 
     public Integer getId() {
         return id;
@@ -40,11 +40,11 @@ public class Reaction implements Serializable {
         this.type = type;
     }
 
-    public LocalDate getTimestamp() {
+    public String getTimestamp() {
         return timestamp;
     }
 
-    public void setTimestamp(LocalDate timestamp) {
+    public void setTimestamp(String timestamp) {
         this.timestamp = timestamp;
     }
 
@@ -56,13 +56,33 @@ public class Reaction implements Serializable {
         this.user = user;
     }
 
+    public Reaction(ReactionType type, Integer post, Integer comment) {
+        this.type = type;
+        this.post = post;
+        this.comment = comment;
+    }
 
+//    public Reaction(ReactionType type, Integer comment) {
+//        this.type = type;
+//        this.comment = comment;
+//    }
 
     @RequiresApi(api = Build.VERSION_CODES.O)
     public Reaction(Integer id, ReactionType type, User user) {
         this.id = id;
         this.type = type;
-        this.timestamp = LocalDate.now();
+        this.timestamp = LocalDate.now().toString();
         this.user = user;
+    }
+
+    @Override
+    public String toString() {
+        return "Reaction{" +
+                "id=" + id +
+                ", type=" + type +
+                ", user=" + user +
+                ", post=" + post +
+                ", comment=" + comment +
+                '}';
     }
 }

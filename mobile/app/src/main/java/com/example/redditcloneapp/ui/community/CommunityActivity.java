@@ -281,13 +281,13 @@ public class CommunityActivity extends AppCompatActivity {
                 .addInterceptor(interceptor)
                 .build();
 
-        if (retrofitPost == null) {
+
             retrofitPost = new Retrofit.Builder()
                     .client(client)
                     .baseUrl(MainActivity.BASE_URL)
                     .addConverterFactory(GsonConverterFactory.create())
                     .build();
-        }
+
         CommunityApiService communityApiService = retrofitPost.create(CommunityApiService.class);
         System.out.println("COMM ID"+community.getId());
         Post post = new Post(postTitle.getText().toString(), postText.getText().toString(), selectedFlair);

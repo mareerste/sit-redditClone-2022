@@ -2,6 +2,7 @@ package com.example.redditcloneapp.adapters;
 
 import android.app.Activity;
 import android.app.Dialog;
+import android.content.Context;
 import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
@@ -23,11 +24,15 @@ import com.example.redditcloneapp.R;
 import com.example.redditcloneapp.model.Community;
 import com.example.redditcloneapp.model.Mokap;
 import com.example.redditcloneapp.model.Post;
+import com.example.redditcloneapp.model.Reaction;
 import com.example.redditcloneapp.model.Report;
 import com.example.redditcloneapp.model.User;
+import com.example.redditcloneapp.model.enums.ReactionType;
 import com.example.redditcloneapp.model.enums.ReportReason;
 import com.example.redditcloneapp.post.PostActivity;
 import com.example.redditcloneapp.service.PostApiService;
+import com.example.redditcloneapp.service.ReactionApiService;
+import com.example.redditcloneapp.service.client.MyServiceInterceptor;
 import com.example.redditcloneapp.ui.access.SignInActivity;
 import com.example.redditcloneapp.ui.community.CommunityActivity;
 import com.example.redditcloneapp.ui.profile.ProfileActivity;
@@ -38,6 +43,7 @@ import java.time.format.FormatStyle;
 import java.util.ArrayList;
 import java.util.List;
 
+import okhttp3.OkHttpClient;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -80,7 +86,9 @@ public class PostAdapter extends BaseAdapter {
         TextView title = (TextView) vi.findViewById(R.id.post_title);
         TextView text = (TextView) vi.findViewById(R.id.post_text);
         TextView karma = (TextView) vi.findViewById(R.id.post_karma);
-        karma.setText(post.getReactions().toString());
+        getPostKarma(post, karma);
+//        TextView karma = (TextView) vi.findViewById(R.id.post_karma);
+//        karma.setText(post.getReactions().toString());
         TextView userText = vi.findViewById(R.id.post_user);
         TextView flair = vi.findViewById(R.id.post_flair);
         TextView date = vi.findViewById(R.id.post_date);
@@ -89,6 +97,23 @@ public class PostAdapter extends BaseAdapter {
         Button btnReport = vi.findViewById(R.id.btn_post_report);
         title.setText(post.getTitle());
         text.setText(post.getText());
+
+        Button voteUp = vi.findViewById(R.id.post_arrow_up);
+        voteUp.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                voteUpPost(post,view);
+                System.out.println("vote up called");
+            }
+        });
+
+        Button voteDown = vi.findViewById(R.id.post_arrow_down);
+        voteUp.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+//                voteDownPost(post,karma);
+            }
+        });
 
         btnReport.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -129,14 +154,13 @@ public class PostAdapter extends BaseAdapter {
             }
         });
         flair.setText(post.getFlair().getName());
-        communityTW.setText("community");//TODO Fake comm
+        communityTW.setText("community");
         communityTW.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(activity, CommunityActivity.class);
                 intent.putExtra("user", user);
                 intent.putExtra("post", post);
-//                intent.putExtra("community", community);//TODO comm
                 activity.startActivity(intent);
 
             }
@@ -168,12 +192,12 @@ public class PostAdapter extends BaseAdapter {
 
     public Community getPostCommunity(Post post){
         final Community[] returnCommunity = new Community[1];
-        if (retrofit == null) {
+
             retrofit = new Retrofit.Builder()
                     .baseUrl(MainActivity.BASE_URL)
                     .addConverterFactory(GsonConverterFactory.create())
                     .build();
-        }
+
         PostApiService postApiService = retrofit.create(PostApiService.class);
         Call<Community> call = postApiService.getCommunityForPost(post.getId());
         call.enqueue(new Callback<Community>() {
@@ -195,4 +219,115 @@ public class PostAdapter extends BaseAdapter {
         return returnCommunity[0];
     }
 
+    private void getPostKarma(Post post, TextView karma) {
+
+        MyServiceInterceptor interceptor = new MyServiceInterceptor(activity.getSharedPreferences(SignInActivity.mypreference, Context.MODE_PRIVATE).getString(SignInActivity.TOKEN, ""));
+
+        OkHttpClient client = new OkHttpClient.Builder()
+                .addInterceptor(interceptor)
+                .build();
+
+
+        retrofit = new Retrofit.Builder()
+                .client(client)
+                .baseUrl(MainActivity.BASE_URL)
+                .addConverterFactory(GsonConverterFactory.create())
+                .build();
+
+        ReactionApiService reactionApiService = retrofit.create(ReactionApiService.class);
+
+        Call<Integer> call = reactionApiService.getPostsKarma(post.getId());
+        call.enqueue(new Callback<Integer>() {
+            @Override
+            public void onResponse(Call<Integer> call, Response<Integer> response) {
+                if(response.isSuccessful()){
+//                    TextView karma = (TextView) activity.findViewById(R.id.post_karma);
+//                    karma.setText(post.getReactions().toString());
+                    karma.setText(response.body().toString());
+                }else{
+                    Toast.makeText(activity, response.toString(), Toast.LENGTH_LONG).show();
+                    System.out.println("Not succ" + response.body().toString());
+                }
+            }
+
+            @Override
+            public void onFailure(Call<Integer> call, Throwable t) {
+                Toast.makeText(activity, "System error: "+ t.getMessage(), Toast.LENGTH_SHORT).show();
+                System.out.println("GRESKA" + t.getMessage());
+            }
+        });
+    }
+
+    private void voteUpPost(Post post, View view){
+        MyServiceInterceptor interceptor = new MyServiceInterceptor(activity.getSharedPreferences(SignInActivity.mypreference, Context.MODE_PRIVATE).getString(SignInActivity.TOKEN, ""));
+
+        OkHttpClient client = new OkHttpClient.Builder()
+                .addInterceptor(interceptor)
+                .build();
+
+
+        retrofit = new Retrofit.Builder()
+                .client(client)
+                .baseUrl(MainActivity.BASE_URL)
+                .addConverterFactory(GsonConverterFactory.create())
+                .build();
+
+
+        ReactionApiService reactionApiService = retrofit.create(ReactionApiService.class);
+        Reaction reaction = new Reaction(ReactionType.UPVOTE,post.getId(), null);
+
+        Call<Reaction> call = reactionApiService.saveReaction(reaction);
+        call.enqueue(new Callback<Reaction>() {
+            @Override
+            public void onResponse(Call<Reaction> call, Response<Reaction> response) {
+                if(response.isSuccessful()){
+                    TextView karma = view.findViewById(R.id.post_karma);
+                    getPostKarma(post,karma);
+                }else {
+                    Toast.makeText(activity, activity.getResources().getString(R.string.up_vote_error_msg), Toast.LENGTH_SHORT).show();
+                }
+            }
+
+            @Override
+            public void onFailure(Call<Reaction> call, Throwable t) {
+                Toast.makeText(activity, "System error: "+ t.getMessage(), Toast.LENGTH_SHORT).show();
+            }
+        });
+    }
+
+    private void voteDownPost(Post post, TextView karma){
+        MyServiceInterceptor interceptor = new MyServiceInterceptor(activity.getSharedPreferences(SignInActivity.mypreference, Context.MODE_PRIVATE).getString(SignInActivity.TOKEN, ""));
+
+        OkHttpClient client = new OkHttpClient.Builder()
+                .addInterceptor(interceptor)
+                .build();
+
+
+        retrofit = new Retrofit.Builder()
+                .client(client)
+                .baseUrl(MainActivity.BASE_URL)
+                .addConverterFactory(GsonConverterFactory.create())
+                .build();
+
+
+        ReactionApiService reactionApiService = retrofit.create(ReactionApiService.class);
+        Reaction reaction = new Reaction(ReactionType.DOWNVOTE,post.getId(), null);
+
+        Call<Reaction> call = reactionApiService.saveReaction(reaction);
+        call.enqueue(new Callback<Reaction>() {
+            @Override
+            public void onResponse(Call<Reaction> call, Response<Reaction> response) {
+                if(response.isSuccessful()){
+                    getPostKarma(post,karma);
+                }else {
+                    Toast.makeText(activity, activity.getResources().getString(R.string.up_vote_error_msg), Toast.LENGTH_SHORT).show();
+                }
+            }
+
+            @Override
+            public void onFailure(Call<Reaction> call, Throwable t) {
+                Toast.makeText(activity, "System error: "+ t.getMessage(), Toast.LENGTH_SHORT).show();
+            }
+        });
+    }
 }
