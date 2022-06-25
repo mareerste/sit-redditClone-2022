@@ -34,12 +34,13 @@ public class CommunityPostsFragment extends ListFragment {
     static final String TAG = CommunityActivity.class.getSimpleName();
     private Community community;
     private List<Post> posts;
-
-    public CommunityPostsFragment(List<Post> posts) {
+    private Boolean userBlocked = false;
+    public CommunityPostsFragment(List<Post> posts, Boolean userBlocked) {
         this.posts = posts;
+        this.userBlocked = userBlocked;
     }
 
-    public static CommunityPostsFragment newInstance(List<Post> posts){return new CommunityPostsFragment(posts);}
+    public static CommunityPostsFragment newInstance(List<Post> posts, Boolean userBlocked){return new CommunityPostsFragment(posts,userBlocked);}
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -51,7 +52,7 @@ public class CommunityPostsFragment extends ListFragment {
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-        CommunityPostAdapter adapter = new CommunityPostAdapter(getActivity(),((CommunityActivity)getActivity()).getUser(),posts, community);
+        CommunityPostAdapter adapter = new CommunityPostAdapter(getActivity(),((CommunityActivity)getActivity()).getUser(),posts, community, userBlocked);
         setListAdapter(adapter);
 //        getPosts();
 //        System.out.println("TESTAD"+ Mokap.getPostsForCommunity(((CommunityActivity)getActivity()).getCommunity()));
@@ -70,7 +71,7 @@ public class CommunityPostsFragment extends ListFragment {
 
             @Override
             public void onResponse(Call<List<Post>> call, retrofit2.Response<List<Post>> response) {
-                CommunityPostAdapter adapter = new CommunityPostAdapter(getActivity(),((CommunityActivity)getActivity()).getUser(),response.body(), community);
+                CommunityPostAdapter adapter = new CommunityPostAdapter(getActivity(),((CommunityActivity)getActivity()).getUser(),response.body(), community, userBlocked);
                 setListAdapter(adapter);
             }
 

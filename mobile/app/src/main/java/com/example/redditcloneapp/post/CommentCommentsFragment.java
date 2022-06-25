@@ -27,10 +27,11 @@ public class CommentCommentsFragment extends ListFragment {
     private User user;
     private Post post;
     private String sortType = "Sort";
+    private Boolean userBlocked = false;
 
-    public CommentCommentsFragment(Comment comment, User user, Post post){this.comment = comment; this.user = user;this.post = post;}
+    public CommentCommentsFragment(Comment comment, User user, Post post, Boolean userBlocked){this.comment = comment; this.user = user;this.post = post;this.userBlocked = userBlocked;}
 
-    public static CommentCommentsFragment newInstance(Comment comment, User user, Post post){return new CommentCommentsFragment(comment, user, post);}
+    public static CommentCommentsFragment newInstance(Comment comment, User user, Post post, Boolean userBlocked){return new CommentCommentsFragment(comment, user, post, userBlocked);}
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -65,7 +66,7 @@ public class CommentCommentsFragment extends ListFragment {
 
     private void getComments(){
         List<Comment> comments = comment.getChildComments();
-        CommentAdapter adapter = new CommentAdapter(getActivity(),comments, user, post);
+        CommentAdapter adapter = new CommentAdapter(getActivity(),comments, user, post, userBlocked);
         setListAdapter(adapter);
     }
 }

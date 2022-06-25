@@ -30,6 +30,7 @@ import com.example.redditcloneapp.model.Flair;
 import com.example.redditcloneapp.model.Post;
 import com.example.redditcloneapp.model.User;
 import com.example.redditcloneapp.post.PostCommentFragment;
+import com.example.redditcloneapp.service.BannedApiService;
 import com.example.redditcloneapp.service.CommunityApiService;
 import com.example.redditcloneapp.service.PostApiService;
 import com.example.redditcloneapp.service.UserApiService;
@@ -65,6 +66,7 @@ public class CommunityActivity extends AppCompatActivity {
     Button btnSavePost, newPostLayBtn;
     View newPostView;
     private Flair selectedFlair = null;
+    private boolean userBanned = false;
 
     private User user;
     private Community community;
@@ -271,7 +273,8 @@ public class CommunityActivity extends AppCompatActivity {
                 commDate.setText(response.body().getCreationDate());
                 commDesc.setText(response.body().getDescription());
                 community = response.body();
-
+                if(user != null)
+                    isBanned();
                 ArrayAdapter<Flair> adapter = new ArrayAdapter<>(getApplicationContext(), android.R.layout.simple_spinner_item, response.body().getFlairs());
                 adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
                 commFlairs.setAdapter(adapter);
@@ -366,7 +369,8 @@ public class CommunityActivity extends AppCompatActivity {
     }
 
     private void loadCommunity(Community community){
-
+        if(user != null)
+            isBanned();
         commName.setText(community.getName());
         commDate.setText(community.getCreationDate());
         commDesc.setText(community.getDescription());
@@ -513,12 +517,42 @@ public class CommunityActivity extends AppCompatActivity {
                         }
                     });
                 }
-                FragmentTransition.to(CommunityPostsFragment.newInstance(posts),CommunityActivity.this,false,R.id.comm_single_posts);
+                FragmentTransition.to(CommunityPostsFragment.newInstance(posts, userBanned),CommunityActivity.this,false,R.id.comm_single_posts);
             }
 
             @Override
             public void onFailure(Call<List<Post>> call, Throwable t) {
                 Toast.makeText(getApplicationContext(),t.toString(),Toast.LENGTH_LONG).show();
+            }
+        });
+    }
+
+        private void isBanned(){
+        MyServiceInterceptor interceptor = new MyServiceInterceptor(getSharedPreferences(SignInActivity.mypreference, Context.MODE_PRIVATE).getString(SignInActivity.TOKEN, ""));
+
+        OkHttpClient client = new OkHttpClient.Builder()
+                .addInterceptor(interceptor)
+                .build();
+
+
+        retrofit = new Retrofit.Builder()
+                .client(client)
+                .baseUrl(MainActivity.BASE_URL)
+                .addConverterFactory(GsonConverterFactory.create())
+                .build();
+
+        BannedApiService bannedApiService = retrofit.create(BannedApiService.class);
+        Call<Boolean> call = bannedApiService.isReported(community.getId(),user.getUsername());
+        call.enqueue(new Callback<Boolean>() {
+            @Override
+            public void onResponse(Call<Boolean> call, Response<Boolean> response) {
+                userBanned = response.body();
+
+            }
+
+            @Override
+            public void onFailure(Call<Boolean> call, Throwable t) {
+                Toast.makeText(CommunityActivity.this, "System error: "+ t.getMessage(), Toast.LENGTH_SHORT).show();
             }
         });
     }

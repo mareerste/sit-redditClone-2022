@@ -33,14 +33,15 @@ public class PostCommentFragment extends ListFragment {
 
     private Post post;
     private Activity activity;
+    private Boolean userBlocked;
     private String sortType = "Sort";
 
-    public PostCommentFragment(Post post, Activity activity) {
-        this.post = post;this.activity = activity;
+    public PostCommentFragment(Post post, Activity activity, Boolean userBlocked) {
+        this.post = post;this.activity = activity;this.userBlocked=userBlocked;
     }
 
-    public static PostCommentFragment newInstance(Post post, PostActivity postActivity) {
-        return new PostCommentFragment(post,postActivity);
+    public static PostCommentFragment newInstance(Post post, PostActivity postActivity, Boolean userBlocked) {
+        return new PostCommentFragment(post,postActivity, userBlocked);
     }
 
     @Override
@@ -136,7 +137,7 @@ public class PostCommentFragment extends ListFragment {
             });
         }
 
-        CommentAdapter adapter = new CommentAdapter(activity,comments, ((PostActivity)getActivity()).getUser(),post);
+        CommentAdapter adapter = new CommentAdapter(activity,comments, ((PostActivity)getActivity()).getUser(),post, userBlocked);
         setListAdapter(adapter);
     }
 }

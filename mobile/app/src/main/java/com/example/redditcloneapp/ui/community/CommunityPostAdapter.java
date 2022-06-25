@@ -51,8 +51,9 @@ public class CommunityPostAdapter extends BaseAdapter {
     private List<Post>posts;
     private User user;
     static Retrofit retrofit = null;
+    private Boolean userBlocked;
 
-    public CommunityPostAdapter (Activity activity, User user, List<Post> posts, Community community){this.activity = activity;this.user = user;this.posts = posts;this.community = community;}
+    public CommunityPostAdapter (Activity activity, User user, List<Post> posts, Community community, Boolean userBlocked){this.activity = activity;this.user = user;this.posts = posts;this.community = community;this.userBlocked = userBlocked;}
 
     @Override
     public int getCount() {
@@ -175,10 +176,11 @@ public class CommunityPostAdapter extends BaseAdapter {
                 Intent intent = new Intent(activity, PostActivity.class);
                 intent.putExtra("user", user);
                 intent.putExtra("post", post);
+                intent.putExtra("banned", userBlocked);
                 activity.startActivity(intent);
             }
         });
-        if(user == null){
+        if(user == null || userBlocked){
             vi.findViewById(R.id.post_arrow_up).setVisibility(View.GONE);
             vi.findViewById(R.id.post_arrow_down).setVisibility(View.GONE);
             btnReport.setVisibility(View.GONE);

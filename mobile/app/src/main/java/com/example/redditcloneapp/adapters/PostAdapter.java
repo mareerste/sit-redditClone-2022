@@ -21,6 +21,7 @@ import androidx.annotation.RequiresApi;
 
 import com.example.redditcloneapp.MainActivity;
 import com.example.redditcloneapp.R;
+import com.example.redditcloneapp.model.Banned;
 import com.example.redditcloneapp.model.Community;
 import com.example.redditcloneapp.model.Mokap;
 import com.example.redditcloneapp.model.Post;
@@ -30,6 +31,7 @@ import com.example.redditcloneapp.model.User;
 import com.example.redditcloneapp.model.enums.ReactionType;
 import com.example.redditcloneapp.model.enums.ReportReason;
 import com.example.redditcloneapp.post.PostActivity;
+import com.example.redditcloneapp.service.BannedApiService;
 import com.example.redditcloneapp.service.CommunityApiService;
 import com.example.redditcloneapp.service.PostApiService;
 import com.example.redditcloneapp.service.ReactionApiService;
@@ -159,7 +161,8 @@ public class PostAdapter extends BaseAdapter {
             }
         });
         flair.setText(post.getFlair().getName());
-        communityTW.setText("community");
+//        communityTW.setText("community");
+        getPostCommunity(communityTW,post);
         communityTW.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -196,8 +199,7 @@ public class PostAdapter extends BaseAdapter {
         return vi;
     }
 
-    public Community getPostCommunity(Post post){
-        final Community[] returnCommunity = new Community[1];
+    public void getPostCommunity(TextView textView,Post post){
 
             retrofit = new Retrofit.Builder()
                     .baseUrl(MainActivity.BASE_URL)
@@ -210,10 +212,7 @@ public class PostAdapter extends BaseAdapter {
 
             @Override
             public void onResponse(Call<Community> call, Response<Community> response) {
-                returnCommunity[0] = response.body();
-                System.out.println("RESPONSE: " + response.body().toString());
-                Toast.makeText(activity.getApplicationContext(), response.body().toString(),Toast.LENGTH_LONG).show();
-                community = response.body();
+                textView.setText(response.body().getName());
             }
 
             @Override
@@ -222,7 +221,6 @@ public class PostAdapter extends BaseAdapter {
                 Log.e(MainActivity.TAG, t.toString());
             }
         });
-        return returnCommunity[0];
     }
 
     private void getPostKarma(Post post, TextView karma) {
@@ -372,4 +370,5 @@ public class PostAdapter extends BaseAdapter {
             }
         });
     }
+
 }

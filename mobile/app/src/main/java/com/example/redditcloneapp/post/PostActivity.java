@@ -44,6 +44,7 @@ public class PostActivity extends AppCompatActivity {
     private User user;
     private Post post;
     private Community community;
+    private Boolean userBlocked = false;
 
     TextView comName,comDate,comDesc, karma;
     EditText inputCommentText;
@@ -60,6 +61,9 @@ public class PostActivity extends AppCompatActivity {
 
         user = (User) getIntent().getSerializableExtra("user");
         post = (Post) getIntent().getSerializableExtra("post");
+        Boolean blocked = (Boolean) getIntent().getSerializableExtra("banned");
+        if(blocked != null)
+            userBlocked = blocked;
         getPostCommunity(post);
         getPostKarma(post);
         TextView title = findViewById(R.id.post_single_title);
@@ -131,7 +135,7 @@ public class PostActivity extends AppCompatActivity {
         View commentLayout = findViewById(R.id.post_single_layout_comment);
 //        TODO: dialog na click
 
-        if(user == null){
+        if(user == null || userBlocked){
             findViewById(R.id.post_vote_up_btn).setVisibility(View.GONE);
             findViewById(R.id.post_vote_down_btn).setVisibility(View.GONE);
             reportBtn.setVisibility(View.GONE);
@@ -139,7 +143,7 @@ public class PostActivity extends AppCompatActivity {
             commentLayout.setVisibility(View.GONE);
             userText.setClickable(false);
         }
-        FragmentTransition.to(PostCommentFragment.newInstance(post, this), this, false, R.id.post_single_comments_fragment);
+        FragmentTransition.to(PostCommentFragment.newInstance(post, this, userBlocked), this, false, R.id.post_single_comments_fragment);
 
     }
     public Post getPost(){

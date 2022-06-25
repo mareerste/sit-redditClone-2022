@@ -56,6 +56,7 @@ public class CommentAdapter extends BaseAdapter {
     private Post post;
     private List<Comment> comments;
     private User user;
+    private Boolean userBlocked;
 
     static Retrofit retrofitComment = null;
     static Retrofit retrofit = null;
@@ -63,7 +64,7 @@ public class CommentAdapter extends BaseAdapter {
 //    public CommentAdapter (Activity activity, Post post, User user){this.activity = activity;this.post = post;this.comments=post.getComments();this.user = user;}
 //    public CommentAdapter (Activity activity, Post post, User user){this.activity = activity;this.post = post;this.comments=post.getComments();this.user = user;}
 //    public CommentAdapter (Activity activity, Comment comment,User user, Post post){this.activity = activity ;this.comments=comment.getChildComments();this.user = user;this.post = post;}
-    public CommentAdapter (Activity activity, List<Comment> comments,User user, Post post){this.activity = activity ;this.comments=comments;this.user = user;this.post = post;}
+    public CommentAdapter (Activity activity, List<Comment> comments,User user, Post post, Boolean userBlocked){this.activity = activity ;this.comments=comments;this.user = user;this.post = post;this.userBlocked = userBlocked;}
     @Override
     public int getCount() {
         return comments.size();
@@ -154,7 +155,7 @@ public class CommentAdapter extends BaseAdapter {
             }
         });
 
-        if(user == null){
+        if(user == null || userBlocked){
             vi.findViewById(R.id.comment_vote_up_btn).setVisibility(View.GONE);
             vi.findViewById(R.id.comment_vote_down_btn).setVisibility(View.GONE);
             vi.findViewById(R.id.comment_replay_btn).setVisibility(View.GONE);
@@ -192,7 +193,7 @@ public class CommentAdapter extends BaseAdapter {
                 public void onClick(View view) {
                     if(comment.getChildComments().size() != 0) {
 
-                        FragmentTransition.to(CommentCommentsFragment.newInstance(comment, user, post), (FragmentActivity) view.getContext(), false, R.id.post_single_comments_fragment);
+                        FragmentTransition.to(CommentCommentsFragment.newInstance(comment, user, post, userBlocked), (FragmentActivity) view.getContext(), false, R.id.post_single_comments_fragment);
                     }else{
                         Toast.makeText(view.getContext(), view.getContext().getResources().getString(R.string.no_sub_comments),Toast.LENGTH_LONG).show();
                     }
@@ -204,7 +205,7 @@ public class CommentAdapter extends BaseAdapter {
             childCommentsBackBtn.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    FragmentTransition.to(PostCommentFragment.newInstance(post, (PostActivity) activity), (FragmentActivity) view.getContext(), false, R.id.post_single_comments_fragment);
+                    FragmentTransition.to(PostCommentFragment.newInstance(post, (PostActivity) activity, userBlocked), (FragmentActivity) view.getContext(), false, R.id.post_single_comments_fragment);
 //                    FragmentTransition.to(PostCommentFragment.newInstance(post, this), this, false, R.id.post_single_comments_fragment);
                 }
             });
