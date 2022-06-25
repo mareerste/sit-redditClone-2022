@@ -13,7 +13,7 @@ public class Banned implements Serializable {
     @SerializedName("id")
     private Integer id;
     @SerializedName("timestamp")
-    private LocalDate timestamp;
+    private String timestamp;
     @SerializedName("moderator")
     private User moderator;
     @SerializedName("community")
@@ -29,11 +29,11 @@ public class Banned implements Serializable {
         this.id = id;
     }
 
-    public LocalDate getTimestamp() {
+    public String getTimestamp() {
         return timestamp;
     }
 
-    public void setTimestamp(LocalDate timestamp) {
+    public void setTimestamp(String timestamp) {
         this.timestamp = timestamp;
     }
 
@@ -62,10 +62,8 @@ public class Banned implements Serializable {
     }
 
     @RequiresApi(api = Build.VERSION_CODES.O)
-    public Banned(Integer id, User moderator, Community community, User user) {
-        this.id = id;
-        this.timestamp = LocalDate.now();
-        this.moderator = moderator;
+    public Banned(Community community, User user) {
+        this.timestamp = null;
         this.community = community;
         this.user = user;
     }

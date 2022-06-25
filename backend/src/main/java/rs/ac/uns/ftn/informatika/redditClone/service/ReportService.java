@@ -8,6 +8,7 @@ public interface ReportService {
     Report findOne(Integer id);
     List<Report> findAll();
     List<Report> findAllByComment(Comment comment);
+    Integer findAllByPostAndAccepted(Post post);
     List<Report> findAllByCommentToAnswer(Comment comment, User user);
     List<Report> findAllByPost(Post post);
     List<Report> findReportedCommunityPosts(Community community);

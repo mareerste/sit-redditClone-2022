@@ -1,51 +1,46 @@
 package com.example.redditcloneapp.service;
 
-import com.example.redditcloneapp.model.Reaction;
+import com.example.redditcloneapp.model.Banned;
 import com.example.redditcloneapp.model.Report;
 
 import java.util.List;
 
 import retrofit2.Call;
 import retrofit2.http.Body;
+import retrofit2.http.DELETE;
 import retrofit2.http.GET;
 import retrofit2.http.Headers;
 import retrofit2.http.POST;
-import retrofit2.http.PUT;
 import retrofit2.http.Path;
 
-public interface ReportApiService {
-    @POST("report")
+public interface BannedApiService {
+    @GET("banned/community/{idCommunity}/user/{idUser}")
     @Headers({
             "Accept: application/json",
             "Content-Type: application/json",
     })
-    Call<Report> saveReport(@Body Report report);
+    Call<Boolean> isReported(@Path("idCommunity") Integer id, @Path("idUser") String username);
 
-    @PUT("report/accept")
-    @Headers({
-            "Accept: application/json",
-            "Content-Type: application/json",
-    })
-    Call<Report> acceptReport(@Body Report report);
+//    banned/community/2/user/marko123
 
-    @PUT("report/decline")
+    @POST("banned")
     @Headers({
             "Accept: application/json",
             "Content-Type: application/json",
     })
-    Call<Report> declineReport(@Body Report report);
+    Call<Banned> saveBanned(@Body Banned banned);
 
-    @GET("report/community/{id}/posts")
+    @DELETE("banned/{id}")
     @Headers({
             "Accept: application/json",
             "Content-Type: application/json",
     })
-    Call<List<Report>> getCommunityReportedPosts(@Path("id") Integer id);
+    Call<Void> deleteBanned(@Path("id") Integer id);
 
-    @GET("report/comments")
+    @DELETE("banned/{communityId}/user/{username}")
     @Headers({
             "Accept: application/json",
             "Content-Type: application/json",
     })
-    Call<List<Report>> getCommunityReportedComments();
+    Call<Void> deleteBannedByUser(@Path("communityId") Integer communityId,@Path("username") String username);
 }

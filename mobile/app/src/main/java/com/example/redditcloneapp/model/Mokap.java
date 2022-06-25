@@ -163,7 +163,7 @@ public class Mokap implements Serializable {
     @RequiresApi(api = Build.VERSION_CODES.O)
     public static ArrayList<Banned> getBanneds(){
         ArrayList<Banned> banneds = new ArrayList<>();
-        banneds.add(new Banned(1, getModerators().get(0), getCommunities().get(0), getUsers().get(2)));
+        banneds.add(new Banned(getCommunities().get(0), getUsers().get(2)));
         return banneds;
     }
 

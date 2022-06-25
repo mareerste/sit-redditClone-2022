@@ -31,6 +31,7 @@ import com.example.redditcloneapp.ui.community.mycommunities.fragments.Community
 import com.example.redditcloneapp.ui.community.mycommunities.fragments.CommunityMembersFragment;
 import com.example.redditcloneapp.ui.community.mycommunities.fragments.CommunityModeratorsEditFragment;
 import com.example.redditcloneapp.ui.community.mycommunities.fragments.CommunityRulesEditFragment;
+import com.example.redditcloneapp.ui.report.ReportFragment;
 
 import okhttp3.OkHttpClient;
 import retrofit2.Call;
@@ -67,6 +68,16 @@ public class MyCommunityActivity extends AppCompatActivity {
             }
         });
         commName.setText(community.getName());
+
+        Button btnReports = findViewById(R.id.my_community_reports_btn);
+        btnReports.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                FragmentTransition.to(ReportFragment.newInstance(community), MyCommunityActivity.this,false,R.id.my_community_fragment);
+            }
+        });
+
+
         Button btnBasic = findViewById(R.id.my_community_basic_btn);
         btnBasic.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -78,7 +89,7 @@ public class MyCommunityActivity extends AppCompatActivity {
         btnMembers.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                FragmentTransition.to(CommunityMembersFragment.newInstance(), MyCommunityActivity.this,false,R.id.my_community_fragment);
+                FragmentTransition.to(CommunityMembersFragment.newInstance(community), MyCommunityActivity.this,false,R.id.my_community_fragment);
             }
         });
         Button btnModerators = findViewById(R.id.my_community_moderators_btn);

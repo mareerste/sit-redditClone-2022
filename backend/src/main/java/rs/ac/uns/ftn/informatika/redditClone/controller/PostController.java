@@ -27,6 +27,8 @@ public class PostController {
     @Autowired
     private CommunityService communityService;
     @Autowired
+    private ReportService reportService;
+    @Autowired
     private CommentService commentService;
     @Autowired
     private UserService userService;
@@ -48,7 +50,7 @@ public class PostController {
         List<Post> posts = postService.findAll();
         List<PostDTO> postDTOList = new ArrayList<>();
         for (Post p: posts) {
-            if(!communityService.findByPost(p.getId()).getSuspended())
+            if(!communityService.findByPost(p.getId()).getSuspended() && reportService.findAllByPostAndAccepted(p) == 0)
                 postDTOList.add(new PostDTO(p));
         }
         return new ResponseEntity<>(postDTOList, HttpStatus.OK);

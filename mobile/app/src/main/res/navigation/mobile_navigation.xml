@@ -22,9 +22,5 @@
         android:name="com.example.redditcloneapp.ui.community.CommunityFragment"
         android:label="@string/menu_community"
         tools:layout="@layout/fragment_community" />
-    <fragment
-        android:id="@+id/nav_report"
-        android:name="com.example.redditcloneapp.ui.report.ReportFragment"
-        android:label="@string/reddit_title"
-        tools:layout="@layout/fragment_report" />
+
 </navigation>

@@ -141,7 +141,6 @@ public class CommunityPostAdapter extends BaseAdapter {
         btnReport.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Toast.makeText(view.getContext(),"CLICK NA REPORT",Toast.LENGTH_SHORT).show();
                 Dialog dialog = new Dialog(activity);
                 dialog.setContentView(R.layout.dialog_report);
                 TextView text = dialog.findViewById(R.id.dialog_report_text);

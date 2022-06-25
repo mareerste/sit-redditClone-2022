@@ -167,4 +167,17 @@ public class BannedController {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
     }
+
+    @PreAuthorize("hasAnyRole('MODERATOR', 'ADMIN')")
+    @DeleteMapping(value = "/{communityId}/user/{username}")
+    public ResponseEntity<Void> deleteBanned(@PathVariable Integer communityId,@PathVariable String username) {
+
+        Banned banned = bannedService.findByUserAndCommunity(userService.findOne(username), communityService.findOne(communityId));
+        if (banned != null) {
+            bannedService.delete(banned);
+            return new ResponseEntity<>(HttpStatus.OK);
+        } else {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+    }
 }

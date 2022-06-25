@@ -18,11 +18,7 @@
             android:icon="@drawable/ic_menu_slideshow"
             android:title="@string/menu_community"
             />
-        <item
-            android:id="@+id/nav_report"
-            android:icon="@drawable/ic_baseline_report_24"
-            android:title="@string/reports"
-            />
+
 
 
     </group>

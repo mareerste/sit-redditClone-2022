@@ -25,23 +25,36 @@
         <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_weight="50"
+            android:layout_weight="33"
             android:gravity="center">
             <Button
                 android:text="@string/basic"
                 android:id="@+id/my_community_basic_btn"
-                android:layout_width="150dp"
+                android:layout_width="100dp"
                 android:layout_height="wrap_content"/>
         </LinearLayout>
         <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_weight="50"
+            android:layout_weight="33"
             android:gravity="center">
             <Button
                 android:text="@string/members"
                 android:id="@+id/my_community_members_btn"
-                android:layout_width="150dp"
+                android:layout_width="100dp"
+                android:textSize="12dp"
+                android:layout_height="wrap_content"/>
+        </LinearLayout>
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="33"
+            android:gravity="center">
+            <Button
+                android:text="@string/reports"
+                android:id="@+id/my_community_reports_btn"
+                android:layout_width="100dp"
+                android:textSize="13dp"
                 android:layout_height="wrap_content"/>
         </LinearLayout>
     </LinearLayout>

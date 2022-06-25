@@ -136,10 +136,9 @@ public class CommunityController {
 
         Set<Post> posts = community.getPosts();
         List<PostDTO> postsDTO = new ArrayList<>();
-
-        for (Post e : posts) {
-            PostDTO postDTO = new PostDTO(e);
-            postsDTO.add(postDTO);
+        for (Post p : posts) {
+            if(!communityService.findByPost(p.getId()).getSuspended() && reportService.findAllByPostAndAccepted(p) == 0)
+                postsDTO.add(new PostDTO(p));
         }
 
         return new ResponseEntity<>(postsDTO, HttpStatus.OK);

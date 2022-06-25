@@ -56,6 +56,20 @@ public class ReportController {
         }
         return new ResponseEntity<>(reportDTOList, HttpStatus.OK);
     }
+
+    @PreAuthorize("hasAnyRole('MODERATOR', 'ADMIN')")
+    @GetMapping(value = "/post/{id}/accepted")
+    public ResponseEntity<Integer>getAcceptedPostsForCommunity(@PathVariable Integer id){
+        Post post = postService.findOne(id);
+        if (post == null) {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+
+        Integer reports = reportService.findAllByPostAndAccepted(post);
+
+        return new ResponseEntity<>(reports, HttpStatus.OK);
+    }
+
     @PreAuthorize("hasAnyRole('MODERATOR', 'ADMIN')")
     @GetMapping(value = "/comments")
     public ResponseEntity<List<ReportCommentDTO>>getReportedCommentsForCommunity(){
