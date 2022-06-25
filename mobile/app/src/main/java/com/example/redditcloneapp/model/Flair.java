@@ -31,6 +31,10 @@ public class Flair implements Serializable {
         this.name = name;
     }
 
+    public Flair(String name) {
+        this.name = name;
+    }
+
     @Override
     public String toString() {
         return name ;

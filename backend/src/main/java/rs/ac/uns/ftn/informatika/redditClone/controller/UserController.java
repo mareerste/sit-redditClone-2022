@@ -204,14 +204,14 @@ public class UserController {
 
     @GetMapping(value = "/{username}/communities")
     @PreAuthorize("hasAnyRole('USER','MODERATOR', 'ADMIN')")
-    public ResponseEntity<List<CommunityDTO>> getCommunities(@PathVariable String username){
+    public ResponseEntity<List<CommunityWithFlairsDTO>> getCommunities(@PathVariable String username){
 
         User user = userService.findOne(username);
         if(user != null){
             List<Community> communities = communityService.findAllByUser(user);
-            List<CommunityDTO> communityDTOList = new ArrayList<>();
+            List<CommunityWithFlairsDTO> communityDTOList = new ArrayList<>();
             for (Community com :communities){
-                communityDTOList.add(new CommunityDTO(com));
+                communityDTOList.add(new CommunityWithFlairsDTO(com));
             }
             return new ResponseEntity<>(communityDTOList, HttpStatus.OK);
         }else{

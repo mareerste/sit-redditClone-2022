@@ -11,6 +11,7 @@ import retrofit2.http.Body;
 import retrofit2.http.GET;
 import retrofit2.http.Headers;
 import retrofit2.http.POST;
+import retrofit2.http.PUT;
 import retrofit2.http.Path;
 
 public interface CommunityApiService {
@@ -25,5 +26,18 @@ public interface CommunityApiService {
     })
     Call<Post> savePost(@Path("id") Integer id,@Body Post post);
 
+    @POST("community")
+    @Headers({
+            "Accept: application/json",
+            "Content-Type: application/json",
+    })
+    Call<Community> saveCommunity(@Body Community community);
+
+    @PUT("community")
+    @Headers({
+            "Accept: application/json",
+            "Content-Type: application/json",
+    })
+    Call<Community> updateCommunity(@Body Community community);
 
 }

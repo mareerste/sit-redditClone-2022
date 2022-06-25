@@ -33,7 +33,7 @@ public class CommunityPostAdapter extends BaseAdapter {
     private User user;
 
 
-    public CommunityPostAdapter (Activity activity, User user, List<Post> posts){this.activity = activity;this.user = user;this.posts = posts;}
+    public CommunityPostAdapter (Activity activity, User user, List<Post> posts, Community community){this.activity = activity;this.user = user;this.posts = posts;this.community = community;}
 
     @Override
     public int getCount() {
@@ -65,7 +65,7 @@ public class CommunityPostAdapter extends BaseAdapter {
         TextView userText = vi.findViewById(R.id.post_user);
         TextView flair = vi.findViewById(R.id.post_flair);
         TextView date = vi.findViewById(R.id.post_date);
-        TextView community = vi.findViewById(R.id.post_community);
+        TextView communityTW = vi.findViewById(R.id.post_community);
         Button btnPost = vi.findViewById(R.id.btn_view_post);
         Button btnReport = vi.findViewById(R.id.btn_post_report);
         title.setText(post.getTitle());
@@ -81,15 +81,16 @@ public class CommunityPostAdapter extends BaseAdapter {
             }
         });
         flair.setText(post.getFlair().getName());
-        community.setText(Mokap.getCommunities().get(0).getName());//TODO fake comm
-        community.setOnClickListener(new View.OnClickListener() {
+//        communityTW.setText(community.getName());
+        communityTW.setVisibility(View.GONE);
+        communityTW.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Toast toast = Toast.makeText(view.getContext(), Mokap.getCommunities().get(0).toString(),Toast.LENGTH_SHORT);//TODO fake
+                Toast toast = Toast.makeText(view.getContext(), community.toString(),Toast.LENGTH_SHORT);//TODO fake
                 toast.show();
                 Intent intent = new Intent(activity, CommunityActivity.class);
                 intent.putExtra("user", user );
-//                intent.putExtra("community", post.getCommunity());//TODO fake
+                intent.putExtra("community", community);
                 activity.startActivity(intent);
 
             }

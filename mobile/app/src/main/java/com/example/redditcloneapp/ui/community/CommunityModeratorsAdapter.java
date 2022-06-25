@@ -42,7 +42,7 @@ public class CommunityModeratorsAdapter extends BaseAdapter {
     @Override
     public View getView(int i, View view, ViewGroup viewGroup) {
         View vi = view;
-        Moderator moderator = community.getModerators().get(i);
+        User moderator = community.getModerators().get(i);
         int count = i;
         count++;
         String counter = count+".";

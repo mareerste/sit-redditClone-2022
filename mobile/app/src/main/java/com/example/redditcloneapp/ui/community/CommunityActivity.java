@@ -6,6 +6,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.annotation.SuppressLint;
 import android.app.ActionBar;
 import android.app.Dialog;
+import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.drawable.Drawable;
@@ -39,8 +40,15 @@ import com.example.redditcloneapp.ui.access.SignUpActivity;
 import com.example.redditcloneapp.ui.community.mycommunities.MyCommunityActivity;
 import com.example.redditcloneapp.ui.community.mycommunities.fragments.CommunityBasicInfoFragment;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.time.format.DateTimeFormatter;
 import java.time.format.FormatStyle;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.Date;
+import java.util.List;
 
 import okhttp3.OkHttpClient;
 import retrofit2.Call;
@@ -62,6 +70,7 @@ public class CommunityActivity extends AppCompatActivity {
     private Community community;
     static Retrofit retrofit = null;
     static Retrofit retrofitPost = null;
+    private String sortType = "Sort";
     private Post post;
         @RequiresApi(api = Build.VERSION_CODES.O)
         @Override
@@ -70,9 +79,9 @@ public class CommunityActivity extends AppCompatActivity {
             setContentView(R.layout.activity_community);
 
             user = (User) getIntent().getSerializableExtra("user");
-//            community = (Community) getIntent().getSerializableExtra("community");
+            community = (Community) getIntent().getSerializableExtra("community");
             post = (Post) getIntent().getSerializableExtra("post");
-            getPostCommunity(post);
+
 //            STRELICA KA NAZAD
 //            ActionBar actionBar = getSupportActionBar();
 //            if(actionBar != null){
@@ -87,6 +96,11 @@ public class CommunityActivity extends AppCompatActivity {
             commDate = findViewById(R.id.comm_single_date);
             commDesc = findViewById(R.id.comm_single_desc);
             commFlairs = findViewById(R.id.comm_new_post_spinner);
+            if(community == null)
+                getPostCommunity(post);
+            else{
+                loadCommunity(community);
+            }
             View dropDown = findViewById(R.id.comm_drop_down_lay);
             Button buttonVisibilityDown = findViewById(R.id.comm_drop_down_lay_btn_down);
             Button buttonVisibilityUp = findViewById(R.id.comm_drop_down_lay_btn_up);
@@ -147,8 +161,27 @@ public class CommunityActivity extends AppCompatActivity {
             if(user == null){
                 newPostLayBtn.setVisibility(View.GONE);
             }
+
+            Spinner sortSpinner = findViewById(R.id.comm_single_sort_btn);
+            List<String> list = Arrays.asList("Sort","Top","New","Hot");
+            sortSpinner.setAdapter(new ArrayAdapter<String>(CommunityActivity.this, android.R.layout.simple_spinner_dropdown_item,list));
+            sortSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+                @Override
+                public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
+                    String selected = sortSpinner.getSelectedItem().toString();
+                    if (!selected.equals("Sort")) {
+                        sortType = selected;
+                        getPosts();
+                    }
+                }
+                @Override
+                public void onNothingSelected(AdapterView<?> adapterView) {
+                    getPosts();
+                }
+            });
+
             Button suspendBtn = findViewById(R.id.comm_suspend);
-            if (user instanceof Administrator){
+            if (getSharedPreferences(SignInActivity.mypreference, MODE_PRIVATE).getString(SignInActivity.Role, "").equals("ROLE_ADMIN")){
                 suspendBtn.setVisibility(View.VISIBLE);
                 suspendBtn.setOnClickListener(new View.OnClickListener() {
                     @Override
@@ -177,6 +210,7 @@ public class CommunityActivity extends AppCompatActivity {
                                 if(!susReason.getText().toString().equals("")){
                                     community.setSuspended(true);
                                     community.setSuspendedReason(susReason.getText().toString());
+                                    suspendCommunity(community);
                                     dialog.dismiss();
                                 }
                             }
@@ -260,8 +294,10 @@ public class CommunityActivity extends AppCompatActivity {
                 FragmentTransition.to(CommunityRulesFragment.newInstance(response.body()), CommunityActivity.this, false, R.id.comm_single_rules);
                 FragmentTransition.to(CommunityModeratorsFragment.newInstance(response.body()), CommunityActivity.this, false, R.id.comm_single_moderators);
                 FragmentTransition.to(CommunityFlairsFragment.newInstance(response.body()), CommunityActivity.this, false, R.id.comm_single_flairs);
-                FragmentTransition.to(CommunityPostsFragment.newInstance(response.body()),CommunityActivity.this,false,R.id.comm_single_posts);
+//                FragmentTransition.to(CommunityPostsFragment.newInstance(response.body()),CommunityActivity.this,false,R.id.comm_single_posts);
                 community = response.body();
+                getPosts();
+
             }
 
             @Override
@@ -297,7 +333,9 @@ public class CommunityActivity extends AppCompatActivity {
             @Override
             public void onResponse(Call<Post> call, Response<Post> response) {
                 if(response.isSuccessful()){
-                    FragmentTransition.to(CommunityPostsFragment.newInstance(community),CommunityActivity.this,false,R.id.comm_single_posts);
+
+//                    FragmentTransition.to(CommunityPostsFragment.newInstance(community),CommunityActivity.this,false,R.id.comm_single_posts);
+                    getPosts();
                     closeNewPostLayout();
                     clearForm();
                 }else{
@@ -327,5 +365,162 @@ public class CommunityActivity extends AppCompatActivity {
         newPostLayBtn.setText(R.string.create_a_new_post);
     }
 
+    private void loadCommunity(Community community){
+
+        commName.setText(community.getName());
+        commDate.setText(community.getCreationDate());
+        commDesc.setText(community.getDescription());
+
+        ArrayAdapter<Flair> adapter = new ArrayAdapter<>(getApplicationContext(), android.R.layout.simple_spinner_item, community.getFlairs());
+        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        commFlairs.setAdapter(adapter);
+        commFlairs.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
+                ((TextView) commFlairs.getChildAt(0)).setTextColor(Color.GRAY);
+                ((TextView) commFlairs.getChildAt(0)).setTextSize(20);
+                ((TextView) commFlairs.getChildAt(0)).setBackgroundResource(R.drawable.rounded_corners_bg);
+
+                selectedFlair = (Flair) commFlairs.getSelectedItem();
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> adapterView) {
+                Toast.makeText(getApplicationContext(), "You have to select an Flair first", Toast.LENGTH_LONG).show();
+            }
+        });
+
+        FragmentTransition.to(CommunityRulesFragment.newInstance(community), CommunityActivity.this, false, R.id.comm_single_rules);
+        FragmentTransition.to(CommunityModeratorsFragment.newInstance(community), CommunityActivity.this, false, R.id.comm_single_moderators);
+        FragmentTransition.to(CommunityFlairsFragment.newInstance(community), CommunityActivity.this, false, R.id.comm_single_flairs);
+//        FragmentTransition.to(CommunityPostsFragment.newInstance(community),CommunityActivity.this,false,R.id.comm_single_posts);
+
+        getPosts();
+
+    }
+    public void suspendCommunity(Community community) {
+
+        MyServiceInterceptor interceptor = new MyServiceInterceptor(getSharedPreferences(SignInActivity.mypreference, Context.MODE_PRIVATE).getString(SignInActivity.TOKEN, ""));
+
+        OkHttpClient client = new OkHttpClient.Builder()
+                .addInterceptor(interceptor)
+                .build();
+
+
+        retrofit = new Retrofit.Builder()
+                .client(client)
+                .baseUrl(MainActivity.BASE_URL)
+                .addConverterFactory(GsonConverterFactory.create())
+                .build();
+
+        CommunityApiService communityApiService = retrofit.create(CommunityApiService.class);
+
+        Call<Community> call = communityApiService.updateCommunity(community);
+        call.enqueue(new Callback<Community>() {
+            @Override
+            public void onResponse(Call<Community> call, Response<Community> response) {
+                if(response.isSuccessful()){
+                    finish();
+                    Intent intent = new Intent(CommunityActivity.this, MainActivity.class);
+                    intent.putExtra("user", user);
+                    startActivity(intent);
+                }else{
+                    Toast.makeText(CommunityActivity.this, response.toString(), Toast.LENGTH_LONG).show();
+                }
+            }
+
+            @Override
+            public void onFailure(Call<Community> call, Throwable t) {
+                Toast.makeText(CommunityActivity.this, "System error: "+ t.getMessage(), Toast.LENGTH_SHORT).show();
+            }
+        });
+    }
+
+    private void getPosts(){
+        if (retrofit == null) {
+            retrofit = new Retrofit.Builder()
+                    .baseUrl(MainActivity.BASE_URL)
+                    .addConverterFactory(GsonConverterFactory.create())
+                    .build();
+        }
+        CommunityApiService communityApiService = retrofit.create(CommunityApiService.class);
+        Call<List<Post>> call = communityApiService.getCommunityPosts(community.getId());
+        call.enqueue(new Callback<List<Post>>() {
+
+            @Override
+            public void onResponse(Call<List<Post>> call, retrofit2.Response<List<Post>> response) {
+//                CommunityPostAdapter adapter = new CommunityPostAdapter(CommunityActivity.this,user,response.body(), community);
+//                setListAdapter(adapter);
+                List<Post> posts = response.body();
+
+                if(sortType.equals("New")){
+                    Collections.sort(posts, new Comparator<Post>() {
+                        @Override
+                        public int compare(Post p1, Post p2) {
+                            Date date1 = null,date2 = null;
+                            try {
+                                date1=new SimpleDateFormat("MM/dd/yyyy").parse(p1.getCreationDate());
+                            } catch (ParseException e) {
+                                e.printStackTrace();
+                            }
+                            try {
+                                date2=new SimpleDateFormat("MM/dd/yyyy").parse(p2.getCreationDate());
+                            } catch (ParseException e) {
+                                e.printStackTrace();
+                            }
+                            if(date1.after(date2))
+                                return -1;
+                            else if (date2.after(date1))
+                                return 1;
+                            else
+                                return 1;
+                        }
+                    });
+                } else if(sortType.equals("Top")){
+                    Collections.sort(posts, new Comparator<Post>() {
+                        @Override
+                        public int compare(Post p1, Post p2) {
+                            return p2.getReactions() - p1.getReactions();
+                        }
+                    });
+                } else if(sortType.equals("Hot")) {
+                    Collections.sort(posts, new Comparator<Post>() {
+                        @Override
+                        public int compare(Post p1, Post p2) {
+                            Date date1 = null, date2 = null;
+                            try {
+                                date1 = new SimpleDateFormat("MM/dd/yyyy").parse(p1.getCreationDate());
+                            } catch (ParseException e) {
+                                e.printStackTrace();
+                            }
+                            try {
+                                date2 = new SimpleDateFormat("MM/dd/yyyy").parse(p2.getCreationDate());
+                            } catch (ParseException e) {
+                                e.printStackTrace();
+                            }
+                            if (date1.after(date2))
+                                return -1;
+                            else if (date2.after(date1))
+                                return 1;
+                            else {
+                                if (p1.getReactions() < p2.getReactions())
+                                    return 1;
+                                else if (p1.getReactions() > p2.getReactions())
+                                    return -1;
+                                else
+                                    return 0;
+                            }
+                        }
+                    });
+                }
+                FragmentTransition.to(CommunityPostsFragment.newInstance(posts),CommunityActivity.this,false,R.id.comm_single_posts);
+            }
+
+            @Override
+            public void onFailure(Call<List<Post>> call, Throwable t) {
+                Toast.makeText(getApplicationContext(),t.toString(),Toast.LENGTH_LONG).show();
+            }
+        });
+    }
 
 }

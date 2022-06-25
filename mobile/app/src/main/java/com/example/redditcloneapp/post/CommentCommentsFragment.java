@@ -35,7 +35,7 @@ public class CommentCommentsFragment extends ListFragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.post_map_layout, container, false);
+        return inflater.inflate(R.layout.post_map_layout_2, container, false);
     }
 
     @Override

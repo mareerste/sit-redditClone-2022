@@ -119,26 +119,27 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="10dp">
+            android:layout_marginBottom="10dp"
+            android:orientation="vertical">
             <ScrollView
                 android:id="@+id/my_community_desc_scroll"
                 android:layout_margin="10dp"
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="150dp">
                 <TextView
                     android:id="@+id/my_community_desc"
-                    android:layout_width="wrap_content"
+                    android:layout_width="match_parent"
                     android:layout_height="150dp"
                     android:textSize="18dp" />
             </ScrollView>
             <EditText
                 android:id="@+id/my_community_desc_edit"
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="150dp"
                 android:textSize="18dp"
                 android:layout_marginRight="10dp"
                 android:layout_marginLeft="10dp"
-                android:visibility="visible"/>
+                android:visibility="gone"/>
 
         </LinearLayout>
     </LinearLayout>

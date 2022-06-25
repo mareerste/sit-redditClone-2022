@@ -48,7 +48,8 @@ public class PostController {
         List<Post> posts = postService.findAll();
         List<PostDTO> postDTOList = new ArrayList<>();
         for (Post p: posts) {
-            postDTOList.add(new PostDTO(p));
+            if(!communityService.findByPost(p.getId()).getSuspended())
+                postDTOList.add(new PostDTO(p));
         }
         return new ResponseEntity<>(postDTOList, HttpStatus.OK);
     }

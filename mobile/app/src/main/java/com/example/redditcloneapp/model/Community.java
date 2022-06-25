@@ -32,7 +32,7 @@ public class Community implements Serializable {
     @SerializedName("flairs")
     private ArrayList<Flair> flairs = new ArrayList<>();
     @SerializedName("moderators")
-    private ArrayList<Moderator> moderators = new ArrayList<>();
+    private ArrayList<User> moderators = new ArrayList<>();
     @SerializedName("posts")
     private ArrayList<Post> posts = new ArrayList<>();
 
@@ -100,11 +100,11 @@ public class Community implements Serializable {
         this.flairs = flairs;
     }
 
-    public ArrayList<Moderator> getModerators() {
+    public ArrayList<User> getModerators() {
         return moderators;
     }
 
-    public void setModerators(ArrayList<Moderator> moderators) {
+    public void setModerators(ArrayList<User> moderators) {
         this.moderators = moderators;
     }
 
@@ -113,18 +113,14 @@ public class Community implements Serializable {
     }
 
     @RequiresApi(api = Build.VERSION_CODES.O)
-    public Community(User user) {
-        this.id = Mokap.getCommunities().size()+1;
-        this.creationDate = LocalDate.now().toString();
+    public Community() {
+        this.creationDate = null;
         this.isSuspended = false;
         this.suspendedReason = null;
-        ArrayList<Moderator> moderators = new ArrayList<Moderator>();
-        moderators.add((Moderator) user);
-        this.moderators = moderators;
         this.posts = new ArrayList<>();
     }
 
-    public Community(Integer id, String name, String description, String creationDate, ArrayList<String> rules, Boolean isSuspended, String suspendedReason, ArrayList<Flair> flairs, ArrayList<Moderator> moderators) {
+    public Community(Integer id, String name, String description, String creationDate, ArrayList<String> rules, Boolean isSuspended, String suspendedReason, ArrayList<Flair> flairs, ArrayList<User> moderators) {
         this.id = id;
         this.name = name;
         this.description = description;
@@ -136,7 +132,7 @@ public class Community implements Serializable {
         this.moderators = moderators;
     }
     @RequiresApi(api = Build.VERSION_CODES.O)
-    public Community(Integer id, String name, String description, ArrayList<String> rules, ArrayList<Flair> flairs, ArrayList<Moderator> moderators, ArrayList<Post> posts) {
+    public Community(Integer id, String name, String description, ArrayList<String> rules, ArrayList<Flair> flairs, ArrayList<User> moderators, ArrayList<Post> posts) {
         this.id = id;
         this.name = name;
         this.description = description;

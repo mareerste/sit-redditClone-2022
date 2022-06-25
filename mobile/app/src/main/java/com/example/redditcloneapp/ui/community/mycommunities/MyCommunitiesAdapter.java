@@ -10,12 +10,13 @@ import com.example.redditcloneapp.R;
 import com.example.redditcloneapp.model.Community;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class MyCommunitiesAdapter extends BaseAdapter {
     private Activity activity;
-    private ArrayList<Community>communities;
+    private List<Community> communities;
 
-    public MyCommunitiesAdapter (Activity activity, ArrayList<Community> communities){this.activity = activity; this.communities = communities;}
+    public MyCommunitiesAdapter (Activity activity, List<Community> communities){this.activity = activity; this.communities = communities;}
 
     @Override
     public int getCount() {
@@ -37,6 +38,7 @@ public class MyCommunitiesAdapter extends BaseAdapter {
     public View getView(int i, View view, ViewGroup viewGroup) {
         View vi = view;
         Community community = communities.get(i);
+
         int count = i;
         count++;
         String counterText = count+".";

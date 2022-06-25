@@ -48,7 +48,7 @@ public class PostCommentFragment extends ListFragment {
                              Bundle savedInstanceState) {
 
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.post_map_layout, container, false);
+        return inflater.inflate(R.layout.post_map_layout_2, container, false);
     }
 
     @Override

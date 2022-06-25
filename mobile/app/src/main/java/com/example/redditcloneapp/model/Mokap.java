@@ -24,8 +24,8 @@ public class Mokap implements Serializable {
     }
 
     @RequiresApi(api = Build.VERSION_CODES.O)
-    public static ArrayList<Moderator> getModerators() {
-        ArrayList<Moderator> moderators = new ArrayList<>();
+    public static ArrayList<User> getModerators() {
+        ArrayList<User> moderators = new ArrayList<>();
         moderators.add(new Moderator("pera123", "pera123", "pera123@gmail.com", "Moderatorska posla", false));
         moderators.add(new Moderator("darko123", "darko123", "darko123@gmail.com", "Moderatorska posla", false));
         return moderators;
@@ -140,7 +140,7 @@ public class Mokap implements Serializable {
             if (u.username.equals(username) && u.password.equals(password))
                 return u;
         }
-        for (Moderator u : getModerators()) {
+        for (User u : getModerators()) {
             if (u.username.equals(username) && u.password.equals(password))
                 return u;
         }

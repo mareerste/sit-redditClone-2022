@@ -33,12 +33,13 @@ public class CommunityPostsFragment extends ListFragment {
     static Retrofit retrofit = null;
     static final String TAG = CommunityActivity.class.getSimpleName();
     private Community community;
+    private List<Post> posts;
 
-    public CommunityPostsFragment(Community community) {
-        this.community = community;
+    public CommunityPostsFragment(List<Post> posts) {
+        this.posts = posts;
     }
 
-    public static CommunityPostsFragment newInstance(Community community){return new CommunityPostsFragment(community);}
+    public static CommunityPostsFragment newInstance(List<Post> posts){return new CommunityPostsFragment(posts);}
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -50,7 +51,9 @@ public class CommunityPostsFragment extends ListFragment {
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-        getPosts();
+        CommunityPostAdapter adapter = new CommunityPostAdapter(getActivity(),((CommunityActivity)getActivity()).getUser(),posts, community);
+        setListAdapter(adapter);
+//        getPosts();
 //        System.out.println("TESTAD"+ Mokap.getPostsForCommunity(((CommunityActivity)getActivity()).getCommunity()));
     }
 
@@ -67,7 +70,7 @@ public class CommunityPostsFragment extends ListFragment {
 
             @Override
             public void onResponse(Call<List<Post>> call, retrofit2.Response<List<Post>> response) {
-                CommunityPostAdapter adapter = new CommunityPostAdapter(getActivity(),((CommunityActivity)getActivity()).getUser(),response.body());
+                CommunityPostAdapter adapter = new CommunityPostAdapter(getActivity(),((CommunityActivity)getActivity()).getUser(),response.body(), community);
                 setListAdapter(adapter);
             }
 

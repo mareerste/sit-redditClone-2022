@@ -70,7 +70,7 @@ public class HomeFragment extends ListFragment {
         setHasOptionsMenu(true);
 //        ((MainActivity)getActivity()).drawerLocked();
 
-        return inflater.inflate(R.layout.post_map_layout,container,false);
+        return inflater.inflate(R.layout.post_map_layout_2,container,false);
     }
 
     @RequiresApi(api = Build.VERSION_CODES.O)
@@ -112,7 +112,7 @@ public class HomeFragment extends ListFragment {
     }
 
     private void loadData(List<Post> posts){
-        System.out.println("SORT TYPE" + sortType);
+
         if(sortType.equals("New")){
             Collections.sort(posts, new Comparator<Post>() {
                 @Override

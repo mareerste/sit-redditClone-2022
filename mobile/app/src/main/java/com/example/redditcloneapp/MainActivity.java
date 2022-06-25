@@ -109,6 +109,11 @@ public class MainActivity extends AppCompatActivity {
 //                userView.setVisibility(View.GONE);
 //                View userViewNew = findViewById(R.id.navbar_without_user);
 //                userViewNew.setVisibility(View.VISIBLE);
+                SharedPreferences preferences = getSharedPreferences(SignInActivity.mypreference,MODE_PRIVATE);
+                SharedPreferences.Editor editor = preferences.edit();
+                editor.clear();
+                editor.apply();
+
                 Intent intent = new Intent(MainActivity.this, MainActivity.class);
                 startActivity(intent);
 //                finish();

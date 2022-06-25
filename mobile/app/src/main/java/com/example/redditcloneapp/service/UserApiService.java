@@ -1,5 +1,6 @@
 package com.example.redditcloneapp.service;
 
+import com.example.redditcloneapp.model.Community;
 import com.example.redditcloneapp.model.Post;
 import com.example.redditcloneapp.model.User;
 import com.example.redditcloneapp.service.client.TokenResponse;
@@ -21,6 +22,9 @@ public interface UserApiService {
 
     @GET("user/{username}/posts")
     Call<List<Post>> getUserPosts(@Path("username") String username);
+
+    @GET("user/{username}/communities")
+    Call<List<Community>> getUserCommunities(@Path("username") String username);
 
     @POST("user")
     @Headers({
