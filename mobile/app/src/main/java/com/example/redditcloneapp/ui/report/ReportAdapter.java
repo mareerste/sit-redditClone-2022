@@ -70,8 +70,7 @@ public class ReportAdapter extends BaseAdapter {
         TextView reasonText = vi.findViewById(R.id.report_reason);
 
         userText.setText(report.getUser().getUsername());
-        time.setText(report.getTimestamp().format(DateTimeFormatter
-                .ofLocalizedDate(FormatStyle.LONG)));
+        time.setText(report.getTimestamp());
         reasonText.setText(report.getReason().toString());
 
         return vi;

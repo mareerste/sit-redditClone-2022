@@ -106,5 +106,10 @@
     <string name="change_pw_error_msg_dont_match">New password and confirm password do not match</string>
     <string name="change_pw_error_msg_dont_match_old">Incorrect old password</string>
     <string name="change_pw_error_msg_empty_fields">All fields are required</string>
+    <string name="report_post_error_msg">You are already report this post</string>
+    <string name="report_comment_error_msg">You are already report this comment</string>
+    <string name="karma">Karma</string>
+    <string name="post_reported">Post reported</string>
+    <string name="comment_reported">Comment reported</string>
 
 </resources>

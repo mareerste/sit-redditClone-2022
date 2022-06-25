@@ -20,6 +20,9 @@ public interface UserApiService {
     @GET("user/{username}")
     Call<User> getUser(@Path("username") String username);
 
+    @GET("user/{username}/karma")
+    Call<Integer> getUsersKarma(@Path("username") String username);
+
     @GET("user/{username}/posts")
     Call<List<Post>> getUserPosts(@Path("username") String username);
 

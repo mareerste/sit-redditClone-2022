@@ -33,6 +33,7 @@ import com.example.redditcloneapp.model.enums.ReactionType;
 import com.example.redditcloneapp.model.enums.ReportReason;
 import com.example.redditcloneapp.service.CommentApiService;
 import com.example.redditcloneapp.service.ReactionApiService;
+import com.example.redditcloneapp.service.ReportApiService;
 import com.example.redditcloneapp.service.client.MyServiceInterceptor;
 import com.example.redditcloneapp.tools.FragmentTransition;
 import com.example.redditcloneapp.ui.access.SignInActivity;
@@ -57,6 +58,7 @@ public class CommentAdapter extends BaseAdapter {
     private User user;
 
     static Retrofit retrofitComment = null;
+    static Retrofit retrofit = null;
 
 //    public CommentAdapter (Activity activity, Post post, User user){this.activity = activity;this.post = post;this.comments=post.getComments();this.user = user;}
 //    public CommentAdapter (Activity activity, Post post, User user){this.activity = activity;this.post = post;this.comments=post.getComments();this.user = user;}
@@ -120,9 +122,9 @@ public class CommentAdapter extends BaseAdapter {
                 btnLeft.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
-                        Report report = new Report(Mokap.getReports().size()+1, (ReportReason) mySpinner.getSelectedItem(), user,  comment);
-                        Toast toast = Toast.makeText(view.getContext(),report.toString(),Toast.LENGTH_SHORT);
-                        toast.show();
+                        Report report = new Report((ReportReason) mySpinner.getSelectedItem(), comment);
+                        saveReport(report);
+                        dialog.dismiss();
                     }
                 });
                 Button btnRight = dialog.findViewById(R.id.dialog_report_cancel);
@@ -397,6 +399,41 @@ public class CommentAdapter extends BaseAdapter {
             @Override
             public void onFailure(Call<Reaction> call, Throwable t) {
                 Toast.makeText(activity, "System error: " + t.getMessage(), Toast.LENGTH_SHORT).show();
+            }
+        });
+    }
+
+    private void saveReport (Report report){
+        MyServiceInterceptor interceptor = new MyServiceInterceptor(activity.getSharedPreferences(SignInActivity.mypreference, Context.MODE_PRIVATE).getString(SignInActivity.TOKEN, ""));
+
+        OkHttpClient client = new OkHttpClient.Builder()
+                .addInterceptor(interceptor)
+                .build();
+
+
+        retrofit = new Retrofit.Builder()
+                .client(client)
+                .baseUrl(MainActivity.BASE_URL)
+                .addConverterFactory(GsonConverterFactory.create())
+                .build();
+
+        ReportApiService reportApiService = retrofit.create(ReportApiService.class);
+
+        Call<Report> call = reportApiService.saveReport(report);
+        call.enqueue(new Callback<Report>() {
+            @Override
+            public void onResponse(Call<Report> call, Response<Report> response) {
+                if(response.isSuccessful()){
+                    Toast.makeText(activity.getApplicationContext(), activity.getResources().getString(R.string.comment_reported),Toast.LENGTH_LONG).show();
+                }else{
+                    Toast.makeText(activity.getApplicationContext(), activity.getResources().getString(R.string.report_comment_error_msg),Toast.LENGTH_LONG).show();
+                }
+            }
+
+            @Override
+            public void onFailure(Call<Report> call, Throwable t) {
+                System.out.println(t.getMessage());
+                Toast.makeText(activity, "System error: "+ t.getMessage(), Toast.LENGTH_SHORT).show();
             }
         });
     }

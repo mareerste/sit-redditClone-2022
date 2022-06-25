@@ -17,7 +17,7 @@ public class Report implements Serializable {
     @SerializedName("reason")
     private ReportReason reason;
     @SerializedName("timestamp")
-    private LocalDate timestamp;
+    private String timestamp;
     @SerializedName("user")
     private User user;
     @SerializedName("accepted")
@@ -43,11 +43,11 @@ public class Report implements Serializable {
         this.reason = reason;
     }
 
-    public LocalDate getTimestamp() {
+    public String getTimestamp() {
         return timestamp;
     }
 
-    public void setTimestamp(LocalDate timestamp) {
+    public void setTimestamp(String timestamp) {
         this.timestamp = timestamp;
     }
 
@@ -84,30 +84,28 @@ public class Report implements Serializable {
     }
 
     @RequiresApi(api = Build.VERSION_CODES.O)
-    public Report(Integer id, ReportReason reason, User user, Post post) {
-        this.id = id;
+    public Report(ReportReason reason, Post post) {
         this.reason = reason;
-        this.timestamp = LocalDate.now();
-        this.user = user;
+        this.timestamp = null;
         this.accepted = null;
+        this.comment = null;
         this.post = post;
     }
 
     @RequiresApi(api = Build.VERSION_CODES.O)
-    public Report(Integer id, ReportReason reason, User user, Comment comment) {
-        this.id = id;
+    public Report(ReportReason reason, Comment comment) {
         this.reason = reason;
-        this.timestamp = LocalDate.now();
-        this.user = user;
+        this.timestamp = null;
         this.accepted = null;
         this.comment = comment;
+        this.post = null;
     }
 
     @RequiresApi(api = Build.VERSION_CODES.O)
     public Report(Integer id, ReportReason reason, User user, Post post, Comment comment) {
         this.id = id;
         this.reason = reason;
-        this.timestamp = LocalDate.now();
+        this.timestamp = LocalDate.now().toString();
         this.user = user;
         this.accepted = null;
         this.post = post;

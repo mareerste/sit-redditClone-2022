@@ -30,11 +30,14 @@ import com.example.redditcloneapp.model.User;
 import com.example.redditcloneapp.model.enums.ReactionType;
 import com.example.redditcloneapp.model.enums.ReportReason;
 import com.example.redditcloneapp.post.PostActivity;
+import com.example.redditcloneapp.service.CommunityApiService;
 import com.example.redditcloneapp.service.PostApiService;
 import com.example.redditcloneapp.service.ReactionApiService;
+import com.example.redditcloneapp.service.ReportApiService;
 import com.example.redditcloneapp.service.client.MyServiceInterceptor;
 import com.example.redditcloneapp.ui.access.SignInActivity;
 import com.example.redditcloneapp.ui.community.CommunityActivity;
+import com.example.redditcloneapp.ui.community.mycommunities.MyCommunityActivity;
 import com.example.redditcloneapp.ui.profile.ProfileActivity;
 
 import java.io.Serializable;
@@ -116,7 +119,6 @@ public class PostAdapter extends BaseAdapter {
         btnReport.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Toast.makeText(view.getContext(),"CLICK NA REPORT",Toast.LENGTH_SHORT).show();
                 Dialog dialog = new Dialog(activity);
                 dialog.setContentView(R.layout.dialog_report);
                 TextView text = dialog.findViewById(R.id.dialog_report_text);
@@ -128,9 +130,10 @@ public class PostAdapter extends BaseAdapter {
                 btnLeft.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
-                        Report report = new Report(Mokap.getReports().size()+1, (ReportReason) mySpinner.getSelectedItem(), user,  post);
-                        Toast toast = Toast.makeText(view.getContext(),report.toString(),Toast.LENGTH_SHORT);
-                        toast.show();
+                        Report report = new Report((ReportReason) mySpinner.getSelectedItem(), post);
+                        saveReport(report);
+                        dialog.dismiss();
+
                     }
                 });
                 Button btnRight = dialog.findViewById(R.id.dialog_report_cancel);
@@ -143,7 +146,10 @@ public class PostAdapter extends BaseAdapter {
                 dialog.show();
             }
         });
-        userText.setText(post.getUser().getUsername());
+        if(post.getUser().getDisplayName() != null )
+            userText.setText(post.getUser().getDisplayName());
+        else
+            userText.setText(post.getUser().getUsername());
         userText.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -328,6 +334,41 @@ public class PostAdapter extends BaseAdapter {
             @Override
             public void onFailure(Call<Reaction> call, Throwable t) {
                 Toast.makeText(activity, "System error: " + t.getMessage(), Toast.LENGTH_SHORT).show();
+            }
+        });
+    }
+
+    private void saveReport (Report report){
+        MyServiceInterceptor interceptor = new MyServiceInterceptor(activity.getSharedPreferences(SignInActivity.mypreference, Context.MODE_PRIVATE).getString(SignInActivity.TOKEN, ""));
+
+        OkHttpClient client = new OkHttpClient.Builder()
+                .addInterceptor(interceptor)
+                .build();
+
+
+        retrofit = new Retrofit.Builder()
+                .client(client)
+                .baseUrl(MainActivity.BASE_URL)
+                .addConverterFactory(GsonConverterFactory.create())
+                .build();
+
+        ReportApiService reportApiService = retrofit.create(ReportApiService.class);
+
+        Call<Report> call = reportApiService.saveReport(report);
+        call.enqueue(new Callback<Report>() {
+            @Override
+            public void onResponse(Call<Report> call, Response<Report> response) {
+                if(response.isSuccessful()){
+                    Toast.makeText(activity.getApplicationContext(), activity.getResources().getString(R.string.post_reported),Toast.LENGTH_LONG).show();
+                }else{
+                    Toast.makeText(activity.getApplicationContext(), activity.getResources().getString(R.string.report_post_error_msg),Toast.LENGTH_LONG).show();
+                }
+            }
+
+            @Override
+            public void onFailure(Call<Report> call, Throwable t) {
+                System.out.println(t.getMessage());
+                Toast.makeText(activity, "System error: "+ t.getMessage(), Toast.LENGTH_SHORT).show();
             }
         });
     }

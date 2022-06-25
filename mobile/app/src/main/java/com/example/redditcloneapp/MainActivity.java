@@ -1,5 +1,6 @@
 package com.example.redditcloneapp;
 
+import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
@@ -60,6 +61,7 @@ public class MainActivity extends AppCompatActivity {
                 R.id.nav_home, R.id.nav_profile, R.id.nav_community, R.id.nav_report)
                 .setOpenableLayout(drawer)
                 .build();
+
 
         if(user == null){
             View userView = findViewById(R.id.navbar_with_user);

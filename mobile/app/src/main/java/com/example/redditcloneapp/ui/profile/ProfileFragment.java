@@ -48,8 +48,9 @@ public class ProfileFragment extends Fragment {
 
     static final String TAG = ProfileActivity.class.getSimpleName();
     static Retrofit retrofit = null;
+    static Retrofit retrofitKarma = null;
 
-    TextView usernameShow, usernameEdit,displayNameShow,mailShow, passwordShow, descShow, dateShow, dateEdit;
+    TextView usernameShow, usernameEdit,displayNameShow,mailShow, passwordShow, descShow, dateShow, dateEdit, karmaShow;
     EditText  descEdit, mailEdit, displayNameEdit;
 
     View editLayout, saveLayout, editableLayout, informationLayout;
@@ -78,9 +79,9 @@ public class ProfileFragment extends Fragment {
         mailShow = view.findViewById(R.id.profile_email);
         dateShow = view.findViewById(R.id.profile_reg_date);
         descShow = view.findViewById(R.id.profile_description);
+        karmaShow = view.findViewById(R.id.profile_karma);
 
         usernameEdit = view.findViewById(R.id.profile_username_edit);
-
         mailEdit = view.findViewById(R.id.profile_email_edit);
         displayNameEdit = view.findViewById(R.id.profile_display_name_edit);
         dateEdit = view.findViewById(R.id.profile_reg_date_edit);
@@ -232,7 +233,6 @@ public class ProfileFragment extends Fragment {
     private void getUser(){
 
         String username = activity.getSharedPreferences(SignInActivity.mypreference, Context.MODE_PRIVATE).getString(SignInActivity.Username, "");
-        System.out.println("USERNAME"+username);
 
         retrofit = new Retrofit.Builder()
                 .baseUrl(MainActivity.BASE_URL)
@@ -264,11 +264,50 @@ public class ProfileFragment extends Fragment {
 //                    .ofLocalizedDate(FormatStyle.LONG)));
                     dateEdit.setText(user.getRegistrationDate());
                     descEdit.setText(user.getDescription());
+
+                    getUsersKarma(username);
                 }
             }
 
             @Override
             public void onFailure(Call<User> call, Throwable t) {
+                Log.e(TAG, t.toString());
+            }
+        });
+    }
+
+    private void getUsersKarma(String username){
+//        String username = activity.getSharedPreferences(SignInActivity.mypreference, Context.MODE_PRIVATE).getString(SignInActivity.Username, "");
+        MyServiceInterceptor interceptor = new MyServiceInterceptor(activity.getSharedPreferences(SignInActivity.mypreference, Context.MODE_PRIVATE).getString(SignInActivity.TOKEN, ""));
+
+        OkHttpClient client = new OkHttpClient.Builder()
+                .addInterceptor(interceptor)
+                .build();
+
+        retrofitKarma = new Retrofit.Builder()
+                .baseUrl(MainActivity.BASE_URL)
+                .client(client)
+                .addConverterFactory(GsonConverterFactory.create())
+                .build();
+
+        UserApiService userApiService = retrofitKarma.create(UserApiService.class);
+
+        Call<Integer> call = userApiService.getUsersKarma(username);
+        call.enqueue(new Callback<Integer>() {
+            @RequiresApi(api = Build.VERSION_CODES.O)
+            @Override
+            public void onResponse(Call<Integer> call, retrofit2.Response<Integer> response) {
+
+                if(response.isSuccessful()) {
+                    karmaShow.setText(response.body().toString());
+                }else{
+                    karmaShow.setText("0");
+                }
+
+            }
+
+            @Override
+            public void onFailure(Call<Integer> call, Throwable t) {
                 Log.e(TAG, t.toString());
             }
         });

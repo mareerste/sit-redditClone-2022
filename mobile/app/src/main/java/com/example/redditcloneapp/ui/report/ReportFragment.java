@@ -1,5 +1,6 @@
 package com.example.redditcloneapp.ui.report;
 
+import android.content.Context;
 import android.os.Build;
 import android.os.Bundle;
 
@@ -12,9 +13,12 @@ import androidx.lifecycle.ViewModelProvider;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
 import com.example.redditcloneapp.R;
 import com.example.redditcloneapp.databinding.FragmentReportBinding;
+import com.example.redditcloneapp.tools.FragmentTransition;
+import com.example.redditcloneapp.ui.access.SignInActivity;
 
 public class ReportFragment extends ListFragment {
     public FragmentReportBinding binding;
@@ -32,7 +36,15 @@ public class ReportFragment extends ListFragment {
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-        ReportAdapter adapter = new ReportAdapter(getActivity());
-        setListAdapter(adapter);
+
+        if(getActivity().getSharedPreferences(SignInActivity.mypreference, Context.MODE_PRIVATE).getString(SignInActivity.Role, "") != null && !getActivity().getSharedPreferences(SignInActivity.mypreference, Context.MODE_PRIVATE).getString(SignInActivity.Role, "").equals("ROLE_USER")){
+            ReportAdapter adapter = new ReportAdapter(getActivity());
+            setListAdapter(adapter);
+        }else{
+
+            Toast.makeText(getContext(), "No access", Toast.LENGTH_LONG).show();
+
+        }
+
     }
 }
