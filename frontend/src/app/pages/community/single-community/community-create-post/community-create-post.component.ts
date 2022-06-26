@@ -62,23 +62,12 @@ export class CommunityCreatePostComponent implements OnInit {
   }
 
   onUpload() {
-    console.log(this.selectedFile);
-    
-    //FormData API provides methods and properties to allow us easily prepare form data to be sent with POST HTTP requests.
     const uploadImageData = new FormData();
     uploadImageData.append('imageFile', this.selectedFile, this.selectedFile.name);
   
-    //Make a call to the Spring Boot Application to save the image
-    // this.httpClient.post('http://localhost:8080/RedditClone/image', uploadImageData)
-    //   .subscribe( data => {
-    //     console.log(data)
-    //   }
-    //   );
     this.imageService.saveImage(uploadImageData).subscribe(res=>{
-      console.log(res.path)
       this.imagePath = res.path;
     })
-
 
   }
 
@@ -119,8 +108,7 @@ export class CommunityCreatePostComponent implements OnInit {
     // this.communityService.savePostInCommunity(this.form.value,this.community.id)
     if(this.imagePath != undefined)
       this.form.value.imagePath = this.imagePath;
-    console.log(this.imagePath)
-    console.log(this.form.value)
+    
     this.communityService.savePostInCommunity(this.form.value,this.community.id)
       .subscribe(data => {
         this.saveNewPost.emit(data);

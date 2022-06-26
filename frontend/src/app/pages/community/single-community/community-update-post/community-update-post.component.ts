@@ -9,6 +9,7 @@ import { Community } from 'src/app/model/community';
 import { CommunityService } from 'src/app/service/community.service';
 import { MatInputModule } from '@angular/material/input';
 import { Flair } from 'src/app/model/flair';
+import { ImageService } from 'src/app/service/image.service';
 
 interface DisplayMessage {
   msgType: string;
@@ -33,6 +34,8 @@ export class CommunityUpdatePostComponent implements OnInit {
   flairRequired = false;
   ngSelect: Flair;
   flairs: Flair[] = []
+  selectedFile:File;
+  imagePath;
 
   constructor(
     private postService: PostService,
@@ -40,6 +43,7 @@ export class CommunityUpdatePostComponent implements OnInit {
     private router: Router,
     private route: ActivatedRoute,
     private formBuilder: FormBuilder,
+    private imageService:ImageService
   ) { }
 
   ngOnInit() {
@@ -58,23 +62,41 @@ export class CommunityUpdatePostComponent implements OnInit {
       // });
 
   }
+
+  onFileChanged(event){
+    this.selectedFile = event.target.files[0];
+  }
+
+  onUpload() {
+    const uploadImageData = new FormData();
+    uploadImageData.append('imageFile', this.selectedFile, this.selectedFile.name);
+  
+    this.imageService.saveImage(uploadImageData).subscribe(res=>{
+      this.imagePath = res.path;
+    })
+
+  }
+
   onSubmit() {
 
     this.notification = undefined;
     this.titleRequired = false;
     this.textRequired = false;
     this.flairRequired = false;
-
-    
+    console.log("this.form.value")
+    console.log(this.form.value)
     var copyPost = this.post;
     if(this.form.value.text != "")
       copyPost.text = this.form.value.text;
     if(this.form.value.flair != this.post.flair)
       copyPost.flair = JSON.parse(this.form.value.flair);
+    if(this.imagePath != undefined)
+      copyPost.imagePath = this.imagePath;
 
-      this.postService.updatePost(copyPost).subscribe(data=> {
-        console.log("UPDATED")
-        console.log(data)
+    this.postService.updatePost(copyPost).subscribe(data=> {
+        
+        this.form.reset();
+        this.router.navigate(['/post/'+this.post.id])
       })
     
   }
@@ -83,7 +105,8 @@ export class CommunityUpdatePostComponent implements OnInit {
     this.form = this.formBuilder.group({
       name: [this.post.title,Validators.compose([Validators.required, Validators.minLength(3), Validators.maxLength(64)])],
       text: [this.post.text,Validators.compose([Validators.required, Validators.minLength(3), Validators.maxLength(32)])],
-      flair: [this.post.flair]
+      flair: [this.post.flair],
+      imagePath: [this.post.imagePath]
     });
   }
 
