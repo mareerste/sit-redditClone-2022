@@ -21,13 +21,10 @@
         {{post.creationDate}} {{post.flair.name}}
       </mat-card-subtitle>
     </mat-card-header>
-    <img mat-card-image style="width: 150px;"
-      src="https://cdn.pixabay.com/photo/2015/04/23/22/00/tree-736885__480.jpg" alt="Angular Logo"
-      *ngIf="post.imagePath">
-      <img mat-card-image style="width: 150px;"
-      src="http://www.inex-zastita.co.rs/images/proizvodi/thumbs/t_cipele_plitke_beta_6211_s1_src_inex-zastita_2151_1832.jpg" alt="Angular Logo"
-      *ngIf="post.imagePath">
-      <img [src]="image" *ngIf="post.imagePath">
+    <mat-card-content align="center" style="margin-top: 20px;">
+      <img mat-card-image style="max-width: 60%;border: 2px solid #b71c1c;
+      border-radius: 10%;" [src]="image" *ngIf="post.imagePath">
+    </mat-card-content>
     <mat-card-content>
       
       <p style="text-align: center;font-size: 18px;">

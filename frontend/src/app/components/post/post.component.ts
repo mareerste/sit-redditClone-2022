@@ -17,6 +17,7 @@ import { AuthService } from 'src/app/service';
 import { Report } from 'src/app/model/report';
 import { MatDialog } from '@angular/material';
 import { BanService } from 'src/app/service/ban.service';
+import { DomSanitizer } from '@angular/platform-browser';
 
 @Component({
   selector: 'post-list-item',
@@ -44,6 +45,7 @@ export class PostComponent implements OnInit {
   clickedEventEmitDelete = new EventEmitter<Post>();
   isBanned = false;
   report: Report;
+  
 
   private users: User[];
   constructor(
@@ -55,25 +57,18 @@ export class PostComponent implements OnInit {
     private notifierService: NotifierService,
     private communityService: CommunityService,
     private imageService: ImageService,
+    private sanitizer:DomSanitizer,
     private auth: AuthService,
     public dialog: MatDialog) { }
 
   ngOnInit(): void {
 
     if (this.post.imagePath != null) {
-      console.log("poziv slike")
-      
+
       this.imageService.getImage3(this.post.imagePath).subscribe(data => {
-        console.log("SLIKA")
-        console.log(data)
-
-        const reader = new FileReader();
-        reader.onload = (e) => {
-          this.image = reader.result
-          console.log("dosao do e" + e)};
+        var unsafeImageUrl = URL.createObjectURL(data);
+        this.image = this.sanitizer.bypassSecurityTrustUrl(unsafeImageUrl);
         
-        reader.readAsDataURL(new Blob([data]));
-
       })
 
     }

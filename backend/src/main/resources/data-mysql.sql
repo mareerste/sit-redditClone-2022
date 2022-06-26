@@ -35,8 +35,9 @@ insert into community_flairs(community_id, flair_id) values (2,2);
 insert into community_flairs(community_id, flair_id) values (2,3);
 insert into community_flairs(community_id, flair_id) values (2,4);
 
-insert into post (date,deleted, text,title,user_id,flair_id) values ('2022-05-20',false,'Tekst prvog posta','Random stvar','marko123',1);
-insert into post (date,deleted, text,title,user_id,flair_id) values ('2022-06-21',false,'Tekst drugog posta','Random stvar part 2','mirko123',1);
+-- insert into post (date,deleted, image,text,title,user_id,flair_id) values ('2022-05-20',false,'C:\\Users\\HP\\Documents\\Predavanja\\Semestar 4\\Project_RedditClone_2022\\image\\malibot.jpg','Tekst prvog posta','Random stvar','marko123',1);
+insert into post (date,deleted, image,text,title,user_id,flair_id) values ('2022-05-20',false,'C:/Users/HP/Documents/Predavanja/Semestar 4/Project_RedditClone_2022/image/malibot.jpg','Tekst prvog posta','Random stvar','marko123',1);
+insert into post (date,deleted, image,text,title,user_id,flair_id) values ('2022-06-21',false,'C:\\Users\\HP\\Documents\\Predavanja\\Semestar 4\\Project_RedditClone_2022\\image\\cipela.jpg','Tekst drugog posta','Random stvar part 2','mirko123',1);
 insert into post (date,deleted, text,title,user_id,flair_id) values ('2022-06-18',false,'Tekst treceg posta','Random title za drugi Community','marko123',2);
 insert into post (date,deleted, text,title,user_id,flair_id) values ('2022-06-19',false,'Tekst cetvrtog posta za kostu','Random title za drugi Community 2','kosta123',2);
 insert into post (date,deleted, text,title,user_id,flair_id) values ('2022-06-19',false,'Tekst prvog posta 2','Neki tamo text','marko123',1);

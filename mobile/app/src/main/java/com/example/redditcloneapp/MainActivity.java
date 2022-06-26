@@ -34,7 +34,8 @@ import com.example.redditcloneapp.databinding.ActivityMainBinding;
 public class MainActivity extends AppCompatActivity {
 
     public static final String TAG = MainActivity.class.getSimpleName();
-    public static final String BASE_URL = "http://192.168.0.29:8080/RedditClone/"; //PC
+//    public static final String BASE_URL = "http://192.168.0.29:8080/RedditClone/"; //PC
+    public static final String BASE_URL = "http://192.168.0.17:8080/RedditClone/"; //PC GF
 //    public static final String BASE_URL = "http://192.168.43.238:8080/RedditClone/"; //PHONE
     private AppBarConfiguration mAppBarConfiguration;
     private ActivityMainBinding binding;

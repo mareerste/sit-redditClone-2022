@@ -4,15 +4,24 @@ import android.app.Activity;
 import android.app.Dialog;
 import android.content.Context;
 import android.content.Intent;
+
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.annotation.GlideModule;
+import com.bumptech.glide.module.AppGlideModule;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.os.Build;
 import android.os.Bundle;
+import android.util.Base64;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.BaseAdapter;
 import android.widget.Button;
 import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -42,13 +51,19 @@ import com.example.redditcloneapp.ui.community.CommunityActivity;
 import com.example.redditcloneapp.ui.community.mycommunities.MyCommunityActivity;
 import com.example.redditcloneapp.ui.profile.ProfileActivity;
 
+import java.io.IOException;
 import java.io.Serializable;
 import java.time.format.DateTimeFormatter;
 import java.time.format.FormatStyle;
 import java.util.ArrayList;
 import java.util.List;
 
+import okhttp3.FormBody;
+import okhttp3.HttpUrl;
 import okhttp3.OkHttpClient;
+import okhttp3.Request;
+import okhttp3.RequestBody;
+import okhttp3.ResponseBody;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -63,8 +78,12 @@ public class PostAdapter extends BaseAdapter {
     private Community community;
 
     static Retrofit retrofit = null;
+    static Retrofit retrofitImage = null;
+    private ImageView image;
+    private LayoutInflater layoutInflater;
 
-    public PostAdapter(Activity activity, User user, List<Post> posts){this.activity = activity;this.user=user;this.posts = posts;}
+    public PostAdapter(Activity activity, User user, List<Post> posts){this.activity = activity;this.user=user;this.posts = posts;this.layoutInflater = (LayoutInflater) activity.getApplicationContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+    }
 
     @RequiresApi(api = Build.VERSION_CODES.O)
     @Override
@@ -87,10 +106,16 @@ public class PostAdapter extends BaseAdapter {
 //        community = getPostCommunity(post);
 
         if(convertView == null){
+//            vi = layoutInflater.inflate(R.layout.post_item, parent, false);}
             vi = activity.getLayoutInflater().inflate(R.layout.post_item, null);}
         TextView title = (TextView) vi.findViewById(R.id.post_title);
         TextView text = (TextView) vi.findViewById(R.id.post_text);
         TextView karma = (TextView) vi.findViewById(R.id.post_karma);
+        ImageView image = vi.findViewById(R.id.post_img);
+        System.out.println(post.getImagePath() != null);
+        if(post.getImagePath() != null){
+            System.out.println(post.toString());
+            getPostImage(post,vi);}
         getPostKarma(post, karma);
 
         TextView userText = vi.findViewById(R.id.post_user);
@@ -370,5 +395,100 @@ public class PostAdapter extends BaseAdapter {
             }
         });
     }
+
+    private void getPostImage(Post post, View getView) {
+
+        MyServiceInterceptor interceptor = new MyServiceInterceptor(activity.getSharedPreferences(SignInActivity.mypreference, Context.MODE_PRIVATE).getString(SignInActivity.TOKEN, ""));
+
+        OkHttpClient client = new OkHttpClient.Builder()
+                .addInterceptor(interceptor)
+                .build();
+
+
+        retrofitImage = new Retrofit.Builder()
+                .client(client)
+                .baseUrl(MainActivity.BASE_URL)
+                .addConverterFactory(GsonConverterFactory.create())
+                .build();
+
+        PostApiService postApiServiceImage = retrofitImage.create(PostApiService.class);
+
+        Call<ResponseBody> call = postApiServiceImage.getImage(post.getImagePath());
+        call.enqueue(new Callback<ResponseBody>() {
+            @Override
+            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
+                if(response.isSuccessful()){
+                    byte[] imageByteArray = new byte[0];
+                    try {
+                        imageByteArray = response.body().bytes();
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+
+                    ImageView imageView = getView.findViewById(R.id.post_img);
+                    Glide.with(activity.getApplicationContext())
+                            .load(imageByteArray)
+                            .into(imageView);
+//                    Bitmap bmp = BitmapFactory.decodeStream(response.body().byteStream());
+//                    image.setImageBitmap(bmp);
+                }else{
+                    Toast.makeText(activity, response.toString(), Toast.LENGTH_LONG).show();
+                    System.out.println("Image not succ" + response.body());
+                }
+            }
+
+            @Override
+            public void onFailure(Call<ResponseBody> call, Throwable t) {
+                Toast.makeText(activity, "System error: "+ t.getMessage(), Toast.LENGTH_SHORT).show();
+                System.out.println("GRESKA ZA IMAGE" + t.getMessage());
+            }
+        });
+    }
+
+//    private void getImage(ImageView imageView, String path){
+//        MyServiceInterceptor interceptor = new MyServiceInterceptor(activity.getSharedPreferences(SignInActivity.mypreference, Context.MODE_PRIVATE).getString(SignInActivity.TOKEN, ""));
+//
+//        OkHttpClient client = new OkHttpClient.Builder()
+//                .addInterceptor(interceptor)
+//                .build();
+//        RequestBody formBody = new FormBody.Builder()
+//                .add("path", path)
+//                .build();
+//
+//        Request request = new Request.Builder()
+//                .url("http://localhost:8080/RedditClone/image/get")
+//                .post(formBody)
+//                .build();
+//
+////        HttpUrl url = HttpUrl.parse("http://localhost:8080/RedditClone/image/get").newBuilder()
+////                .addQueryParameter("path", path)
+////                .build();
+//
+//        client.newCall(request).enqueue(new Callback() {
+//            @Override
+//            public void onResponse(Call call, Response response) {
+//                try{
+//                    response.body().byteStream();
+//                }
+//                response.body();
+//            }
+//
+//            @Override
+//            public void onFailure(Call call, Throwable t) {
+//                System.out.println("request failed: " + t.getMessage());
+//            }
+//
+//            @Override
+//            public void onFailure(Request request, IOException e) {
+//                System.out.println("request failed: " + e.getMessage());
+//            }
+//
+//            @Override
+//            public void onResponse(Response response) throws IOException {
+//                response.body().byteStream(); // Read the data from the stream
+//            }
+//        });
+//    }
+
 
 }
