@@ -61,6 +61,8 @@ public class PostController {
         if(post == null) {
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
+        if(reportService.findAllByPostAndAccepted(post)!= 0)
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         return new ResponseEntity<>(new PostDTO(post),HttpStatus.OK);
     }
     @GetMapping(value = "/{id}/community")

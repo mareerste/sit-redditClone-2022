@@ -29,6 +29,7 @@ export class ReportedPostsComponent implements OnInit {
 
   ngOnInit() {
     this.loadReports()
+
   }
 
   showPost(report:Report){

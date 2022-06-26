@@ -1,3 +1,4 @@
+import { SuspendedPostGuard } from './guards/suspended-post.guard';
 import { SuspendedCommunityGuardGuard } from './guards/suspended-community-guard.guard';
 import { LoggedInAuthGuardGuard } from './guards/logged-in-auth-guard.guard';
 import { CommunityCreatePostComponent } from './pages/community/single-community/community-create-post/community-create-post.component';
@@ -30,6 +31,7 @@ const routes: Routes = [
   {
     path:'post/:id',
     component:SinglePostComponent,
+    canActivate: [SuspendedPostGuard]
   },
   {
     path:'community/:id/posts',

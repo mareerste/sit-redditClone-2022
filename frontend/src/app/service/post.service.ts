@@ -19,6 +19,10 @@ export class PostService {
     return this.apiService.get(this.config.all_posts_url);
   }
 
+  getPost(id:number):Observable<any> {
+    return this.http.get(`${this.config.post_url}/${id}`, {observe: 'response'});
+  }
+
   getPost2(id:number):Observable<Post> {
     return this.http.get<Post>(`${this.config.post_url}/${id}`);
   }
