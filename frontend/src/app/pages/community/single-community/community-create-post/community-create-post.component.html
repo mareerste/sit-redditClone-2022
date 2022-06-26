@@ -25,16 +25,8 @@
             <mat-form-field>
                 <label class="image-upload-container ">
                     <span>Select Image</span>
-                    <!-- <input #imageInput
-                           type="file"
-                           accept="image/*"
-                           style="width: 100%;
-                           border:0;color: red;"> -->
                     <input type="file" (change)="onFileChanged($event)">
                     <input type="button" (click)="onUpload()" value="upload">
-                    
-                    <!-- <input type="button" (click)="getImage()" value="Get Image"> -->
-                    <!-- (change)="processFile(imageInput)"> -->
                 </label>
             </mat-form-field>
 

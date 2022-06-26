@@ -10,6 +10,10 @@
         </button>
 
     </mat-card-subtitle>
+    <mat-card-content>
+        <img mat-card-image style="max-width: 60%;border: 2px solid #b71c1c;
+      border-radius: 50%;" [src]="image" *ngIf="user.avatar">
+    </mat-card-content>
 
     <mat-card-content>
 
@@ -70,6 +74,15 @@
                 <label>Description: </label>
                 <input formControlName="description" [value]="user.description" matInput>
             </mat-form-field>
+
+            <mat-form-field>
+                <label class="image-upload-container ">
+                    <span>Select Image</span>
+                    <input type="file" (change)="onFileChanged($event)">
+                    <input type="button" (click)="onUpload()" value="upload">
+                </label>
+            </mat-form-field>
+
             <input type="button" mat-raised-button value="change password" (click)="changePassword = !changePassword" style="display: block;margin: auto;">
             <div *ngIf="changePassword">
                 <mat-form-field>

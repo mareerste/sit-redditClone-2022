@@ -1,8 +1,10 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { DomSanitizer } from '@angular/platform-browser';
 import { ActivatedRoute } from '@angular/router';
 import { User } from 'src/app/model/user';
 import { AuthService, UserService } from 'src/app/service';
+import { ImageService } from 'src/app/service/image.service';
 interface DisplayMessage {
   msgType: string;
   msgBody: string;
@@ -17,6 +19,7 @@ export class UserProfileComponent implements OnInit {
   user: User;
   showProfil = true;
   editProfile = false;
+  image;
   form: FormGroup
   notification: DisplayMessage;
   myProfile: boolean = false;
@@ -24,16 +27,28 @@ export class UserProfileComponent implements OnInit {
   validate = true;
   usersKarma = 0;
 
+  selectedFile:File;
+  imagePath;
+
   constructor(
     private userService: UserService,
     private authService: AuthService,
+    private imageService:ImageService,
     private route: ActivatedRoute,
-    private formBuilder: FormBuilder
+    private formBuilder: FormBuilder,
+    private sanitizer:DomSanitizer,
   ) { }
 
   ngOnInit() {
     this.userService.getUser(this.route.snapshot.paramMap.get('username')).subscribe(data => {
       this.user = data
+      if (data.avatar != null) {
+
+        this.imageService.getImage3(data.avatar).subscribe(data => {
+          var unsafeImageUrl = URL.createObjectURL(data);
+          this.image = this.sanitizer.bypassSecurityTrustUrl(unsafeImageUrl);
+        })
+      }
       this.loadUsersKarma()
       this.isThatMe()
     })
@@ -45,7 +60,22 @@ export class UserProfileComponent implements OnInit {
       repNewPassword: ['', Validators.compose([Validators.minLength(3), Validators.maxLength(32)])],
       description: ['', Validators.compose([Validators.minLength(5), Validators.maxLength(32)])],
       email: ['', Validators.compose([Validators.minLength(10), Validators.maxLength(64), Validators.email])],
+      imagePath: []
     });
+  }
+
+  onFileChanged(event){
+    this.selectedFile = event.target.files[0];
+  }
+
+  onUpload() {
+    const uploadImageData = new FormData();
+    uploadImageData.append('imageFile', this.selectedFile, this.selectedFile.name);
+  
+    this.imageService.saveImage(uploadImageData).subscribe(res=>{
+      this.imagePath = res.path;
+    })
+
   }
 
   onSubmit() {
@@ -56,6 +86,8 @@ export class UserProfileComponent implements OnInit {
       if (this.form.value.displayName != "") {
         this.user.displayName = this.form.value.displayName
       }
+      if(this.imagePath != undefined)
+        this.user.avatar = this.imagePath;
       if (this.form.value.description != "") {
         this.user.description = this.form.value.description
       }

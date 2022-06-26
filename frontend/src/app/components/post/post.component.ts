@@ -33,6 +33,7 @@ export class PostComponent implements OnInit {
   post: Post;
   path;
   image;
+  imageUser;
   @Input()
   showComments: boolean;
   karma: number = 0;
@@ -68,9 +69,14 @@ export class PostComponent implements OnInit {
       this.imageService.getImage3(this.post.imagePath).subscribe(data => {
         var unsafeImageUrl = URL.createObjectURL(data);
         this.image = this.sanitizer.bypassSecurityTrustUrl(unsafeImageUrl);
-        
       })
+    }
+    if (this.post.user.avatar != null) {
 
+      this.imageService.getImage3(this.post.user.avatar).subscribe(data => {
+        var unsafeImageUrl = URL.createObjectURL(data);
+        this.imageUser = this.sanitizer.bypassSecurityTrustUrl(unsafeImageUrl);
+      })
     }
     this.loadKarma()
     this.communityService.getPostCommunity(this.post.id).subscribe(data => {

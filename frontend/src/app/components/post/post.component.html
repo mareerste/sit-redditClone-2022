@@ -2,8 +2,8 @@
 
   <mat-card class="example-card">
     <mat-card-header>
-      <img *ngIf="post.imagePath"
-        src="https://www.freakyjolly.com/wp-content/uploads/2021/07/cropped-cropped-fj-logo-192-removebg-preview-e1625997712615-1.png"
+      <img *ngIf="post.user.avatar"
+        [src]="imageUser"
         mat-card-avatar />
       <span class="spacer"></span>
       <div align="end">
