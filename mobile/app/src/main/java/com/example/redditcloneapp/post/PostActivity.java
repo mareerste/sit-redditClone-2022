@@ -11,10 +11,12 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.bumptech.glide.Glide;
 import com.example.redditcloneapp.MainActivity;
 import com.example.redditcloneapp.R;
 import com.example.redditcloneapp.model.Comment;
@@ -31,9 +33,11 @@ import com.example.redditcloneapp.tools.FragmentTransition;
 import com.example.redditcloneapp.ui.access.SignInActivity;
 import com.example.redditcloneapp.ui.profile.ProfileActivity;
 
+import java.io.IOException;
 import java.util.ArrayList;
 
 import okhttp3.OkHttpClient;
+import okhttp3.ResponseBody;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -49,9 +53,11 @@ public class PostActivity extends AppCompatActivity {
     TextView comName,comDate,comDesc, karma;
     EditText inputCommentText;
     Button voteUp,voteDown;
+    ImageView image;
     static Retrofit retrofit = null;
     static Retrofit retrofitPost = null;
     static Retrofit retrofitComment = null;
+    static Retrofit retrofitImage = null;
 
     @RequiresApi(api = Build.VERSION_CODES.O)
     @Override
@@ -75,6 +81,8 @@ public class PostActivity extends AppCompatActivity {
         TextView creationDate = findViewById(R.id.post_single_date);
         TextView flair = findViewById(R.id.post_single_flair);
         inputCommentText = findViewById(R.id.post_simple_comment_for_send);
+        image = findViewById(R.id.post_single_image);
+
         Button saveComment = findViewById(R.id.btn_post_simple_send_comment);
         saveComment.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -96,10 +104,10 @@ public class PostActivity extends AppCompatActivity {
                 voteDownPost();
             }
         });
-
+        if(post.getImagePath() != null){
+            getPostImage(post,image);}
         title.setText(post.getTitle());
         text.setText(post.getText());
-//        karma.setText(post.getKarma().toString()); //TODO prebaciti u service response
         userText.setText(post.getUser().getUsername());
         userText.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -363,6 +371,55 @@ public class PostActivity extends AppCompatActivity {
             public void onFailure(Call<Integer> call, Throwable t) {
                 Toast.makeText(PostActivity.this, "System error: "+ t.getMessage(), Toast.LENGTH_SHORT).show();
                 System.out.println("GRESKA" + t.getMessage());
+            }
+        });
+    }
+
+
+    private void getPostImage(Post post, ImageView image) {
+
+        MyServiceInterceptor interceptor = new MyServiceInterceptor(getSharedPreferences(SignInActivity.mypreference, Context.MODE_PRIVATE).getString(SignInActivity.TOKEN, ""));
+
+        OkHttpClient client = new OkHttpClient.Builder()
+                .addInterceptor(interceptor)
+                .build();
+
+
+        retrofitImage = new Retrofit.Builder()
+                .client(client)
+                .baseUrl(MainActivity.BASE_URL)
+                .addConverterFactory(GsonConverterFactory.create())
+                .build();
+
+        PostApiService postApiServiceImage = retrofitImage.create(PostApiService.class);
+
+        Call<ResponseBody> call = postApiServiceImage.getImage(post.getImagePath());
+        call.enqueue(new Callback<ResponseBody>() {
+            @Override
+            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
+                if(response.isSuccessful()){
+                    byte[] imageByteArray = new byte[0];
+                    try {
+                        imageByteArray = response.body().bytes();
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+
+                    Glide.with(getApplicationContext())
+                            .load(imageByteArray)
+                            .into(image);
+//                    Bitmap bmp = BitmapFactory.decodeStream(response.body().byteStream());
+//                    image.setImageBitmap(bmp);
+                }else{
+                    Toast.makeText(getApplicationContext(), response.toString(), Toast.LENGTH_LONG).show();
+                    System.out.println("Image not succ" + response.body());
+                }
+            }
+
+            @Override
+            public void onFailure(Call<ResponseBody> call, Throwable t) {
+                Toast.makeText(getApplicationContext(), "System error: "+ t.getMessage(), Toast.LENGTH_SHORT).show();
+                System.out.println("GRESKA ZA IMAGE" + t.getMessage());
             }
         });
     }

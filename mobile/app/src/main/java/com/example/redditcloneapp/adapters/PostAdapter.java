@@ -113,9 +113,9 @@ public class PostAdapter extends BaseAdapter {
         TextView karma = (TextView) vi.findViewById(R.id.post_karma);
         ImageView image = vi.findViewById(R.id.post_img);
         System.out.println(post.getImagePath() != null);
-        if(post.getImagePath() != null){
-            System.out.println(post.toString());
-            getPostImage(post,vi);}
+//        if(post.getImagePath() != null){
+//            System.out.println(post.toString());
+//            getPostImage(post,vi);}
         getPostKarma(post, karma);
 
         TextView userText = vi.findViewById(R.id.post_user);

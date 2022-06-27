@@ -155,6 +155,13 @@ public class Post implements Serializable {
         this.flair = flair;
     }
 
+    public Post(String title, String text, Flair flair, String imagePath) {
+        this.title = title;
+        this.text = text;
+        this.flair = flair;
+        this.imagePath = imagePath;
+    }
+
     //    public String getPostReaction(){
 //        int vote = 0;
 //        for (Reaction r:this.reactions) {

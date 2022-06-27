@@ -1,23 +1,43 @@
 package com.example.redditcloneapp.ui.community;
 
+import androidx.annotation.Nullable;
 import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
 
+import android.Manifest;
 import android.annotation.SuppressLint;
 import android.app.ActionBar;
+import android.app.Activity;
 import android.app.Dialog;
 import android.content.Context;
 import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.graphics.drawable.Drawable;
+import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.Environment;
+import android.os.Parcelable;
+import android.provider.DocumentsContract;
+import android.provider.MediaStore;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuInflater;
 import android.view.View;
+import android.webkit.ValueCallback;
+import android.webkit.WebChromeClient;
+import android.webkit.WebSettings;
+import android.webkit.WebView;
+import android.webkit.WebViewClient;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -32,15 +52,19 @@ import com.example.redditcloneapp.model.User;
 import com.example.redditcloneapp.post.PostCommentFragment;
 import com.example.redditcloneapp.service.BannedApiService;
 import com.example.redditcloneapp.service.CommunityApiService;
+import com.example.redditcloneapp.service.ImageApiService;
 import com.example.redditcloneapp.service.PostApiService;
 import com.example.redditcloneapp.service.UserApiService;
 import com.example.redditcloneapp.service.client.MyServiceInterceptor;
+import com.example.redditcloneapp.tools.FileUtil;
 import com.example.redditcloneapp.tools.FragmentTransition;
 import com.example.redditcloneapp.ui.access.SignInActivity;
 import com.example.redditcloneapp.ui.access.SignUpActivity;
 import com.example.redditcloneapp.ui.community.mycommunities.MyCommunityActivity;
 import com.example.redditcloneapp.ui.community.mycommunities.fragments.CommunityBasicInfoFragment;
 
+import java.io.File;
+import java.io.IOException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.time.format.DateTimeFormatter;
@@ -50,8 +74,13 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
 
+import okhttp3.MediaType;
+import okhttp3.MultipartBody;
 import okhttp3.OkHttpClient;
+import okhttp3.RequestBody;
+import okhttp3.ResponseBody;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -63,26 +92,31 @@ public class CommunityActivity extends AppCompatActivity {
     TextView commName,commDate,commDesc;
     EditText postTitle, postText;
     Spinner commFlairs;
-    Button btnSavePost, newPostLayBtn;
+    Button btnSavePost, newPostLayBtn, uploadImage,chooseImage;
     View newPostView;
+    ImageView image;
     private Flair selectedFlair = null;
     private boolean userBanned = false;
+    String filePath = "";
+    Uri uri;
 
     private User user;
     private Community community;
     static Retrofit retrofit = null;
+    static Retrofit retrofitImage = null;
     static Retrofit retrofitPost = null;
     private String sortType = "Sort";
     private Post post;
-        @RequiresApi(api = Build.VERSION_CODES.O)
-        @Override
-        protected void onCreate(Bundle savedInstanceState) {
-            super.onCreate(savedInstanceState);
-            setContentView(R.layout.activity_community);
+    @SuppressLint({"SetJavaScriptEnabled", "WrongViewCast"})
+    @RequiresApi(api = Build.VERSION_CODES.O)
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_community);
 
-            user = (User) getIntent().getSerializableExtra("user");
-            community = (Community) getIntent().getSerializableExtra("community");
-            post = (Post) getIntent().getSerializableExtra("post");
+        user = (User) getIntent().getSerializableExtra("user");
+        community = (Community) getIntent().getSerializableExtra("community");
+        post = (Post) getIntent().getSerializableExtra("post");
 
 //            STRELICA KA NAZAD
 //            ActionBar actionBar = getSupportActionBar();
@@ -90,138 +124,191 @@ public class CommunityActivity extends AppCompatActivity {
 //                actionBar.setDisplayHomeAsUpEnabled(true);
 //            }
 
-            postTitle = findViewById(R.id.comm_new_post_title);
-            postText = findViewById(R.id.comm_new_post_text);
-            btnSavePost = findViewById(R.id.comm_new_post_btn_save);
+        postTitle = findViewById(R.id.comm_new_post_title);
+        postText = findViewById(R.id.comm_new_post_text);
+        btnSavePost = findViewById(R.id.comm_new_post_btn_save);
 
-            commName = findViewById(R.id.comm_single_name);
-            commDate = findViewById(R.id.comm_single_date);
-            commDesc = findViewById(R.id.comm_single_desc);
-            commFlairs = findViewById(R.id.comm_new_post_spinner);
-            if(community == null)
-                getPostCommunity(post);
-            else{
-                loadCommunity(community);
+
+        chooseImage = findViewById(R.id.image_pick);
+        chooseImage.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                chooseFile();
             }
-            View dropDown = findViewById(R.id.comm_drop_down_lay);
-            Button buttonVisibilityDown = findViewById(R.id.comm_drop_down_lay_btn_down);
-            Button buttonVisibilityUp = findViewById(R.id.comm_drop_down_lay_btn_up);
-            View adminLayoutBtn = findViewById(R.id.comm_single_admin_view);
-            if(user instanceof Administrator){
-                adminLayoutBtn.setVisibility(View.VISIBLE);
-                Button viewCommunityBtn = findViewById(R.id.comm_single_admin_view_btn);
-                viewCommunityBtn.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View view) {
-                        Intent intent = new Intent(CommunityActivity.this, MyCommunityActivity.class);
-                        intent.putExtra("community", community);
-                        intent.putExtra("user", user);
-                        startActivity(intent);
-                    }
-                });
+        });
+        //kraj wv
+
+
+        commName = findViewById(R.id.comm_single_name);
+        commDate = findViewById(R.id.comm_single_date);
+        commDesc = findViewById(R.id.comm_single_desc);
+        commFlairs = findViewById(R.id.comm_new_post_spinner);
+        if(community == null)
+            getPostCommunity(post);
+        else{
+            loadCommunity(community);
+        }
+        View dropDown = findViewById(R.id.comm_drop_down_lay);
+        Button buttonVisibilityDown = findViewById(R.id.comm_drop_down_lay_btn_down);
+        Button buttonVisibilityUp = findViewById(R.id.comm_drop_down_lay_btn_up);
+        uploadImage = findViewById(R.id.image_upload);
+
+        uploadImage.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                uploadImage();
             }
+        });
 
-            buttonVisibilityDown.setOnClickListener(new View.OnClickListener() {
+        View adminLayoutBtn = findViewById(R.id.comm_single_admin_view);
+        if(user instanceof Administrator){
+            adminLayoutBtn.setVisibility(View.VISIBLE);
+            Button viewCommunityBtn = findViewById(R.id.comm_single_admin_view_btn);
+            viewCommunityBtn.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    dropDown.setVisibility(View.VISIBLE);
-                    buttonVisibilityDown.setVisibility(View.GONE);
-                    buttonVisibilityUp.setVisibility(View.VISIBLE);
+                    Intent intent = new Intent(CommunityActivity.this, MyCommunityActivity.class);
+                    intent.putExtra("community", community);
+                    intent.putExtra("user", user);
+                    startActivity(intent);
                 }
             });
+        }
 
-            buttonVisibilityUp.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    dropDown.setVisibility(View.GONE);
-                    buttonVisibilityDown.setVisibility(View.VISIBLE);
-                    buttonVisibilityUp.setVisibility(View.GONE);
-                }
-            });
-
-            btnSavePost.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    if(isValid())
-                        savePost();
-                }
-            });
-
-            newPostView = findViewById(R.id.comm_new_post_layout);
-            newPostLayBtn = findViewById(R.id.comm_new_post_btn_layout);
-            newPostLayBtn.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    if(newPostView.getVisibility() == View.VISIBLE) {
-                        closeNewPostLayout();
-                    }
-                    else {
-                        openNewPostLayout();
-                    }
-                }
-            });
-            if(user == null){
-                newPostLayBtn.setVisibility(View.GONE);
+        buttonVisibilityDown.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                dropDown.setVisibility(View.VISIBLE);
+                buttonVisibilityDown.setVisibility(View.GONE);
+                buttonVisibilityUp.setVisibility(View.VISIBLE);
             }
+        });
 
-            Spinner sortSpinner = findViewById(R.id.comm_single_sort_btn);
-            List<String> list = Arrays.asList("Sort","Top","New","Hot");
-            sortSpinner.setAdapter(new ArrayAdapter<String>(CommunityActivity.this, android.R.layout.simple_spinner_dropdown_item,list));
-            sortSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-                @Override
-                public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
-                    String selected = sortSpinner.getSelectedItem().toString();
-                    if (!selected.equals("Sort")) {
-                        sortType = selected;
-                        getPosts();
-                    }
+        buttonVisibilityUp.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                dropDown.setVisibility(View.GONE);
+                buttonVisibilityDown.setVisibility(View.VISIBLE);
+                buttonVisibilityUp.setVisibility(View.GONE);
+            }
+        });
+        image = findViewById(R.id.image_image);
+        btnSavePost.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if(isValid())
+                    savePost();
+            }
+        });
+
+        newPostView = findViewById(R.id.comm_new_post_layout);
+        newPostLayBtn = findViewById(R.id.comm_new_post_btn_layout);
+        newPostLayBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if(newPostView.getVisibility() == View.VISIBLE) {
+                    closeNewPostLayout();
                 }
-                @Override
-                public void onNothingSelected(AdapterView<?> adapterView) {
+                else {
+                    openNewPostLayout();
+                }
+            }
+        });
+        if(user == null){
+            newPostLayBtn.setVisibility(View.GONE);
+        }
+
+        Spinner sortSpinner = findViewById(R.id.comm_single_sort_btn);
+        List<String> list = Arrays.asList("Sort","Top","New","Hot");
+        sortSpinner.setAdapter(new ArrayAdapter<String>(CommunityActivity.this, android.R.layout.simple_spinner_dropdown_item,list));
+        sortSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
+                String selected = sortSpinner.getSelectedItem().toString();
+                if (!selected.equals("Sort")) {
+                    sortType = selected;
                     getPosts();
                 }
-            });
+            }
+            @Override
+            public void onNothingSelected(AdapterView<?> adapterView) {
+                getPosts();
+            }
+        });
 
-            Button suspendBtn = findViewById(R.id.comm_suspend);
-            if (getSharedPreferences(SignInActivity.mypreference, MODE_PRIVATE).getString(SignInActivity.Role, "").equals("ROLE_ADMIN")){
-                suspendBtn.setVisibility(View.VISIBLE);
-                suspendBtn.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View view) {
-                        Dialog dialog = new Dialog(CommunityActivity.this);
-                        dialog.setContentView(R.layout.dialog_ban_or_view_user);
-                        TextView text = dialog.findViewById(R.id.dialog_ban_or_view_text);
-                        text.setText("Suspend community " + community.getName() );
-                        Button btnLeft = dialog.findViewById(R.id.dialog_ban_or_view_btn_left);
-                        btnLeft.setText("Suspend");
-                        Button btnRight = dialog.findViewById(R.id.dialog_ban_or_view_btn_right);
-                        btnRight.setText(R.string.cancel);
-                        EditText susReason = dialog.findViewById(R.id.dialog_ban_or_view_edit_text);
-                        susReason.setVisibility(View.VISIBLE);
-                        susReason.setHint(R.string.sus_reason);
-                        dialog.show();
-                        btnRight.setOnClickListener(new View.OnClickListener() {
-                            @Override
-                            public void onClick(View view) {
+        Button suspendBtn = findViewById(R.id.comm_suspend);
+        if (getSharedPreferences(SignInActivity.mypreference, MODE_PRIVATE).getString(SignInActivity.Role, "").equals("ROLE_ADMIN")){
+            suspendBtn.setVisibility(View.VISIBLE);
+            suspendBtn.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    Dialog dialog = new Dialog(CommunityActivity.this);
+                    dialog.setContentView(R.layout.dialog_ban_or_view_user);
+                    TextView text = dialog.findViewById(R.id.dialog_ban_or_view_text);
+                    text.setText("Suspend community " + community.getName() );
+                    Button btnLeft = dialog.findViewById(R.id.dialog_ban_or_view_btn_left);
+                    btnLeft.setText("Suspend");
+                    Button btnRight = dialog.findViewById(R.id.dialog_ban_or_view_btn_right);
+                    btnRight.setText(R.string.cancel);
+                    EditText susReason = dialog.findViewById(R.id.dialog_ban_or_view_edit_text);
+                    susReason.setVisibility(View.VISIBLE);
+                    susReason.setHint(R.string.sus_reason);
+                    dialog.show();
+                    btnRight.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View view) {
+                            dialog.dismiss();
+                        }
+                    });
+                    btnLeft.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View view) {
+                            if(!susReason.getText().toString().equals("")){
+                                community.setSuspended(true);
+                                community.setSuspendedReason(susReason.getText().toString());
+                                suspendCommunity(community);
                                 dialog.dismiss();
                             }
-                        });
-                        btnLeft.setOnClickListener(new View.OnClickListener() {
-                            @Override
-                            public void onClick(View view) {
-                                if(!susReason.getText().toString().equals("")){
-                                    community.setSuspended(true);
-                                    community.setSuspendedReason(susReason.getText().toString());
-                                    suspendCommunity(community);
-                                    dialog.dismiss();
-                                }
-                            }
-                        });
-                    }
-                });
-            }
-
+                        }
+                    });
+                }
+            });
         }
+
+    }
+
+    private void chooseFile() {
+        String [] permissions = new String[]{
+                "android.permission.READ_EXTERNAL_STORAGE",
+                "android.permission.WRITE_EXTERNAL_STORAGE"
+        };
+        if(ActivityCompat.checkSelfPermission(this,permissions[0]) != PackageManager.PERMISSION_GRANTED || ActivityCompat.checkSelfPermission(this,permissions[1]) != PackageManager.PERMISSION_GRANTED)
+            ActivityCompat.requestPermissions(this,permissions,1);
+        Intent intent = new Intent(Intent.ACTION_GET_CONTENT);
+        intent.setType("*/*");
+        intent.addCategory(Intent.CATEGORY_OPENABLE);
+        startActivityForResult(intent,1);
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if(resultCode == Activity.RESULT_OK){
+            uri = data.getData();
+            File dir = getExternalFilesDir(null);
+            if(dir != null){
+                Bitmap bitmap = null;
+                try {
+                    bitmap = MediaStore.Images.Media.getBitmap(this.getContentResolver(), uri);
+                    image.setImageBitmap(bitmap);
+                    image.setVisibility(View.VISIBLE);
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+
+            }
+        }
+    }
 
     private boolean isValid() {
         postTitle.setBackgroundResource(0);
@@ -306,7 +393,6 @@ public class CommunityActivity extends AppCompatActivity {
             @Override
             public void onFailure(Call<Community> call, Throwable t) {
                 System.out.println("RESPONSE: " + t.toString());
-                Log.e(MainActivity.TAG, t.toString());
             }
         });
 
@@ -321,16 +407,18 @@ public class CommunityActivity extends AppCompatActivity {
                 .build();
 
 
-            retrofitPost = new Retrofit.Builder()
-                    .client(client)
-                    .baseUrl(MainActivity.BASE_URL)
-                    .addConverterFactory(GsonConverterFactory.create())
-                    .build();
+        retrofitPost = new Retrofit.Builder()
+                .client(client)
+                .baseUrl(MainActivity.BASE_URL)
+                .addConverterFactory(GsonConverterFactory.create())
+                .build();
 
         CommunityApiService communityApiService = retrofitPost.create(CommunityApiService.class);
         System.out.println("COMM ID"+community.getId());
         Post post = new Post(postTitle.getText().toString(), postText.getText().toString(), selectedFlair);
-
+        if(!filePath.equals(""))
+            post.setImagePath(filePath);
+        System.out.println(post.toString());
         Call<Post> call = communityApiService.savePost(community.getId(),post);
         call.enqueue(new Callback<Post>() {
             @Override
@@ -354,8 +442,8 @@ public class CommunityActivity extends AppCompatActivity {
     }
 
     private void clearForm() {
-            postTitle.setText("");
-            postText.setText("");
+        postTitle.setText("");
+        postText.setText("");
     }
 
     private void openNewPostLayout() {
@@ -527,7 +615,7 @@ public class CommunityActivity extends AppCompatActivity {
         });
     }
 
-        private void isBanned(){
+    private void isBanned(){
         MyServiceInterceptor interceptor = new MyServiceInterceptor(getSharedPreferences(SignInActivity.mypreference, Context.MODE_PRIVATE).getString(SignInActivity.TOKEN, ""));
 
         OkHttpClient client = new OkHttpClient.Builder()
@@ -556,5 +644,44 @@ public class CommunityActivity extends AppCompatActivity {
             }
         });
     }
+
+    private void uploadImage(){
+        File file = new File(FileUtil.getPath(uri, this));
+        System.out.println(file.toString());
+        RequestBody requestBody = RequestBody.create(MediaType.parse("image/*"), file);
+        MultipartBody.Part part = MultipartBody.Part.createFormData("imageFile", file.getName(), requestBody);
+
+        RequestBody someData = RequestBody.create(MediaType.parse("text/plain"), "New Image");
+
+
+        MyServiceInterceptor interceptor = new MyServiceInterceptor(getSharedPreferences(SignInActivity.mypreference, Context.MODE_PRIVATE).getString(SignInActivity.TOKEN, ""));
+        OkHttpClient client = new OkHttpClient.Builder()
+                .addInterceptor(interceptor)
+                .build();
+
+        retrofitImage = new Retrofit.Builder()
+                .client(client)
+                .baseUrl(MainActivity.BASE_URL)
+                .addConverterFactory(GsonConverterFactory.create())
+                .build();
+
+        ImageApiService imageApiService = retrofit.create(ImageApiService.class);
+        Call<Map<String,String>> call = imageApiService.saveImage(part);
+        call.enqueue(new Callback<Map<String,String>>() {
+            @Override
+            public void onResponse(Call<Map<String,String>> call, Response<Map<String,String>> response) {
+                filePath = response.body().get("path");
+                System.out.println(response.body().get("path"));
+            }
+
+            @Override
+            public void onFailure(Call<Map<String,String>> call, Throwable t) {
+                System.out.println("T ERROR" + t.getMessage());
+                Toast.makeText(CommunityActivity.this, "System error: "+ t.getMessage(), Toast.LENGTH_SHORT).show();
+            }
+        });
+
+    }
+
 
 }

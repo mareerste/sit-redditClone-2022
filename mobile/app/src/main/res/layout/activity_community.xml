@@ -129,6 +129,17 @@
             android:paddingLeft="15dp"
             android:paddingRight="15dp"
             android:visibility="gone">
+            <ImageView
+                android:id="@+id/image_image"
+                android:layout_marginTop="15px"
+                android:layout_width="200dp"
+                android:layout_height="200dp"
+                android:visibility="gone"
+                android:padding="15px"
+                android:maxWidth="200dp"
+                android:maxHeight="200dp"
+                android:layout_gravity="center"
+                android:background="@drawable/rounded_corners_bg"/>
             <EditText
                 android:id="@+id/comm_new_post_title"
                 android:layout_width="match_parent"
@@ -155,7 +166,14 @@
                 android:layout_height="wrap_content"
                 android:orientation="horizontal"
                 android:gravity="right">
+
                 <Button
+                    android:id="@+id/image_upload"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Upload"/>
+                <Button
+                    android:id="@+id/image_pick"
                     android:layout_width="30dp"
                     android:layout_height="35dp"
                     android:layout_marginRight="10dp"
