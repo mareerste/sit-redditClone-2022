@@ -187,6 +187,16 @@ public class ProfileFragment extends Fragment {
             }
         });
 
+        Button commentsBtn = view.findViewById(R.id.profile_my_comments_btn);
+        commentsBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(getActivity(), CommentsActivity.class);
+                intent.putExtra("user", user);
+                startActivity(intent);
+            }
+        });
+
         Button postsBtn = view.findViewById(R.id.profile_my_posts_btn);
         postsBtn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -305,7 +315,8 @@ public class ProfileFragment extends Fragment {
                     descEdit.setText(user.getDescription());
 
                     getUsersKarma(username);
-                    getPostImage();
+                    if(user.getAvatar() != null)
+                        getProfileImage();
                 }
             }
 
@@ -468,7 +479,7 @@ public class ProfileFragment extends Fragment {
 
     }
 
-    private void getPostImage() {
+    private void getProfileImage() {
 
         MyServiceInterceptor interceptor = new MyServiceInterceptor(activity.getSharedPreferences(SignInActivity.mypreference, Context.MODE_PRIVATE).getString(SignInActivity.TOKEN, ""));
 

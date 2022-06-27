@@ -4,6 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import rs.ac.uns.ftn.informatika.redditClone.model.entity.Comment;
 import rs.ac.uns.ftn.informatika.redditClone.model.entity.Post;
+import rs.ac.uns.ftn.informatika.redditClone.model.entity.User;
 import rs.ac.uns.ftn.informatika.redditClone.repository.CommentRepository;
 import rs.ac.uns.ftn.informatika.redditClone.service.CommentService;
 
@@ -39,5 +40,10 @@ public class CommentServiceImpl implements CommentService {
     public Comment save(Comment comment){return commentRepository.save(comment);}
     @Override
     public void delete(Comment comment){ commentRepository.delete(comment);}
+
+    @Override
+    public List<Comment> findAllByUser(User user) {
+        return commentRepository.findAllByUser(user);
+    }
 
 }

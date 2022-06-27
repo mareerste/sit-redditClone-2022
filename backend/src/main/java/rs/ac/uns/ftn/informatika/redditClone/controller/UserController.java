@@ -13,14 +13,12 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 import rs.ac.uns.ftn.informatika.redditClone.model.dto.*;
+import rs.ac.uns.ftn.informatika.redditClone.model.entity.Comment;
 import rs.ac.uns.ftn.informatika.redditClone.model.entity.Community;
 import rs.ac.uns.ftn.informatika.redditClone.model.entity.Post;
 import rs.ac.uns.ftn.informatika.redditClone.model.entity.User;
 import rs.ac.uns.ftn.informatika.redditClone.security.TokenUtils;
-import rs.ac.uns.ftn.informatika.redditClone.service.CommunityService;
-import rs.ac.uns.ftn.informatika.redditClone.service.PostService;
-import rs.ac.uns.ftn.informatika.redditClone.service.ReactionService;
-import rs.ac.uns.ftn.informatika.redditClone.service.UserService;
+import rs.ac.uns.ftn.informatika.redditClone.service.*;
 
 import javax.servlet.http.HttpServletResponse;
 import java.security.Principal;
@@ -38,6 +36,8 @@ public class UserController {
     private UserDetailsService userDetailsService;
     @Autowired
     private CommunityService communityService;
+    @Autowired
+    private CommentService commentService;
     @Autowired
     private ReactionService reactionService;
     @Autowired
@@ -78,6 +78,20 @@ public class UserController {
             usersPosts.add(new PostDTO(p));
         }
         return new ResponseEntity<>(usersPosts, HttpStatus.OK);
+    }
+
+    @PreAuthorize("hasAnyRole('USER','MODERATOR', 'ADMIN')")
+    @GetMapping(value = "/{username}/comments")
+    public ResponseEntity<List<CommentDTO>> getUserComments(@PathVariable String username){
+        User user = userService.findOne(username);
+        if (user == null)
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        List<Comment> comments = commentService.findAllByUser(user);
+        List<CommentDTO> usersComments = new ArrayList<>();
+        for (Comment c: comments) {
+            usersComments.add(new CommentDTO(c));
+        }
+        return new ResponseEntity<>(usersComments, HttpStatus.OK);
     }
 
     @PreAuthorize("hasAnyRole('USER','MODERATOR', 'ADMIN')")
