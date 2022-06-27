@@ -4,8 +4,12 @@ import android.app.Activity;
 import android.app.Dialog;
 import android.content.Context;
 import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.graphics.Bitmap;
+import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
+import android.provider.MediaStore;
 import android.text.Layout;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -13,6 +17,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -20,23 +25,38 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AlertDialog;
+import androidx.core.app.ActivityCompat;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 
+import com.bumptech.glide.Glide;
 import com.example.redditcloneapp.MainActivity;
 import com.example.redditcloneapp.R;
 import com.example.redditcloneapp.databinding.FragmentProfileBinding;
+import com.example.redditcloneapp.model.Post;
 import com.example.redditcloneapp.model.User;
+import com.example.redditcloneapp.service.ImageApiService;
+import com.example.redditcloneapp.service.PostApiService;
 import com.example.redditcloneapp.service.UserApiService;
 import com.example.redditcloneapp.service.client.MyServiceInterceptor;
+import com.example.redditcloneapp.tools.FileUtil;
 import com.example.redditcloneapp.ui.access.SignInActivity;
+import com.example.redditcloneapp.ui.access.SignUpActivity;
 
+import java.io.File;
+import java.io.IOException;
 import java.time.format.DateTimeFormatter;
 import java.time.format.FormatStyle;
+import java.util.Map;
 
+import okhttp3.MediaType;
+import okhttp3.MultipartBody;
 import okhttp3.OkHttpClient;
+import okhttp3.RequestBody;
+import okhttp3.ResponseBody;
 import retrofit2.Call;
 import retrofit2.Callback;
+import retrofit2.Response;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
@@ -49,10 +69,14 @@ public class ProfileFragment extends Fragment {
     static final String TAG = ProfileActivity.class.getSimpleName();
     static Retrofit retrofit = null;
     static Retrofit retrofitKarma = null;
+    static Retrofit retrofitImage = null;
+    private String filePath = "";
+    Uri uri;
 
     TextView usernameShow, usernameEdit,displayNameShow,mailShow, passwordShow, descShow, dateShow, dateEdit, karmaShow;
     EditText  descEdit, mailEdit, displayNameEdit;
-
+    Button uploadImage, saveImage;
+    ImageView imageView;
     View editLayout, saveLayout, editableLayout, informationLayout;
 
     public View onCreateView(@NonNull LayoutInflater inflater,
@@ -80,6 +104,21 @@ public class ProfileFragment extends Fragment {
         dateShow = view.findViewById(R.id.profile_reg_date);
         descShow = view.findViewById(R.id.profile_description);
         karmaShow = view.findViewById(R.id.profile_karma);
+        uploadImage = view.findViewById(R.id.profile_upload_image);
+        uploadImage.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                chooseFile();
+            }
+        });
+        saveImage = view.findViewById(R.id.profile_save_image);
+        saveImage.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                uploadImage();
+            }
+        });
+        imageView = view.findViewById(R.id.profile_image);
 
         usernameEdit = view.findViewById(R.id.profile_username_edit);
         mailEdit = view.findViewById(R.id.profile_email_edit);
@@ -266,6 +305,7 @@ public class ProfileFragment extends Fragment {
                     descEdit.setText(user.getDescription());
 
                     getUsersKarma(username);
+                    getPostImage();
                 }
             }
 
@@ -338,6 +378,8 @@ public class ProfileFragment extends Fragment {
                 .addConverterFactory(GsonConverterFactory.create())
                 .build();
 
+        if(!filePath.equals(""))
+            user.setAvatar(filePath);
         UserApiService userApiService = retrofit.create(UserApiService.class);
         Call<User> call = userApiService.updateUser(user);
         call.enqueue(new Callback<User>() {
@@ -357,4 +399,121 @@ public class ProfileFragment extends Fragment {
             }
         });
     }
+
+    private void chooseFile() {
+        String [] permissions = new String[]{
+                "android.permission.READ_EXTERNAL_STORAGE",
+                "android.permission.WRITE_EXTERNAL_STORAGE"
+        };
+        if(ActivityCompat.checkSelfPermission(activity,permissions[0]) != PackageManager.PERMISSION_GRANTED || ActivityCompat.checkSelfPermission(activity,permissions[1]) != PackageManager.PERMISSION_GRANTED)
+            ActivityCompat.requestPermissions(activity,permissions,1);
+        Intent intent = new Intent(Intent.ACTION_GET_CONTENT);
+        intent.setType("*/*");
+        intent.addCategory(Intent.CATEGORY_OPENABLE);
+        startActivityForResult(intent,1);
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if(resultCode == Activity.RESULT_OK){
+            uri = data.getData();
+            File dir = activity.getExternalFilesDir(null);
+            if(dir != null){
+                Bitmap bitmap = null;
+                try {
+                    bitmap = MediaStore.Images.Media.getBitmap(activity.getContentResolver(), uri);
+                    imageView.setImageBitmap(bitmap);
+                    saveImage.setVisibility(View.VISIBLE);
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+
+            }
+        }
+    }
+
+    private void uploadImage(){
+        File file = new File(FileUtil.getPath(uri, activity));
+        System.out.println(file.toString());
+        RequestBody requestBody = RequestBody.create(MediaType.parse("image/*"), file);
+        MultipartBody.Part part = MultipartBody.Part.createFormData("imageFile", file.getName(), requestBody);
+
+        MyServiceInterceptor interceptor = new MyServiceInterceptor(activity.getSharedPreferences(SignInActivity.mypreference, Context.MODE_PRIVATE).getString(SignInActivity.TOKEN, ""));
+        OkHttpClient client = new OkHttpClient.Builder()
+                .addInterceptor(interceptor)
+                .build();
+
+        retrofitImage = new Retrofit.Builder()
+                .client(client)
+                .baseUrl(MainActivity.BASE_URL)
+                .addConverterFactory(GsonConverterFactory.create())
+                .build();
+
+        ImageApiService imageApiService = retrofitImage.create(ImageApiService.class);
+        Call<Map<String,String>> call = imageApiService.saveImage(part);
+        call.enqueue(new Callback<Map<String,String>>() {
+            @Override
+            public void onResponse(Call<Map<String,String>> call, Response<Map<String,String>> response) {
+                filePath = response.body().get("path");
+                System.out.println(response.body().get("path"));
+            }
+
+            @Override
+            public void onFailure(Call<Map<String,String>> call, Throwable t) {
+                System.out.println("T ERROR" + t.getMessage());
+                Toast.makeText(activity, "System error: "+ t.getMessage(), Toast.LENGTH_SHORT).show();
+            }
+        });
+
+    }
+
+    private void getPostImage() {
+
+        MyServiceInterceptor interceptor = new MyServiceInterceptor(activity.getSharedPreferences(SignInActivity.mypreference, Context.MODE_PRIVATE).getString(SignInActivity.TOKEN, ""));
+
+        OkHttpClient client = new OkHttpClient.Builder()
+                .addInterceptor(interceptor)
+                .build();
+
+
+        retrofitImage = new Retrofit.Builder()
+                .client(client)
+                .baseUrl(MainActivity.BASE_URL)
+                .addConverterFactory(GsonConverterFactory.create())
+                .build();
+
+        PostApiService postApiServiceImage = retrofitImage.create(PostApiService.class);
+
+        Call<ResponseBody> call = postApiServiceImage.getImage(user.getAvatar());
+        call.enqueue(new Callback<ResponseBody>() {
+            @Override
+            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
+                if(response.isSuccessful()){
+                    byte[] imageByteArray = new byte[0];
+                    try {
+                        imageByteArray = response.body().bytes();
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+
+                    Glide.with(activity.getApplicationContext())
+                            .load(imageByteArray)
+                            .into(imageView);
+//                    Bitmap bmp = BitmapFactory.decodeStream(response.body().byteStream());
+//                    image.setImageBitmap(bmp);
+                }else{
+                    Toast.makeText(activity.getApplicationContext(), response.toString(), Toast.LENGTH_LONG).show();
+                    System.out.println("Image not succ" + response.body());
+                }
+            }
+
+            @Override
+            public void onFailure(Call<ResponseBody> call, Throwable t) {
+                Toast.makeText(activity.getApplicationContext(), "System error: "+ t.getMessage(), Toast.LENGTH_SHORT).show();
+                System.out.println("GRESKA ZA IMAGE" + t.getMessage());
+            }
+        });
+    }
+
 }

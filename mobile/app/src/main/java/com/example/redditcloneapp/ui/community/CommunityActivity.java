@@ -302,6 +302,7 @@ public class CommunityActivity extends AppCompatActivity {
                     bitmap = MediaStore.Images.Media.getBitmap(this.getContentResolver(), uri);
                     image.setImageBitmap(bitmap);
                     image.setVisibility(View.VISIBLE);
+                    uploadImage.setVisibility(View.VISIBLE);
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
@@ -414,11 +415,10 @@ public class CommunityActivity extends AppCompatActivity {
                 .build();
 
         CommunityApiService communityApiService = retrofitPost.create(CommunityApiService.class);
-        System.out.println("COMM ID"+community.getId());
         Post post = new Post(postTitle.getText().toString(), postText.getText().toString(), selectedFlair);
         if(!filePath.equals(""))
             post.setImagePath(filePath);
-        System.out.println(post.toString());
+
         Call<Post> call = communityApiService.savePost(community.getId(),post);
         call.enqueue(new Callback<Post>() {
             @Override
@@ -651,9 +651,6 @@ public class CommunityActivity extends AppCompatActivity {
         RequestBody requestBody = RequestBody.create(MediaType.parse("image/*"), file);
         MultipartBody.Part part = MultipartBody.Part.createFormData("imageFile", file.getName(), requestBody);
 
-        RequestBody someData = RequestBody.create(MediaType.parse("text/plain"), "New Image");
-
-
         MyServiceInterceptor interceptor = new MyServiceInterceptor(getSharedPreferences(SignInActivity.mypreference, Context.MODE_PRIVATE).getString(SignInActivity.TOKEN, ""));
         OkHttpClient client = new OkHttpClient.Builder()
                 .addInterceptor(interceptor)
@@ -665,7 +662,7 @@ public class CommunityActivity extends AppCompatActivity {
                 .addConverterFactory(GsonConverterFactory.create())
                 .build();
 
-        ImageApiService imageApiService = retrofit.create(ImageApiService.class);
+        ImageApiService imageApiService = retrofitImage.create(ImageApiService.class);
         Call<Map<String,String>> call = imageApiService.saveImage(part);
         call.enqueue(new Callback<Map<String,String>>() {
             @Override
