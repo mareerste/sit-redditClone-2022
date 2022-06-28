@@ -1,5 +1,7 @@
 package rs.ac.uns.ftn.informatika.redditClone.controller;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -18,6 +20,7 @@ import java.util.List;
 @RestController
 @RequestMapping(value = "/flair")
 public class FlairController {
+    Logger logger = LoggerFactory.getLogger(FlairController.class);
     @Autowired
     private FlairService flairService;
     @GetMapping
@@ -45,6 +48,7 @@ public class FlairController {
         Flair flair = new Flair();
         flair.setName(flairCreateDTO.getName());
         flair = flairService.save(flair);
+        logger.info("Flair " +flair.getName()+ " created ");
         return new ResponseEntity<>(new FlairDTO(flair),HttpStatus.CREATED);
     }
     @PreAuthorize("hasAnyRole('USER','MODERATOR', 'ADMIN')")
@@ -55,6 +59,7 @@ public class FlairController {
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         flair.setName(flairDTO.getName());
         flair = flairService.save(flair);
+        logger.info("Flair " +flair.getName()+ " updated ");
         return new ResponseEntity<>(new FlairDTO(flair),HttpStatus.OK);
     }
     @PreAuthorize("hasAnyRole('MODERATOR', 'ADMIN')")
@@ -63,8 +68,10 @@ public class FlairController {
         Flair flair = flairService.findOne(id);
         if(flair != null){
             flairService.delete(flair);
+            logger.info("Flair deleted ");
             return new ResponseEntity<>(HttpStatus.OK);
         }else{
+            logger.error("Flair not found");
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
     }

@@ -1,5 +1,7 @@
 package rs.ac.uns.ftn.informatika.redditClone.controller;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -21,6 +23,7 @@ import java.util.List;
 @RestController
 @RequestMapping(value = "/report")
 public class ReportController {
+    Logger logger = LoggerFactory.getLogger(ReportController.class);
     @Autowired
     private ReportService reportService;
     @Autowired
@@ -119,6 +122,7 @@ public class ReportController {
         if(reportDTO.getComment() != null)
             report.setComment(commentService.findOne(reportDTO.getComment().getId()));
         report = reportService.save(report);
+        logger.info("Report " +report.getId()+ " created ");
         return new ResponseEntity<>(new ReportDTO(report),HttpStatus.CREATED);
     }
 
@@ -134,6 +138,7 @@ public class ReportController {
         report.setAccepted(reportDTO.getAccepted());
         report.setPost(postService.findOne(reportDTO.getPost().getId()));
         report = reportService.save(report);
+        logger.info("Report " +report.getId()+ " created ");
         return new ResponseEntity<>(new ReportPostDTO(report),HttpStatus.CREATED);
     }
     @PreAuthorize("hasAnyRole('USER','MODERATOR', 'ADMIN')")
@@ -148,6 +153,7 @@ public class ReportController {
         report.setAccepted(reportDTO.getAccepted());
         report.setComment(commentService.findOne(reportDTO.getComment().getId()));
         report = reportService.save(report);
+        logger.info("Report " +report.getId()+ " created ");
         return new ResponseEntity<>(new ReportCommentDTO(report),HttpStatus.CREATED);
     }
     @PreAuthorize("hasAnyRole('USER','MODERATOR', 'ADMIN')")
@@ -162,6 +168,7 @@ public class ReportController {
         report.setAccepted(reportDTO.getAccepted());
         report.setPost(postService.findOne(reportDTO.getPost().getId()));
         report = reportService.save(report);
+        logger.info("Report " +report.getId()+ " updated ");
         return new ResponseEntity<>(new ReportPostDTO(report),HttpStatus.OK);
     }
     @PreAuthorize("hasAnyRole('USER','MODERATOR', 'ADMIN')")
@@ -174,6 +181,7 @@ public class ReportController {
         report.setAccepted(reportDTO.getAccepted());
         report.setComment(commentService.findOne(reportDTO.getComment().getId()));
         report = reportService.save(report);
+        logger.info("Report " +report.getId()+ " updated ");
         return new ResponseEntity<>(new ReportCommentDTO(report),HttpStatus.OK);
     }
     @PreAuthorize("hasAnyRole('USER','MODERATOR', 'ADMIN')")
@@ -195,6 +203,7 @@ public class ReportController {
             r = acceptReport(r);
             reportService.save(r);
         }
+        logger.info("Report " +report.getId()+ " updated ");
         return new ResponseEntity<>(new ReportDTO(report),HttpStatus.OK);
     }
 
@@ -206,6 +215,7 @@ public class ReportController {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         report.setAccepted(false);
         report = reportService.save(report);
+        logger.info("Report " +report.getId()+ " updated ");
         return new ResponseEntity<>(new ReportDTO(report),HttpStatus.OK);
     }
 
@@ -216,8 +226,10 @@ public class ReportController {
         Report report = reportService.findOne(id);
         if (report != null) {
             reportService.delete(report);
+            logger.info("Report deleted ");
             return new ResponseEntity<>(HttpStatus.OK);
         } else {
+            logger.error("Report not found");
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
     }

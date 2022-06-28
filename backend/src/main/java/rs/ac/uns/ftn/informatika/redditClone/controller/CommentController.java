@@ -1,5 +1,7 @@
 package rs.ac.uns.ftn.informatika.redditClone.controller;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -24,7 +26,7 @@ import java.util.Set;
 @RestController
 @RequestMapping(value = "/comment")
 public class CommentController {
-
+    Logger logger = LoggerFactory.getLogger(CommentController.class);
     @Autowired
     private CommentService commentService;
     @Autowired
@@ -79,6 +81,7 @@ public class CommentController {
 
         Reaction reaction = new Reaction(userService.findOne(authentication.getName()),comment);
         reactionService.save(reaction);
+        logger.info("Comment " +comment.getId()+ " created " + comment.getTimestamp().toString());
         return new ResponseEntity<>(new CommentDTO(comment), HttpStatus.CREATED);
     }
     @PreAuthorize("hasAnyRole('USER','MODERATOR', 'ADMIN')")
@@ -102,6 +105,7 @@ public class CommentController {
         Set<Comment> commentsFromParent = parentComment.getChildComments();
         commentsFromParent.add(comment);
         parentComment = commentService.save(parentComment);
+        logger.info("Comment " +comment.getId()+ " created " + comment.getTimestamp().toString());
         return new ResponseEntity<>(new CommentDTO(comment), HttpStatus.CREATED);
     }
     @PreAuthorize("hasAnyRole('USER','MODERATOR', 'ADMIN')")
@@ -126,6 +130,7 @@ public class CommentController {
 //        if (commentDTO.getPost() != null)
 //            comment.setPost(postService.findOne(commentDTO.getPost().getId()));
         comment = commentService.save(comment);
+        logger.info("Comment " +comment.getId()+ " updated " + comment.getTimestamp().toString());
         return new ResponseEntity<>(new CommentDTO(comment), HttpStatus.OK);
     }
 
@@ -150,6 +155,7 @@ public class CommentController {
             reportService.deleteAllByComment(comment);
             commentService.deletePostComment(comment);
             commentService.delete(comment);
+            logger.info("Comment deleted " + LocalDate.now().toString());
             return new ResponseEntity<>(HttpStatus.OK);
         } else {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);

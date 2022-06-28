@@ -1,5 +1,7 @@
 package rs.ac.uns.ftn.informatika.redditClone.controller;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -30,6 +32,7 @@ import java.util.List;
 @RestController
 @RequestMapping(value = "/user")
 public class UserController {
+    Logger logger = LoggerFactory.getLogger(UserController.class);
     @Autowired
     private UserService userService;
     @Autowired
@@ -115,6 +118,7 @@ public class UserController {
         if(user == null){
             return new ResponseEntity<>(null, HttpStatus.NOT_ACCEPTABLE);
         }
+        logger.info("User " +user.getUsername()+ " created ");
         return new ResponseEntity<>(new UserDTO(user),HttpStatus.CREATED);
     }
     @PreAuthorize("hasAnyRole('USER','MODERATOR', 'ADMIN')")
@@ -134,6 +138,7 @@ public class UserController {
         user.setDescription(userCreateDTO.getDescription());
         user.setDisplayName(userCreateDTO.getDisplayName());
         user = userService.save(user);
+        logger.info("User " +user.getUsername()+ " updated ");
         return new ResponseEntity<>(new UserDTO(user),HttpStatus.OK);
     }
     @PreAuthorize("hasAnyRole('USER','MODERATOR', 'ADMIN')")
@@ -142,8 +147,10 @@ public class UserController {
         User user = userService.findOne(username);
         if(user != null){
             userService.delete(user.getUsername());
+            logger.info("User deleted");
             return new ResponseEntity<>(HttpStatus.OK);
         }else{
+            logger.error("User not found");
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
     }
@@ -154,8 +161,10 @@ public class UserController {
         if(user != null){
             user.setDeleted(true);
             userService.save(user);
+            logger.info("User " +user.getUsername()+ " deleted");
             return new ResponseEntity<>(new UserDTO(user),HttpStatus.OK);
         }else{
+            logger.error("User not found");
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
     }
@@ -187,6 +196,7 @@ public class UserController {
         int expiresIn = tokenUtils.getExpiredIn();
 //        String role = use
         // Vrati token kao odgovor na uspesnu autentifikaciju
+        logger.info("Login method called");
         return ResponseEntity.ok(new UserTokenState(jwt, expiresIn,user.getUsername(),role));
     }
     @PreAuthorize("hasAnyRole('USER','MODERATOR', 'ADMIN')")

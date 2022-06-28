@@ -1,5 +1,7 @@
 package rs.ac.uns.ftn.informatika.redditClone.controller;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -17,6 +19,7 @@ import rs.ac.uns.ftn.informatika.redditClone.service.PostService;
 import rs.ac.uns.ftn.informatika.redditClone.service.ReactionService;
 import rs.ac.uns.ftn.informatika.redditClone.service.UserService;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -24,6 +27,7 @@ import java.util.List;
 @RestController
 @RequestMapping(value = "/reaction")
 public class ReactionController {
+    Logger logger = LoggerFactory.getLogger(ReactionController.class);
     @Autowired
     private PostService postService;
     @Autowired
@@ -148,7 +152,6 @@ public class ReactionController {
                     Reaction reactionUpdate = reactionService.findOne(reactionExistComment.get(0).getId());
                     reactionUpdate.setType(reactionDTO.getType());
                     Reaction result = reactionService.save(reactionUpdate);
-
                     return new ResponseEntity<>(new ReactionDTO(result),HttpStatus.OK);
                 }
         }
@@ -160,7 +163,7 @@ public class ReactionController {
         if(reactionDTO.getPost() != null)
             reaction.setPost(postService.findOne(reactionDTO.getPost()));
         reaction = reactionService.save(reaction);
-
+        logger.info("Reaction " +reaction.getId()+ " created ");
         return new ResponseEntity<>(new ReactionDTO(reaction),HttpStatus.CREATED);
     }
     @PreAuthorize("hasAnyRole('USER','MODERATOR', 'ADMIN')")
@@ -173,7 +176,7 @@ public class ReactionController {
         reaction.setTimestamp(reactionDTO.getTimestamp());
         reaction.setUser(userService.findOne(reactionDTO.getUser().getUsername()));
         reaction = reactionService.save(reaction);
-
+        logger.info("Reaction " +reaction.getId()+ " updated " + LocalDate.now().toString());
         return new ResponseEntity<>(new ReactionDTO(reaction),HttpStatus.OK);
     }
     @PreAuthorize("hasAnyRole('USER','MODERATOR', 'ADMIN')")

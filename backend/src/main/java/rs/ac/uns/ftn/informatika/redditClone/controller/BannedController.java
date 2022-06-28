@@ -1,5 +1,7 @@
 package rs.ac.uns.ftn.informatika.redditClone.controller;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -25,6 +27,9 @@ import java.util.List;
 @RestController
 @RequestMapping(value = "/banned")
 public class BannedController {
+
+    Logger logger = LoggerFactory.getLogger(BannedController.class);
+
     @Autowired
     private BannedService bannedService;
     @Autowired
@@ -129,8 +134,10 @@ public class BannedController {
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         Community community = communityService.findOne(bannedDTO.getCommunity().getId());
         User user = userService.findOne(bannedDTO.getUser().getUsername());
-        if(community == null || user == null)
+        if(community == null || user == null) {
+            logger.error("Community not found");
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        }
         Banned finBan = bannedService.findByUserAndCommunity(user,community);
         if(finBan != null)
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
@@ -140,6 +147,8 @@ public class BannedController {
         banned.setUser(userService.findOne(bannedDTO.getUser().getUsername()));
         banned.setModerator(userService.findOne(authentication.getName()));
         banned = bannedService.save(banned);
+
+        logger.info("Ban created for: "+banned.getUser().getUsername() + "  -  " + banned.getTimestamp().toString());
         return new ResponseEntity<>(new BannedDTO(banned), HttpStatus.CREATED);
     }
     @PreAuthorize("hasAnyRole('MODERATOR', 'ADMIN')")

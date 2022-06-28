@@ -1,5 +1,7 @@
 package rs.ac.uns.ftn.informatika.redditClone.controller;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -17,6 +19,7 @@ import java.util.*;
 @RestController
 @RequestMapping(value = "/community")
 public class CommunityController {
+    Logger logger = LoggerFactory.getLogger(CommunityController.class);
     @Autowired
     private CommunityService communityService;
     @Autowired
@@ -75,6 +78,7 @@ public class CommunityController {
         community = communityService.save(community);
         User user = community.getModerators().iterator().next();
         setModerator(user.getUsername());
+        logger.info("Community " +community.getName()+ " created " + community.getCreationDate().toString());
         return new ResponseEntity<>(new CommunityWithFlairsDTO(community), HttpStatus.CREATED);
     }
 
@@ -114,6 +118,7 @@ public class CommunityController {
             community.setModerators(null);
 
         community = communityService.save(community);
+        logger.info("Community " +community.getName()+ " updated " + community.getCreationDate().toString());
         return new ResponseEntity<>(new CommunityWithFlairsDTO(community), HttpStatus.OK);
     }
     @PreAuthorize("hasAnyRole('MODERATOR', 'ADMIN')")
@@ -124,8 +129,10 @@ public class CommunityController {
 
         if (community != null) {
             communityService.delete(community);
+            logger.info("Community deleted " + LocalDate.now().toString());
             return new ResponseEntity<>(HttpStatus.OK);
         } else {
+            logger.error("Community not found");
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
     }
@@ -149,14 +156,17 @@ public class CommunityController {
 
         Community community = communityService.findOne(id);
         if (community == null) {
+            logger.error("Community not found");
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
-        if(postDTO.getTitle().equals("")||postDTO.getTitle() == null || postDTO.getText().equals("")||postDTO.getText() == null)
+        if(postDTO.getTitle().equals("")||postDTO.getTitle() == null || postDTO.getText().equals("")||postDTO.getText() == null) {
+            logger.error("Community post create, bad request");
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
-
+        }
         postDTO.setUser(new UserCreateDTO(userService.findOne(authentication.getName())));
         Post post = postService.save(postDTO);
         if(post == null){
+            logger.error("Bad form data");
             return new ResponseEntity<>(null, HttpStatus.NOT_ACCEPTABLE);
         }
         Reaction reaction = new Reaction(userService.findOne(authentication.getName()),post);
@@ -166,7 +176,7 @@ public class CommunityController {
         posts.add(post);
         community.setPosts(posts);
         communityService.save(community);
-
+        logger.info("Post " +post.getTitle()+ " created " + post.getCreationDate().toString());
         return new ResponseEntity<>(new PostDTO(post),HttpStatus.CREATED);
     }
     @PreAuthorize("hasAnyRole('USER','MODERATOR', 'ADMIN')")
@@ -194,6 +204,7 @@ public class CommunityController {
             communityService.save(community);
             reportService.deleteAllByPost(post);
             postService.delete(post);
+            logger.info("Post deleted " + LocalDate.now().toString());
             return new ResponseEntity<>(HttpStatus.OK);
         }
     }

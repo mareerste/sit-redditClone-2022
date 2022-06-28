@@ -1,5 +1,7 @@
 package rs.ac.uns.ftn.informatika.redditClone.controller;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -21,7 +23,7 @@ import java.util.Set;
 @RestController
 @RequestMapping(value = "/post")
 public class PostController {
-
+    Logger logger = LoggerFactory.getLogger(PostController.class);
     @Autowired
     private PostService postService;
     @Autowired
@@ -97,6 +99,7 @@ public class PostController {
         if(postDTO.getTitle().equals("")||postDTO.getTitle() == null || postDTO.getText().equals("")||postDTO.getText() == null)
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         Post post = postService.save(postDTO);
+        logger.info("Post " +post.getTitle()+ " created ");
         if(post == null){
             return new ResponseEntity<>(null, HttpStatus.NOT_ACCEPTABLE);
         }
@@ -126,6 +129,7 @@ public class PostController {
         post.setFlair(flair);
 
         post = postService.save(post);
+        logger.info("Post " +post.getTitle()+ " updated ");
         return new ResponseEntity<>(new PostDTO(post),HttpStatus.OK);
     }
 
@@ -138,6 +142,7 @@ public class PostController {
             post.setDeleted(true);
             postService.save(post);
 //            postService.delete(post);
+            logger.info("Post deleted");
             return new ResponseEntity<>(HttpStatus.OK);
         } else {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
