@@ -26,7 +26,6 @@ export class SinglePostComponent implements OnInit {
 
   ngOnInit() {
     this.postId = this.route.snapshot.paramMap.get('id');
-    
     this.loadData(this.postId);
     this.loadCommunity(this.postId);
   }
@@ -43,7 +42,7 @@ export class SinglePostComponent implements OnInit {
   }
 
   loadData(id:number){
-    this.postService.getPost2(id).subscribe(data => {
+    this.postService.getPost3(id).subscribe(data => {
       this.post = data;
       
     });  

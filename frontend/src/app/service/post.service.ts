@@ -24,7 +24,12 @@ export class PostService {
   }
 
   getPost2(id:number):Observable<Post> {
+    console.log("dobijeni id", id)
     return this.http.get<Post>(`${this.config.post_url}/${id}`);
+  }
+
+  getPost3(id:number):Observable<Post>{
+    return this.apiService.get(`${this.config.post_url}/${id}`)
   }
 
   updatePost(post:Post){

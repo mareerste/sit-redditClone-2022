@@ -63,6 +63,7 @@ export class PostComponent implements OnInit {
     public dialog: MatDialog) { }
 
   ngOnInit(): void {
+    console.log("DOBIJENI POST", this.post)
 
     if (this.post.imagePath != null) {
 
