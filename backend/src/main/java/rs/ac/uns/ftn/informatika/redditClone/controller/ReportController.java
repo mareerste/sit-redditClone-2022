@@ -8,16 +8,20 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
+import rs.ac.uns.ftn.informatika.redditClone.model.dto.CommunityPostESDTO;
 import rs.ac.uns.ftn.informatika.redditClone.model.dto.ReportCommentDTO;
 import rs.ac.uns.ftn.informatika.redditClone.model.dto.ReportDTO;
 import rs.ac.uns.ftn.informatika.redditClone.model.dto.ReportPostDTO;
 import rs.ac.uns.ftn.informatika.redditClone.model.entity.Community;
+import rs.ac.uns.ftn.informatika.redditClone.model.entity.CommunityES;
 import rs.ac.uns.ftn.informatika.redditClone.model.entity.Post;
 import rs.ac.uns.ftn.informatika.redditClone.model.entity.Report;
 import rs.ac.uns.ftn.informatika.redditClone.service.*;
+import rs.ac.uns.ftn.informatika.redditClone.service.elasticsearch.CommunityServiceES;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 
 @CrossOrigin(origins = "http://localhost:4200")
 @RestController
@@ -34,6 +38,9 @@ public class ReportController {
     private CommentService commentService;
     @Autowired
     private PostService postService;
+    @Autowired
+    private CommunityServiceES communityServiceES;
+
     @PreAuthorize("hasAnyRole('MODERATOR', 'ADMIN')")
     @GetMapping
     public ResponseEntity<List<ReportDTO>>getReports(){
@@ -185,13 +192,24 @@ public class ReportController {
         return new ResponseEntity<>(new ReportCommentDTO(report),HttpStatus.OK);
     }
     @PreAuthorize("hasAnyRole('USER','MODERATOR', 'ADMIN')")
-    @PutMapping(consumes = "application/json", value = "/accept")
-    public ResponseEntity<ReportDTO> acceptReportPost(@RequestBody ReportDTO reportDTO){
+    @PutMapping(consumes = "application/json", value = "/accept/{communityId}")
+    public ResponseEntity<ReportDTO> acceptReportPost(@RequestBody ReportDTO reportDTO, @PathVariable Integer communityId){
         Report report = reportService.findOne(reportDTO.getId());
         if(report == null)
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         report.setAccepted(true);
         report = reportService.save(report);
+        Post post = report.getPost();
+        post.setDeleted(true);
+        postService.save(post);
+
+        CommunityES communityES = communityServiceES.findCommunityById(communityId);
+        if (communityES != null){
+            Set<CommunityPostESDTO> retVal = communityES.getPosts();
+            retVal.removeIf(p -> (p.getId() == post.getId()));
+            communityES.setPosts(retVal);
+            communityServiceES.index(communityES);
+        }
 
         List<Report> otherReports = new ArrayList<>();
         if(report.getPost() != null)

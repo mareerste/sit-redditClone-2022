@@ -1,6 +1,6 @@
 <Configuration status="warn">
     <Properties>
-        <Property name="basePath">C:/Users/HP/Documents/Predavanja/Semestar 4/Project_RedditClone_2022/logs</Property>
+        <Property name="basePath">C:/Users/HP/Documents/Predavanja/Semestar 6/Tehnologije i platforme za upravljanje elektronskim sadrzajem/Project/sit-redditClone-2022/logs</Property>
     </Properties>
 
     <Appenders>

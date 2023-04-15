@@ -7,10 +7,10 @@ import java.time.LocalDate;
 import java.util.HashSet;
 import java.util.Set;
 
-@Entity
 //@Inheritance(strategy = InheritanceType.SINGLE_TABLE)
 //@DiscriminatorColumn(name = "DTYPE", discriminatorType = DiscriminatorType.STRING,length = 31)
 //@DiscriminatorValue("user")
+@Entity
 @Inheritance(strategy = InheritanceType.TABLE_PER_CLASS)
 public class User {
 

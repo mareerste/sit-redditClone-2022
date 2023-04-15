@@ -44,10 +44,10 @@ export class ReportedPostsComponent implements OnInit {
   }
 
   acceptReport(){
-    this.reportService.acceptReport(this.report).subscribe(data=>{
+    this.reportService.acceptReport(this.report, this.community.id).subscribe(data=>{
       this.deleteOthersReports(this.report)
       this.acceptEventEmitter.emit(this.report.post)
-      this.postService.deletePost(this.report.post.id).subscribe(data=>{
+      this.postService.deletePost(this.report.post.id, this.community.id).subscribe(data=>{
         this.report = null
       })
     })

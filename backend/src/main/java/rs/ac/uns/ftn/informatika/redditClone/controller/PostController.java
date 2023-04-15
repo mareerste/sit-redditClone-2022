@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.*;
 import rs.ac.uns.ftn.informatika.redditClone.model.dto.*;
 import rs.ac.uns.ftn.informatika.redditClone.model.entity.*;
 import rs.ac.uns.ftn.informatika.redditClone.service.*;
+import rs.ac.uns.ftn.informatika.redditClone.service.elasticsearch.CommunityServiceES;
 
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -36,6 +37,8 @@ public class PostController {
     private UserService userService;
     @Autowired
     private FlairService flairService;
+    @Autowired
+    private CommunityServiceES communityServiceES;
 
     @GetMapping
     public ResponseEntity<List<PostDTO>>getPostsPage(Pageable pageable){
@@ -134,14 +137,21 @@ public class PostController {
     }
 
     @PreAuthorize("hasAnyRole('USER','MODERATOR', 'ADMIN')")
-    @DeleteMapping(value = "/{id}")
-    public ResponseEntity<Void> deletePost(@PathVariable Integer id, Authentication authentication) {
+    @DeleteMapping(value = "/{id}/community/{communityId}")
+    public ResponseEntity<Void> deletePost(@PathVariable Integer id,@PathVariable Integer communityId, Authentication authentication) {
         Post post = postService.findOne(id);
 
         if (post != null) {
             post.setDeleted(true);
             postService.save(post);
 //            postService.delete(post);
+            CommunityES communityES = communityServiceES.findCommunityById(communityId);
+            if (communityES != null){
+                Set<CommunityPostESDTO> retVal = communityES.getPosts();
+                retVal.removeIf(p -> (p.getId() == id));
+                communityES.setPosts(retVal);
+                communityServiceES.index(communityES);
+            }
             logger.info("Post deleted");
             return new ResponseEntity<>(HttpStatus.OK);
         } else {

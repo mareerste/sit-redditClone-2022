@@ -10,8 +10,11 @@ import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 import rs.ac.uns.ftn.informatika.redditClone.model.dto.*;
 import rs.ac.uns.ftn.informatika.redditClone.model.entity.*;
+import rs.ac.uns.ftn.informatika.redditClone.model.enumerations.UpdateOperations;
 import rs.ac.uns.ftn.informatika.redditClone.service.*;
+import rs.ac.uns.ftn.informatika.redditClone.service.elasticsearch.CommunityServiceES;
 
+import java.io.IOException;
 import java.time.LocalDate;
 import java.util.*;
 
@@ -32,6 +35,8 @@ public class CommunityController {
     private ModeratorService moderatorService;
     @Autowired
     private ReactionService reactionService;
+    @Autowired
+    private CommunityServiceES communityServiceES;
 
     @GetMapping
     public ResponseEntity<List<CommunityDTO>> getCommunities(){
@@ -76,6 +81,9 @@ public class CommunityController {
         community.setModerators(moderators);
         community.setFlairs(communityDTO.getFlairs());
         community = communityService.save(community);
+
+        // ubaciti save metodu za elastic
+        communityServiceES.index(community);
         User user = community.getModerators().iterator().next();
         setModerator(user.getUsername());
         logger.info("Community " +community.getName()+ " created " + community.getCreationDate().toString());
@@ -137,6 +145,21 @@ public class CommunityController {
         }
     }
 
+    @GetMapping("/name/{name}")
+    public ResponseEntity<List<CommunitySearchDTO>> getCommunitiesByName(@PathVariable String name){
+        return new ResponseEntity<>(communityServiceES.findCommunitiesByName(name),HttpStatus.OK);
+    }
+
+    @GetMapping("/description/{description}")
+    public ResponseEntity<List<CommunitySearchDTO>> getCommunitiesByDescription(@PathVariable String description){
+        return new ResponseEntity<>(communityServiceES.findCommunitiesByDescription(description),HttpStatus.OK);
+    }
+
+    @GetMapping("/rule/{rule}")
+    public ResponseEntity<List<CommunitySearchDTO>> getCommunitiesByRule(@PathVariable String rule){
+        return new ResponseEntity<>(communityServiceES.findCommunitiesByRules(rule),HttpStatus.OK);
+    }
+
     @GetMapping(value = "/{id}/posts")
     public ResponseEntity<List<PostDTO>> getCommunityPosts(@PathVariable Integer id) {
         Community community = communityService.findOne(id);
@@ -152,7 +175,7 @@ public class CommunityController {
     }
     @PreAuthorize("hasAnyRole('USER','MODERATOR', 'ADMIN')")
     @PostMapping(value = "/{id}/posts")
-    public ResponseEntity<PostDTO> createPost(@PathVariable Integer id, @RequestBody PostCreateDTO postDTO, Authentication authentication) {
+    public ResponseEntity<PostDTO> createPost(@PathVariable Integer id, @RequestBody PostCreateDTO postDTO, Authentication authentication) throws IOException {
 
         Community community = communityService.findOne(id);
         if (community == null) {
@@ -169,6 +192,9 @@ public class CommunityController {
             logger.error("Bad form data");
             return new ResponseEntity<>(null, HttpStatus.NOT_ACCEPTABLE);
         }
+
+        communityServiceES.addPostToCommunity(id,new CommunityPostESDTO(post));
+
         Reaction reaction = new Reaction(userService.findOne(authentication.getName()),post);
         reactionService.save(reaction);
 
@@ -181,19 +207,21 @@ public class CommunityController {
     }
     @PreAuthorize("hasAnyRole('USER','MODERATOR', 'ADMIN')")
     @DeleteMapping(value = "/{id}/posts/{postId}")
-    public ResponseEntity<Void> deletePost(@PathVariable Integer id,@PathVariable Integer postId, Authentication authentication) {
+    public ResponseEntity<Void> deletePost(@PathVariable Integer id,@PathVariable Integer postId, Authentication authentication) throws IOException {
 
         Community community = communityService.findOne(id);
         if (community == null) {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
         Post post = postService.findOne(postId);
+        CommunityPostESDTO communityPostESDTO;
         String name = authentication.getName();
         if(!authentication.getName().equals( post.getUser().getUsername()))
             return new ResponseEntity<>(HttpStatus.FORBIDDEN);
         if (post == null) {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         } else {
+            communityPostESDTO = new CommunityPostESDTO(post);
             Set<Post> posts = community.getPosts();
             Set<Post> newPosts = new HashSet<>();
             for (Post p:posts) {
@@ -204,6 +232,15 @@ public class CommunityController {
             communityService.save(community);
             reportService.deleteAllByPost(post);
             postService.delete(post);
+            CommunityES communityES = communityServiceES.findCommunityById(community.getId());
+            if (communityES != null){
+                Set<CommunityPostESDTO> retVal = communityES.getPosts();
+                retVal.removeIf(p -> (p.getId() == postId));
+                communityES.setPosts(retVal);
+                communityServiceES.index(communityES);
+            }
+
+
             logger.info("Post deleted " + LocalDate.now().toString());
             return new ResponseEntity<>(HttpStatus.OK);
         }

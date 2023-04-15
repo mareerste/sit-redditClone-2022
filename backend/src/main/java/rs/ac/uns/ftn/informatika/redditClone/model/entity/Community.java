@@ -1,6 +1,10 @@
 package rs.ac.uns.ftn.informatika.redditClone.model.entity;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Getter;
+import lombok.Setter;
 
 import javax.persistence.*;
 import java.time.LocalDate;
@@ -8,6 +12,10 @@ import java.util.HashSet;
 import java.util.Set;
 
 @Entity
+@Setter
+@Getter
+@Builder
+@AllArgsConstructor
 public class Community {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

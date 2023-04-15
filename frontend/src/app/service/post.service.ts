@@ -43,8 +43,8 @@ export class PostService {
     return this.http.put(`${this.config.post_url}`,post,options);
   }
 
-  deletePost(id){
-    return this.http.delete(`${this.config.post_url}/${id}`);
+  deletePost(id, communityId){
+    return this.http.delete(`${this.config.post_url}/${id}/community/${communityId}`);
   }
 
   filter(entryText:string):Observable<Post[]>{

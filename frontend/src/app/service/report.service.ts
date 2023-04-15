@@ -34,13 +34,13 @@ export class ReportService {
     return this.http.get<Report[]>(`${this.config.report_url}/comments`);
   }
 
-  acceptReport(data:Report):Observable<Report>{
+  acceptReport(data:Report, communityId):Observable<Report>{
     const headers = new HttpHeaders({
           'Accept': 'application/json',
           'Content-Type': 'application/json'
         });
         let options = {headers: headers}
-        return this.http.put<Report>(`${this.config.report_accept_url}`, data, options)
+        return this.http.put<Report>(`${this.config.report_accept_url}/${communityId}`, data, options)
   }
 
   declineReport(data:Report):Observable<Report>{
