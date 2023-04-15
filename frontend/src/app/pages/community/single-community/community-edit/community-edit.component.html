@@ -76,5 +76,5 @@
     <app-reported-posts [community]="community" (acceptEventEmitter)="deletePost($event)"></app-reported-posts>
 </div>
 <div *ngIf="showComments">
-    <app-reported-comments></app-reported-comments>
+    <app-reported-comments [community]="community"></app-reported-comments>
 </div>

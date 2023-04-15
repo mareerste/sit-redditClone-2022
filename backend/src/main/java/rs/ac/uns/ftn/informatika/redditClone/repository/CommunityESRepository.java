@@ -29,18 +29,6 @@ public interface CommunityESRepository extends ElasticsearchRepository<Community
             throw new IllegalArgumentException("Community with id " + communityId + " does not exist");
         }
     }
-
-    @Query("{\"script\": {\"source\": \"ctx._source.posts.removeIf(post -> post.id == params.postId)\",\"lang\": \"painless\",\"params\": {\"postId\": ?1}}}")
-    void removePost(Integer communityId, Integer postId);
-
-    @Query("{\"bool\":{\"must\":[{\"range\":{\"posts\":{\"gte\":?0,\"lte\":?1}}}]}}")
-    List<CommunityES> findAllByPostCountBetween(@Param("minPosts") Integer minPosts, @Param("maxPosts") Integer maxPosts);
-
-    default List<CommunityES> findAllByPostCountGreaterThanEqual(Integer minPosts) {
-        return findAllByPostCountBetween(minPosts, Integer.MAX_VALUE);
-    }
-
-    default List<CommunityES> findAllByPostCountLessThanEqual(Integer maxPosts) {
-        return findAllByPostCountBetween(0, maxPosts);
-    }
+    @Query("{\"bool\":{\"filter\":{\"script\":{\"script\":\"doc['posts.id'].size() > ?0 && doc['posts.id'].size() < ?1\"}}}}")
+    List<CommunityES> findByPostRange(Integer minPostId, Integer maxPostId);
 }

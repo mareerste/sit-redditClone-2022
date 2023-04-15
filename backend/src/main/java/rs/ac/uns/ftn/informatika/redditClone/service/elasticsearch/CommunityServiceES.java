@@ -60,8 +60,8 @@ public class CommunityServiceES {
         communityESRepository.addPost(communityId, post);
     }
 
-    public void removePostFromCommunity(Integer communityId, Integer postId) throws IOException {
-        communityESRepository.removePost(communityId, postId);
+    public List<CommunitySearchDTO> findByPostRangeBetween(Integer min, Integer max){
+        return mapCommunityESToCommunitySearchDTO(communityESRepository.findByPostRange(min, max));
     }
 
     private List<CommunitySearchDTO> mapCommunityESToCommunitySearchDTO(List<CommunityES> communities){

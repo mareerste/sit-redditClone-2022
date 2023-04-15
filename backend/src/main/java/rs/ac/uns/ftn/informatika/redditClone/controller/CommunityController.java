@@ -160,6 +160,11 @@ public class CommunityController {
         return new ResponseEntity<>(communityServiceES.findCommunitiesByRules(rule),HttpStatus.OK);
     }
 
+    @GetMapping("/posts/scope/{min}/{max}")
+    public ResponseEntity<List<CommunitySearchDTO>> getCommunitiesByScopeOfPosts(@PathVariable Integer min, @PathVariable Integer max){
+        return new ResponseEntity<>(communityServiceES.findByPostRangeBetween(min,max),HttpStatus.OK);
+    }
+
     @GetMapping(value = "/{id}/posts")
     public ResponseEntity<List<PostDTO>> getCommunityPosts(@PathVariable Integer id) {
         Community community = communityService.findOne(id);

@@ -1,4 +1,5 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
+import { Community } from 'src/app/model/community';
 import { Report } from 'src/app/model/report';
 import { CommentService } from 'src/app/service/comment.service';
 import { ReportService } from 'src/app/service/report.service';
@@ -10,6 +11,8 @@ import { ReportService } from 'src/app/service/report.service';
 })
 export class ReportedCommentsComponent implements OnInit {
 
+  @Input()
+  community:Community;
   presentComment:Report;
   reports:Report[] = [];
   constructor(
@@ -26,7 +29,7 @@ export class ReportedCommentsComponent implements OnInit {
   }
 
   acceptReport(){
-    this.reportService.acceptReport(this.presentComment).subscribe(data=>{
+    this.reportService.acceptReport(this.presentComment, this.community.id).subscribe(data=>{
       this.deleteOthersReports(this.presentComment)
       this.commentService.deleteLogicComment(this.presentComment.comment.id).subscribe(data=>{
         this.presentComment = null  
