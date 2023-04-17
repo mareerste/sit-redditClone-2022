@@ -13,6 +13,7 @@ import rs.ac.uns.ftn.informatika.redditClone.model.entity.*;
 import rs.ac.uns.ftn.informatika.redditClone.model.enumerations.UpdateOperations;
 import rs.ac.uns.ftn.informatika.redditClone.service.*;
 import rs.ac.uns.ftn.informatika.redditClone.service.elasticsearch.CommunityServiceES;
+import rs.ac.uns.ftn.informatika.redditClone.util.SearchType;
 
 import java.io.IOException;
 import java.time.LocalDate;
@@ -163,6 +164,19 @@ public class CommunityController {
     @GetMapping("/posts/scope/{min}/{max}")
     public ResponseEntity<List<CommunitySearchDTO>> getCommunitiesByScopeOfPosts(@PathVariable Integer min, @PathVariable Integer max){
         return new ResponseEntity<>(communityServiceES.findByPostRangeBetween(min,max),HttpStatus.OK);
+    }
+
+    @GetMapping("/search/{searchType}/{name}/{description}/{rules}/{min}/{max}")
+    public ResponseEntity<List<CommunitySearchDTO>> getCommunitiesByScopeOfPosts(@PathVariable String searchType,@PathVariable String name, @PathVariable String description, @PathVariable String rules, @PathVariable Integer min, @PathVariable Integer max){
+        if (searchType.equals(SearchType.FUZZY.label))
+            return new ResponseEntity<>(communityServiceES.searchFuzzyCommunities(name,description, rules, min, max),HttpStatus.OK);
+        else if (searchType.equals(SearchType.PHRASE.label))
+            return new ResponseEntity<>(communityServiceES.searchPhraseCommunities(name,description, rules, min, max),HttpStatus.OK);
+        else{
+            System.out.println("Wrong type:" + searchType);
+            return null;
+        }
+
     }
 
     @GetMapping(value = "/{id}/posts")
