@@ -12,14 +12,23 @@ import org.springframework.data.elasticsearch.core.SearchHits;
 import org.springframework.data.elasticsearch.core.query.NativeSearchQueryBuilder;
 import org.springframework.data.elasticsearch.core.query.Query;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
+import rs.ac.uns.ftn.informatika.redditClone.lucene.handlers.DocumentHandler;
+import rs.ac.uns.ftn.informatika.redditClone.lucene.handlers.PDFHandler;
 import rs.ac.uns.ftn.informatika.redditClone.model.dto.CommunityPostESDTO;
 import rs.ac.uns.ftn.informatika.redditClone.model.dto.CommunitySearchDTO;
+import rs.ac.uns.ftn.informatika.redditClone.model.dto.CommunityWithFlairsDTO;
 import rs.ac.uns.ftn.informatika.redditClone.model.entity.Community;
 import rs.ac.uns.ftn.informatika.redditClone.model.entity.CommunityES;
 import rs.ac.uns.ftn.informatika.redditClone.repository.CommunityESRepository;
 import org.elasticsearch.script.Script;
 
+import java.io.File;
 import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -30,7 +39,7 @@ import java.util.stream.Collectors;
 public class CommunityServiceES {
 
     @Value("${files.path}")
-    private String filepath;
+    private String filesPath;
 
     @Autowired
     private ElasticsearchOperations elasticsearchOperations;
@@ -62,7 +71,9 @@ public class CommunityServiceES {
     }
 
     public List<CommunitySearchDTO> findCommunitiesByDescription(String description){
-        List<CommunityES> communities = communityESRepository.findAllByDescriptionContaining(description);
+        List<CommunityES> communities = communityESRepository.findAllByDescriptionContainingOrDescriptionFileContaining(description);
+//        List<CommunityES> communities = communityESRepository.findAllByDescriptionContainingOrDescriptionFileContaining(description);
+//        System.out.println(communities);
         return mapCommunityESToCommunitySearchDTO(communities);
     }
 
@@ -139,5 +150,48 @@ public class CommunityServiceES {
 
         List<CommunityES> retVal = searchHits.get().map(SearchHit::getContent).collect(Collectors.toList());
         return mapCommunityESToCommunitySearchDTO(retVal);
+    }
+
+    public void indexUploadedFile(CommunityWithFlairsDTO communityDTO) throws IOException {
+        for (MultipartFile file : communityDTO.getFiles()) {
+            if (file.isEmpty()) {
+                continue;
+            }
+
+            String fileName = saveUploadedFileInFolder(file);
+            if(fileName != null){
+                CommunityES community = getHandler(fileName).getIndexUnit(new File(fileName));
+                community.setId(communityDTO.getId());
+                community.setName(communityDTO.getName());
+                community.setDescription(communityDTO.getDescription());
+                community.setCreationDate(LocalDate.now());
+                community.setRules(communityDTO.getRules());
+                community.setIsSuspended(false);
+                index(community);
+            }
+        }
+    }
+
+    private String saveUploadedFileInFolder(MultipartFile file) throws IOException {
+        String retVal = null;
+        if (!file.isEmpty()) {
+            byte[] bytes = file.getBytes();
+            Path path = Paths.get(new File(filesPath).getAbsolutePath() + File.separator + file.getOriginalFilename());
+            Files.write(path, bytes);
+            retVal = path.toString();
+        }
+        return retVal;
+    }
+
+    public DocumentHandler getHandler(String fileName){
+        return getDocumentHandler(fileName);
+    }
+
+    public static DocumentHandler getDocumentHandler(String fileName) {
+        if(fileName.endsWith(".pdf")){
+            return new PDFHandler();
+        }else{
+            return null;
+        }
     }
 }

@@ -23,7 +23,9 @@ import java.util.stream.Collectors;
 public interface CommunityESRepository extends ElasticsearchRepository<CommunityES, Integer> {
 
     List<CommunityES> findAllByNameContaining(String name);
-    List<CommunityES> findAllByDescriptionContaining(String description);
+//    List<CommunityES> findAllByDescriptionContaining(String description);
+    @Query("{\"bool\": {\"should\": [{\"match\": {\"description\": \"?0\"}}, {\"match\": {\"descriptionFile\": \"?0\"}}]}}")
+    List<CommunityES> findAllByDescriptionContainingOrDescriptionFileContaining(String searchTerm);
     List<CommunityES> findAllByRulesContaining(String rule);
 
 

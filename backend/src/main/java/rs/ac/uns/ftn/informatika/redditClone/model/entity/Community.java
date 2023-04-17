@@ -8,7 +8,9 @@ import lombok.Setter;
 
 import javax.persistence.*;
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 @Entity
@@ -36,7 +38,7 @@ public class Community {
 //    @OneToMany(mappedBy = "community",fetch = FetchType.EAGER,cascade = CascadeType.ALL)
     @ManyToMany
     @JoinTable(name = "communityFlairs", joinColumns = @JoinColumn(name = "community_id",referencedColumnName = "id"),inverseJoinColumns = @JoinColumn(name = "flair_id", referencedColumnName = "id"))
-    private Set<Flair> flairs = new HashSet<>();
+    private List<Flair> flairs = new ArrayList<>();
 //    @JoinTable(name = "communityPosts", joinColumns = @JoinColumn(name = "community_id",referencedColumnName = "id"),inverseJoinColumns = @JoinColumn(name = "post_id", referencedColumnName = "id"))
 //    @OneToMany(mappedBy = "community",fetch = FetchType.EAGER,cascade = CascadeType.ALL)
     @OneToMany(cascade = CascadeType.ALL)
@@ -102,11 +104,11 @@ public class Community {
         this.suspendedReason = suspendedReason;
     }
 
-    public Set<Flair> getFlairs() {
+    public List<Flair> getFlairs() {
         return flairs;
     }
 
-    public void setFlairs(Set<Flair> flairs) {
+    public void setFlairs(List<Flair> flairs) {
         this.flairs = flairs;
     }
 
@@ -131,7 +133,7 @@ public class Community {
         this.isSuspended = false;
     }
 
-    public Community(String name, String description, Set<String> rules, Set<Flair> flairs, Set<User> moderators) {
+    public Community(String name, String description, Set<String> rules, List<Flair> flairs, Set<User> moderators) {
         this.name = name;
         this.description = description;
         this.creationDate = LocalDate.now();

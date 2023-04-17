@@ -91,6 +91,36 @@ public class CommunityController {
         return new ResponseEntity<>(new CommunityWithFlairsDTO(community), HttpStatus.CREATED);
     }
 
+    @PreAuthorize("hasAnyRole('USER','MODERATOR', 'ADMIN')")
+    @PostMapping(path = "/pdf",consumes = {"multipart/form-data"})
+    public ResponseEntity<CommunityWithFlairsDTO> saveCommunityPDF(@ModelAttribute CommunityWithFlairsDTO communityDTO, Authentication authentication) throws IOException {
+
+        if(communityDTO.getName() == null || communityDTO.getDescription() == null){
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        }
+
+        Community community = new Community();
+        community.setName(communityDTO.getName());
+        community.setDescription(communityDTO.getDescription());
+        community.setCreationDate(LocalDate.now());
+        community.setRules(communityDTO.getRules());
+        community.setSuspended(false);
+        community.setSuspendedReason(null);
+
+        Set<User> moderators = new HashSet<>();
+        moderators.add(userService.findOne(authentication.getName()));
+        community.setModerators(moderators);
+        community.setFlairs(communityDTO.getFlairs());
+        community = communityService.save(community);
+        communityDTO.setId(community.getId());
+        // ubaciti save metodu za elastic
+        communityServiceES.indexUploadedFile(communityDTO);
+        User user = community.getModerators().iterator().next();
+        setModerator(user.getUsername());
+        logger.info("Community " +community.getName()+ " created " + community.getCreationDate().toString());
+        return new ResponseEntity<>(new CommunityWithFlairsDTO(community), HttpStatus.CREATED);
+    }
+
     public Moderator setModerator(String username){
         User user = userService.findOne(username);
         if (user == null)
@@ -121,7 +151,7 @@ public class CommunityController {
         community.setDescription(communityDTO.getDescription());
         community.setRules(communityDTO.getRules());
         community.setFlairs(communityDTO.getFlairs());
-        community.setSuspended(communityDTO.getSuspended());
+        community.setSuspended(communityDTO.getIsSuspended());
         community.setSuspendedReason(communityDTO.getSuspendedReason());
         if(community.getSuspended() == true)
             community.setModerators(null);
@@ -153,7 +183,8 @@ public class CommunityController {
 
     @GetMapping("/description/{description}")
     public ResponseEntity<List<CommunitySearchDTO>> getCommunitiesByDescription(@PathVariable String description){
-        return new ResponseEntity<>(communityServiceES.findCommunitiesByDescription(description),HttpStatus.OK);
+        List<CommunitySearchDTO>retVal = communityServiceES.findCommunitiesByDescription(description);
+        return new ResponseEntity<>(retVal,HttpStatus.OK);
     }
 
     @GetMapping("/rule/{rule}")

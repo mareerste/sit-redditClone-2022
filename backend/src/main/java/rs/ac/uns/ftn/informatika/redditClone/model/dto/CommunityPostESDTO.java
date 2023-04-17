@@ -12,10 +12,14 @@ import rs.ac.uns.ftn.informatika.redditClone.model.entity.Post;
 @AllArgsConstructor
 public class CommunityPostESDTO {
     private Integer id;
+    private Integer karma = 0;
 
     public CommunityPostESDTO() {
     }
-    public CommunityPostESDTO(Post post){this(post.getId());}
+    public CommunityPostESDTO(Post post) {
+        this.id = post.getId();
+        this.karma = 0;
+    }
     @Override
     public String toString() {
         return "Post{" +

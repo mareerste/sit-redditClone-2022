@@ -13,7 +13,9 @@ import rs.ac.uns.ftn.informatika.redditClone.model.dto.CommunityPostESDTO;
 
 import javax.persistence.*;
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 
@@ -30,6 +32,8 @@ public class CommunityES {
     private String name;
     @Field(type = FieldType.Text)
     private String description;
+    @Field(type = FieldType.Text)
+    private String descriptionFile;
     @JsonFormat(pattern = "MM/dd/yyyy")
     @Field(type = FieldType.Date)
     private LocalDate creationDate;
@@ -39,9 +43,12 @@ public class CommunityES {
     @Field(type = FieldType.Boolean)
     private Boolean isSuspended;
     @Field(type = FieldType.Object)
-    private Set<Flair> flairs = new HashSet<>();
+    private List<Flair> flairs = new ArrayList<>();
     @Field(type = FieldType.Object)
     private Set<CommunityPostESDTO> posts = new HashSet<>();
+    @Field(type = FieldType.Keyword)
+    private String keywords;
+    private String filename;
 
     public CommunityES(){}
 
