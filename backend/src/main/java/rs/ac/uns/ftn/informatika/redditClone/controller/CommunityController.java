@@ -13,6 +13,7 @@ import rs.ac.uns.ftn.informatika.redditClone.model.entity.*;
 import rs.ac.uns.ftn.informatika.redditClone.model.enumerations.UpdateOperations;
 import rs.ac.uns.ftn.informatika.redditClone.service.*;
 import rs.ac.uns.ftn.informatika.redditClone.service.elasticsearch.CommunityServiceES;
+import rs.ac.uns.ftn.informatika.redditClone.service.elasticsearch.PostServiceES;
 import rs.ac.uns.ftn.informatika.redditClone.util.SearchType;
 
 import java.io.IOException;
@@ -38,6 +39,8 @@ public class CommunityController {
     private ReactionService reactionService;
     @Autowired
     private CommunityServiceES communityServiceES;
+    @Autowired
+    private PostServiceES postServiceES;
 
     @GetMapping
     public ResponseEntity<List<CommunityDTO>> getCommunities(){
@@ -183,8 +186,7 @@ public class CommunityController {
 
     @GetMapping("/description/{description}")
     public ResponseEntity<List<CommunitySearchDTO>> getCommunitiesByDescription(@PathVariable String description){
-        List<CommunitySearchDTO>retVal = communityServiceES.findCommunitiesByDescription(description);
-        return new ResponseEntity<>(retVal,HttpStatus.OK);
+        return new ResponseEntity<>(communityServiceES.findCommunitiesByDescription(description),HttpStatus.OK);
     }
 
     @GetMapping("/rule/{rule}")
@@ -198,7 +200,7 @@ public class CommunityController {
     }
 
     @GetMapping("/search/{searchType}/{name}/{description}/{rules}/{min}/{max}")
-    public ResponseEntity<List<CommunitySearchDTO>> getCommunitiesByScopeOfPosts(@PathVariable String searchType,@PathVariable String name, @PathVariable String description, @PathVariable String rules, @PathVariable Integer min, @PathVariable Integer max){
+    public ResponseEntity<List<CommunitySearchDTO>> getCommunitiesWithSearchType(@PathVariable String searchType,@PathVariable String name, @PathVariable String description, @PathVariable String rules, @PathVariable Integer min, @PathVariable Integer max){
         if (searchType.equals(SearchType.FUZZY.label))
             return new ResponseEntity<>(communityServiceES.searchFuzzyCommunities(name,description, rules, min, max),HttpStatus.OK);
         else if (searchType.equals(SearchType.PHRASE.label))
@@ -207,7 +209,6 @@ public class CommunityController {
             System.out.println("Wrong type:" + searchType);
             return null;
         }
-
     }
 
     @GetMapping(value = "/{id}/posts")
@@ -244,6 +245,8 @@ public class CommunityController {
         }
 
         communityServiceES.addPostToCommunity(id,new CommunityPostESDTO(post));
+        //TODO: indexUploadFile
+        postServiceES.index(post);
 
         Reaction reaction = new Reaction(userService.findOne(authentication.getName()),post);
         reactionService.save(reaction);

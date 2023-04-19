@@ -2,7 +2,6 @@ package rs.ac.uns.ftn.informatika.redditClone.service.elasticsearch;
 
 import org.elasticsearch.index.query.BoolQueryBuilder;
 import org.elasticsearch.index.query.QueryBuilders;
-import org.elasticsearch.script.ScriptType;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.elasticsearch.core.ElasticsearchOperations;
@@ -21,7 +20,6 @@ import rs.ac.uns.ftn.informatika.redditClone.model.dto.CommunityWithFlairsDTO;
 import rs.ac.uns.ftn.informatika.redditClone.model.entity.Community;
 import rs.ac.uns.ftn.informatika.redditClone.model.entity.CommunityES;
 import rs.ac.uns.ftn.informatika.redditClone.repository.CommunityESRepository;
-import org.elasticsearch.script.Script;
 
 import java.io.File;
 import java.io.IOException;
@@ -30,7 +28,6 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.time.LocalDate;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -72,8 +69,6 @@ public class CommunityServiceES {
 
     public List<CommunitySearchDTO> findCommunitiesByDescription(String description){
         List<CommunityES> communities = communityESRepository.findAllByDescriptionContainingOrDescriptionFileContaining(description);
-//        List<CommunityES> communities = communityESRepository.findAllByDescriptionContainingOrDescriptionFileContaining(description);
-//        System.out.println(communities);
         return mapCommunityESToCommunitySearchDTO(communities);
     }
 

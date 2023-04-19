@@ -49,6 +49,8 @@ public class CommunityES {
     @Field(type = FieldType.Keyword)
     private String keywords;
     private String filename;
+    @Field(type = FieldType.Double)
+    private Double karma = 0.0;
 
     public CommunityES(){}
 
@@ -61,7 +63,15 @@ public class CommunityES {
         this.isSuspended = community.getIsSuspended();
         this.flairs = community.getFlairs();
         this.posts = getCommunityPosts(community.getPosts());
+    }
 
+    public void karmaUp() {
+        this.karma = ++this.karma;
+    }
+
+
+    public void karmaDown() {
+        this.karma = --this.karma;
     }
 
     private Set<CommunityPostESDTO> getCommunityPosts(Set<Post> posts){

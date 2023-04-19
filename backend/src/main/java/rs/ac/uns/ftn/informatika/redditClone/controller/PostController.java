@@ -14,6 +14,8 @@ import rs.ac.uns.ftn.informatika.redditClone.model.dto.*;
 import rs.ac.uns.ftn.informatika.redditClone.model.entity.*;
 import rs.ac.uns.ftn.informatika.redditClone.service.*;
 import rs.ac.uns.ftn.informatika.redditClone.service.elasticsearch.CommunityServiceES;
+import rs.ac.uns.ftn.informatika.redditClone.service.elasticsearch.PostServiceES;
+import rs.ac.uns.ftn.informatika.redditClone.util.SearchType;
 
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -39,6 +41,8 @@ public class PostController {
     private FlairService flairService;
     @Autowired
     private CommunityServiceES communityServiceES;
+    @Autowired
+    private PostServiceES postServiceES;
 
     @GetMapping
     public ResponseEntity<List<PostDTO>>getPostsPage(Pageable pageable){
@@ -81,6 +85,32 @@ public class PostController {
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
         return new ResponseEntity<>(new CommunityWithFlairsDTO(community),HttpStatus.OK);
+    }
+
+    @GetMapping("/title/{title}")
+    public ResponseEntity<List<PostSearchDTO>> getPostsByName(@PathVariable String title){
+        return new ResponseEntity<>(postServiceES.findPostsByTitle(title),HttpStatus.OK);
+    }
+
+    @GetMapping("/text/{text}")
+    public ResponseEntity<List<PostSearchDTO>> getPostsByText(@PathVariable String text){
+        return new ResponseEntity<>(postServiceES.findPostsByText(text),HttpStatus.OK);
+    }
+    @GetMapping("/range/{min}/{max}")
+    public ResponseEntity<List<PostSearchDTO>> getPostsByKarmaRange(@PathVariable Integer min,@PathVariable Integer max){
+        return new ResponseEntity<>(postServiceES.findPostsByKarmaRange(min, max),HttpStatus.OK);
+    }
+
+    @GetMapping("/search/{searchType}/{title}/{text}/{min}/{max}")
+    public ResponseEntity<List<PostSearchDTO>> getPostsWithSearchType(@PathVariable String searchType,@PathVariable String title, @PathVariable String text, @PathVariable Integer min, @PathVariable Integer max){
+        if (searchType.equals(SearchType.FUZZY.label))
+            return new ResponseEntity<>(postServiceES.searchFuzzyPosts(title,text, min, max),HttpStatus.OK);
+        else if (searchType.equals(SearchType.PHRASE.label))
+            return new ResponseEntity<>(postServiceES.searchPhrasePosts(title,text, min, max),HttpStatus.OK);
+        else{
+            System.out.println("Wrong type:" + searchType);
+            return null;
+        }
     }
 
 //    @GetMapping(value = "/{id}/comments")
