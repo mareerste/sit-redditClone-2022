@@ -44,13 +44,14 @@ public class CommunityES {
     private Boolean isSuspended;
     @Field(type = FieldType.Object)
     private List<Flair> flairs = new ArrayList<>();
-    @Field(type = FieldType.Object)
+//    @Field(type = FieldType.Object)
+    @Field(type = FieldType.Nested, includeInParent = true)
     private Set<CommunityPostESDTO> posts = new HashSet<>();
     @Field(type = FieldType.Keyword)
     private String keywords;
     private String filename;
-    @Field(type = FieldType.Double)
-    private Double karma = 0.0;
+    @Field(type = FieldType.Integer)
+    private Integer karma = 0;
 
     public CommunityES(){}
 

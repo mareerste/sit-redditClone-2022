@@ -9,15 +9,14 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 import rs.ac.uns.ftn.informatika.redditClone.model.dto.*;
-import rs.ac.uns.ftn.informatika.redditClone.model.entity.Comment;
-import rs.ac.uns.ftn.informatika.redditClone.model.entity.Post;
-import rs.ac.uns.ftn.informatika.redditClone.model.entity.Reaction;
-import rs.ac.uns.ftn.informatika.redditClone.model.entity.User;
+import rs.ac.uns.ftn.informatika.redditClone.model.entity.*;
 import rs.ac.uns.ftn.informatika.redditClone.model.enumerations.ReactionType;
 import rs.ac.uns.ftn.informatika.redditClone.service.CommentService;
 import rs.ac.uns.ftn.informatika.redditClone.service.PostService;
 import rs.ac.uns.ftn.informatika.redditClone.service.ReactionService;
 import rs.ac.uns.ftn.informatika.redditClone.service.UserService;
+import rs.ac.uns.ftn.informatika.redditClone.service.elasticsearch.CommunityServiceES;
+import rs.ac.uns.ftn.informatika.redditClone.service.elasticsearch.PostServiceES;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
@@ -36,6 +35,10 @@ public class ReactionController {
     private ReactionService reactionService;
     @Autowired
     private UserService userService;
+    @Autowired
+    private CommunityServiceES communityServiceES;
+    @Autowired
+    private PostServiceES postServiceES;
 
     @GetMapping
     public ResponseEntity<List<ReactionDTO>>getReactions(){
@@ -125,7 +128,7 @@ public class ReactionController {
 
     @PreAuthorize("hasAnyRole('USER','MODERATOR', 'ADMIN')")
     @PostMapping(consumes = "application/json")
-    public ResponseEntity<ReactionDTO> saveReaction(@RequestBody ReactionDTO reactionDTO, Authentication authentication){
+    public ResponseEntity<ReactionDTO> saveReaction(@RequestParam Integer communityId,@RequestBody ReactionDTO reactionDTO, Authentication authentication){
         if(reactionDTO.getComment() == null && reactionDTO.getPost() == null)
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
 
@@ -135,9 +138,28 @@ public class ReactionController {
                 if (reactionExistPost.get(0).getType() == reactionDTO.getType())
                     return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
                 else {
+                    CommunityES communityES = communityServiceES.findCommunityByPostId(communityId);
+                    PostES postES = postServiceES.findPostById(reactionDTO.getPost());
+
                     Reaction reactionUpdate = reactionService.findOne(reactionExistPost.get(0).getId());
                     reactionUpdate.setType(reactionDTO.getType());
                     Reaction result = reactionService.save(reactionUpdate);
+
+
+
+                    if(reactionDTO.getType() == ReactionType.UPVOTE) {
+                        communityES.karmaUp();
+                        communityES.karmaUp();
+                        postES.karmaUp();
+                        postES.karmaUp();
+                    }else{
+                        communityES.karmaDown();
+                        communityES.karmaDown();
+                        postES.karmaDown();
+                        postES.karmaDown();
+                    }
+                    communityServiceES.index(communityES);
+                    postServiceES.index(postES);
 
                     return new ResponseEntity<>(new ReactionDTO(result), HttpStatus.OK);
                 }
@@ -160,8 +182,20 @@ public class ReactionController {
         reaction.setUser(userService.findOne(authentication.getName()));
         if(reactionDTO.getComment() != null)
             reaction.setComment(commentService.findOne(reactionDTO.getComment()));
-        if(reactionDTO.getPost() != null)
+        if(reactionDTO.getPost() != null) {
             reaction.setPost(postService.findOne(reactionDTO.getPost()));
+            CommunityES communityES = communityServiceES.findCommunityByPostId(communityId);
+            PostES postES = postServiceES.findPostById(reactionDTO.getPost());
+            if(reactionDTO.getType() == ReactionType.UPVOTE) {
+                communityES.karmaUp();
+                postES.karmaUp();
+            }else{
+                communityES.karmaDown();
+                postES.karmaDown();
+            }
+            communityServiceES.index(communityES);
+            postServiceES.index(postES);
+        }
         reaction = reactionService.save(reaction);
         logger.info("Reaction " +reaction.getId()+ " created ");
         return new ResponseEntity<>(new ReactionDTO(reaction),HttpStatus.CREATED);

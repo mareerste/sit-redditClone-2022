@@ -1,6 +1,10 @@
 package rs.ac.uns.ftn.informatika.redditClone.model.dto;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.Setter;
+import org.springframework.web.multipart.MultipartFile;
 import rs.ac.uns.ftn.informatika.redditClone.model.entity.Comment;
 import rs.ac.uns.ftn.informatika.redditClone.model.entity.Post;
 
@@ -9,6 +13,9 @@ import java.time.LocalDate;
 import java.util.HashSet;
 import java.util.Set;
 
+@Getter
+@Setter
+@AllArgsConstructor
 public class PostCreateDTO implements Serializable {
     private Integer id;
     private String title;
@@ -21,68 +28,8 @@ public class PostCreateDTO implements Serializable {
     private FlairCreateDTO flair;
     private Set<CommentDTO> comments = new HashSet<>();
     private Integer reactions;
-
-    public Integer getId() {
-        return id;
-    }
-    public void setId(Integer id) {
-        this.id = id;
-    }
-    public String getTitle() {
-        return title;
-    }
-    public void setTitle(String title) {
-        this.title = title;
-    }
-    public String getText() {
-        return text;
-    }
-    public void setText(String text) {
-        this.text = text;
-    }
-    public LocalDate getCreationDate() {
-        return creationDate;
-    }
-    public void setCreationDate(LocalDate creationDate) {
-        this.creationDate = creationDate;
-    }
-    public String getImagePath() {
-        return imagePath;
-    }
-    public void setImagePath(String imagePath) {
-        this.imagePath = imagePath;
-    }
-    public UserCreateDTO getUser() {
-        return user;
-    }
-    public void setUser(UserCreateDTO user) {
-        this.user = user;
-    }
-    public FlairCreateDTO getFlair() {
-        return flair;
-    }
-    public Boolean getDeleted() {
-        return isDeleted;
-    }
-    public void setDeleted(Boolean deleted) {
-        isDeleted = deleted;
-    }
-    public void setFlair(FlairCreateDTO flair) {this.flair = flair;}
-
-    public Integer getReactions() {
-        return reactions;
-    }
-
-    public void setReactions(Integer reactions) {
-        this.reactions = reactions;
-    }
-
-    public Set<CommentDTO> getComments() {
-        return comments;
-    }
-    public void setComments(Set<CommentDTO> comments) {
-        this.comments = comments;
-    }
+    private MultipartFile[] files;
+    private Integer karma = 0;
 
     public PostCreateDTO() {
     }

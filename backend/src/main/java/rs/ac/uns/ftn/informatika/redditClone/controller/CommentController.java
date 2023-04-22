@@ -10,11 +10,9 @@ import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 import rs.ac.uns.ftn.informatika.redditClone.model.dto.CommentCreateDTO;
 import rs.ac.uns.ftn.informatika.redditClone.model.dto.CommentDTO;
-import rs.ac.uns.ftn.informatika.redditClone.model.entity.Comment;
-import rs.ac.uns.ftn.informatika.redditClone.model.entity.Post;
-import rs.ac.uns.ftn.informatika.redditClone.model.entity.Reaction;
-import rs.ac.uns.ftn.informatika.redditClone.model.entity.User;
+import rs.ac.uns.ftn.informatika.redditClone.model.entity.*;
 import rs.ac.uns.ftn.informatika.redditClone.service.*;
+import rs.ac.uns.ftn.informatika.redditClone.service.elasticsearch.PostServiceES;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
@@ -37,6 +35,8 @@ public class CommentController {
     private ReactionService reactionService;
     @Autowired
     private ReportService reportService;
+    @Autowired
+    private PostServiceES postServiceES;
 
     @PreAuthorize("hasAnyRole('USER','MODERATOR', 'ADMIN')")
     @GetMapping
@@ -138,9 +138,16 @@ public class CommentController {
     @DeleteMapping(value = "/{id}")
     public ResponseEntity<Void>deleteComment(@PathVariable Integer id){
         Comment comment = commentService.findOne(id);
+        
+        Post post = postService.findByComment(comment);
+        PostES postES = postServiceES.findPostById(post.getId());
+        postES.removeComm();
+        postServiceES.index(postES);
+
         if (comment != null) {
             Set<Comment> comments = new HashSet<>();
             comment.setChildComments(comments);
+            comment.setDeleted(true);
             commentService.save(comment);
             Comment parent = commentService.findParentComment(comment);
             if(parent != null){

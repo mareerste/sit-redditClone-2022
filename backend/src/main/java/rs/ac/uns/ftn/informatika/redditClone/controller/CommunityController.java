@@ -84,9 +84,8 @@ public class CommunityController {
         moderators.add(userService.findOne(authentication.getName()));
         community.setModerators(moderators);
         community.setFlairs(communityDTO.getFlairs());
-        community = communityService.save(community);
 
-        // ubaciti save metodu za elastic
+        community = communityService.save(community);
         communityServiceES.index(community);
         User user = community.getModerators().iterator().next();
         setModerator(user.getUsername());
@@ -115,8 +114,8 @@ public class CommunityController {
         community.setModerators(moderators);
         community.setFlairs(communityDTO.getFlairs());
         community = communityService.save(community);
+
         communityDTO.setId(community.getId());
-        // ubaciti save metodu za elastic
         communityServiceES.indexUploadedFile(communityDTO);
         User user = community.getModerators().iterator().next();
         setModerator(user.getUsername());
@@ -245,8 +244,13 @@ public class CommunityController {
         }
 
         communityServiceES.addPostToCommunity(id,new CommunityPostESDTO(post));
-        //TODO: indexUploadFile
-        postServiceES.index(post);
+        PostES postES = new PostES(post);
+        postES.setId(post.getId());
+        postES.setKarma(1);
+        postServiceES.index(postES);
+        CommunityES communityES = communityServiceES.findCommunityByPostId(community.getId());
+        communityES.karmaUp();
+        communityServiceES.index(communityES);
 
         Reaction reaction = new Reaction(userService.findOne(authentication.getName()),post);
         reactionService.save(reaction);
@@ -258,6 +262,48 @@ public class CommunityController {
         logger.info("Post " +post.getTitle()+ " created " + post.getCreationDate().toString());
         return new ResponseEntity<>(new PostDTO(post),HttpStatus.CREATED);
     }
+
+    @PreAuthorize("hasAnyRole('USER','MODERATOR', 'ADMIN')")
+    @PostMapping(path = "/pdf/{id}/posts",consumes = {"multipart/form-data"})
+    public ResponseEntity<PostDTO> createPostPDF(@PathVariable Integer id, @ModelAttribute PostCreateDTO postDTO, Authentication authentication) throws IOException {
+
+        Community community = communityService.findOne(id);
+        if (community == null) {
+            logger.error("Community not found");
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+        if(postDTO.getTitle().equals("")||postDTO.getTitle() == null || postDTO.getText().equals("")||postDTO.getText() == null) {
+            logger.error("Community post create, bad request");
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        }
+        postDTO.setUser(new UserCreateDTO(userService.findOne(authentication.getName())));
+        Post post = postService.save(postDTO);
+
+        if(post == null){
+            logger.error("Bad form data");
+            return new ResponseEntity<>(null, HttpStatus.NOT_ACCEPTABLE);
+        }
+        postDTO.setId(post.getId());
+        postDTO.setKarma(1);
+        postServiceES.indexUploadedFile(postDTO);
+
+        communityServiceES.addPostToCommunity(id,new CommunityPostESDTO(post));
+
+        CommunityES communityES = communityServiceES.findCommunityByPostId(community.getId());
+        communityES.karmaUp();
+        communityServiceES.index(communityES);
+
+        Reaction reaction = new Reaction(userService.findOne(authentication.getName()),post);
+        reactionService.save(reaction);
+
+        Set<Post> posts = community.getPosts();
+        posts.add(post);
+        community.setPosts(posts);
+        communityService.save(community);
+        logger.info("Post " +post.getTitle()+ " created " + post.getCreationDate().toString());
+        return new ResponseEntity<>(new PostDTO(post),HttpStatus.CREATED);
+    }
+
     @PreAuthorize("hasAnyRole('USER','MODERATOR', 'ADMIN')")
     @DeleteMapping(value = "/{id}/posts/{postId}")
     public ResponseEntity<Void> deletePost(@PathVariable Integer id,@PathVariable Integer postId, Authentication authentication) throws IOException {
@@ -285,6 +331,7 @@ public class CommunityController {
             communityService.save(community);
             reportService.deleteAllByPost(post);
             postService.delete(post);
+            postServiceES.deletePostById(postId);
             CommunityES communityES = communityServiceES.findCommunityById(community.getId());
             if (communityES != null){
                 Set<CommunityPostESDTO> retVal = communityES.getPosts();

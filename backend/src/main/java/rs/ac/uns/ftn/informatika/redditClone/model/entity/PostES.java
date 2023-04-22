@@ -28,8 +28,21 @@ public class PostES {
     @Field(type = FieldType.Keyword)
     private String keywords;
     private String filename;
-    @Field(type = FieldType.Double)
-    private Double karma = 0.0;
+    @Field(type = FieldType.Integer)
+    private Integer karma = 0;
+    @Field(type = FieldType.Integer)
+    private Integer comments = 0;
+    @Field(type = FieldType.Text)
+    private String flair;
+
+    public void karmaUp() {
+        this.karma = ++this.karma;
+    }
+
+    public void karmaDown() {this.karma = --this.karma;}
+
+    public void addComm() {this.comments = ++this.comments;}
+    public void removeComm() {this.comments = --this.comments;}
 
     public PostES(){}
 

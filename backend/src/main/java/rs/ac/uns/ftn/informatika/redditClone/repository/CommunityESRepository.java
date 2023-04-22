@@ -27,6 +27,8 @@ public interface CommunityESRepository extends ElasticsearchRepository<Community
     @Query("{\"bool\": {\"should\": [{\"match\": {\"description\": \"?0\"}}, {\"match\": {\"descriptionFile\": \"?0\"}}]}}")
     List<CommunityES> findAllByDescriptionContainingOrDescriptionFileContaining(String searchTerm);
     List<CommunityES> findAllByRulesContaining(String rule);
+    @Query("{\"bool\": {\"must\": [{\"nested\": {\"path\": \"posts\", \"query\": {\"match\": {\"posts.id\": \"?0\"}}}}]}}")
+    List<CommunityES> findByPostId(Integer postId);
 
 
     default void addPost (Integer communityId, CommunityPostESDTO post) throws IOException{

@@ -131,7 +131,7 @@ export class PostComponent implements OnInit {
     if (this.isLoggedIn()) {
       this.form.value.type = "UPVOTE"
       this.form.value.post = this.post.id
-      this.reactionService.sendReaction(this.form.value)
+      this.reactionService.sendReaction(this.community.id,this.form.value)
         .subscribe(data => {
           this.post.reactions++;
           this.loadKarma()
@@ -152,7 +152,7 @@ export class PostComponent implements OnInit {
     if (this.isLoggedIn()) {
       this.form.value.type = "DOWNVOTE"
       this.form.value.post = this.post.id
-      this.reactionService.sendReaction(this.form.value)
+      this.reactionService.sendReaction(this.community.id,this.form.value)
         .subscribe(data => {
           this.post.reactions++;
           this.loadKarma()

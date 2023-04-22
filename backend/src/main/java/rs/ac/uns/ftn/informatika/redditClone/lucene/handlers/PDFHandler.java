@@ -8,6 +8,7 @@ import org.apache.pdfbox.pdmodel.PDDocument;
 import org.apache.pdfbox.pdmodel.PDDocumentInformation;
 import org.apache.pdfbox.text.PDFTextStripper;
 import rs.ac.uns.ftn.informatika.redditClone.model.entity.CommunityES;
+import rs.ac.uns.ftn.informatika.redditClone.model.entity.PostES;
 
 import java.io.File;
 import java.io.IOException;
@@ -16,7 +17,7 @@ import java.util.Date;
 public class PDFHandler extends DocumentHandler {
 
 	@Override
-	public CommunityES getIndexUnit(File file) {
+	public CommunityES getIndexUnitForCommunity(File file) {
 		CommunityES retVal = new CommunityES();
 		try {
 			PDFParser parser = new PDFParser((RandomAccessRead) new RandomAccessFile(file, "r"));
@@ -37,6 +38,37 @@ public class PDFHandler extends DocumentHandler {
 			retVal.setFilename(file.getCanonicalPath());
 			
 			String modificationDate= DateTools.dateToString(new Date(file.lastModified()), DateTools.Resolution.DAY);
+
+			pdf.close();
+		} catch (IOException e) {
+			System.out.println("Greksa pri konvertovanju dokumenta u pdf");
+		}
+
+		return retVal;
+	}
+
+	@Override
+	public PostES getIndexUnitForPost(File file) {
+		PostES retVal = new PostES();
+		try {
+			PDFParser parser = new PDFParser((RandomAccessRead) new RandomAccessFile(file, "r"));
+			parser.parse();
+			String text = getText(parser);
+			retVal.setTextFile(text);
+
+			// metadata extraction
+			PDDocument pdf = parser.getPDDocument();
+			PDDocumentInformation info = pdf.getDocumentInformation();
+
+//			String title = ""+info.getTitle();
+//			retVal.setTitle(title);
+
+			String keywords = ""+info.getKeywords();
+			retVal.setKeywords(keywords);
+
+			retVal.setFilename(file.getCanonicalPath());
+
+//			String modificationDate= DateTools.dateToString(new Date(file.lastModified()), DateTools.Resolution.DAY);
 
 			pdf.close();
 		} catch (IOException e) {

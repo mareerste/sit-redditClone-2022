@@ -17,6 +17,7 @@ import rs.ac.uns.ftn.informatika.redditClone.service.elasticsearch.CommunityServ
 import rs.ac.uns.ftn.informatika.redditClone.service.elasticsearch.PostServiceES;
 import rs.ac.uns.ftn.informatika.redditClone.util.SearchType;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
@@ -92,6 +93,12 @@ public class PostController {
         return new ResponseEntity<>(postServiceES.findPostsByTitle(title),HttpStatus.OK);
     }
 
+    @GetMapping("/flair/{flair}")
+    public ResponseEntity<List<PostSearchDTO>> getPostsByFlair(@PathVariable String flair){
+        return new ResponseEntity<>(postServiceES.findPostsByFlair(flair),HttpStatus.OK);
+    }
+
+
     @GetMapping("/text/{text}")
     public ResponseEntity<List<PostSearchDTO>> getPostsByText(@PathVariable String text){
         return new ResponseEntity<>(postServiceES.findPostsByText(text),HttpStatus.OK);
@@ -99,6 +106,10 @@ public class PostController {
     @GetMapping("/range/{min}/{max}")
     public ResponseEntity<List<PostSearchDTO>> getPostsByKarmaRange(@PathVariable Integer min,@PathVariable Integer max){
         return new ResponseEntity<>(postServiceES.findPostsByKarmaRange(min, max),HttpStatus.OK);
+    }
+    @GetMapping("/comments/{min}/{max}")
+    public ResponseEntity<List<PostSearchDTO>> getPostsByCommentsRange(@PathVariable Integer min,@PathVariable Integer max){
+        return new ResponseEntity<>(postServiceES.findPostsByCommentsRange(min, max),HttpStatus.OK);
     }
 
     @GetMapping("/search/{searchType}/{title}/{text}/{min}/{max}")
@@ -138,6 +149,23 @@ public class PostController {
         }
         return new ResponseEntity<>(new PostDTO(post),HttpStatus.CREATED);
     }
+
+    @PreAuthorize("hasAnyRole('USER','MODERATOR', 'ADMIN')")
+    @PostMapping(path = "/pdf",consumes = {"multipart/form-data"})
+    public ResponseEntity<PostDTO> savePostPDF(@ModelAttribute PostCreateDTO postDTO) throws IOException {
+        if(postDTO.getTitle().equals("")||postDTO.getTitle() == null || postDTO.getText().equals("")||postDTO.getText() == null)
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        Post post = postService.save(postDTO);
+        postDTO.setId(post.getId());
+        postServiceES.indexUploadedFile(postDTO);
+
+        logger.info("Post " +post.getTitle()+ " created ");
+        if(post == null){
+            return new ResponseEntity<>(null, HttpStatus.NOT_ACCEPTABLE);
+        }
+        return new ResponseEntity<>(new PostDTO(post),HttpStatus.CREATED);
+    }
+
     @PreAuthorize("hasAnyRole('USER','MODERATOR', 'ADMIN')")
     @PutMapping(consumes = "application/json")
     public ResponseEntity<PostDTO> updatePost(@RequestBody PostCreateDTO postDTO, Authentication authentication){
@@ -148,7 +176,8 @@ public class PostController {
         post.setTitle(postDTO.getTitle());
         post.setText(postDTO.getText());
         post.setImagePath(postDTO.getImagePath());
-        post.setDeleted(postDTO.getDeleted());
+        if(postDTO.getIsDeleted() != null)
+            post.setDeleted(postDTO.getIsDeleted());
 //        post.setComments(postDTO.getComments());
         Set<Comment> comments = new HashSet<>();
         for (CommentDTO c:
@@ -162,6 +191,11 @@ public class PostController {
         post.setFlair(flair);
 
         post = postService.save(post);
+
+        PostES postES = postServiceES.findPostById(post.getId());
+        postES.setComments(post.getComments().size());
+        postServiceES.index(postES);
+
         logger.info("Post " +post.getTitle()+ " updated ");
         return new ResponseEntity<>(new PostDTO(post),HttpStatus.OK);
     }

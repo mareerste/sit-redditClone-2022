@@ -3,6 +3,7 @@ package rs.ac.uns.ftn.informatika.redditClone.service;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import rs.ac.uns.ftn.informatika.redditClone.model.dto.PostCreateDTO;
+import rs.ac.uns.ftn.informatika.redditClone.model.entity.Comment;
 import rs.ac.uns.ftn.informatika.redditClone.model.entity.Community;
 import rs.ac.uns.ftn.informatika.redditClone.model.entity.Post;
 import rs.ac.uns.ftn.informatika.redditClone.model.entity.User;
@@ -17,4 +18,5 @@ public interface PostService {
     Post save(Post post);
     Post save(PostCreateDTO post);
     void delete(Post post);
+    Post findByComment(Comment comment);
 }

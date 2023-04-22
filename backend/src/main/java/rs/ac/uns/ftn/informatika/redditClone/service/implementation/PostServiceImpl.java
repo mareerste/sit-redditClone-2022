@@ -69,4 +69,9 @@ public class PostServiceImpl implements PostService {
 
     @Override
     public void delete(Post post){postRepository.delete(post);}
+
+    @Override
+    public Post findByComment(Comment comment) {
+        return postRepository.findByComments(comment);
+    }
 }

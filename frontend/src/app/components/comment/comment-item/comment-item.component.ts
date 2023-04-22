@@ -61,7 +61,7 @@ export class CommentItemComponent implements OnInit {
       this.form.value.type = "UPVOTE"
       this.form.value.comment = this.comment.id
     
-      this.reactionService.sendReaction(this.form.value)
+      this.reactionService.sendReaction(0,this.form.value)
         .subscribe(data => {
           this.loadKarma()
         },
@@ -84,7 +84,7 @@ export class CommentItemComponent implements OnInit {
     if (this.isLoggedIn()) {
       this.form.value.type = "DOWNVOTE"
       this.form.value.comment = this.comment.id
-      this.reactionService.sendReaction(this.form.value)
+      this.reactionService.sendReaction(0,this.form.value)
         .subscribe(data => {
           this.loadKarma()
           console.log(data)

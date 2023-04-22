@@ -11,13 +11,24 @@ import org.springframework.data.elasticsearch.core.SearchHits;
 import org.springframework.data.elasticsearch.core.query.NativeSearchQueryBuilder;
 import org.springframework.data.elasticsearch.core.query.Query;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
+import rs.ac.uns.ftn.informatika.redditClone.lucene.handlers.DocumentHandler;
+import rs.ac.uns.ftn.informatika.redditClone.lucene.handlers.PDFHandler;
 import rs.ac.uns.ftn.informatika.redditClone.model.dto.CommunitySearchDTO;
+import rs.ac.uns.ftn.informatika.redditClone.model.dto.CommunityWithFlairsDTO;
+import rs.ac.uns.ftn.informatika.redditClone.model.dto.PostCreateDTO;
 import rs.ac.uns.ftn.informatika.redditClone.model.dto.PostSearchDTO;
 import rs.ac.uns.ftn.informatika.redditClone.model.entity.CommunityES;
 import rs.ac.uns.ftn.informatika.redditClone.model.entity.Post;
 import rs.ac.uns.ftn.informatika.redditClone.model.entity.PostES;
 import rs.ac.uns.ftn.informatika.redditClone.repository.PostESRepository;
 
+import java.io.File;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -61,12 +72,25 @@ public class PostServiceES {
     public List<PostSearchDTO> findPostsByTitle(String title){
         return mapPostESToPostSearchDTO(postESRepository.findAllByTitleContaining(title));
     }
+
+    public List<PostSearchDTO> findPostsByFlair(String flair){
+        return mapPostESToPostSearchDTO(postESRepository.findAllByFlair(flair));
+    }
+
     public List<PostSearchDTO> findPostsByText(String text){
         return mapPostESToPostSearchDTO(postESRepository.findAllByTextContainingOrTextFileContaining(text));
     }
 
     public List<PostSearchDTO> findPostsByKarmaRange(Integer min, Integer max){
         return mapPostESToPostSearchDTO(postESRepository.findByKarmaInRange(min, max));
+    }
+
+    public List<PostSearchDTO> findPostsByCommentsRange(Integer min, Integer max){
+        return mapPostESToPostSearchDTO(postESRepository.findByCommCountInRange(min, max));
+    }
+
+    public void deletePostById(Integer id){
+        postESRepository.deleteById(id);
     }
 
     public List<PostSearchDTO> searchFuzzyPosts(String title, String text, Integer minKarma, Integer maxKarma) {
@@ -121,5 +145,46 @@ public class PostServiceES {
         return mapPostESToPostSearchDTO(retVal);
     }
 
+    public void indexUploadedFile(PostCreateDTO postDTO) throws IOException {
+        for (MultipartFile file : postDTO.getFiles()) {
+            if (file.isEmpty()) {
+                continue;
+            }
+
+            String fileName = saveUploadedFileInFolder(file);
+            if(fileName != null){
+                PostES post = getHandler(fileName).getIndexUnitForPost(new File(fileName));
+                post.setId(postDTO.getId());
+                post.setText(postDTO.getText());
+                post.setTitle(postDTO.getTitle());
+                post.setKarma(1);
+                post.setFlair(postDTO.getFlair().getName());
+                index(post);
+            }
+        }
+    }
+
+    private String saveUploadedFileInFolder(MultipartFile file) throws IOException {
+        String retVal = null;
+        if (!file.isEmpty()) {
+            byte[] bytes = file.getBytes();
+            Path path = Paths.get(new File(filesPath).getAbsolutePath() + File.separator + file.getOriginalFilename());
+            Files.write(path, bytes);
+            retVal = path.toString();
+        }
+        return retVal;
+    }
+
+    public DocumentHandler getHandler(String fileName){
+        return getDocumentHandler(fileName);
+    }
+
+    public static DocumentHandler getDocumentHandler(String fileName) {
+        if(fileName.endsWith(".pdf")){
+            return new PDFHandler();
+        }else{
+            return null;
+        }
+    }
 
 }

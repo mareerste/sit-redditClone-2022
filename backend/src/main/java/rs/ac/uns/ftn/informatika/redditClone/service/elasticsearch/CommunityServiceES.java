@@ -77,6 +77,11 @@ public class CommunityServiceES {
         return mapCommunityESToCommunitySearchDTO(communities);
     }
 
+    public CommunityES findCommunityByPostId(Integer postId){
+        CommunityES community = communityESRepository.findByPostId(postId).get(0);
+        return community;
+    }
+
     public void addPostToCommunity(Integer communityId, CommunityPostESDTO post) throws IOException {
         communityESRepository.addPost(communityId, post);
     }
@@ -155,13 +160,14 @@ public class CommunityServiceES {
 
             String fileName = saveUploadedFileInFolder(file);
             if(fileName != null){
-                CommunityES community = getHandler(fileName).getIndexUnit(new File(fileName));
+                CommunityES community = getHandler(fileName).getIndexUnitForCommunity(new File(fileName));
                 community.setId(communityDTO.getId());
                 community.setName(communityDTO.getName());
                 community.setDescription(communityDTO.getDescription());
                 community.setCreationDate(LocalDate.now());
                 community.setRules(communityDTO.getRules());
                 community.setIsSuspended(false);
+                community.setKarma(communityDTO.getKarma());
                 index(community);
             }
         }

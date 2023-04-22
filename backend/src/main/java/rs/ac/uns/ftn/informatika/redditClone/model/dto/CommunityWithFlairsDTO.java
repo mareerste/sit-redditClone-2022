@@ -32,6 +32,7 @@ public class CommunityWithFlairsDTO implements Serializable {
     private List<Flair> flairs = new ArrayList<>();
     private Set<User> moderators = new HashSet<>();
     private MultipartFile[] files;
+    private Integer karma = 0;
 
     public CommunityWithFlairsDTO() {
     }

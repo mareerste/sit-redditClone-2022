@@ -34,12 +34,12 @@ export class ReactionService {
     return this.http.get<number>(`${this.config.reaction_url}/comment/${id}/karma`);
   }
 
-  sendReaction(data:Reaction){
+  sendReaction(communityId:number,data:Reaction){
     const createPostHeaders = new HttpHeaders({
           'Accept': 'application/json',
           'Content-Type': 'application/json'
         });
-        return this.apiService.post(`${this.config.reaction_url}`, data, createPostHeaders)
+        return this.apiService.post(`${this.config.reaction_url}?communityId=${communityId}`, data, createPostHeaders)
             .pipe(map(() => {
 
             }));

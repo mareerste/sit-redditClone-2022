@@ -16,6 +16,8 @@
 # Mono auto generated files
 mono_crash.*
 
+./backend/src/main/resources/files/.
+
 # Build results
 [Dd]ebug/
 [Dd]ebugPublic/
