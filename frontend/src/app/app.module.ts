@@ -68,6 +68,9 @@ import { SuspendCommunityDialogComponent } from './components/suspend-community-
 import { CommunityUpdatePostComponent } from './pages/community/single-community/community-update-post/community-update-post.component';
 import { UserProfileComponent } from './pages/user-profile/user-profile.component';
 import { SearchCommunitiesComponent } from './search-communities/search-communities.component';
+import { SearchCommunitiesFormsComponent } from './search-communities-forms/search-communities-forms.component';
+import { SearchPostsFormsComponent } from './search-posts-forms/search-posts-forms.component';
+import { SearchPostsComponent } from './search-posts/search-posts.component';
 
 @NgModule({
   declarations: [
@@ -113,6 +116,9 @@ import { SearchCommunitiesComponent } from './search-communities/search-communit
     CommunityUpdatePostComponent,
     UserProfileComponent,
     SearchCommunitiesComponent,
+    SearchCommunitiesFormsComponent,
+    SearchPostsFormsComponent,
+    SearchPostsComponent,
   ],
   entryComponents:[
     ReportDialogComponent,

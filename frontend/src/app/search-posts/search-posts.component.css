@@ -1,0 +1,39 @@
+.scrollable-list {
+    height: 200px;
+    /* set the height of the scrollbar */
+    overflow: auto;
+    /* set the overflow property to enable scrolling */
+    scrollbar-width: thin;
+    /* set the width of the scrollbar */
+    scrollbar-color: #999 #eee;
+    /* set the color of the scrollbar */
+}
+
+.scrollable-list::-webkit-scrollbar {
+    width: 8px;
+    /* set the width of the scrollbar */
+}
+
+.scrollable-list::-webkit-scrollbar-thumb {
+    background-color: #999;
+    /* set the color of the scrollbar thumb */
+    border-radius: 4px;
+    /* set the border radius of the scrollbar thumb */
+}
+
+.mat-card {
+    margin-bottom: 3px;
+    background-color: transparent;
+    color: #b71c1c;
+    border: 2px solid;
+    border-radius: 20px;
+}
+
+.button-container {
+    display: flex;
+    justify-content: flex-end;
+  }
+
+  button{
+    color: #b71c1c;
+  }

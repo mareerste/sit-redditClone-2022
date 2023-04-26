@@ -1,0 +1,72 @@
+.container {
+    display: block;
+    justify-content: center;
+  }
+
+.searchBar{
+    margin: auto;
+    width:50%;
+    padding:5px;
+    border: 3px solid #b71c1c;
+    margin-bottom: 10px;
+    border-radius: 25px;
+    color: #b71c1c;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    text-align: center;
+}
+
+#formDiv{
+    margin: auto;
+    width:50%;
+    padding:20px;
+    border: 3px solid #b71c1c;
+    margin-bottom: 10px;
+    border-radius: 25px;
+    color: #b71c1c;
+    display: block;
+    flex-direction: row;
+    align-items: center;
+    text-align: center;
+}
+
+.mat-radio-button.mat-primary.mat-radio-checked .mat-radio-outer-circle{
+    border-color:#b71c1c;
+}
+
+.mat-radio-button {
+    margin-left: 10px;
+    margin-top: 5px;
+}
+
+form div input {
+    background-color: transparent;
+    color: #b71c1c;
+    border:2px solid #b71c1c;
+    border-radius: 5px;
+}
+
+form button {
+    background-color: transparent;
+    color: #b71c1c;
+    margin: auto;
+    padding: 2px;
+}
+
+
+.mat-icon{
+    margin-left: 5px;
+}
+
+.searchBar mat-icon {
+    display: inline-block;
+    vertical-align: middle;
+}
+
+.searchBar button{
+    margin-right: 5px;
+}
+
+
+  

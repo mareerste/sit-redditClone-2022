@@ -1,0 +1,11 @@
+<ul>
+    <!-- <li *ngFor="let community of result">{{community.name}}</li> -->
+    <div class="button-container">
+        <button (click)="stopSearching()"><mat-icon>exit_to_app</mat-icon></button>
+      </div>
+    <div class="scrollable-list">
+        <mat-card *ngFor="let post of result">
+            <mat-card-content>{{post.title}} - {{post.text}}</mat-card-content>
+        </mat-card>
+    </div>
+</ul>

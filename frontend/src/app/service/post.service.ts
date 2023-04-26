@@ -4,6 +4,7 @@ import { Post } from './../model/post';
 import {Injectable} from '@angular/core';
 import {ApiService} from './api.service';
 import {ConfigService} from './config.service';
+import { PostES } from '../model/PostES';
 
 @Injectable()
 export class PostService {
@@ -52,6 +53,31 @@ export class PostService {
     let params:HttpParams = new HttpParams();
     params = params.append('entry',entryText);
     return this.apiService.get(this.config.all_posts_url,{params});
+  }
+
+  // ES APIs
+  getPostsByTitle(title:string):Observable<PostES[]>{
+    return this.http.get<PostES[]>(`${this.config.post_url}/title/${title}`)
+  }
+
+  getPostsByFlair(flair:string):Observable<PostES[]>{
+    return this.http.get<PostES[]>(`${this.config.post_url}/flair/${flair}`)
+  }
+
+  getPostsByText(text:string):Observable<PostES[]>{
+    return this.http.get<PostES[]>(`${this.config.post_url}/text/${text}`)
+  }
+
+  getPostsByKarma(min:number, max:number):Observable<PostES[]>{
+    return this.http.get<PostES[]>(`${this.config.post_url}/range/${min}/${max}`)
+  }
+
+  getPostsByComments(min:number, max:number):Observable<PostES[]>{
+    return this.http.get<PostES[]>(`${this.config.post_url}/comments/${min}/${max}`)
+  }
+
+  getPostsByCombinedSearch(searchType:string, title:string, text:string,flair:Text, minKarma:number, maxKarma:number, minComment:number, maxComment:number):Observable<PostES[]>{
+    return this.http.get<PostES[]>(`${this.config.post_url}/search/${searchType}/${title}/${text}/${flair}/${minKarma}/${maxKarma}/${minComment}/${maxComment}`)
   }
 
 }

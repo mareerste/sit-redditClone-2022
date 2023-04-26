@@ -1,0 +1,117 @@
+<div class="container">
+    <div id="showButtonPosts" style="display: block;" class="searchBar"><button class="mat-button"
+            (click)="showSearchForm()">Search posts</button> <mat-icon>keyboard_arrow_down</mat-icon></div>
+
+    <div id="formDivPosts" style="display: none;">
+        <mat-radio-group (change)="searchTypeChanged($event)" aria-label="Select an option">
+            <mat-radio-button color="primary" value="name">Search by title</mat-radio-button>
+            <mat-radio-button color="primary" value="text">Search by text</mat-radio-button>
+            <mat-radio-button color="primary" value="flair">Search by flair</mat-radio-button>
+            <mat-radio-button color="primary" value="karma">Search by karma range</mat-radio-button>
+            <mat-radio-button color="primary" value="comment">Search by comment range</mat-radio-button>
+            <mat-radio-button color="primary" value="combined">Combined search</mat-radio-button>
+        </mat-radio-group>
+        <form (ngSubmit)="titleSearchSubmit()" [formGroup]="searchByTitleForm" *ngIf="searchType == 'name'">
+            <h4 style="color: #b71c1c;">Search by name</h4>
+            <div class="form-group">
+                <label for="postTitle">Post title</label><br>
+                <input type="text" formControlName="postTitle" required>
+                <span *ngIf="postTitleRequired" class="field-error" style="color: red;">Post title can not be
+                    empty.</span>
+            </div>
+            <button [disabled]="!searchByTitleForm.valid" mat-button
+                type="submit">Search<mat-icon>search</mat-icon></button>
+        </form>
+        <form (ngSubmit)="textSearchSubmit()" [formGroup]="searchByTextForm"
+            *ngIf="searchType == 'text'">
+            <h4 style="color: #b71c1c;">Search by post text</h4>
+            <div class="form-group">
+                <label for="postText">Post text</label><br>
+                <input type="text" formControlName="postText" required>
+                <span *ngIf="postTextRequired" class="field-error" style="color: red;">Post text
+                    can not be empty.</span>
+            </div>
+            <button [disabled]="!searchByTextForm.valid" mat-button
+                type="submit">Search<mat-icon>search</mat-icon></button>
+        </form>
+        <form (ngSubmit)="flairSearchSubmit()" [formGroup]="searchByFlairForm"
+            *ngIf="searchType == 'flair'">
+            <h4 style="color: #b71c1c;">Search by post flair</h4>
+            <div class="form-group">
+                <label for="postFlair">Post flair</label><br>
+                <input type="text" formControlName="postFlair" required>
+                <span *ngIf="postFlairRequired" class="field-error" style="color: red;">Post flair
+                    can not be empty.</span>
+            </div>
+            <button [disabled]="!searchByFlairForm.valid" mat-button
+                type="submit">Search<mat-icon>search</mat-icon></button>
+        </form>
+        <form (ngSubmit)="karmaRangeSearchSubmit()" [formGroup]="searchByKarmaRangeForm" *ngIf="searchType == 'karma'">
+            <h4 style="color: #b71c1c;">Search by karma range</h4>
+            <div class="form-group">
+                <label for="minKarma">Min karma</label><br>
+                <input type="number" value="0" formControlName="minKarma">
+            </div>
+            <div class="form-group">
+                <label for="maxKarma">Max karma</label><br>
+                <input type="number" formControlName="maxKarma">
+            </div>
+            <button mat-button type="submit">Search<mat-icon>search</mat-icon></button>
+        </form>
+        <form (ngSubmit)="commentRangeSearchSubmit()" [formGroup]="searchByCommentRangeForm" *ngIf="searchType == 'comment'">
+            <h4 style="color: #b71c1c;">Search by karma range</h4>
+            <div class="form-group">
+                <label for="minComment">Min comment</label><br>
+                <input type="number" value="0" formControlName="minComment">
+            </div>
+            <div class="form-group">
+                <label for="maxComment">Max comment</label><br>
+                <input type="number" formControlName="maxComment">
+            </div>
+            <button mat-button type="submit">Search<mat-icon>search</mat-icon></button>
+        </form>
+        <form (ngSubmit)="combinedSearchSubmit()" [formGroup]="combinedSearchForm" *ngIf="searchType == 'combined'">
+            <h4 style="color: #b71c1c;">Combined search</h4>
+            <div class="form-group">
+                <label for="postTitle">Post title</label><br>
+                <input type="text" formControlName="postTitle" required>
+            </div>
+            <div class="form-group">
+                <label for="postText">Post text</label><br>
+                <input type="text" formControlName="postText" required>
+            </div>
+            <div class="form-group">
+                <label for="postFlair">Post flair</label><br>
+                <input type="text" formControlName="postFlair" required>
+            </div>
+            <div class="form-group">
+                <label for="minKarma">Min karma</label><br>
+                <input type="number" value="0" formControlName="minKarma">
+            </div>
+            <div class="form-group">
+                <label for="maxKarma">Max karma</label><br>
+                <input type="number" formControlName="maxKarma">
+            </div>
+            <div class="form-group">
+                <label for="minComment">Min comment</label><br>
+                <input type="number" value="0" formControlName="minComment">
+            </div>
+            <div class="form-group">
+                <label for="maxComment">Max comment</label><br>
+                <input type="number" formControlName="maxComment">
+            </div>
+            <div class="form-group">
+                <mat-radio-group formControlName="searchType" required>
+                    <mat-radio-button value="phrase">Phrase Query</mat-radio-button>
+                    <mat-radio-button value="fuzzy">Fuzzy Query</mat-radio-button>
+                </mat-radio-group>
+            </div>
+            <button [disabled]="!combinedSearchForm.valid" mat-button
+                type="submit">Search<mat-icon>search</mat-icon></button>
+        </form>
+        <app-search-posts *ngIf="searching && searchResult?.length > 0" (clickedEventEmit)="stopSearching($event)"
+            [result]="searchResult"></app-search-posts>
+    </div>
+    <div id="hideButtonPosts" style="display: none;clear: both;" class="searchBar"><button class="mat-button"
+            (click)="showSearchForm()">Search posts</button> <mat-icon>keyboard_arrow_up</mat-icon></div>
+</div>
