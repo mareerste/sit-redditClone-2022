@@ -252,6 +252,7 @@ public class CommunityController {
         PostES postES = new PostES(post);
         postES.setId(post.getId());
         postES.setKarma(1);
+        postES.setFlair(post.getFlair().getName());
         postServiceES.index(postES);
         CommunityES communityES = communityServiceES.findCommunityByPostId(community.getId());
         communityES.karmaUp();

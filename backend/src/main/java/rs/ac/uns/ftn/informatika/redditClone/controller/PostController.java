@@ -112,12 +112,12 @@ public class PostController {
         return new ResponseEntity<>(postServiceES.findPostsByCommentsRange(min, max),HttpStatus.OK);
     }
 
-    @GetMapping("/search/{searchType}/{title}/{text}/{min}/{max}")
-    public ResponseEntity<List<PostSearchDTO>> getPostsWithSearchType(@PathVariable String searchType,@PathVariable String title, @PathVariable String text, @PathVariable Integer min, @PathVariable Integer max){
+    @GetMapping("/search/{searchType}/{title}/{text}/{flair}/{minKarma}/{maxKarma}/{minComment}/{maxComment}")
+    public ResponseEntity<List<PostSearchDTO>> getPostsWithSearchType(@PathVariable String searchType,@PathVariable String title, @PathVariable String text, @PathVariable String flair, @PathVariable Integer minKarma, @PathVariable Integer maxKarma, @PathVariable Integer minComment, @PathVariable Integer maxComment){
         if (searchType.equals(SearchType.FUZZY.label))
-            return new ResponseEntity<>(postServiceES.searchFuzzyPosts(title,text, min, max),HttpStatus.OK);
+            return new ResponseEntity<>(postServiceES.searchFuzzyPosts(title,text, flair,minKarma, maxKarma, minComment, maxComment),HttpStatus.OK);
         else if (searchType.equals(SearchType.PHRASE.label))
-            return new ResponseEntity<>(postServiceES.searchPhrasePosts(title,text, min, max),HttpStatus.OK);
+            return new ResponseEntity<>(postServiceES.searchPhrasePosts(title,text, flair,minKarma, maxKarma, minComment, maxComment),HttpStatus.OK);
         else{
             System.out.println("Wrong type:" + searchType);
             return null;

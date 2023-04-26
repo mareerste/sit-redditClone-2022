@@ -93,13 +93,19 @@ public class PostServiceES {
         postESRepository.deleteById(id);
     }
 
-    public List<PostSearchDTO> searchFuzzyPosts(String title, String text, Integer minKarma, Integer maxKarma) {
+    public List<PostSearchDTO> searchFuzzyPosts(String title, String text, String flair, Integer minKarma, Integer maxKarma, Integer minComment, Integer maxComment) {
         BoolQueryBuilder queryBuilder = QueryBuilders.boolQuery()
                 .must(QueryBuilders.fuzzyQuery("title", title))
-                .must(QueryBuilders.fuzzyQuery ("text", text));
+                .must(QueryBuilders.fuzzyQuery ("text", text))
+                .must(QueryBuilders.fuzzyQuery ("flair", flair));
         if (minKarma != null && maxKarma != null) {
             List<PostES> postsWithKarmaRange = postESRepository.findByKarmaInRange(minKarma, maxKarma);
             queryBuilder.filter(QueryBuilders.termsQuery("id", postsWithKarmaRange.stream().map(PostES::getId).toArray(Integer[]::new)));
+        }
+
+        if (minComment != null && maxComment != null) {
+            List<PostES> postsWithCommentRange = postESRepository.findByCommCountInRange(minComment, maxComment);
+            queryBuilder.filter(QueryBuilders.termsQuery("id", postsWithCommentRange.stream().map(PostES::getId).toArray(Integer[]::new)));
         }
 
         Query query = new NativeSearchQueryBuilder()
@@ -119,13 +125,18 @@ public class PostServiceES {
         return mapPostESToPostSearchDTO(retVal);
     }
 
-    public List<PostSearchDTO> searchPhrasePosts(String title, String text, Integer minKarma, Integer maxKarma) {
+    public List<PostSearchDTO> searchPhrasePosts(String title, String text, String flair ,Integer minKarma, Integer maxKarma, Integer minComment, Integer maxComment) {
         BoolQueryBuilder queryBuilder = QueryBuilders.boolQuery()
                 .must(QueryBuilders.matchPhraseQuery("title", title))
-                .must(QueryBuilders.matchPhraseQuery ("text", text));
+                .must(QueryBuilders.matchPhraseQuery ("text", text))
+                .must(QueryBuilders.matchPhraseQuery ("flair", flair));
         if (minKarma != null && maxKarma != null) {
             List<PostES> postsWithKarmaRange = postESRepository.findByKarmaInRange(minKarma, maxKarma);
             queryBuilder.filter(QueryBuilders.termsQuery("id", postsWithKarmaRange.stream().map(PostES::getId).toArray(Integer[]::new)));
+        }
+        if (minComment != null && maxComment != null) {
+            List<PostES> postsWithCommentRange = postESRepository.findByCommCountInRange(minComment, maxComment);
+            queryBuilder.filter(QueryBuilders.termsQuery("id", postsWithCommentRange.stream().map(PostES::getId).toArray(Integer[]::new)));
         }
 
         Query query = new NativeSearchQueryBuilder()
