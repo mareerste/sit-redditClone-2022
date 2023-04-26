@@ -193,17 +193,22 @@ public class CommunityController {
         return new ResponseEntity<>(communityServiceES.findCommunitiesByRules(rule),HttpStatus.OK);
     }
 
-    @GetMapping("/posts/scope/{min}/{max}")
+    @GetMapping("/karma/{min}/{max}")
+    public ResponseEntity<List<CommunitySearchDTO>> getCommunitiesByKarmaRange(@PathVariable Integer min,@PathVariable Integer max){
+        return new ResponseEntity<>(communityServiceES.findCommunitiesByKarmaRange(min, max),HttpStatus.OK);
+    }
+
+    @GetMapping("/posts/{min}/{max}")
     public ResponseEntity<List<CommunitySearchDTO>> getCommunitiesByScopeOfPosts(@PathVariable Integer min, @PathVariable Integer max){
         return new ResponseEntity<>(communityServiceES.findByPostRangeBetween(min,max),HttpStatus.OK);
     }
 
-    @GetMapping("/search/{searchType}/{name}/{description}/{rules}/{min}/{max}")
-    public ResponseEntity<List<CommunitySearchDTO>> getCommunitiesWithSearchType(@PathVariable String searchType,@PathVariable String name, @PathVariable String description, @PathVariable String rules, @PathVariable Integer min, @PathVariable Integer max){
+    @GetMapping("/search/{searchType}/{name}/{description}/{rules}/{minPost}/{maxPost}/{minKarma}/{maxKarma}")
+    public ResponseEntity<List<CommunitySearchDTO>> getCommunitiesWithSearchType(@PathVariable String searchType,@PathVariable String name, @PathVariable String description, @PathVariable String rules, @PathVariable Integer minPost, @PathVariable Integer maxPost, @PathVariable Integer minKarma, @PathVariable Integer maxKarma){
         if (searchType.equals(SearchType.FUZZY.label))
-            return new ResponseEntity<>(communityServiceES.searchFuzzyCommunities(name,description, rules, min, max),HttpStatus.OK);
+            return new ResponseEntity<>(communityServiceES.searchFuzzyCommunities(name,description, rules, minPost, maxPost, minKarma, maxKarma),HttpStatus.OK);
         else if (searchType.equals(SearchType.PHRASE.label))
-            return new ResponseEntity<>(communityServiceES.searchPhraseCommunities(name,description, rules, min, max),HttpStatus.OK);
+            return new ResponseEntity<>(communityServiceES.searchPhraseCommunities(name,description, rules, minPost, maxPost, minKarma, maxKarma),HttpStatus.OK);
         else{
             System.out.println("Wrong type:" + searchType);
             return null;

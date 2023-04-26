@@ -12,6 +12,7 @@ import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 import rs.ac.uns.ftn.informatika.redditClone.model.dto.CommunityPostESDTO;
 import rs.ac.uns.ftn.informatika.redditClone.model.entity.CommunityES;
+import rs.ac.uns.ftn.informatika.redditClone.model.entity.PostES;
 
 import java.io.IOException;
 import java.util.List;
@@ -41,7 +42,10 @@ public interface CommunityESRepository extends ElasticsearchRepository<Community
             throw new IllegalArgumentException("Community with id " + communityId + " does not exist");
         }
     }
-    @Query("{\"bool\":{\"filter\":{\"script\":{\"script\":\"doc['posts.id'].size() > ?0 && doc['posts.id'].size() < ?1\"}}}}")
+    @Query("{\"bool\":{\"filter\":{\"script\":{\"script\":\"doc['posts.id'].size() >= ?0 && doc['posts.id'].size() < ?1\"}}}}")
     List<CommunityES> findByPostRange(Integer minPostId, Integer maxPostId);
+
+    @Query("{\"range\" : {\"karma\" : {\"gte\" : ?0, \"lte\" : ?1}}}")
+    List<CommunityES> findByKarmaInRange(Integer minKarma, Integer maxKarma);
 
 }

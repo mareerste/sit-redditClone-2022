@@ -82,6 +82,11 @@ public class CommunityServiceES {
         return community;
     }
 
+    public List<CommunitySearchDTO> findCommunitiesByKarmaRange(Integer min, Integer max){
+        List<CommunityES> communities = communityESRepository.findByKarmaInRange(min,max);
+        return mapCommunityESToCommunitySearchDTO(communities);
+    }
+
     public void addPostToCommunity(Integer communityId, CommunityPostESDTO post) throws IOException {
         communityESRepository.addPost(communityId, post);
     }
@@ -98,13 +103,17 @@ public class CommunityServiceES {
         return communitiesDTO;
     }
 
-    public List<CommunitySearchDTO> searchFuzzyCommunities(String name, String description, String rule, Integer minPost, Integer maxPost) {
+    public List<CommunitySearchDTO> searchFuzzyCommunities(String name, String description, String rule, Integer minPost, Integer maxPost, Integer minKarma, Integer maxKarma) {
         BoolQueryBuilder queryBuilder = QueryBuilders.boolQuery()
                 .must(QueryBuilders.fuzzyQuery("name", name))
                 .must(QueryBuilders.fuzzyQuery ("description", description))
                 .must(QueryBuilders.fuzzyQuery("rules", rule));
         if (minPost != null && maxPost != null) {
             List<CommunityES> communitiesWithPostRange = communityESRepository.findByPostRange(minPost, maxPost);
+            queryBuilder.filter(QueryBuilders.termsQuery("id", communitiesWithPostRange.stream().map(CommunityES::getId).toArray(Integer[]::new)));
+        }
+        if (minKarma != null && maxKarma != null) {
+            List<CommunityES> communitiesWithPostRange = communityESRepository.findByKarmaInRange(minKarma, maxKarma);
             queryBuilder.filter(QueryBuilders.termsQuery("id", communitiesWithPostRange.stream().map(CommunityES::getId).toArray(Integer[]::new)));
         }
 
@@ -125,7 +134,7 @@ public class CommunityServiceES {
         return mapCommunityESToCommunitySearchDTO(retVal);
     }
 
-    public List<CommunitySearchDTO> searchPhraseCommunities(String name, String description, String rule, Integer minPost, Integer maxPost) {
+    public List<CommunitySearchDTO> searchPhraseCommunities(String name, String description, String rule, Integer minPost, Integer maxPost, Integer minKarma, Integer maxKarma) {
         BoolQueryBuilder queryBuilder = QueryBuilders.boolQuery()
                 .must(QueryBuilders.matchPhraseQuery("name", name))
                 .must(QueryBuilders.matchPhraseQuery ("description", description))
@@ -134,7 +143,12 @@ public class CommunityServiceES {
             List<CommunityES> communitiesWithPostRange = communityESRepository.findByPostRange(minPost, maxPost);
             queryBuilder.filter(QueryBuilders.termsQuery("id", communitiesWithPostRange.stream().map(CommunityES::getId).toArray(Integer[]::new)));
         }
-
+        if (minKarma != null && maxKarma != null) {
+            List<CommunityES> communitiesWithPostRange = communityESRepository.findByKarmaInRange(minKarma, maxKarma);
+            queryBuilder.filter(QueryBuilders.termsQuery("id", communitiesWithPostRange.stream().map(CommunityES::getId).toArray(Integer[]::new)));
+        }
+// problem: kada prvim filtriranjem liste za proveru postova ubaci u builder, postovi se ne izbace ako ne zadovoljavaju kriterijum pretrage sa karmom vec ostalu
+        // kao da je OR mesto AND operatora
         Query query = new NativeSearchQueryBuilder()
                 .withQuery(queryBuilder)
                 .build();

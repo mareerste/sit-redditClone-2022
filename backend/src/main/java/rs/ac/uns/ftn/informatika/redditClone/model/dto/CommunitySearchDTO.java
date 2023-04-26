@@ -14,7 +14,8 @@ public class CommunitySearchDTO {
     private Integer id;
     private String name;
     private Integer countPost;
+    private Integer karma;
 
-    public CommunitySearchDTO(CommunityES communityES){this(communityES.getId(), communityES.getName(), communityES.getPosts().size());}
+    public CommunitySearchDTO(CommunityES communityES){this(communityES.getId(), communityES.getName(), communityES.getPosts().size(), communityES.getKarma());}
     public CommunitySearchDTO(){}
 }
