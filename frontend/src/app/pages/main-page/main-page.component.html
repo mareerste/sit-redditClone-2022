@@ -1,2 +1,124 @@
 <!-- <nav-search (filterEntriesEvent)="filter($event)"></nav-search> -->
+<h1 style="color: #b71c1c;text-align: center;margin: 30px;font-size: 40px;">Reddit posts</h1>
+<div class="container">
+    <div id="showButton" style="display: block;" class="searchBar"><button class="mat-button"
+            (click)="showSearchForm()">Search community</button> <mat-icon>keyboard_arrow_down</mat-icon></div>
+
+    <div id="formDiv" style="display: none;">
+        <mat-radio-group (change)="searchTypeChanged($event)" aria-label="Select an option">
+            <mat-radio-button color="primary" value="name">Search by name</mat-radio-button>
+            <mat-radio-button color="primary" value="description">Search by description</mat-radio-button>
+            <mat-radio-button color="primary" value="rule">Search by rule</mat-radio-button>
+            <mat-radio-button color="primary" value="range">Search by post range</mat-radio-button>
+            <mat-radio-button color="primary" value="karma">Search by karma</mat-radio-button>
+            <mat-radio-button color="primary" value="combined">Combined search</mat-radio-button>
+        </mat-radio-group>
+        <form (ngSubmit)="nameSearchSubmit()" [formGroup]="searchByNameForm" *ngIf="searchType == 'name'">
+            <h4 style="color: #b71c1c;">Search by name</h4>
+            <div class="form-group">
+                <label for="communityName">Community Name</label><br>
+                <input type="text" formControlName="communityName" required>
+                <span *ngIf="communityNameRequired" class="field-error" style="color: red;">Community name can not be
+                    empty.</span>
+            </div>
+            <button [disabled]="!searchByNameForm.valid" mat-button
+                type="submit">Search<mat-icon>search</mat-icon></button>
+        </form>
+        <form (ngSubmit)="descriptionSearchSubmit()" [formGroup]="searchByDescriptionForm"
+            *ngIf="searchType == 'description'">
+            <h4 style="color: #b71c1c;">Search by description</h4>
+            <div class="form-group">
+                <label for="communityDescription">Community description</label><br>
+                <input type="text" formControlName="communityDescription" required>
+                <span *ngIf="communityDescriptionRequired" class="field-error" style="color: red;">Community description
+                    can not be empty.</span>
+            </div>
+            <button [disabled]="!searchByDescriptionForm.valid" mat-button
+                type="submit">Search<mat-icon>search</mat-icon></button>
+        </form>
+        <form (ngSubmit)="ruleSearchSubmit()" [formGroup]="searchByRuleForm" *ngIf="searchType == 'rule'">
+            <h4 style="color: #b71c1c;">Search by rule</h4>
+            <div class="form-group">
+                <label for="communityRule">Community rule</label><br>
+                <input type="text" formControlName="communityRule" required>
+                <span *ngIf="communityRuleRequired" class="field-error" style="color: red;">Community rule can not be
+                    empty.</span>
+            </div>
+            <button [disabled]="!searchByRuleForm.valid" mat-button
+                type="submit">Search<mat-icon>search</mat-icon></button>
+        </form>
+        <form (ngSubmit)="postRangeSearchSubmit()" [formGroup]="searchByPostRangeForm" *ngIf="searchType == 'range'">
+            <h4 style="color: #b71c1c;">Search by post range</h4>
+            <div class="form-group">
+                <label for="minPost">Min posts</label><br>
+                <input type="number" value="0" formControlName="minPost">
+            </div>
+            <div class="form-group">
+                <label for="maxPost">Max posts</label><br>
+                <input type="number" formControlName="maxPost">
+            </div>
+            <button mat-button type="submit">Search<mat-icon>search</mat-icon></button>
+        </form>
+        <form (ngSubmit)="karmaRangeSearchSubmit()" [formGroup]="searchByKarmaRangeForm" *ngIf="searchType == 'karma'">
+            <h4 style="color: #b71c1c;">Search by karma range</h4>
+            <div class="form-group">
+                <label for="minKarma">Min karma</label><br>
+                <input type="number" value="0" formControlName="minKarma">
+            </div>
+            <div class="form-group">
+                <label for="maxKarma">Max karma</label><br>
+                <input type="number" formControlName="maxKarma">
+            </div>
+            <button mat-button type="submit">Search<mat-icon>search</mat-icon></button>
+        </form>
+        <form (ngSubmit)="combinedSearchSubmit()" [formGroup]="combinedSearchForm" *ngIf="searchType == 'combined'">
+            <h4 style="color: #b71c1c;">Combined search</h4>
+            <div class="form-group">
+                <label for="communityName">Community Name</label><br>
+                <input type="text" formControlName="communityName" required>
+            </div>
+            <div class="form-group">
+                <label for="communityDescription">Community description</label><br>
+                <input type="text" formControlName="communityDescription" required>
+            </div>
+            <div class="form-group">
+                <label for="communityRule">Community rule</label><br>
+                <input type="text" formControlName="communityRule" required>
+            </div>
+            <div class="form-group">
+                <label for="minPost">Min posts</label><br>
+                <input type="number" value="0" formControlName="minPost">
+            </div>
+            <div class="form-group">
+                <label for="maxPost">Max posts</label><br>
+                <input type="number" formControlName="maxPost">
+            </div>
+            <div class="form-group">
+                <label for="minKarma">Min karma</label><br>
+                <input type="number" value="0" formControlName="minKarma">
+            </div>
+            <div class="form-group">
+                <label for="maxKarma">Max karma</label><br>
+                <input type="number" formControlName="maxKarma">
+            </div>
+            <div class="form-group">
+                <mat-radio-group formControlName="searchType" required>
+                    <mat-radio-button value="phrase">Phrase Query</mat-radio-button>
+                    <mat-radio-button value="fuzzy">Fuzzy Query</mat-radio-button>
+                </mat-radio-group>
+            </div>
+            <button [disabled]="!combinedSearchForm.valid" mat-button
+                type="submit">Search<mat-icon>search</mat-icon></button>
+        </form>
+        <app-search-communities *ngIf="searching && searchResult?.length > 0" (clickedEventEmit)="stopSearching($event)"
+            [result]="searchResult"></app-search-communities>
+    </div>
+    <div id="hideButton" style="display: none;clear: both;" class="searchBar"><button class="mat-button"
+            (click)="showSearchForm()">Search community</button> <mat-icon>keyboard_arrow_up</mat-icon></div>
+
+
+
+
+</div>
+
 <post-list [posts]="posts" (clickedEventEmit)="getChange($event)"></post-list>

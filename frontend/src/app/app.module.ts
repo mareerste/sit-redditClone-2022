@@ -67,6 +67,7 @@ import { ReportDialogComponent } from './components/report-dialog/report-dialog.
 import { SuspendCommunityDialogComponent } from './components/suspend-community-dialog/suspend-community-dialog.component';
 import { CommunityUpdatePostComponent } from './pages/community/single-community/community-update-post/community-update-post.component';
 import { UserProfileComponent } from './pages/user-profile/user-profile.component';
+import { SearchCommunitiesComponent } from './search-communities/search-communities.component';
 
 @NgModule({
   declarations: [
@@ -111,6 +112,7 @@ import { UserProfileComponent } from './pages/user-profile/user-profile.componen
     SuspendCommunityDialogComponent,
     CommunityUpdatePostComponent,
     UserProfileComponent,
+    SearchCommunitiesComponent,
   ],
   entryComponents:[
     ReportDialogComponent,

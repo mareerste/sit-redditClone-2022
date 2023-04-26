@@ -6,6 +6,7 @@ import { ApiService } from './api.service';
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Community } from '../model/community';
+import { CommunityES } from '../model/communityES';
 
 @Injectable({
   providedIn: 'root'
@@ -71,6 +72,31 @@ export class CommunityService {
   }
   getCommunity(id):Observable<Community>{
     return this.http.get<Community>(`${this.config.community_url}/${id}`);
+  }
+
+  //ES APIs
+  getCommunityByName(name:string):Observable<CommunityES[]>{
+    return this.http.get<CommunityES[]>(`${this.config.community_url}/name/${name}`);
+  }
+
+  getCommunityByDescription(description:string):Observable<CommunityES[]>{
+    return this.http.get<CommunityES[]>(`${this.config.community_url}/description/${description}`);
+  }
+
+  getCommunityByRule(rule:string):Observable<CommunityES[]>{
+    return this.http.get<CommunityES[]>(`${this.config.community_url}/rule/${rule}`);
+  }
+
+  getCommunityByPostRange(min:number, max:number):Observable<CommunityES[]>{
+    return this.http.get<CommunityES[]>(`${this.config.community_url}/posts/${min}/${max}`);
+  }
+
+  getCommunityByKarma(min:number, max:number):Observable<CommunityES[]>{
+    return this.http.get<CommunityES[]>(`${this.config.community_url}/karma/${min}/${max}`);
+  }
+
+  getCommunityByCombinedSearch(searchType:string, name:string, description:string, rule:string, minPost:number, maxPost:number, minKarma:number, maxKarma:number):Observable<CommunityES[]>{
+    return this.http.get<CommunityES[]>(`${this.config.community_url}/search/${searchType}/${name}/${description}/${rule}/${minPost}/${maxPost}/${minKarma}/${maxKarma}`);
   }
 
   getCommunityPosts(id) {
