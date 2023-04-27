@@ -37,6 +37,7 @@ export class CommunityCreatePostComponent implements OnInit {
   saveNewPost = new EventEmitter<Post>();
   newPost;
   selectedFile:File;
+  pdfFile:File;
   communityId;
 
   titleRequired = false;
@@ -86,7 +87,8 @@ export class CommunityCreatePostComponent implements OnInit {
       title: ['', Validators.compose([Validators.required, Validators.minLength(3), Validators.maxLength(64)])],
       text: ['', Validators.compose([Validators.required, Validators.minLength(3), Validators.maxLength(32)])],
       flair: [],
-      imagePath: []
+      imagePath: [],
+      files: []
     });
   }
 
@@ -104,18 +106,21 @@ export class CommunityCreatePostComponent implements OnInit {
     this.flairRequired = false;
     
     this.form.value.flair = JSON.parse(this.form.value.flair);
-    // this.communityService.savePostInCommunity(this.form.value,this.community.id)
-    // this.communityService.savePostInCommunity(this.form.value,this.community.id)
-    if(this.imagePath != undefined)
+    if(this.imagePath != undefined){
       this.form.value.imagePath = this.imagePath;
-    
-    this.communityService.savePostInCommunity(this.form.value,this.community.id)
+    }
+    console.log(this.pdfFile)
+    if(this.pdfFile != undefined){
+      this.form.value.files = this.pdfFile;
+      console.log(this.form.value)
+      // call pdf api
+      
+      this.communityService.savePostInCommunityPDF(this.form.value,this.community.id)
       .subscribe(data => {
         this.saveNewPost.emit(data);
         this.submitted = false;
         this.form.reset();
         this.router.navigate(['/community/'+this.community.id+'/posts'])
-        // window.location.reload()
       },
         error => {
           this.submitted = false;
@@ -131,6 +136,30 @@ export class CommunityCreatePostComponent implements OnInit {
           console.log('Create post error');
           this.notification = { msgType: 'error', msgBody: 'Please fill all fields' };
         });
+    }else{
+    
+    this.communityService.savePostInCommunity(this.form.value,this.community.id)
+      .subscribe(data => {
+        this.saveNewPost.emit(data);
+        this.submitted = false;
+        this.form.reset();
+        this.router.navigate(['/community/'+this.community.id+'/posts'])
+      },
+        error => {
+          this.submitted = false;
+          if(this.form.value.text.length == 0)
+            this.textRequired = true
+          if(this.form.value.title.length == 0)
+            this.titleRequired = true
+          if(this.form.value.flair == null)
+            this.flairRequired = true
+
+          console.log(error)
+          console.log(error['status'])
+          console.log('Create post error');
+          this.notification = { msgType: 'error', msgBody: 'Please fill all fields' };
+        });
+      }
   }
   loadCommunity(id:number){
     this.communityService.getCommunity(id).subscribe(data=>{
@@ -142,5 +171,9 @@ export class CommunityCreatePostComponent implements OnInit {
     this.submitted = false;
         this.form.reset();
         this.router.navigate(['/community/'+this.community.id+'/posts'])
+  }
+
+  onFileSelected(event) {
+    this.pdfFile = event.target.files[0];
   }
 }

@@ -15,4 +15,5 @@ export class Post {
     flair: Flair;
     comments?:Comment[] | [];
     reactions:number;
+    files:File
 }

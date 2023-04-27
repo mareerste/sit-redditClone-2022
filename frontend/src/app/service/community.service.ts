@@ -38,6 +38,24 @@ export class CommunityService {
         
         return this.http.post<Post>(`${this.config.community_url}/${commId}/posts`, data, options)
   }
+  savePostInCommunityPDF(data:Post, commId:number):Observable<Post>{
+    console.log("result");
+    console.log(data);
+    const formData: FormData = new FormData();
+    formData.append('title', data.title);
+    formData.append('text', data.text);
+    formData.append('flair.id', data.flair.id.toString());
+    formData.append('flair.name', data.flair.name);
+    formData.append('files', data.files);
+    if(data.imagePath != undefined){
+      formData.append('imagePath', data.imagePath);
+    }
+    const headers = new HttpHeaders({
+          'enctype': 'multipart/form-data'
+        });
+        let options = {headers: headers}
+    return this.http.post<Post>(`${this.config.community_url}/pdf/${commId}/posts`, formData, options)
+  }
   // createPost(post) {
   //   const createPostHeaders = new HttpHeaders({
   //     'Accept': 'application/json',

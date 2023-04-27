@@ -4,31 +4,37 @@
         <p *ngIf="notification" [class]="notification.msgType">{{notification.msgBody}}</p>
         <!-- <form #postForm="ngForm" (ngSubmit)="onSubmit(postForm.value)" *ngIf="!submitted" [formGroup]="form"> -->
         <form (ngSubmit)="onSubmit()" *ngIf="!submitted" [formGroup]="form">
-            <mat-form-field>
+            <div class="formFieldDiv">
                 <label>Title: </label>
-                <input formControlName="title" matInput required>
+                <input class="formField" formControlName="title" matInput required>
                 <span *ngIf="titleRequired" class="field-error" style="color: red;">Required field.</span>
-            </mat-form-field>
-            <mat-form-field>
+            </div>
+            <div class="formFieldDiv">
                 <label>Text: </label>
-                <input formControlName="text" matInput required type="text">
+                <input class="formField" formControlName="text" matInput required type="text">
                 <span *ngIf="textRequired" class="field-error" style="color: red;">Required field.</span>
-            </mat-form-field>
+            </div>
             <br />
-            <mat-form-field>
+            <div class="formFieldDiv">
                 <label>Flair</label>
-                <select id="flairId" formControlName="flair" matInput required>
+                <select class="formField" id="flairId" formControlName="flair" matInput required>
                     <option *ngFor="let flair of community.flairs" [value]="flair | json">{{flair.name}}</option>
                 </select>
                 <span *ngIf="flairRequired" class="field-error" style="color: red;">Required field.</span>
-            </mat-form-field>
-            <mat-form-field>
+            </div>
+            <div class="formFieldDiv">
                 <label class="image-upload-container ">
                     <span>Select Image</span>
-                    <input type="file" (change)="onFileChanged($event)">
+                    <input class="formField" type="file" (change)="onFileChanged($event)">
                     <input type="button" (click)="onUpload()" value="upload">
                 </label>
-            </mat-form-field>
+            </div>
+            <div class="formFieldDiv">
+                <label class="image-upload-container ">
+                    <span>Select PDF File</span>
+                    <input class="formField" type="file" (change)="onFileSelected($event)" name="files">
+                </label>
+            </div>
 
             <button [disabled]="!form.valid" color="primary" mat-raised-button type="submit">Post</button>
 
