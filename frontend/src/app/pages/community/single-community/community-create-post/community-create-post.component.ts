@@ -109,11 +109,8 @@ export class CommunityCreatePostComponent implements OnInit {
     if(this.imagePath != undefined){
       this.form.value.imagePath = this.imagePath;
     }
-    console.log(this.pdfFile)
     if(this.pdfFile != undefined){
       this.form.value.files = this.pdfFile;
-      console.log(this.form.value)
-      // call pdf api
       
       this.communityService.savePostInCommunityPDF(this.form.value,this.community.id)
       .subscribe(data => {

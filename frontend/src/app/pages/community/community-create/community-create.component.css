@@ -28,6 +28,16 @@
     -webkit-animation: fadein 1s; /* Safari and Chrome */
   
   }
+
+  .formField {
+    display: block;
+    margin: auto;
+    
+  }
+  
+  .formFieldDiv {
+    margin: 10px;
+  }
   
   mat-input-container {
     display: block;

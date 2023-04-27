@@ -25,7 +25,6 @@ export class PostService {
   }
 
   getPost2(id:number):Observable<Post> {
-    console.log("dobijeni id", id)
     return this.http.get<Post>(`${this.config.post_url}/${id}`);
   }
 
@@ -39,8 +38,6 @@ export class PostService {
       'Content-Type': 'application/json'
     });
     let options = {headers: headers}
-    console.log("update service post")
-    console.log(post)
     return this.http.put(`${this.config.post_url}`,post,options);
   }
 

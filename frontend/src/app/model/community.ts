@@ -11,6 +11,7 @@ export class Community {
     suspendedReason?:string;
     flairs:Flair[]|[];
     moderators?:User[]|[];
+    files:File;
 
     constructor(name:string, description:string, rules:string[], flairs:Flair[]) {
         this.name = name,

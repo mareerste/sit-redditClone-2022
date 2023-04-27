@@ -66,7 +66,6 @@ export class SearchCommunitiesFormsComponent implements OnInit {
   nameSearchSubmit() {
     this.communityNameRequired = false;
     if (this.searchByNameForm.valid) {
-      console.log(this.searchByNameForm.value)
       this.searching = true;
       this.communityService.getCommunityByName(this.searchByNameForm.value.communityName).subscribe(data => {
         this.searchResult = data;
@@ -77,7 +76,6 @@ export class SearchCommunitiesFormsComponent implements OnInit {
   descriptionSearchSubmit() {
     this.communityDescriptionRequired = false;
     if (this.searchByDescriptionForm.valid) {
-      console.log(this.searchByDescriptionForm.value)
       this.searching = true;
       this.communityService.getCommunityByDescription(this.searchByDescriptionForm.value.communityDescription).subscribe(data => {
         this.searchResult = data;
@@ -88,7 +86,6 @@ export class SearchCommunitiesFormsComponent implements OnInit {
   ruleSearchSubmit() {
     this.communityRuleRequired = false;
     if (this.searchByRuleForm.valid) {
-      console.log(this.searchByRuleForm.value)
       this.searching = true;
       this.communityService.getCommunityByRule(this.searchByRuleForm.value.communityRule).subscribe(data => {
         this.searchResult = data;
@@ -97,11 +94,12 @@ export class SearchCommunitiesFormsComponent implements OnInit {
   }
 
   postRangeSearchSubmit() {
-    if (this.searchByPostRangeForm.value.minPost == '' || this.searchByKarmaRangeForm.value.minPost == null)
+    if (this.searchByPostRangeForm.value.minPost == '' || this.searchByPostRangeForm.value.minPost == null){
       this.searchByPostRangeForm.value.minPost = 0
-    if (this.searchByPostRangeForm.value.maxPost == '' || this.searchByKarmaRangeForm.value.maxPost == null)
+    }
+    if (this.searchByPostRangeForm.value.maxPost == '' || this.searchByPostRangeForm.value.maxPost == null){
       this.searchByPostRangeForm.value.maxPost = 10000000
-
+    }
     this.searching = true;
     this.communityService.getCommunityByPostRange(this.searchByPostRangeForm.value.minPost, this.searchByPostRangeForm.value.maxPost).subscribe(data => {
       this.searchResult = data;
@@ -129,9 +127,7 @@ export class SearchCommunitiesFormsComponent implements OnInit {
       this.combinedSearchForm.value.minKarma = 0
     if (this.combinedSearchForm.value.maxKarma == '' || this.combinedSearchForm.value.maxKarma == null)
       this.combinedSearchForm.value.maxKarma = 10000000
-    console.log(this.combinedSearchForm.value)
     if (this.combinedSearchForm.valid) {
-      console.log(this.combinedSearchForm.value)
       this.searching = true;
       var searchType = this.combinedSearchForm.value.searchType;
       var name = this.combinedSearchForm.value.communityName;
@@ -159,14 +155,11 @@ export class SearchCommunitiesFormsComponent implements OnInit {
     var show = document.getElementById("showButton");
     var hide = document.getElementById("hideButton");
     var form = document.getElementById("formDiv");
-    console.log("function called");
     if (show.style.display === "none") {
-      console.log("none")
       show.style.display = "block";
       form.style.display = "none";
       hide.style.display = "none";
     } else {
-      console.log("block")
       hide.style.display = "block";
       form.style.display = "block";
       show.style.display = "none";

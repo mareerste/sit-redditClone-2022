@@ -37,6 +37,12 @@
                     <input (click)="addFlair()" type="button" value="+ Add Flair">
                 </div>
             </mat-form-field>
+            <div class="formFieldDiv">
+                <label class="image-upload-container ">
+                    <span>Select PDF File</span>
+                    <input class="formField" type="file" (change)="onFileSelected($event)" name="files">
+                </label>
+            </div>
             <button [disabled]="!form.valid" color="primary" mat-raised-button type="submit">Create</button>
             <br>
             <button color="primary" mat-raised-button routerLink="/" >Go Back</button>
