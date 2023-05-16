@@ -24,7 +24,7 @@ import java.util.Set;
 @Builder
 @AllArgsConstructor
 @Document(indexName = "communities")
-//@Setting(settingPath = "/analyzers/serbianAnalyzer.json")
+@Setting(settingPath = "/analyzers/serbianAnalyzer.json")
 public class CommunityES {
     @Id
     private Integer id;

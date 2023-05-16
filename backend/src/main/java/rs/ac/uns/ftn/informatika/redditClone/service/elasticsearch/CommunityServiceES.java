@@ -63,7 +63,7 @@ public class CommunityServiceES {
     }
 
     public List<CommunitySearchDTO> findCommunitiesByName(String name){
-        List<CommunityES> communities = communityESRepository.findAllByNameContaining(name);
+        List<CommunityES> communities = communityESRepository.findAllByName(name);
         return mapCommunityESToCommunitySearchDTO(communities);
     }
 

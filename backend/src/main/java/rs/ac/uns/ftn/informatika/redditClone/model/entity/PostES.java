@@ -7,6 +7,7 @@ import lombok.Setter;
 import org.springframework.data.elasticsearch.annotations.Document;
 import org.springframework.data.elasticsearch.annotations.Field;
 import org.springframework.data.elasticsearch.annotations.FieldType;
+import org.springframework.data.elasticsearch.annotations.Setting;
 
 import javax.persistence.Id;
 
@@ -15,6 +16,7 @@ import javax.persistence.Id;
 @Builder
 @AllArgsConstructor
 @Document(indexName = "posts")
+@Setting(settingPath = "/analyzers/serbianAnalyzer.json")
 public class PostES {
 
     @Id

@@ -10,7 +10,7 @@ import java.util.List;
 
 @Repository
 public interface PostESRepository extends ElasticsearchRepository<PostES, Integer> {
-    List<PostES> findAllByTitleContaining(String title);
+    List<PostES> findAllByTitle(String title);
     List<PostES> findAllByFlair(String flair);
     @Query("{\"bool\": {\"should\": [{\"match\": {\"text\": \"?0\"}}, {\"match\": {\"textFile\": \"?0\"}}]}}")
     List<PostES> findAllByTextContainingOrTextFileContaining(String searchTerm);

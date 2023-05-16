@@ -70,7 +70,7 @@ public class PostServiceES {
     }
 
     public List<PostSearchDTO> findPostsByTitle(String title){
-        return mapPostESToPostSearchDTO(postESRepository.findAllByTitleContaining(title));
+        return mapPostESToPostSearchDTO(postESRepository.findAllByTitle(title));
     }
 
     public List<PostSearchDTO> findPostsByFlair(String flair){
